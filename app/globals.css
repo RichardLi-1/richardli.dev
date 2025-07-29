@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 120 100% 50%;
+    --card: 0 0% 6%;
+    --card-foreground: 120 100% 50%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 120 100% 50%;
+    --primary: 120 100% 25%;
+    --primary-foreground: 120 100% 90%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 120 100% 50%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 120 20% 65%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 120 100% 50%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 120 100% 90%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 120 100% 25%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar for chat */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
