@@ -1,87 +1,79 @@
-import { streamText } from "ai"
-import { openai } from "@ai-sdk/openai"
+import { type NextRequest, NextResponse } from "next/server"
 
-export async function POST(req: Request) {
-  const { messages } = await req.json()
+export async function POST(req: NextRequest) {
+  try {
+    const { messages } = await req.json()
 
-  const systemPrompt = `You are a chatbot representing Richard. Here's what you know about Richard:
+    // Get the last user message
+    const lastMessage = messages[messages.length - 1]?.content || ""
 
-Personal Info:
-- 18 years old
-- Based in Toronto
-- Currently interning at a YC-backed SaaS startup, analyzing AI trends and working on product design
+    // Simple response logic based on keywords
+    let response = ""
 
-Current Projects:
-- Co-Founder of Future Forward (Sep 2024 - Present): Non-profit project helping students understand their vocation
+    if (lastMessage.toLowerCase().includes("age") || lastMessage.toLowerCase().includes("old")) {
+      response = "Richard is 18 years old and based in Toronto."
+    } else if (lastMessage.toLowerCase().includes("work") || lastMessage.toLowerCase().includes("job")) {
+      response =
+        "Richard is currently interning at a YC-backed SaaS startup, analyzing AI trends and working on product design. He has extensive experience in food service, including roles at Mochi Doh, CoCo Fresh Tea & Juice, and The Poké Box. He's also worked as an iOS app developer and computer science tutor."
+    } else if (lastMessage.toLowerCase().includes("future forward") || lastMessage.toLowerCase().includes("project")) {
+      response =
+        "Richard is the co-founder of Future Forward, a non-profit focusing on helping students discover their vocations. He's been working on this since September 2024."
+    } else if (lastMessage.toLowerCase().includes("award") || lastMessage.toLowerCase().includes("achievement")) {
+      response =
+        "Richard has achieved quite a lot! He scored in the 99th percentile on the SAT (740 English, 790 Math), won a Provincial Championship at DECA Ontario, received University of Waterloo scholarships totaling $6000, and earned an 'Outstanding Pitch' award at SHAD Canada."
+    } else if (lastMessage.toLowerCase().includes("volunteer") || lastMessage.toLowerCase().includes("yrhacks")) {
+      response =
+        "Richard has extensive volunteer experience. He was a Logistics Executive for YRHacks (Canada's largest high school hackathon), Director of External Relations at Superposition Toronto, and has volunteered at IL Chinese School managing 300+ students. He believes strongly in community service."
+    } else if (lastMessage.toLowerCase().includes("skill") || lastMessage.toLowerCase().includes("language")) {
+      response =
+        "Richard is bilingual, speaking both English and Mandarin fluently. He's an Apple-certified app developer with strong skills in mathematics, computer science, leadership, and customer service. He has experience in entrepreneurship and event organization."
+    } else if (lastMessage.toLowerCase().includes("philosophy") || lastMessage.toLowerCase().includes("believe")) {
+      response =
+        "Richard believes that 'everyone should work a customer service job at least once in their life.' He's passionate about helping students discover their vocations and is committed to community service and giving back."
+    } else if (lastMessage.toLowerCase().includes("current") || lastMessage.toLowerCase().includes("now")) {
+      response =
+        "Currently, Richard is interning at a YC-backed SaaS startup where he analyzes AI trends and works on product design. He's also continuing his work as co-founder of Future Forward and still works weekends at Mochi Doh making and delivering food."
+    } else if (lastMessage.toLowerCase().includes("education") || lastMessage.toLowerCase().includes("school")) {
+      response =
+        "Richard has excelled academically with a perfect score on the OSSLT (400/400), top performance in various math competitions, and multiple scholarships. He's received recognition from University of Waterloo and has been involved in numerous academic competitions."
+    } else {
+      response =
+        "I'm a chatbot that knows about Richard! He's an 18-year-old from Toronto who's currently interning at a YC-backed SaaS startup and co-founding Future Forward, a non-profit helping students discover their vocations. Feel free to ask me about his work experience, achievements, volunteer work, or interests!"
+    }
 
-Work Experience:
-- Intern at YC-backed SaaS startup (Jul 2025 - Present): Analyzing AI trends and working on product design
-- Food Service Worker at Mochi Doh (Aug 2024 - Present): Making and delivering mochi donuts, banh mi sandwiches, drinks, catering orders. Believes "Everyone should work a customer service job at least once in their life."
-- iOS App Developer at Career Education Council (Sep 2024 - Jan 2025): Now an Apple-certified app developer
-- Computer Science and Mathematics Tutor (Feb 2021 - Dec 2024): 
-  * Taught Python and CS principles to a second year university student
-  * Taught a student with Level 3 ASD personalized lessons on literacy, math, and life skills
-  * Assisted student's family with administrative tasks
-- Food Service Worker at The Poké Box (Jul 2024 - Aug 2024)
-- Co-Founder of Toteally Yours (Mar 2023 - Dec 2023): Created a small business selling tote bags and custom print orders, donated $130+ to Room for a Child charity
-- Shift Leader at CoCo Fresh Tea & Juice (May 2023 - Oct 2023):
-  * Led staff and operations plus all barista duties
-  * Managed inventory by predicting customer demand for 6+ perishable ingredients and 50+ menu items
-  * Onboarded new staff
-  * Generated accurate financial reports daily
-- Barista at CoCo Fresh Tea & Juice (Nov 2022 - May 2023):
-  * Provided customer service in English and Mandarin
-  * Memorized over 100 recipes
-  * Handled high volume demand, delivering 100+ drinks per hour
-- Cashier & Merchandiser at Shoppers Drug Mart (Jan 2023 - Feb 2023)
+    // Create a simple text stream response
+    const encoder = new TextEncoder()
+    const stream = new ReadableStream({
+      start(controller) {
+        // Simulate streaming by sending the response in chunks
+        const chunks = response.split(" ")
+        let index = 0
 
-Education & Achievements:
-- AP English Language and Composition: 5/5 (top ~13% of all test takers)
-- Faculty of Environment Student Engagement Award - $4000 (University of Waterloo)
-- University of Waterloo President's Scholarship - $2000
-- Provincial Champion - Top 9 Overall (DECA Ontario) - Career Development Project
-- SAT 99th Percentile: 740 English, 790 Math
-- Outstanding Pitch at SHAD Canada (1 of 3 teams awarded out of 8)
-- OAPT Contest - 92nd Percentile (110/150, school average 79/150)
-- Top 10 - Entrepreneurship Event (DECA Ontario)
-- Perfect Score - OSSLT (400/400)
-- City Design Challenge - First Place
-- Fermat Math Competition - Top 25% Distinction
-- Silver - University of Waterloo Financial Literacy Competition
+        const sendChunk = () => {
+          if (index < chunks.length) {
+            const chunk = chunks[index] + " "
+            controller.enqueue(encoder.encode(`data: {"content":"${chunk}"}\n\n`))
+            index++
+            setTimeout(sendChunk, 50) // Small delay to simulate streaming
+          } else {
+            controller.enqueue(encoder.encode(`data: [DONE]\n\n`))
+            controller.close()
+          }
+        }
 
-Volunteer Experience:
-- Logistics Executive at YRHacks (Jun 2024 - May 2025): Organized Canada's largest high school hackathon
-- Director of External Relations at Superposition Toronto (Jan 2024 - May 2025):
-  * Led outreach for STEM Uni Expo 4.0, acquiring speakers from Waterloo, UofT, Harvard
-  * Acquired 17 mentors, 18 judges, 9 workshop leads for 36-hour research event with 100+ participants and $70000+ in prizes
-- President of Markville Marketing (Jun 2024 - Present)
-- Fellow at Shad Canada (Jul 2024): Co-created Get Moving Transportation with "Outstanding Pitch" award
-- Lead Volunteer at IL Chinese School (Sep 2023 - Present): 300+ students, managed student records, safety, volunteer teams
-- Summer Day Camp Volunteer at Light and Love Home (Jun 2020 - Jul 2022): Program for 100+ children ages 5-12
-- Event Volunteer at Markham Village BIA (Jul 2021 - Dec 2021)
+        sendChunk()
+      },
+    })
 
-Skills & Interests:
-- Bilingual: English and Mandarin
-- Apple-certified app developer
-- Strong in mathematics and computer science
-- Leadership and team management experience
-- Customer service and interpersonal skills
-- Entrepreneurship and business development
-- Community service and youth mentorship
-- Event organization and logistics
-
-Philosophy:
-- Believes everyone should work in customer service at least once
-- Passionate about helping students discover their vocations
-- Committed to community service and giving back
-- Values practical work experience alongside academic achievement
-
-Answer questions about Richard in a friendly, informative way. You can discuss his work experiences, achievements, volunteer work, or interests. If asked about something not specifically covered, you can make reasonable inferences based on his background, but clarify when you're making educated guesses versus stating known facts.`
-
-  const result = await streamText({
-    model: openai("gpt-4o"),
-    messages,
-  })
-
-  return result.toDataStreamResponse()
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/plain",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+      },
+    })
+  } catch (error) {
+    console.error("Chat API error:", error)
+    return NextResponse.json({ error: "Failed to process chat" }, { status: 500 })
+  }
 }

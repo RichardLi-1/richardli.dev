@@ -1,15 +1,109 @@
 "use client"
-import { useChat } from "@ai-sdk/react"
+import { useState } from "react"
+import type React from "react"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Send, ExternalLink } from "lucide-react"
 
+interface Message {
+  id: string
+  role: "user" | "assistant"
+  content: string
+}
+
 export default function PersonalWebsite() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: "/api/chat",
-  })
+  const [messages, setMessages] = useState<Message[]>([])
+  const [input, setInput] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!input.trim() || isLoading) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: input,
+    }
+
+    setMessages((prev) => [...prev, userMessage])
+    setInput("")
+    setIsLoading(true)
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: [...messages, userMessage],
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to get response")
+      }
+
+      const reader = response.body?.getReader()
+      const decoder = new TextDecoder()
+      let assistantContent = ""
+
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "",
+      }
+
+      setMessages((prev) => [...prev, assistantMessage])
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+
+          const chunk = decoder.decode(value)
+          const lines = chunk.split("\n")
+
+          for (const line of lines) {
+            if (line.startsWith("data: ")) {
+              const data = line.slice(6)
+              if (data === "[DONE]") {
+                setIsLoading(false)
+                return
+              }
+              try {
+                const parsed = JSON.parse(data)
+                if (parsed.content) {
+                  assistantContent += parsed.content
+                  setMessages((prev) =>
+                    prev.map((msg) => (msg.id === assistantMessage.id ? { ...msg, content: assistantContent } : msg)),
+                  )
+                }
+              } catch (e) {
+                // Ignore parsing errors
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error)
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: "Sorry, I encountered an error. Please try again.",
+        },
+      ])
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono">
@@ -18,7 +112,7 @@ export default function PersonalWebsite() {
         <div className="flex items-center space-x-4">
           <Avatar className="w-12 h-12">
             <AvatarImage src="/placeholder.svg?height=48&width=48" alt="Profile" />
-            <AvatarFallback>NC</AvatarFallback>
+            <AvatarFallback>RC</AvatarFallback>
           </Avatar>
         </div>
         <nav className="flex space-x-8">
@@ -66,11 +160,15 @@ export default function PersonalWebsite() {
           <h2 className="text-xl">Previously I...</h2>
           <ul className="space-y-2 text-gray-300 ml-4">
             <li className="flex items-start">
-            <span className="mr-2">•</span>
-            <span>
-              helped organize <a href="https://yrhacks.ca/" className="underline" target="_blank" rel="noopener noreferrer">YRHacks</a>, Canada's largest high school hackathon
-            </span>
-          </li>
+              <span className="mr-2">•</span>
+              <span>
+                helped organize{" "}
+                <a href="https://yrhacks.ca/" className="underline" target="_blank" rel="noopener noreferrer">
+                  YRHacks
+                </a>
+                , Canada's largest high school hackathon
+              </span>
+            </li>
           </ul>
         </section>
 
@@ -101,8 +199,8 @@ export default function PersonalWebsite() {
               <div className="space-y-4 mb-4 max-h-96 overflow-y-auto">
                 {messages.length === 0 && (
                   <div className="text-gray-500 text-sm">
-                    Ask me anything about Richard! Try questions like "What are your interests?" or "Tell me about your
-                    projects"
+                    Ask me anything about Richard! Try questions like "How old are you?" or "Tell me about your work
+                    experience"
                   </div>
                 )}
                 {messages.map((message) => (
@@ -118,7 +216,7 @@ export default function PersonalWebsite() {
               <form onSubmit={handleSubmit} className="flex space-x-2">
                 <Input
                   value={input}
-                  onChange={handleInputChange}
+                  onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask me anything about Richard..."
                   className="flex-1 bg-gray-800 border-gray-600 text-green-400 placeholder-gray-500"
                   disabled={isLoading}
