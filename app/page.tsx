@@ -116,12 +116,14 @@ export default function PersonalWebsite() {
   }
 
   const suggestedQuestions = [
-    "What's your work philosophy?",
-    "Tell me about Future Forward",
-    "What was your experience at SHAD Canada?",
-    "How do you balance work and academics?",
-    "What's your proudest achievement?",
-    "What advice would you give to students?",
+    "What did you do at Mochi Doh?",
+    "Tell me about your role as Shift Leader at CoCo",
+    "What was your iOS app development experience like?",
+    "What did you do as a tutor?",
+    "Tell me about Toteally Yours",
+    "What are your responsibilities at YRHacks?",
+    "What did you achieve at DECA?",
+    "How did you score so well on the SAT?",
   ]
 
   return (
@@ -138,14 +140,11 @@ export default function PersonalWebsite() {
           <a href="#contact" className="hover:text-green-300 transition-colors">
             CONTACT
           </a>
-          <a href="https://linkedin.com" className="hover:text-green-300 transition-colors flex items-center gap-1">
+          <a href="https://www.linkedin.com/in/richardli0/" className="hover:text-green-300 transition-colors flex items-center gap-1">
             LINKEDIN <ExternalLink className="w-3 h-3" />
           </a>
-          <a href="https://github.com" className="hover:text-green-300 transition-colors flex items-center gap-1">
+          <a href="https://github.com/RichardLi-1" className="hover:text-green-300 transition-colors flex items-center gap-1">
             GITHUB <ExternalLink className="w-3 h-3" />
-          </a>
-          <a href="https://twitter.com" className="hover:text-green-300 transition-colors flex items-center gap-1">
-            TWITTER/X <ExternalLink className="w-3 h-3" />
           </a>
         </nav>
       </header>
@@ -167,6 +166,17 @@ export default function PersonalWebsite() {
             I'm <span className="underline">currently</span>...
           </h2>
           <ul className="space-y-2 text-gray-300 ml-4">
+          <li className="flex items-start">
+              <span className="mr-2">•</span>
+              <span>an incoming  
+              {' '}<a href="https://uwaterloo.ca/systems-design-engineering/" target="_blank" rel="noopener noreferrer" class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"> systems design engineering </a>{' '}
+               student at the <img
+  alt="University of Waterloo"
+  className="inline w-4 h-4 mr-1"
+  src="https://i.pinimg.com/originals/90/19/17/901917f9b6e74d254525c3e37d3dd934.png"
+/>
+                <a href="https://uwaterloo.ca/" target="_blank" rel="noopener noreferrer" class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110">university of waterloo</a></span>
+            </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
               <span>interning at a YC-backed SaaS startup, analyzing ai trends and working on product design</span>
@@ -181,11 +191,33 @@ export default function PersonalWebsite() {
             <li className="flex items-start">
               <span className="mr-2">•</span>
               <span>
-                helped organize{" "}
+                helped organize{" "}<img
+  alt="YRHacks Logo"
+  className="inline w-4 h-4 mr-1"
+  src="https://www.yrhacks.ca/_next/static/media/logo.3aecaa9f.svg"
+/>
                 <a href="https://yrhacks.ca/" className="underline" target="_blank" rel="noopener noreferrer">
                   YRHacks
                 </a>
                 , Canada's largest high school hackathon
+              </span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-2">•</span>
+              <span>
+                Tutored a second year university student Python and CS principles
+              </span>
+              </li>
+              <li>
+              <span className="mr-2">•</span>
+              <span>
+                Conceptualized and designed <img
+  alt="Bo!nk Logo"
+  className="inline w-4 h-4 mr-1"
+  src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/35/fe/3a/35fe3a98-71fa-7e9a-9d34-584b90cac389/AppIcon-0-0-1x_U007emarketing-0-0-0-5-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/460x0w.webp"
+/><a href="https://apps.apple.com/ca/app/bo-nk/id1570376501" className="underline" target="_blank" rel="noopener noreferrer">
+                  Bo!nk
+                </a>, a Windows Vista-inspired inkball game published on the App Store.
               </span>
             </li>
           </ul>
@@ -218,7 +250,7 @@ export default function PersonalWebsite() {
               {messages.length === 0 && (
                 <div className="mb-4">
                   <div className="text-gray-500 text-sm mb-3">
-                    Ask me anything about Richard! Here are some suggestions:
+                    Ask me detailed questions about Richard's specific roles and experiences:
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {suggestedQuestions.map((question) => (
@@ -252,7 +284,7 @@ export default function PersonalWebsite() {
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask me anything about Richard..."
+                  placeholder="Ask about specific roles, like 'What did you do at CoCo?'"
                   className="flex-1 bg-gray-800 border-gray-600 text-green-400 placeholder-gray-500"
                   disabled={isLoading}
                 />
