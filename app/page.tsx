@@ -295,9 +295,10 @@ export default function PersonalWebsite() {
             </CardContent>
           </Card>
         </section>
+        <br />
         <span>
                 I'd love to hear from you! Want to hire me? or simply wanna chat? Feel free to reach out by 
-                <a href="mailto:richardli0@outlook.com" class="text-stone-400 underline hover:text-stone-100 font-minecraft inline-block transform transition-transform duration-200 hover:scale-110">email</a>
+                {" "}<a href="mailto:richardli0@outlook.com" class="text-stone-400 underline hover:text-stone-100 font-minecraft inline-block transform transition-transform duration-200 hover:scale-110">email</a>
                 , or connect with me on <a href="https://www.linkedin.com/in/richardli0" class="text-stone-400 underline hover:text-stone-100 font-minecraft inline-block transform transition-transform duration-200 hover:scale-110">LinkedIn</a>.
         </span>
       </main>
