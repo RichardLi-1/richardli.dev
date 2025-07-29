@@ -16,6 +16,12 @@ interface Message {
   content: string
 }
 
+
+export const metadata = {
+  title: "Richard Li",
+  description: "Personal website of Richard Li.",
+}
+
 export default function PersonalWebsite() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
@@ -133,16 +139,12 @@ export default function PersonalWebsite() {
   return (
   
     <div className="min-h-screen bg-black text-green-400 font-mono">
-    <Head>
-  <title>Richard Li</title>
-  <meta name="description" content="Personal website of Richard Li." />
-</Head>
       {/* Header */}
       <header className="flex items-center justify-between p-6 border-b border-gray-800">
         <div className="flex items-center space-x-4">
           <Avatar className="w-12 h-12">
             <AvatarImage src="/IMG_2486.jpg?height=48&width=48" alt="Profile" />
-            <AvatarFallback>RC</AvatarFallback>
+            <AvatarFallback>RL</AvatarFallback>
           </Avatar>
         </div>
         <nav className="flex space-x-8">
