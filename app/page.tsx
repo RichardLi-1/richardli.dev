@@ -155,7 +155,10 @@ export default function PersonalWebsite() {
           <h1 className="text-4xl font-bold">Hey, I'm Richard!</h1>
           <div className="space-y-2 text-gray-300">
             <p>
-              I'm 18, based in <span className="underline">toronto</span>.
+              I'm 18, based in <span className="underline"><a href="https://en.wikipedia.org/wiki/Toronto" target="_blank" rel="noopener noreferrer" class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110">toronto</a></span>.
+            </p>
+            <p>
+              I love public transportation, software engineering, and UX/UI design
             </p>
           </div>
         </section>
@@ -196,7 +199,7 @@ export default function PersonalWebsite() {
   className="inline w-4 h-4 mr-1"
   src="https://www.yrhacks.ca/_next/static/media/logo.3aecaa9f.svg"
 />
-                <a href="https://yrhacks.ca/" className="underline" target="_blank" rel="noopener noreferrer">
+                <a href="https://yrhacks.ca/" className="underline" class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110" target="_blank" rel="noopener noreferrer">
                   YRHacks
                 </a>
                 , Canada's largest high school hackathon
@@ -205,17 +208,17 @@ export default function PersonalWebsite() {
             <li className="flex items-start">
               <span className="mr-2">•</span>
               <span>
-                Tutored a second year university student Python and CS principles
+                tutored a second year university student Python and CS principles
               </span>
               </li>
               <li>
               <span className="mr-2">•</span>
               <span>
-                Conceptualized and designed <img
+                conceptualized and designed <img
   alt="Bo!nk Logo"
   className="inline w-4 h-4 mr-1"
   src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/35/fe/3a/35fe3a98-71fa-7e9a-9d34-584b90cac389/AppIcon-0-0-1x_U007emarketing-0-0-0-5-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/460x0w.webp"
-/><a href="https://apps.apple.com/ca/app/bo-nk/id1570376501" className="underline" target="_blank" rel="noopener noreferrer">
+/><a href="https://apps.apple.com/ca/app/bo-nk/id1570376501" className="underline" class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110" target="_blank" rel="noopener noreferrer">
                   Bo!nk
                 </a>, a Windows Vista-inspired inkball game published on the App Store
               </span>
@@ -233,7 +236,7 @@ export default function PersonalWebsite() {
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:text-green-300 transition-colors"
-            >
+              class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110">
               future forward
             </a>
             {" - non-profit focusing on helping students discover their vocations"}
