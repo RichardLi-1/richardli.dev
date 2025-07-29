@@ -105,6 +105,25 @@ export default function PersonalWebsite() {
     }
   }
 
+  const handleSuggestedQuestion = (question: string) => {
+    setInput(question)
+    const syntheticEvent = {
+      preventDefault: () => {},
+    } as React.FormEvent
+    setTimeout(() => {
+      handleSubmit(syntheticEvent)
+    }, 100)
+  }
+
+  const suggestedQuestions = [
+    "What's your work philosophy?",
+    "Tell me about Future Forward",
+    "What was your experience at SHAD Canada?",
+    "How do you balance work and academics?",
+    "What's your proudest achievement?",
+    "What advice would you give to students?",
+  ]
+
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono">
       {/* Header */}
@@ -195,21 +214,37 @@ export default function PersonalWebsite() {
 
           <Card className="bg-gray-900 border-gray-700">
             <CardContent className="p-4">
+              {/* Suggested Questions */}
+              {messages.length === 0 && (
+                <div className="mb-4">
+                  <div className="text-gray-500 text-sm mb-3">
+                    Ask me anything about Richard! Here are some suggestions:
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {suggestedQuestions.map((question) => (
+                      <Button
+                        key={question}
+                        variant="outline"
+                        size="sm"
+                        className="text-xs bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
+                        onClick={() => handleSuggestedQuestion(question)}
+                      >
+                        {question}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Chat Messages */}
               <div className="space-y-4 mb-4 max-h-96 overflow-y-auto">
-                {messages.length === 0 && (
-                  <div className="text-gray-500 text-sm">
-                    Ask me anything about Richard! Try questions like "How old are you?" or "Tell me about your work
-                    experience"
-                  </div>
-                )}
                 {messages.map((message) => (
                   <div key={message.id} className="space-y-2">
-                    <div className="text-sm font-semibold">{message.role === "user" ? "You:" : "Bot:"}</div>
+                    <div className="text-sm font-semibold">{message.role === "user" ? "You:" : "Richard:"}</div>
                     <div className="text-gray-300 whitespace-pre-wrap">{message.content}</div>
                   </div>
                 ))}
-                {isLoading && <div className="text-gray-500 text-sm">Thinking...</div>}
+                {isLoading && <div className="text-gray-500 text-sm">Richard is thinking...</div>}
               </div>
 
               {/* Chat Input */}
