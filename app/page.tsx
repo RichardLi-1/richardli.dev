@@ -161,9 +161,7 @@ export default function PersonalWebsite() {
             <p>
               I'm 18, based in <span className="underline"><a href="https://en.wikipedia.org/wiki/Toronto" target="_blank" rel="noopener noreferrer" class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110">toronto</a></span>.
             </p>
-            <p>
-              I love public transportation, software engineering, and UX/UI design.
-            </p>
+            
           </div>
         </section>
 
