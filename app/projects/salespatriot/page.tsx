@@ -34,7 +34,7 @@ export default function BoinkProjectPage() {
         {/* Hero Image */}
         <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
           <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OFGQDkrP2BvNmhLieOxExwEZBsCGcq.png"
+            src="https://richardli-1.github.io/Personal-Website/salespatriott.png"
             alt="Bo!nk game screenshots"
             className="w-full h-full object-cover"
           />

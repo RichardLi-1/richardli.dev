@@ -18,7 +18,7 @@ const projects = [
     title: "SalesPatriot (YC W25)",
     year: "2025",
     description: "Summer Internship",
-    image: "/salespatriot.png?height=400&width=600",
+    image: "https://richardli-1.github.io/Personal-Website/salespatriott.png?height=400&width=600",
     tags: ["Non-profit", "Web Development", "Community"],
   },
   {
