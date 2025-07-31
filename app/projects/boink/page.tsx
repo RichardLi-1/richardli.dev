@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link"
 import { ArrowLeft, ExternalLink } from "lucide-react"
+import { Footer } from "@/components/footer"
 
 export default function BoinkProjectPage() {
   return (
@@ -302,6 +303,7 @@ export default function BoinkProjectPage() {
           </p>
         </div>
       </main>
+      <Footer />
     </div>
   )
 }

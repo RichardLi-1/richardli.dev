@@ -2,6 +2,7 @@
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { ExternalLink, ArrowLeft } from "lucide-react"
+import { Footer } from "@/components/footer"
 
 const projects = [
   {
@@ -115,6 +116,7 @@ export default function ProjectsPage() {
           <p className="text-gray-300">I'm always working on new projects. Check back soon for updates!</p>
         </div>
       </main>
+      <Footer />
     </div>
   )
 }

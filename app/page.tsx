@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Send, ExternalLink } from "lucide-react"
+import { Footer } from "@/components/footer"
 
 interface Message {
   id: string
@@ -364,6 +365,7 @@ export default function PersonalWebsite() {
           .
         </span>
       </main>
+      <Footer />
     </div>
   )
 }
