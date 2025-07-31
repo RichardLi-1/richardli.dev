@@ -1,13 +1,13 @@
 "use client"
 import { useState } from "react"
 import type React from "react"
+import Link from "next/link"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Send, ExternalLink } from "lucide-react"
-
 
 interface Message {
   id: string
@@ -127,10 +127,7 @@ export default function PersonalWebsite() {
     "How did you score so well on the SAT?",
   ]
 
-
-
   return (
-  
     <div className="min-h-screen bg-black text-green-400 font-mono">
       {/* Header */}
       <header className="flex items-center justify-between p-6 border-b border-gray-800">
@@ -141,13 +138,22 @@ export default function PersonalWebsite() {
           </Avatar>
         </div>
         <nav className="flex space-x-8">
+          <Link href="/projects" className="hover:text-green-300 transition-colors">
+            PROJECTS
+          </Link>
           <a href="mailto:richardli0@outlook.com" className="hover:text-green-300 transition-colors">
             CONTACT
           </a>
-          <a href="https://www.linkedin.com/in/richardli0/" className="hover:text-green-300 transition-colors flex items-center gap-1">
+          <a
+            href="https://www.linkedin.com/in/richardli0/"
+            className="hover:text-green-300 transition-colors flex items-center gap-1"
+          >
             LINKEDIN <ExternalLink className="w-3 h-3" />
           </a>
-          <a href="https://github.com/RichardLi-1" className="hover:text-green-300 transition-colors flex items-center gap-1">
+          <a
+            href="https://github.com/RichardLi-1"
+            className="hover:text-green-300 transition-colors flex items-center gap-1"
+          >
             GITHUB <ExternalLink className="w-3 h-3" />
           </a>
         </nav>
@@ -159,9 +165,19 @@ export default function PersonalWebsite() {
           <h1 className="text-4xl font-bold">Hey, I'm Richard!</h1>
           <div className="space-y-2 text-gray-300">
             <p>
-              I'm 18, based in <span className="underline"><a href="https://en.wikipedia.org/wiki/Toronto" target="_blank" rel="noopener noreferrer" class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110">toronto</a></span>.
+              I'm 18, based in{" "}
+              <span className="underline">
+                <a
+                  href="https://en.wikipedia.org/wiki/Toronto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
+                >
+                  toronto
+                </a>
+              </span>
+              .
             </p>
-            
           </div>
         </section>
 
@@ -171,17 +187,34 @@ export default function PersonalWebsite() {
             I'm <span className="underline">currently</span>...
           </h2>
           <ul className="space-y-2 text-gray-300 ml-4">
-          <li className="flex items-start">
+            <li className="flex items-start">
               <span className="mr-2">•</span>
-              <span>an incoming  
-              {' '}<a href="https://uwaterloo.ca/systems-design-engineering/" target="_blank" rel="noopener noreferrer" class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"> systems design engineering </a>{' '}
-               student at the <img
-  alt="University of Waterloo"
-  className="inline w-4 h-4 mr-1"
-  src="https://i.pinimg.com/originals/90/19/17/901917f9b6e74d254525c3e37d3dd934.png"
-  
-/>
-                <a href="https://uwaterloo.ca/" target="_blank" rel="noopener noreferrer" class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110">university of waterloo</a></span>
+              <span>
+                an incoming{" "}
+                <a
+                  href="https://uwaterloo.ca/systems-design-engineering/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
+                >
+                  {" "}
+                  systems design engineering{" "}
+                </a>{" "}
+                student at the{" "}
+                <img
+                  alt="University of Waterloo"
+                  className="inline w-4 h-4 mr-1"
+                  src="https://i.pinimg.com/originals/90/19/17/901917f9b6e74d254525c3e37d3dd934.png"
+                />
+                <a
+                  href="https://uwaterloo.ca/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
+                >
+                  university of waterloo
+                </a>
+              </span>
             </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
@@ -197,12 +230,18 @@ export default function PersonalWebsite() {
             <li className="flex items-start">
               <span className="mr-2">•</span>
               <span>
-                helped organize{" "}<img
-  alt="YRHacks Logo"
-  className="inline w-4 h-4 mr-1"
-  src="https://www.yrhacks.ca/_next/static/media/logo.3aecaa9f.svg"
-/>
-                <a href="https://yrhacks.ca/" className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110" target="_blank" rel="noopener noreferrer">
+                helped organize{" "}
+                <img
+                  alt="YRHacks Logo"
+                  className="inline w-4 h-4 mr-1"
+                  src="https://www.yrhacks.ca/_next/static/media/logo.3aecaa9f.svg"
+                />
+                <a
+                  href="https://yrhacks.ca/"
+                  className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   YRHacks
                 </a>
                 , Canada's largest high school hackathon
@@ -210,20 +249,24 @@ export default function PersonalWebsite() {
             </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
-              <span>
-                tutored a second year university student Python and CS principles
-              </span>
-              </li>
-              <li>
+              <span>tutored a second year university student Python and CS principles</span>
+            </li>
+            <li>
               <span className="mr-2">•</span>
               <span>
-                conceptualized and designed <img
-  alt="Bo!nk Logo"
-  className="inline w-4 h-4 mr-1"
-  src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/35/fe/3a/35fe3a98-71fa-7e9a-9d34-584b90cac389/AppIcon-0-0-1x_U007emarketing-0-0-0-5-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/460x0w.webp"
-/><a href="https://apps.apple.com/ca/app/bo-nk/id1570376501" className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110" target="_blank" rel="noopener noreferrer">
+                conceptualized and designed{" "}
+                <img
+                  alt="Bo!nk Logo"
+                  className="inline w-4 h-4 mr-1"
+                  src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/35/fe/3a/35fe3a98-71fa-7e9a-9d34-584b90cac389/AppIcon-0-0-1x_U007emarketing-0-0-0-5-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/460x0w.webp"
+                />
+                <Link
+                  href="/projects/boink"
+                  className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
+                >
                   Bo!nk
-                </a>, a Windows Vista-inspired inkball game published on the App Store
+                </Link>
+                , a Windows Vista-inspired inkball game published on the App Store
               </span>
             </li>
           </ul>
@@ -239,7 +282,8 @@ export default function PersonalWebsite() {
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:text-green-300 transition-colors"
-              class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110">
+              class="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
+            >
               future forward
             </a>
             {" - non-profit focusing on helping students discover their vocations"}
@@ -303,9 +347,21 @@ export default function PersonalWebsite() {
         </section>
         <br />
         <span>
-                I'd love to hear from you! Want to hire me? or simply wanna chat? Feel free to reach out by 
-                {" "}<a href="mailto:richardli0@outlook.com" class="text-stone-400 underline hover:text-stone-100 font-minecraft inline-block transform transition-transform duration-200 hover:scale-110">email</a>
-                , or connect with me on <a href="https://www.linkedin.com/in/richardli0" class="text-stone-400 underline hover:text-stone-100 font-minecraft inline-block transform transition-transform duration-200 hover:scale-110">LinkedIn</a>.
+          I'd love to hear from you! Want to hire me? or simply wanna chat? Feel free to reach out by{" "}
+          <a
+            href="mailto:richardli0@outlook.com"
+            class="text-stone-400 underline hover:text-stone-100 font-minecraft inline-block transform transition-transform duration-200 hover:scale-110"
+          >
+            email
+          </a>
+          , or connect with me on{" "}
+          <a
+            href="https://www.linkedin.com/in/richardli0"
+            class="text-stone-400 underline hover:text-stone-100 font-minecraft inline-block transform transition-transform duration-200 hover:scale-110"
+          >
+            LinkedIn
+          </a>
+          .
         </span>
       </main>
     </div>
