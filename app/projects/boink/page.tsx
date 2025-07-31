@@ -80,11 +80,17 @@ export default function BoinkProjectPage() {
         <div className="prose prose-invert prose-green max-w-none">
           <h2 className="text-2xl font-bold text-green-400 mb-4">Background</h2>
           <p className="text-gray-300 mb-6">
-            Growing up, I spent countless hours playing Inkball on Windows Vista. The simple yet addictive gameplay,
+            Growing up, I spent countless hours on virtual machines, experimenting with old Windows versions. In particular, Windows Vista always stood out to me, especially the game InkBall. The simple yet addictive gameplay, nostalgic visuals,
             combined with the satisfying physics of bouncing balls and strategic hole placement, made it one of my
-            favorite casual games. When I started learning iOS development, I knew I wanted to recreate this experience
+            favorite casual games. Like the rest of Vista, InkBall was ahead of its time and removed in Windows 7. When I started learning iOS development, I knew I wanted to recreate this experience
             for mobile devices.
           </p>
+
+          <img
+            src="https://upload.wikimedia.org/wikipedia/en/2/22/InkBall_Vista.png"
+            alt="InkBall"
+            className="w-full h-full object-cover"
+          />
 
           <h2 className="text-2xl font-bold text-green-400 mb-4">Game Design</h2>
           <p className="text-gray-300 mb-4">
@@ -124,7 +130,7 @@ export default function BoinkProjectPage() {
 
           <h2 className="text-2xl font-bold text-green-400 mb-4">Technical Implementation</h2>
           <p className="text-gray-300 mb-4">
-            The game was built entirely in Swift using SpriteKit for 2D graphics and physics simulation. Key technical
+            The game was built in ShaderLab and C#. Key technical
             challenges included:
           </p>
 
@@ -149,6 +155,10 @@ export default function BoinkProjectPage() {
             <li>• Understanding app analytics and user engagement metrics</li>
           </ul>
 
+          <p className="text-gray-300 mb-4">
+            Fun Fact: the original name of the game was "Boink," a swear word in Dutch. App Store forced us to change this.
+          </p>
+
           <h2 className="text-2xl font-bold text-green-400 mb-4">Results & Takeaways</h2>
           <p className="text-gray-300 mb-4">
             Bo!nk successfully launched on the App Store and provided valuable insights into mobile game development:
@@ -166,8 +176,7 @@ export default function BoinkProjectPage() {
             <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
               <h4 className="text-green-400 font-bold mb-2">iOS Development</h4>
               <p className="text-gray-300 text-sm">
-                Gained deep experience with Swift, SpriteKit, and iOS development patterns, leading to my Apple
-                certification as an iOS developer.
+                Gained deep experience with iOS development patterns.
               </p>
             </div>
 
