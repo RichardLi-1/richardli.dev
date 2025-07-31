@@ -71,16 +71,7 @@ export default function BoinkProjectPage() {
             <h3 className="text-green-400 font-bold mb-2">Overview</h3>
             <div className="space-y-4 text-gray-300">
               <p>
-                Bo!nk is a Windows Vista-inspired inkball game that I conceptualized and designed. As the lead UX
-                designer, I worked with a team to bring this nostalgic game to the App Store.
-              </p>
-              <p>
-                The game features classic inkball mechanics with a nostalgic Windows Vista aesthetic, bringing back
-                memories of the beloved Microsoft game.
-              </p>
-              <p>
-                This project taught me valuable lessons about game development, user interface design, and the App Store
-                submission process.
+                Page is WIP. SalesPatriot is a San Francisco-based B2B SaaS platform that simplifies the complexities of bidding on and managing contracts for NSNs for distributors and contractors. I did a project for them summer of 2025.
               </p>
             </div>
           </div>
@@ -88,21 +79,7 @@ export default function BoinkProjectPage() {
 
         {/* Content Sections */}
         <div className="prose prose-invert prose-green max-w-none">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div>
-              <h2 className="text-2xl font-bold text-green-400 mb-4">Overview</h2>
-              <p className="text-gray-300">
-                SalesPatriot is a San Francisco-based B2B SaaS platform that simplifies the complexities of bidding on and managing contracts for NSNs for distributors and contractors. I did a project for them summer of 2025.
-              </p>
-            </div>
-            <div>
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-ZUJyZyI83WUGEZ9nU0RdxPEVUDbARU.png"
-                alt="Original InkBall game from Windows Vista"
-                className="w-full rounded-lg border border-gray-700"
-              />
-            </div>
-          </div>
+          
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
             <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
@@ -125,10 +102,9 @@ export default function BoinkProjectPage() {
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold text-green-400 mb-4">Game Design</h2>
+          <h2 className="text-2xl font-bold text-green-400 mb-4">Design</h2>
           <p className="text-gray-300 mb-4">
-            As the lead UX designer who conceived the idea, I designed Bo!nk to faithfully recreate the core Inkball
-            experience while adapting it for touch interfaces:
+            With limited access to the product, it was difficult to identify shortfalls and suggest features.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
