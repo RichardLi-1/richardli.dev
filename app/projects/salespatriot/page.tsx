@@ -68,10 +68,9 @@ export default function BoinkProjectPage() {
             </div>
 
             <div>
-              <h3 className="text-green-400 font-bold mb-2">Stats</h3>
+              <h3 className="text-green-400 font-bold mb-2">Team</h3>
               <div className="space-y-1 text-gray-300">
-                <p>150+ Downloads</p>
-                <p>4.6 Star Rating</p>
+                <a href="https://www.linkedin.com/in/matthewkkimm/" className="underline"><p>Matthew Kim</p></a>
               </div>
             </div>
           </div>
