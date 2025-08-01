@@ -157,6 +157,9 @@ export default function PersonalWebsite() {
                   </span>
                   .
                 </p>
+                <p>
+                I'm interested in public transportation, AI, and front-end design & development.
+                </p>
               </div>
             </section>
           </StaggeredContent>
