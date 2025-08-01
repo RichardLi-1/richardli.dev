@@ -56,7 +56,9 @@ export default function ProjectsPage() {
           ]}
         />
 
-        <main className="max-w-6xl mx-auto p-6" style={{ paddingTop: "120px" }}>
+        <main className="max-w-7xl mx-auto p-6" style={{ paddingTop: "120px" }}>
+          {" "}
+          {/* Changed to max-w-7xl */}
           <StaggeredContent delay={200}>
             <div className="mb-12">
               <h1 className="text-4xl font-bold mb-4">Projects</h1>
@@ -65,9 +67,10 @@ export default function ProjectsPage() {
               </p>
             </div>
           </StaggeredContent>
-
           <StaggeredContent delay={400}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+              {" "}
+              {/* Changed lg:grid-cols-3 to lg:grid-cols-2 */}
               {projects.map((project, index) => (
                 <div
                   key={project.id}
@@ -113,7 +116,6 @@ export default function ProjectsPage() {
               ))}
             </div>
           </StaggeredContent>
-
           <StaggeredContent delay={1000}>
             <div className="mt-16 text-center">
               <h2 className="text-2xl font-bold mb-4">More Projects Coming Soon</h2>
