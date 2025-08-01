@@ -136,7 +136,14 @@ export default function BoinkProjectPage() {
 
               <h2 className="text-2xl font-bold text-green-400 mb-4">Game Design</h2>
               <p className="text-gray-300 mb-4">
-                As the lead UX designer who conceived the idea, I designed Bo!nk to faithfully recreate the core Inkball
+                As the UX designer who conceived the idea, I
+                
+                <ul className="text-gray-300 space-y-2 mb-6">
+                <li> Directed the vision of the game</li>
+                <li> Created the map of several levels</li>
+              </ul>
+
+                We designed Bo!nk to faithfully recreate the core Inkball
                 experience while adapting it for touch interfaces:
               </p>
 
@@ -172,6 +179,7 @@ export default function BoinkProjectPage() {
                   </p>
                 </div>
               </div>
+              <p>Yet we also added a twist: players have a finite amount of ink to draw lines per level, adding a layer of challenge.</p>
 
               <h2 className="text-2xl font-bold text-green-400 mb-4">Technical Implementation</h2>
               <p className="text-gray-300 mb-4">
@@ -180,11 +188,11 @@ export default function BoinkProjectPage() {
               </p>
 
               <ul className="text-gray-300 space-y-2 mb-6">
-                <li>• Implementing smooth touch-based line drawing with real-time physics interaction</li>
-                <li>• Creating accurate ball physics that felt authentic to the original game</li>
-                <li>• Optimizing performance for smooth 60fps gameplay on various iOS devices</li>
-                <li>• Designing an intuitive level progression system</li>
-                <li>• Implementing proper game state management and save/load functionality</li>
+                <li> Implementing smooth touch-based line drawing with real-time physics interaction</li>
+                <li> Creating accurate ball physics that felt authentic to the original game</li>
+                <li> Optimizing performance for smooth 60fps gameplay on various iOS devices</li>
+                <li> Designing an intuitive level progression system</li>
+                <li> Implementing proper game state management and save/load functionality</li>
               </ul>
 
               <h2 className="text-2xl font-bold text-green-400 mb-4">Team</h2>
@@ -194,23 +202,23 @@ export default function BoinkProjectPage() {
                 <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
                   <h4 className="text-green-400 font-bold mb-2">Core Team</h4>
                   <ul className="text-gray-300 space-y-1">
-                    <li>• Dorian Chen (Project Lead)</li>
-                    <li>• Richard Li (Lead UX Designer, Concept)</li>
-                    <li>• Jacqueline Ho</li>
-                    <li>• Jonathan Feng</li>
-                    <li>• Emily Lim</li>
-                    <li>• Sky Chen</li>
+                    <li> Dorian Chen (Project Lead)</li>
+                    <li> Richard Li (Lead UX Designer, Concept)</li>
+                    <li> Jacqueline Ho</li>
+                    <li> Jonathan Feng</li>
+                    <li> Emily Lim</li>
+                    <li> Sky Chen</li>
                   </ul>
                 </div>
                 <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
                   <h4 className="text-green-400 font-bold mb-2">Contributors</h4>
                   <ul className="text-gray-300 space-y-1">
-                    <li>• Cynthia Feng</li>
-                    <li>• Jerry Zhou</li>
-                    <li>• Tim Yuan</li>
-                    <li>• Brandon Chen</li>
-                    <li>• Sarina Li</li>
-                    <li>• Conan Wang</li>
+                    <li> Cynthia Feng</li>
+                    <li> Jerry Zhou</li>
+                    <li> Tim Yuan</li>
+                    <li> Brandon Chen</li>
+                    <li> Sarina Li</li>
+                    <li> Conan Wang</li>
                   </ul>
                 </div>
               </div>
