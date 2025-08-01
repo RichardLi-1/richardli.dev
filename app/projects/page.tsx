@@ -28,7 +28,7 @@ const projects = [
     title: "Future Forward",
     year: "2024",
     description: "Non-profit focusing on helping students discover their vocations",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "https://media.licdn.com/dms/image/v2/D562DAQFbXiDCOT8xsw/profile-treasury-image-shrink_800_800/B56ZhPWIimH0AY-/0/1753677860170?e=1754640000&v=beta&t=Ct3UY2c4FwKsK8C2P28ykouBve5KIAxtN8GlcJexY1Q",
     tags: ["Non-profit", "Web Development", "Community"],
   },
   {
