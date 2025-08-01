@@ -11,8 +11,8 @@ export default function SalesPatriotProjectPage() {
         <AnimatedHeader
           backHref="/projects"
           backText="Back"
-          currentPage="/projects/salespatriot"
-          rightLinks={[{ href: "https://salespatriot.com/", text: "Website", external: true }]}
+          currentPage="/projects/cec"
+          rightLinks={[{ href: "https://www.careereducationcouncil.ca/", text: "Website", external: true }]}
         />
 
         <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "120px" }}>
@@ -20,8 +20,8 @@ export default function SalesPatriotProjectPage() {
             {" "}
             {/* Changed from 200 */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic text-green-400 mb-2">SalesPatriot (YC W25)</h1>
-              <p className="text-lg text-gray-300">Work, 2025</p>
+              <h1 className="text-3xl font-bold italic text-green-400 mb-2">Career Education Council</h1>
+              <p className="text-lg text-gray-300">Work, 2024-2025</p>
             </div>
           </StaggeredContent>
 
@@ -30,11 +30,7 @@ export default function SalesPatriotProjectPage() {
             {/* Changed from 400 */}
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
-              <img
-                src="https://richardli-1.github.io/Personal-Website/salespatriott.png"
-                alt="SalesPatriot screenshots"
-                className="w-full h-full object-cover"
-              />
+              <img src="/placeholder.svg" alt="screenshots" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
 
@@ -45,27 +41,19 @@ export default function SalesPatriotProjectPage() {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-green-400 font-bold mb-2">Timeline</h3>
-                  <p className="text-gray-300">2 months, 2025</p>
+                  <p className="text-gray-300">5 months, September 2024-January 2025</p>
                 </div>
 
                 <div>
                   <h3 className="text-green-400 font-bold mb-2">Team</h3>
-                  <div className="space-y-1 text-gray-300">
-                    <a href="https://www.linkedin.com/in/matthewkkimm/" className="underline">
-                      <p>Matthew Kim</p>
-                    </a>
-                  </div>
+                  <div className="space-y-1 text-gray-300"></div>
                 </div>
               </div>
 
               <div>
                 <h3 className="text-green-400 font-bold mb-2">Overview</h3>
                 <div className="space-y-4 text-gray-300">
-                  <p>
-                    Page is WIP. SalesPatriot is a San Francisco-based B2B SaaS platform that simplifies the
-                    complexities of bidding on and managing contracts for NSNs for distributors and contractors. I am
-                    currently doing a project for them summer of 2025.
-                  </p>
+                  <p>Page is WIP. Career Education Council is based in Guelph, Ontario.</p>
                 </div>
               </div>
             </div>

@@ -19,14 +19,18 @@ export default function BoinkProjectPage() {
         />
 
         <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "120px" }}>
-          <StaggeredContent delay={200}>
+          <StaggeredContent delay={0}>
+            {" "}
+            {/* Changed from 200 */}
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold italic text-green-400 mb-2">Bo!nk</h1>
               <p className="text-lg text-gray-300">Game, 2021</p>
             </div>
           </StaggeredContent>
 
-          <StaggeredContent delay={400}>
+          <StaggeredContent delay={100}>
+            {" "}
+            {/* Changed from 400 */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
               <img
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OFGQDkrP2BvNmhLieOxExwEZBsCGcq.png"
@@ -36,7 +40,9 @@ export default function BoinkProjectPage() {
             </div>
           </StaggeredContent>
 
-          <StaggeredContent delay={600}>
+          <StaggeredContent delay={300}>
+            {" "}
+            {/* Changed from 600 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
@@ -82,7 +88,9 @@ export default function BoinkProjectPage() {
           </StaggeredContent>
 
           {/* Wrap all remaining content sections in StaggeredContent with increasing delays */}
-          <StaggeredContent delay={800}>
+          <StaggeredContent delay={500}>
+            {" "}
+            {/* Changed from 800 */}
             <div className="prose prose-invert prose-green max-w-none">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                 <div>
@@ -295,7 +303,9 @@ export default function BoinkProjectPage() {
           </StaggeredContent>
         </main>
 
-        <StaggeredContent delay={1400}>
+        <StaggeredContent delay={1100}>
+          {" "}
+          {/* Changed from 1400 */}
           <Footer />
         </StaggeredContent>
       </div>

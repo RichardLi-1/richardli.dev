@@ -39,6 +39,14 @@ const projects = [
     image: "/placeholder.svg?height=400&width=600",
     tags: ["Community", "Logistics", "Organizations"],
   },
+  {
+    id: "cec",
+    title: "Career Education Council",
+    year: "2024-2025",
+    description: "",
+    image: "",
+    tags: ["iOS", "Swift", "App Development"],
+  },
 ]
 
 export default function ProjectsPage() {
@@ -59,7 +67,9 @@ export default function ProjectsPage() {
         <main className="max-w-7xl mx-auto p-6" style={{ paddingTop: "120px" }}>
           {" "}
           {/* Changed to max-w-7xl */}
-          <StaggeredContent delay={200}>
+          <StaggeredContent delay={0}>
+            {" "}
+            {/* Changed from 200 */}
             <div className="mb-12">
               <h1 className="text-4xl font-bold mb-4">Projects</h1>
               <p className="text-gray-300 text-lg">
@@ -67,7 +77,9 @@ export default function ProjectsPage() {
               </p>
             </div>
           </StaggeredContent>
-          <StaggeredContent delay={400}>
+          <StaggeredContent delay={100}>
+            {" "}
+            {/* Changed from 400 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
               {" "}
               {/* Changed lg:grid-cols-3 to lg:grid-cols-2 */}
@@ -76,7 +88,7 @@ export default function ProjectsPage() {
                   key={project.id}
                   className={`transition-all duration-700 ease-out`}
                   style={{
-                    animationDelay: `${600 + index * 100}ms`,
+                    animationDelay: `${300 + index * 100}ms`, // Changed from 600
                     opacity: 0,
                     transform: "translateY(20px)",
                     animation: "fadeInUp 0.7s ease-out forwards",
@@ -116,7 +128,9 @@ export default function ProjectsPage() {
               ))}
             </div>
           </StaggeredContent>
-          <StaggeredContent delay={1000}>
+          <StaggeredContent delay={700}>
+            {" "}
+            {/* Changed from 1000 */}
             <div className="mt-16 text-center">
               <h2 className="text-2xl font-bold mb-4">More Projects Coming Soon</h2>
               <p className="text-gray-300">I'm always working on new projects. Check back soon for updates!</p>
@@ -124,7 +138,9 @@ export default function ProjectsPage() {
           </StaggeredContent>
         </main>
 
-        <StaggeredContent delay={1200}>
+        <StaggeredContent delay={900}>
+          {" "}
+          {/* Changed from 1200 */}
           <Footer />
         </StaggeredContent>
       </div>

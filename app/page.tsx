@@ -137,7 +137,9 @@ export default function PersonalWebsite() {
 
         <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: "120px" }}>
           {/* Introduction */}
-          <StaggeredContent delay={200}>
+          <StaggeredContent delay={0}>
+            {" "}
+            {/* Changed from 200 */}
             <section className="space-y-4">
               <h1 className="text-4xl font-bold">Hey, I'm Richard!</h1>
               <div className="space-y-2 text-gray-300">
@@ -160,7 +162,9 @@ export default function PersonalWebsite() {
           </StaggeredContent>
 
           {/* Current Activities */}
-          <StaggeredContent delay={400}>
+          <StaggeredContent delay={100}>
+            {" "}
+            {/* Changed from 400 */}
             <section className="space-y-4">
               <h2 className="text-xl">
                 I'm <span className="underline">currently</span>...
@@ -204,7 +208,9 @@ export default function PersonalWebsite() {
           </StaggeredContent>
 
           {/* Previous Experience */}
-          <StaggeredContent delay={600}>
+          <StaggeredContent delay={300}>
+            {" "}
+            {/* Changed from 600 */}
             <section className="space-y-4">
               <h2 className="text-xl">Previously I...</h2>
               <ul className="space-y-2 text-gray-300 ml-4">
@@ -255,7 +261,9 @@ export default function PersonalWebsite() {
           </StaggeredContent>
 
           {/* Projects */}
-          <StaggeredContent delay={800}>
+          <StaggeredContent delay={500}>
+            {" "}
+            {/* Changed from 800 */}
             <section className="space-y-4">
               <h2 className="text-xl">Currently working on...</h2>
               <div className="text-gray-300 ml-4">
@@ -274,7 +282,9 @@ export default function PersonalWebsite() {
           </StaggeredContent>
 
           {/* Chatbot Section */}
-          <StaggeredContent delay={1000}>
+          <StaggeredContent delay={700}>
+            {" "}
+            {/* Changed from 1000 */}
             <section className="space-y-4">
               <h2 className="text-xl">What else do you want to know about me?</h2>
 
@@ -331,7 +341,9 @@ export default function PersonalWebsite() {
             </section>
           </StaggeredContent>
 
-          <StaggeredContent delay={1200}>
+          <StaggeredContent delay={900}>
+            {" "}
+            {/* Changed from 1200 */}
             <br />
             <span>
               I'd love to hear from you! Want to hire me? or simply wanna chat? Feel free to reach out by{" "}
@@ -352,7 +364,9 @@ export default function PersonalWebsite() {
             </span>
           </StaggeredContent>
         </main>
-        <StaggeredContent delay={1400}>
+        <StaggeredContent delay={1100}>
+          {" "}
+          {/* Changed from 1400 */}
           <Footer />
         </StaggeredContent>
       </div>
