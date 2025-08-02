@@ -7,9 +7,9 @@ export function Footer() {
         </div>
         <div className="flex items-center gap-2">
           <div className="relative flex size-2 items-center justify-center">
-            <div className="size-2 rounded-full bg-green-400"></div>
+            <div className="size-2 rounded-full bg-green-400 animate-pulse-custom"></div>
           </div>
-          <span className="text-sm">Updated 7/31/2025</span>
+          <span className="text-sm">Updated 8/2/2025</span>
         </div>
       </div>
     </footer>
