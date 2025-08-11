@@ -158,7 +158,7 @@ export default function PersonalWebsite() {
                   .
                 </p>
                 <p>
-                I'm interested in public transportation, AI, and front-end design & development.
+                I'm interested in public transportation, AI, design, and front-end development.
                 </p>
               </div>
             </section>

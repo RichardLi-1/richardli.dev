@@ -13,6 +13,7 @@ const projects = [
     year: "2021",
     description: "A Windows Vista-inspired inkball game published on the App Store",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OFGQDkrP2BvNmhLieOxExwEZBsCGcq.png",
+    logo: "/images/boink-logo.webp", // Added Bo!nk logo
     tags: ["iOS", "Swift", "Game Development"],
   },
   {
@@ -29,6 +30,7 @@ const projects = [
     year: "2024",
     description: "Non-profit focusing on helping students discover their vocations",
     image: "images/IMG_7745.jpeg",
+    logo: "/images/future-forward-logo.png", // Added Future Forward logo
     tags: ["Non-profit", "Web Development", "Community"],
   },
   {
@@ -37,6 +39,7 @@ const projects = [
     year: "2024-2025",
     description: "Helped organize Canada's largest high school hackathon",
     image: "images/yrhacks crowd.jpeg",
+    logo: "/images/yrhacks-logo.png", // Added YRHacks logo
     tags: ["Community", "Logistics", "Organizations"],
   },
   {
@@ -45,6 +48,7 @@ const projects = [
     year: "2024-2025",
     description: "",
     image: "",
+    logo: "/images/cec-logo.webp", // Added CEC logo
     tags: ["iOS", "Swift", "App Development"],
   },
 ]
@@ -105,11 +109,25 @@ export default function ProjectsPage() {
                           />
                         </div>
                         <div className="p-6">
-                          <div className="flex items-center justify-between mb-2">
-                            <h3 className="text-xl font-bold text-green-400">{project.title}</h3>
-                            <span className="text-gray-400 text-sm">{project.year}</span>
+                          <div className="flex mb-4">
+                            {" "}
+                            {/* Flex container for image and text */}
+                            <img
+                              src={project.logo || "/placeholder.svg?height=80&width=80"}
+                              alt={`${project.title} logo`}
+                              className={`w-10 h-10 rounded-xl mr-4 flex-shrink-0 object-contain ${
+                                // Added object-contain here
+                                !project.logo || project.logo.includes("placeholder.svg") ? "hidden" : ""
+                              }`}
+                            />
+                            <div className="flex-grow">
+                              <div className="flex items-center justify-between mb-2">
+                                <h3 className="text-xl font-bold text-green-400">{project.title}</h3>
+                                <span className="text-gray-400 text-sm">{project.year}</span>
+                              </div>
+                              <p className="text-gray-300 text-sm leading-relaxed">{project.description}</p>
+                            </div>
                           </div>
-                          <p className="text-gray-300 mb-4 text-sm leading-relaxed">{project.description}</p>
                           <div className="flex flex-wrap gap-2">
                             {project.tags.map((tag) => (
                               <span

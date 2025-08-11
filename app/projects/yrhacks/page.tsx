@@ -38,7 +38,14 @@ export default function YRHacksProjectPage() {
             {" "}
             {/* Changed from 200 */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic text-green-400 mb-2">YRHacks</h1>
+              <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
+                <img
+                  src="/images/yrhacks-logo.png"
+                  alt="YRHacks Logo"
+                  className="w-8 h-8 object-contain" // Adjusted size for title
+                />
+                YRHacks
+              </h1>
               <p className="text-lg text-gray-300">Community, 2025</p>
             </div>
           </StaggeredContent>
@@ -48,11 +55,7 @@ export default function YRHacksProjectPage() {
             {/* Changed from 400 */}
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
-              <img
-                src="/images/yrhacks crowd.jpeg"
-                alt="YRHacks event photos"
-                className="w-full h-full object-cover"
-              />
+              <img src="/images/yrhacks crowd.jpeg" alt="YRHacks event photos" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
 
@@ -142,6 +145,15 @@ export default function YRHacksProjectPage() {
                   </p>
                 </div>
               </div>
+            </div>
+          </StaggeredContent>
+
+          <StaggeredContent delay={1000}>
+            {" "}
+            {/* Changed from 1300 */}
+            {/* Team Photo */}
+            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
+              <img src="/placeholder.svg" alt="YRHacks lanyards" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
 

@@ -23,7 +23,14 @@ export default function BoinkProjectPage() {
             {" "}
             {/* Changed from 200 */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic text-green-400 mb-2">Bo!nk</h1>
+              <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
+                <img
+                  src="/images/boink-logo.webp"
+                  alt="Bo!nk Logo"
+                  className="w-8 h-8 object-contain rounded-md" // Adjusted size for title
+                />
+                Bo!nk
+              </h1>
               <p className="text-lg text-gray-300">Game, 2021</p>
             </div>
           </StaggeredContent>
@@ -137,14 +144,12 @@ export default function BoinkProjectPage() {
               <h2 className="text-2xl font-bold text-green-400 mb-4">Game Design</h2>
               <p className="text-gray-300 mb-4">
                 As the UX designer who conceived the idea, I
-                
                 <ul className="text-gray-300 space-y-2 mb-6">
-                <li>• Directed the vision of the game</li>
-                <li>• Created the map of several levels</li>
-              </ul>
-
-                We designed Bo!nk to faithfully recreate the core Inkball
-                experience while adapting it for touch interfaces:
+                  <li>• Directed the vision of the game</li>
+                  <li>• Created the map of several levels</li>
+                </ul>
+                We designed Bo!nk to faithfully recreate the core Inkball experience while adapting it for touch
+                interfaces:
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
@@ -179,7 +184,10 @@ export default function BoinkProjectPage() {
                   </p>
                 </div>
               </div>
-              <p>Yet we also added a twist: players have a finite amount of ink to draw lines per level, adding a layer of challenge.</p>
+              <p>
+                Yet we also added a twist: players have a finite amount of ink to draw lines per level, adding a layer
+                of challenge.
+              </p>
 
               <h2 className="text-2xl font-bold text-green-400 mb-4">Technical Implementation</h2>
               <p className="text-gray-300 mb-4">
@@ -250,9 +258,11 @@ export default function BoinkProjectPage() {
                 <li>• Writing compelling app descriptions and metadata</li>
                 <li>• Going through the review process and addressing feedback</li>
                 <li>• Understanding app analytics and user engagement metrics</li>
-                <li>• Renaming the game from "Boink" to "Bo!nk," because the original name is a swear word in Dutch. The App Store forced us to change this</li>
+                <li>
+                  • Renaming the game from "Boink" to "Bo!nk," because the original name is a swear word in Dutch. The
+                  App Store forced us to change this
+                </li>
               </ul>
-
 
               <h2 className="text-2xl font-bold text-green-400 mb-4">Results & Takeaways</h2>
               <p className="text-gray-300 mb-4">

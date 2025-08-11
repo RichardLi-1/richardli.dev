@@ -20,7 +20,14 @@ export default function SalesPatriotProjectPage() {
             {" "}
             {/* Changed from 200 */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic text-green-400 mb-2">Career Education Council</h1>
+              <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
+                <img
+                  src="/images/cec-logo.webp"
+                  alt="Career Education Council Logo"
+                  className="w-8 h-8 object-contain" // Adjusted size for title
+                />
+                Career Education Council
+              </h1>
               <p className="text-lg text-gray-300">Work, 2024-2025</p>
             </div>
           </StaggeredContent>

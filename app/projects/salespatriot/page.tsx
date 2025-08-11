@@ -69,8 +69,7 @@ export default function SalesPatriotProjectPage() {
                 <div className="space-y-4 text-gray-300">
                   <p>
                     SalesPatriot is a San Francisco-based B2B SaaS platform that simplifies the
-                    complexities of bidding on and managing contracts for NSNs for distributors and contractors. I am
-                    currently doing a project for them summer of 2025.
+                    complexities of bidding on and managing contracts for NSNs for distributors and contractors.
                   </p>
                 </div>
               </div>
