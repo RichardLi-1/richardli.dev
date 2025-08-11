@@ -28,7 +28,7 @@ const projects = [
     title: "Future Forward",
     year: "2024",
     description: "Non-profit focusing on helping students discover their vocations",
-    image: "https://media.licdn.com/dms/image/v2/D562DAQFbXiDCOT8xsw/profile-treasury-image-shrink_800_800/B56ZhPWIimH0AY-/0/1753677860170?e=1754640000&v=beta&t=Ct3UY2c4FwKsK8C2P28ykouBve5KIAxtN8GlcJexY1Q",
+    image: "images/IMG_7745.jpeg",
     tags: ["Non-profit", "Web Development", "Community"],
   },
   {
@@ -36,7 +36,7 @@ const projects = [
     title: "YRHacks",
     year: "2024-2025",
     description: "Helped organize Canada's largest high school hackathon",
-    image: "https://media.licdn.com/dms/image/v2/D4E2DAQE4xiHmiaaWZQ/profile-treasury-image-shrink_800_800/B4EZYeEGJuHcAg-/0/1744261115420?e=1754640000&v=beta&t=eFgS3M3TvCOVyE14Q4P0BbKeXvo-6QywSa5hjZStaHw",
+    image: "images/yrhacks crowd.jpeg",
     tags: ["Community", "Logistics", "Organizations"],
   },
   {

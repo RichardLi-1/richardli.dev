@@ -13,7 +13,7 @@ export default function YRHacksProjectPage() {
     { name: "Matthew Huang", linkedin: "https://www.linkedin.com/in/matthew-huang-26385b276/" },
     { name: "Tristan Pinzari", linkedin: "https://www.linkedin.com/in/tristan-pinzari-7aa10b2b4/" },
     { name: "Vincent Qu", linkedin: "https://www.linkedin.com/in/vincentqu888/" },
-    { name: "Conan Wang", linkedin: "https://www.linkedin.com/in/conan-wang-b0b0b0b0/" }, // Assuming Conan is Conan Wang, added a placeholder LinkedIn
+    { name: "Conan Yu" },
     { name: "Aubree Lianto", linkedin: "https://www.linkedin.com/in/aubree-lianto/" },
     { name: "Edward Drobnis", linkedin: "https://www.linkedin.com/in/edward-drobnis/" },
     { name: "Maha Jamil", linkedin: "https://www.linkedin.com/in/maha-jamil-a83409289/" },
@@ -49,7 +49,7 @@ export default function YRHacksProjectPage() {
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
               <img
-                src="/images/yrhacks crowd.png"
+                src="/images/yrhacks crowd.jpeg"
                 alt="YRHacks event photos"
                 className="w-full h-full object-cover"
               />
