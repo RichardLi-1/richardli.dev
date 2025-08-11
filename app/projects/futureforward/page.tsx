@@ -4,6 +4,7 @@ import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
+import { ExternalLink, Youtube } from "lucide-react"
 
 export default function FutureForwardProjectPage() {
   useEffect(() => {
@@ -49,6 +50,8 @@ export default function FutureForwardProjectPage() {
             </div>
           </StaggeredContent>
 
+          
+
           <StaggeredContent delay={300}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
@@ -79,6 +82,30 @@ export default function FutureForwardProjectPage() {
                     {/* Add other team members here if applicable */}
                   </div>
                 </div>
+
+                <div>
+                  <h3 className="text-green-400 font-bold mb-2">Links</h3>
+                  <div className="space-y-2">
+                    <a
+                      href="https://www.futureforward.info/"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 text-gray-300 hover:text-green-400 transition-colors"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Official Website
+                    </a>
+                    <a
+                      href="https://www.youtube.com/@FutureForward.Initiative"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 text-gray-300 hover:text-green-400 transition-colors"
+                    >
+                      <Youtube className="w-4 h-4" />
+                      YouTube Channel
+                    </a>
+                  </div>
+                </div>
               </div>
 
               <div>
@@ -94,6 +121,27 @@ export default function FutureForwardProjectPage() {
                     empowering students to make informed decisions about their future.
                   </p>
                 </div>
+              </div>
+            </div>
+          </StaggeredContent>
+
+          <StaggeredContent delay={200}>
+            <div className="mb-8">
+              <h3 className="text-green-400 font-bold mb-4 flex items-center gap-2">
+                <Youtube className="w-5 h-5" />
+                Featured Video
+              </h3>
+              <div className="aspect-video w-full bg-gray-800 rounded-lg overflow-hidden">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/FL8_oEPPx0c"
+                  title="Future Forward Video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="w-full h-full"
+                ></iframe>
               </div>
             </div>
           </StaggeredContent>
