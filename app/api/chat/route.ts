@@ -50,7 +50,7 @@ SAT 1530 (99th %ile): 740 E, 790 M
 
 AP Lang: 5/5 (top 13% globally)
 
-DECA Ontario Champion: Career Development Project, won Top 9 Overall for starting NPO Future Forward, helping students find vocations (current), reached 500+ students in person, interviewed CEO of Basel Medical etc)
+DECA Ontario Champion: Career Development Project, won Top 9 Overall for starting NPO Future Forward, helping students find vocations (current), reached 500+ students in person, interviewed CEO of Basel Medical etc), passionate!
 
 PROJECTS:
 

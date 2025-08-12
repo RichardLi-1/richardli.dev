@@ -10,6 +10,7 @@ import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
+import ReactMarkdown from "react-markdown"
 
 interface Message {
   id: string
@@ -126,7 +127,7 @@ export default function PersonalWebsite() {
     "Tell me about Toteally Yours",
     "What are your responsibilities at YRHacks?",
     "What did you achieve at DECA?",
-    "How did you score so well on the SAT?",
+    "Tell me about a project you were very passionate about",
   ]
 
   return (
@@ -157,9 +158,7 @@ export default function PersonalWebsite() {
                   </span>
                   .
                 </p>
-                <p>
-                I'm interested in public transportation, AI, design, and front-end development.
-                </p>
+                <p>I'm interested in public transportation, AI, design, and front-end development.</p>
               </div>
             </section>
           </StaggeredContent>
@@ -320,7 +319,40 @@ export default function PersonalWebsite() {
                     {messages.map((message) => (
                       <div key={message.id} className="space-y-2">
                         <div className="text-sm font-semibold">{message.role === "user" ? "You:" : "Richard:"}</div>
-                        <div className="text-gray-300 whitespace-pre-wrap">{message.content}</div>
+                        <div className="text-gray-300">
+                          {message.role === "assistant" ? (
+                            <ReactMarkdown
+                              className="prose prose-invert prose-sm max-w-none"
+                              components={{
+                                p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                                strong: ({ children }) => (
+                                  <strong className="font-bold text-green-300">{children}</strong>
+                                ),
+                                em: ({ children }) => <em className="italic text-gray-200">{children}</em>,
+                                ul: ({ children }) => <ul className="list-disc list-inside mb-2">{children}</ul>,
+                                ol: ({ children }) => <ol className="list-decimal list-inside mb-2">{children}</ol>,
+                                li: ({ children }) => <li className="mb-1">{children}</li>,
+                                code: ({ children }) => (
+                                  <code className="bg-gray-800 px-1 py-0.5 rounded text-green-400">{children}</code>
+                                ),
+                                a: ({ children, href }) => (
+                                  <a
+                                    href={href}
+                                    className="text-green-400 underline hover:text-green-300"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {children}
+                                  </a>
+                                ),
+                              }}
+                            >
+                              {message.content}
+                            </ReactMarkdown>
+                          ) : (
+                            <div className="whitespace-pre-wrap">{message.content}</div>
+                          )}
+                        </div>
                       </div>
                     ))}
                     {isLoading && <div className="text-gray-500 text-sm">Richard is thinking...</div>}
