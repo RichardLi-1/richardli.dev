@@ -4,35 +4,31 @@ import { useWindowsXP } from "@/contexts/windows-xp-context"
 export function Taskbar() {
   const { windows, focusWindow, toggleStartMenu, isStartMenuOpen, openWindow } = useWindowsXP()
 
-  const visibleWindows = windows.filter((w) => !w.isMinimized)
-  const maxWindowButtons = Math.floor((window.innerWidth - 200) / 120) // Approximate calculation
-  const shouldShrink = visibleWindows.length > maxWindowButtons
+  const allWindows = windows
+  const maxWindowButtons = Math.floor((globalThis.window?.innerWidth || 1024 - 200) / 120)
+  const shouldShrink = allWindows.length > maxWindowButtons
 
   return (
     <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-blue-400 to-blue-600 border-t-2 border-blue-300 flex items-center px-1">
       <button
         onClick={toggleStartMenu}
-        className="h-8 w-20 relative overflow-hidden rounded-sm transition-none"
+        className="h-16 w-32 relative overflow-hidden rounded-sm transition-none"
         style={{
           backgroundImage: `url(/images/start-button-states.png)`,
-          backgroundSize: "100% 300%", // Three states stacked vertically
-          backgroundPosition: isStartMenuOpen ? "0 -200%" : "0 0%", // Default: top, Open: bottom
+          backgroundSize: "100% 300%",
+          backgroundPosition: isStartMenuOpen ? "0 -200%" : "0 0%",
           backgroundRepeat: "no-repeat",
         }}
         onMouseDown={(e) => {
-          // Pressed state (middle image)
           e.currentTarget.style.backgroundPosition = "0 -100%"
         }}
         onMouseUp={(e) => {
-          // Return to appropriate state
           e.currentTarget.style.backgroundPosition = isStartMenuOpen ? "0 -200%" : "0 0%"
         }}
         onMouseLeave={(e) => {
-          // Return to appropriate state when mouse leaves
           e.currentTarget.style.backgroundPosition = isStartMenuOpen ? "0 -200%" : "0 0%"
         }}
       >
-        {/* Invisible text for accessibility */}
         <span className="sr-only">start</span>
       </button>
 
@@ -52,22 +48,23 @@ export function Taskbar() {
         <img src="/images/internet-explorer-icon.png" alt="Internet Explorer" className="w-5 h-5" />
       </button>
 
-      {/* Window Buttons */}
+      {/* Window Buttons - Show all windows including minimized ones */}
       <div className="flex-1 flex items-center ml-2 space-x-1 overflow-hidden">
-        {visibleWindows.map((window) => (
+        {allWindows.map((window) => (
           <button
             key={window.id}
             onClick={() => focusWindow(window.id)}
-            className={`h-8 px-3 bg-gradient-to-b from-gray-200 to-gray-400 hover:from-gray-100 hover:to-gray-300 border border-gray-500 rounded-sm text-black text-xs truncate ${
-              shouldShrink ? "max-w-24 min-w-16" : "max-w-40"
-            }`}
+            className={`h-8 px-3 bg-gradient-to-b border border-gray-500 rounded-sm text-black text-xs truncate ${
+              window.isMinimized
+                ? "from-gray-300 to-gray-500 hover:from-gray-200 hover:to-gray-400"
+                : "from-gray-200 to-gray-400 hover:from-gray-100 hover:to-gray-300"
+            } ${shouldShrink ? "max-w-24 min-w-16" : "max-w-40"}`}
           >
             {window.title}
           </button>
         ))}
       </div>
 
-      {/* System Tray */}
       <div className="flex items-center space-x-2 mr-2">
         <div className="text-white text-xs">
           {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
@@ -185,13 +182,24 @@ function ProjectCard({
 
 function ProjectDetailContent({ projectSlug, title }: { projectSlug: string; title: string }) {
   return (
-    <div className="p-4 h-full overflow-auto bg-white">
-      <h2 className="text-xl font-bold mb-4 text-black">{title}</h2>
-      <div className="text-black">
-        <p className="mb-4">Loading project details for {title}...</p>
-        <p className="text-sm text-gray-600">
-          This would normally load the full project page content from /{projectSlug}
-        </p>
+    <div className="h-full bg-white">
+      {/* IE Toolbar */}
+      <div className="bg-gradient-to-b from-gray-100 to-gray-200 border-b border-gray-300 p-2">
+        <div className="flex items-center space-x-2 text-sm">
+          <button className="px-2 py-1 hover:bg-gray-300 rounded">File</button>
+          <button className="px-2 py-1 hover:bg-gray-300 rounded">Edit</button>
+          <button className="px-2 py-1 hover:bg-gray-300 rounded">View</button>
+        </div>
+        <div className="flex items-center mt-2 space-x-2">
+          <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Back</button>
+          <div className="flex-1 bg-white border border-gray-400 px-2 py-1 text-sm">
+            richardli.dev/projects/{projectSlug}
+          </div>
+        </div>
+      </div>
+
+      <div className="h-full">
+        <iframe src={`/projects/${projectSlug}`} className="w-full h-full border-none" title={title} />
       </div>
     </div>
   )

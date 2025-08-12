@@ -306,6 +306,9 @@ function WhyWindowsXPContent() {
           design sensibilities.
         </p>
         <p>
+          To leave, open the start menu and log out or shut down.
+        </p>
+        <p>
           I hope you enjoy your stay.
         </p>
       </div>
