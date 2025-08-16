@@ -9,34 +9,23 @@ export function GifLoadingScreen({ onComplete }: GifLoadingScreenProps) {
   const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
-    const fallbackTimer = setTimeout(() => {
+    // Show loading screen for 2.5 seconds
+    const timer = setTimeout(() => {
       setIsVisible(false)
       onComplete()
-    }, 4000)
+    }, 1330)
 
-    return () => clearTimeout(fallbackTimer)
+    return () => clearTimeout(timer)
   }, [onComplete])
-
-  const handleVideoEnd = () => {
-    setIsVisible(false)
-    onComplete()
-  }
 
   return (
     <div
-      className={`fixed inset-0 z-50 bg-black flex items-center justify-center transition-transform duration-500 ease-in-out ${
+      className={`fixed inset-0 z-50 bg-black flex items-center justify-center transition-transform duration-500 ease-in ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="w-[70vw] h-[70vh] flex items-center justify-center">
-        <video
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/vid%20with%20no%20end%20lag-ehPcR5jbpdrMdfqRx0fpktPPPqEoPq.mov"
-          className="w-full h-full object-contain"
-          autoPlay
-          muted
-          playsInline
-          onEnded={handleVideoEnd}
-        />
+      <div className="w-96 h-96 flex items-center justify-center">
+        <img src="/images/loading-animation.gif" alt="Loading animation" className="w-full h-full object-contain" />
       </div>
     </div>
   )

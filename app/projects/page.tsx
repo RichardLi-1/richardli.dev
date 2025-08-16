@@ -39,7 +39,7 @@ const mainProjects = [
     id: "yrhacks",
     title: "YRHacks",
     year: "2024-2025",
-    description: "Organized Canada's largest high school hackathon",
+    description: "Helped organize Canada's largest high school hackathon",
     image: "images/yrhacks crowd.jpeg",
     logo: "/images/yrhacks-logo.png",
     tags: ["Community", "Logistics", "Organizations"],

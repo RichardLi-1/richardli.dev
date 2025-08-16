@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, ExternalLink, Home, Github, Linkedin, Menu, X } from "lucide-react"
+import { ArrowLeft, ExternalLink, Home, Mail, Github, Linkedin, Menu, X } from "lucide-react"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 
 interface AnimatedHeaderProps {
@@ -67,6 +67,13 @@ export function AnimatedHeader({
           >
             {isMobile ? "Work" : "Work"}
           </Link>
+          <Link
+            href="/contact"
+            className="text-gray-400 hover:text-green-300 transition-colors"
+            onClick={closeMobileMenu}
+          >
+            {isMobile ? <Mail className="w-4 h-4" /> : <span className="text-sm">Contact</span>}
+          </Link>
           <a
             href="https://www.linkedin.com/in/richardli0/"
             className="text-gray-400 hover:text-green-300 transition-colors"
@@ -103,6 +110,9 @@ export function AnimatedHeader({
         <>
           <Link href="/projects" className="hover:text-green-300 transition-colors" onClick={closeMobileMenu}>
             WORK
+          </Link>
+          <Link href="/contact" className="hover:text-green-300 transition-colors" onClick={closeMobileMenu}>
+            {isMobile ? <Mail className="w-5 h-5" /> : "CONTACT"}
           </Link>
           <a
             href="https://www.linkedin.com/in/richardli0/"
@@ -163,6 +173,15 @@ export function AnimatedHeader({
           <Link href="/" className="text-gray-400 hover:text-green-300 transition-colors" onClick={closeMobileMenu}>
             <Home className="w-3 h-3" />
           </Link>
+          {!currentPage.includes("/projects/") && (
+            <Link
+              href="/contact"
+              className="text-gray-400 hover:text-green-300 transition-colors"
+              onClick={closeMobileMenu}
+            >
+              {isMobile ? <Mail className="w-4 h-4" /> : <span className="text-sm">Contact</span>}
+            </Link>
+          )}
           {currentPage.includes("/projects/") && (
             <Link
               href="/projects"
@@ -214,7 +233,9 @@ export function AnimatedHeader({
             rel={link.external ? "noreferrer" : undefined}
             onClick={closeMobileMenu}
           >
-            {isMobile && link.text === "LINKEDIN" ? (
+            {isMobile && link.text === "CONTACT" ? (
+              <Mail className="w-5 h-5" />
+            ) : isMobile && link.text === "LINKEDIN" ? (
               <Linkedin className="w-5 h-5" />
             ) : isMobile && link.text === "GITHUB" ? (
               <Github className="w-5 h-5" />
@@ -229,11 +250,124 @@ export function AnimatedHeader({
       )
     }
 
+    // For contact page
+    if (currentPage.includes("/contact")) {
+      return isScrolled ? (
+        <>
+          <Link href="/" className="text-gray-400 hover:text-green-300 transition-colors" onClick={closeMobileMenu}>
+            <Home className="w-3 h-3" />
+          </Link>
+          <Link
+            href="/projects"
+            className="text-gray-400 hover:text-green-300 transition-colors text-sm"
+            onClick={closeMobileMenu}
+          >
+            Work
+          </Link>
+          <a
+            href="https://www.linkedin.com/in/richardli0/"
+            className="text-gray-400 hover:text-green-300 transition-colors"
+            target="_blank"
+            rel="noreferrer"
+            onClick={closeMobileMenu}
+          >
+            {isMobile ? <Linkedin className="w-4 h-4" /> : <Linkedin className="w-3 h-3" />}
+          </a>
+          <a
+            href="https://github.com/RichardLi-1"
+            className="text-gray-400 hover:text-green-300 transition-colors"
+            target="_blank"
+            rel="noreferrer"
+            onClick={closeMobileMenu}
+          >
+            {isMobile ? <Github className="w-4 h-4" /> : <Github className="w-3 h-3" />}
+          </a>
+          <button
+            onClick={toggleXPMode}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${
+              isXPMode ? "bg-green-600" : "bg-gray-600"
+            }`}
+          >
+            <span className="sr-only">Toggle Windows XP mode</span>
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                isXPMode ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+        </>
+      ) : (
+        <>
+          <Link href="/" className="hover:text-green-300 transition-colors" onClick={closeMobileMenu}>
+            HOME
+          </Link>
+          <Link href="/projects" className="hover:text-green-300 transition-colors" onClick={closeMobileMenu}>
+            WORK
+          </Link>
+          <a
+            href="https://www.linkedin.com/in/richardli0/"
+            className="hover:text-green-300 transition-colors flex items-center gap-1"
+            target="_blank"
+            rel="noreferrer"
+            onClick={closeMobileMenu}
+          >
+            {isMobile ? (
+              <Linkedin className="w-5 h-5" />
+            ) : (
+              <>
+                LINKEDIN <ExternalLink className="w-3 h-3" />
+              </>
+            )}
+          </a>
+          <a
+            href="https://github.com/RichardLi-1"
+            className="hover:text-green-300 transition-colors flex items-center gap-1"
+            target="_blank"
+            rel="noreferrer"
+            onClick={closeMobileMenu}
+          >
+            {isMobile ? (
+              <Github className="w-5 h-5" />
+            ) : (
+              <>
+                GITHUB <ExternalLink className="w-3 h-3" />
+              </>
+            )}
+          </a>
+          <div className="flex items-center space-x-2">
+            <span className={`text-sm transition-colors ${isXPMode ? "text-green-300" : "text-gray-400"}`}>
+              {"click here!"}
+            </span>
+            <button
+              onClick={toggleXPMode}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${
+                isXPMode ? "bg-green-600" : "bg-gray-600"
+              }`}
+            >
+              <span className="sr-only">Toggle Windows XP mode</span>
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  isXPMode ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+        </>
+      )
+    }
+
     // Default navigation
     return isScrolled ? (
       <>
         <Link href="/" className="text-gray-400 hover:text-green-300 transition-colors" onClick={closeMobileMenu}>
           <Home className="w-3 h-3" />
+        </Link>
+        <Link
+          href="/contact"
+          className="text-gray-400 hover:text-green-300 transition-colors"
+          onClick={closeMobileMenu}
+        >
+          {isMobile ? <Mail className="w-4 h-4" /> : <span className="text-sm">Contact</span>}
         </Link>
         <a
           href="https://www.linkedin.com/in/richardli0/"
@@ -277,7 +411,9 @@ export function AnimatedHeader({
           rel={link.external ? "noreferrer" : undefined}
           onClick={closeMobileMenu}
         >
-          {isMobile && link.text === "LINKEDIN" ? (
+          {isMobile && link.text === "CONTACT" ? (
+            <Mail className="w-5 h-5" />
+          ) : isMobile && link.text === "LINKEDIN" ? (
             <Linkedin className="w-5 h-5" />
           ) : isMobile && link.text === "GITHUB" ? (
             <Github className="w-5 h-5" />
