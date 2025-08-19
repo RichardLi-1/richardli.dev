@@ -6,6 +6,19 @@ import { LayoutClient } from "./layout-content"
 
 const inter = Inter({ subsets: ["latin"] })
 
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <title>Richard Li</title>
+      </head>
+      <body>{children}</body>
+    </html>
+  )
+}
+
 export const metadata: Metadata = {
   title: "Richard Li",
   description: "Personal website and chatbot for Richard Li",
