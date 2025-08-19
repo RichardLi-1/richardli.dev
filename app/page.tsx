@@ -10,7 +10,9 @@ import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
+import { mainProjects } from "@/components/mainProjects"
 import ReactMarkdown from "react-markdown"
+
 
 interface Message {
   id: string
@@ -169,7 +171,7 @@ export default function PersonalWebsite() {
             {/* Changed from 400 */}
             <section className="space-y-4">
               <h2 className="text-xl">
-                I'm <span className="underline">currently</span>...
+                I'm currently...
               </h2>
               <ul className="space-y-2 text-gray-300 ml-4">
                 <li className="flex items-start">
@@ -220,7 +222,7 @@ export default function PersonalWebsite() {
               <ul className="space-y-2 text-gray-300 ml-4">
               <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  <span>interned at a YC-backed SaaS startup, analyzing ai trends and working on product design</span>
+                  <span>interned at a YC-backed SaaS startup, analyzing ai trends and working on UI/UX design</span>
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
@@ -242,50 +244,79 @@ export default function PersonalWebsite() {
                     , Canada's largest high school hackathon
                   </span>
                 </li>
-                <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>tutored a second year university student Python and CS principles</span>
-                </li>
-                
               </ul>
             </section>
           </StaggeredContent>
 
           {/* Projects */}
+<StaggeredContent delay={500}>
+  <section className="space-y-4">
+    <div className="flex items-center justify-between">
+      <h2 className="text-xl">
+        Some{" "}
+        <a
+          href="/projects"
+          className="underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
+        >
+          projects
+        </a>{" "}
+        I made...
+      </h2>
+      <Link href="/projects">
+     <span className="text-xs text-gray-400 hover:text-gray-300 hover:underline cursor-pointer">
+    See More
+  </span>
+</Link>
+    </div>
+
+    {/* Row of 3 project tiles */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-gray-300">
+      {mainProjects.slice(0, 3).map((project) => (
+        <Link key={project.id} href={`/projects/${project.id}`}>
+          <Card className="bg-gray-900 border-gray-700 hover:border-green-400 transition-all duration-300 cursor-pointer group h-full rounded-lg overflow-hidden">
+  <CardContent className="p-0 h-full flex flex-col">
+    <div className="aspect-video w-full bg-gray-800">
+      <img
+        src={project.image || "/placeholder.svg"}
+        alt={project.title}
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      />
+    </div>
+    <div className="p-4 flex flex-col flex-grow">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-lg font-bold text-green-400">{project.title}</h3>
+        <span className="text-gray-400 text-xs">{project.year}</span>
+      </div>
+      <p className="text-sm text-gray-300 flex-grow">{project.description}</p>
+      <div className="flex flex-wrap gap-1 mt-3">
+        {project.tags.map((tag) => (
+          <span
+            key={tag}
+            className="px-2 py-0.5 bg-gray-800 text-gray-300 text-xs rounded border border-gray-600"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  </CardContent>
+</Card>
+        </Link>
+      ))}
+    </div>
+  </section>
+</StaggeredContent>
+
+          {/* Future */}
           <StaggeredContent delay={500}>
             {" "}
             {/* Changed from 800 */}
             <section className="space-y-4">
-              <h2 className="text-xl">Some <a href="/projects" className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110">projects</a> I made...</h2>
+              <h2 className="text-xl">Looking ahead, I'd like to ...</h2>
               <div className="text-gray-300 ml-4">
               <li>
-                <a
-                  href="https://www.futureforward.info/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-green-300 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
-                >
-                  future forward
-                </a>
-                {" - non-profit focusing on helping students discover their vocations"}
-                </li>
-                <li>
-                  <span>
-                    conceptualized and designed{" "}
-                    <img
-                      alt="Bo!nk Logo"
-                      className="inline w-4 h-4 mr-1"
-                      src="https://is1-ssl.mzstatic.com/image/thumb/Purple115/v4/35/fe/3a/35fe3a98-71fa-7e9a-9d34-584b90cac389/AppIcon-0-0-1x_U007emarketing-0-0-0-5-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/460x0w.webp"
-                    />
-                    <Link
-                      href="/projects/boink"
-                      className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
-                    >
-                      Bo!nk
-                    </Link>
-                    , a Windows Vista-inspired inkball game published on the App Store
-                  </span>
-                </li>
+              Work at a large coorporation. I'd love to learn about best practices in software engineering and build scalable systems that impact millions of users
+              </li>
               </div>
             </section>
           </StaggeredContent>

@@ -146,7 +146,7 @@ export function AnimatedHeader({
           </a>
           <div className="flex items-center space-x-2">
             <span className={`text-sm transition-colors ${isXPMode ? "text-green-300" : "text-gray-400"}`}>
-              {"click here!"}
+              {"personalize"}
             </span>
             <button
               onClick={toggleXPMode}

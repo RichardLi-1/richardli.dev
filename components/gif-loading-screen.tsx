@@ -15,12 +15,12 @@ export function GifLoadingScreen({ onComplete }: GifLoadingScreenProps) {
     const pageLoadTimer = setTimeout(() => {
       console.log("[v0] Page content loading started")
       onComplete()
-    }, 1600) // Start page content loading 100ms before panel lifts
+    }, 1590) // Start page content loading 100ms before panel lifts
 
     const panelLiftTimer = setTimeout(() => {
       console.log("[v0] Panel lifting animation started")
       setIsLifting(true)
-    }, 1220)
+    }, 1280)
 
     const hideTimer = setTimeout(() => {
       console.log("[v0] Loading screen hidden")
@@ -44,7 +44,7 @@ export function GifLoadingScreen({ onComplete }: GifLoadingScreenProps) {
         isLifting ? "-translate-y-full" : "translate-y-0"
       }`}
       style={{
-        transform: isLifting ? "translateY(-250vh)" : "translateY(0)",
+        transform: isLifting ? "translateY(-300vh)" : "translateY(0)",
         transition: "transform 1000ms ease-in",
       }}
     >
