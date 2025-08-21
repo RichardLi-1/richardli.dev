@@ -317,6 +317,12 @@ export default function PersonalWebsite() {
               <li>
               learn about best practices in software engineering and build scalable systems that impact millions of users
               </li>
+			  <li>
+              contribute to the advancement of the North American public transit industry
+              </li>
+			  <li>
+              work in a role combining my passions for design, development, and project management
+              </li>
               </div>
             </section>
           </StaggeredContent>
