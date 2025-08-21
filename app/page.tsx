@@ -160,7 +160,7 @@ export default function PersonalWebsite() {
                   </span>
                   .
                 </p>
-                <p>I'm interested in public transportation, AI, design, PM, and front-end development.</p>
+                <p>I'm interested in public transportation, AI, PM, design, PM, and development.</p>
               </div>
             </section>
           </StaggeredContent>
