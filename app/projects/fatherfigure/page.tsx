@@ -53,7 +53,7 @@ export default function SalesPatriotProjectPage() {
 
                 <div>
                   <h3 className="text-green-400 font-bold mb-2">Team</h3>
-                  <a href="https://www.linkedin.com/in/fiona-fangg/" target="_blank"><p>Fiona Fang</p>
+                  <a href="https://www.linkedin.com/in/fiona-fangg/" target="_blank"><p>Fiona Fang</p></a>
                   <div className="space-y-1 text-gray-300"></div>
                 </div>
               </div>
@@ -67,7 +67,7 @@ export default function SalesPatriotProjectPage() {
             </div>
           </StaggeredContent>
 
-          <StaggeredContent>
+          <StaggeredContent delay={300}>
           <p>Watch Dad Sneeze: <a href="https://youtu.be/Pkpd0WDR_sA">https://youtu.be/Pkpd0WDR_sA</a></p>
           </StaggeredContent>
         </main>
