@@ -9,6 +9,15 @@ export const mainProjects = [
     tags: ["iOS", "Swift", "Game Development"],
   },
   {
+    id: "fatherfigure",
+    title: "Father Figure",
+    year: "2025",
+    description: "A virtual father Chrome extension you never knew you needed",
+    image: "https://raw.githubusercontent.com/fiof25/father-figure-htn/refs/heads/main/assets/fatherfigurebanner.png",
+    logo: "https://raw.githubusercontent.com/fiof25/father-figure-htn/refs/heads/main/assets/Logo.png",
+    tags: ["Chrome Extension", "JS", "Utilities"],
+  },
+  {
     id: "salespatriot",
     title: "SalesPatriot (YC W25)",
     year: "2025",
