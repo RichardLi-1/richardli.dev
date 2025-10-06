@@ -163,7 +163,7 @@ export default function YRHacksProjectPage() {
             {/* Team Photo */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
               <img
-                src="https://richardli-1.github.io/Personal-Website/PXL_20240927_153504407.jpg"
+                src="/images/design-mode/PXL_20240927_153504407.jpg"
                 alt="YRHacks team photo"
                 className="w-full h-full object-cover"
               />

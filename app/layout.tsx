@@ -14,11 +14,11 @@ export const metadata: Metadata = {
     title: "Richard Li",
     description: "Personal website and chatbot for Richard Li",
 	icons: {
-		icon: "/favicon.svg",       // path to your favicon in /public
-		apple: "/favicon.svg",      // optional: for Apple devices
+		icon: "/images/favicon.svg",       // path to your favicon in /public
+		apple: "/images/favicon.svg",      // optional: for Apple devices
 		other: {
 			rel: "shortcut icon",
-			url: "/favicon.ico",
+			url: "/images/favicon.ico",
 		},
   	},
     images: [

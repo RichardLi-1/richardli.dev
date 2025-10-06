@@ -52,4 +52,13 @@ export const mainProjects = [
     logo: "/images/cec-logo.webp",
     tags: ["iOS", "Swift", "App Development"],
   },
+  {
+    id: "4sight",
+    title: "4sight",
+    year: "2025",
+    description: "Eye Tester App",
+    image: "",
+    logo: "/images/cec-logo.webp",
+    tags: ["iOS", "Swift", "App Development"],
+  },
 ]

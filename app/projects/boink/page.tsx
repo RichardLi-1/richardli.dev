@@ -40,7 +40,7 @@ export default function BoinkProjectPage() {
             {/* Changed from 400 */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
               <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OFGQDkrP2BvNmhLieOxExwEZBsCGcq.png"
+                src="/images/design-mode/image.png"
                 alt="Bo!nk game screenshots"
                 className="w-full h-full object-cover"
               />
@@ -113,7 +113,7 @@ export default function BoinkProjectPage() {
                 </div>
                 <div>
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-ZUJyZyI83WUGEZ9nU0RdxPEVUDbARU.png"
+                    src="/images/design-mode/image.png"
                     alt="Original InkBall game from Windows Vista"
                     className="w-full rounded-lg border border-gray-700"
                   />
@@ -125,7 +125,7 @@ export default function BoinkProjectPage() {
                   <h3 className="text-green-400 font-bold mb-4">App Icon</h3>
                   <div className="flex justify-center">
                     <img
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-rkyVDxMvXu4RUtPFm3ina9TXp4zgjS.png"
+                      src="/images/design-mode/image.png"
                       alt="Bo!nk App Icon"
                       className="w-48 h-48"
                     />
@@ -134,7 +134,7 @@ export default function BoinkProjectPage() {
                 <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
                   <h3 className="text-green-400 font-bold mb-4">Gameplay</h3>
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-pHgRTYl7aZCA3qlByQN5Hnwb9oV7KS.png"
+                    src="/images/design-mode/image.png"
                     alt="Bo!nk gameplay screenshot showing line drawing mechanics"
                     className="w-full rounded-lg"
                   />
