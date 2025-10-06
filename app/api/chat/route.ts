@@ -40,7 +40,7 @@ VOLUNTEER:
 
 YRHacks – Logistics Exec (Jun 2024–May 2025): Canada’s largest HS hackathon; venue, reg, food service
 
-Superposition Toronto – Dir. External Relations (Jan 2024–May 2025): Outreach for STEM Uni Expo 4.0; booked speakers, ran 100+ person/$70k prize events
+Superposition Toronto – Dir. External Relations (Jan 2024–May 2025): Outreach for STEM Uni Expo 4.0; acquired speakers, ran 100+ person/$70k prize events
 
 ILIL Chinese School – Lead Volunteer (Sep 2023–Present): Ops for 300+ students, 10+ teachers, 200+ parents; 2400+ materials/week
 

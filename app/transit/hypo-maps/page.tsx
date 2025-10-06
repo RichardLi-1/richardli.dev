@@ -20,7 +20,7 @@ interface Message {
   content: string
 }
 
-export default function Transit() {
+export default function HypoMaps() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
