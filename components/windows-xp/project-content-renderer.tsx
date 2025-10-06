@@ -45,7 +45,7 @@ function BoinkContentExtractor() {
 
       <div className="mb-6">
         <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OFGQDkrP2BvNmhLieOxExwEZBsCGcq.png"
+          src="/images/design-mode/image.png"
           alt="Bo!nk game screenshots"
           className="w-full max-h-64 object-cover rounded border"
         />

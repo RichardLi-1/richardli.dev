@@ -27,7 +27,7 @@ export default function SalesPatriotProjectPage() {
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
               <img
-                src="https://richardli-1.github.io/Personal-Website/salespatriott.png"
+                src="/images/design-mode/salespatriott.png"
                 alt="SalesPatriot screenshots"
                 className="w-full h-full object-cover"
               />

@@ -134,7 +134,7 @@ export default function PersonalWebsite() {
 
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-black text-green-400">
+      <div className="min-h-screen bg-black text-[#4BDE7F]">
         {/* Header */}
         <AnimatedHeader isHomepage={true} currentPage="/" />
 
@@ -191,7 +191,7 @@ export default function PersonalWebsite() {
                     <img
                       alt="University of Waterloo"
                       className="inline w-4 h-4 mr-1"
-                      src="https://i.pinimg.com/originals/90/19/17/901917f9b6e74d254525c3e37d3dd934.png"
+                      src="/images/design-mode/901917f9b6e74d254525c3e37d3dd934.png"
                     />
                     <a
                       href="https://uwaterloo.ca/"
@@ -231,7 +231,7 @@ export default function PersonalWebsite() {
                     <img
                       alt="YRHacks Logo"
                       className="inline w-4 h-4 mr-1"
-                      src="https://www.yrhacks.ca/_next/static/media/logo.3aecaa9f.svg"
+                      src="/images/design-mode/logo.3aecaa9f.svg"
                     />
                     <a
                       href="https://yrhacks.ca/"

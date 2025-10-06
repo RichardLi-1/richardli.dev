@@ -22,7 +22,7 @@ export default function SalesPatriotProjectPage() {
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
                 <img
-                  src="https://raw.githubusercontent.com/fiof25/father-figure-htn/refs/heads/main/assets/Logo.png"
+                  src="/images/design-mode/Logo.png"
                   alt="Father Figure Logo"
                   className="w-8 h-8 object-contain" // Adjusted size for title
                 />
@@ -37,7 +37,7 @@ export default function SalesPatriotProjectPage() {
             {/* Changed from 400 */}
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
-              <img src="https://raw.githubusercontent.com/fiof25/father-figure-htn/refs/heads/main/assets/fatherfigurebanner.png" alt="screenshots" className="w-full h-full object-cover" />
+              <img src="/images/design-mode/fatherfigurebanner.png" alt="screenshots" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
 
