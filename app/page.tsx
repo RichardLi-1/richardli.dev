@@ -227,7 +227,7 @@ export default function PersonalWebsite() {
                       src="/images/design-mode/pngtree-goose-flat-icon-png-image_9148185.png"
                     />
                     <a
-                      href="https://uwaterloo.ca/systems-design-engineering/"
+                      href="https://www.syde30.com/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
