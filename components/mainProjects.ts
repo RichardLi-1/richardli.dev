@@ -34,6 +34,15 @@ export const mainProjects = [
     logo: "/images/future-forward-logo.png",
     tags: ["Non-profit", "Project Management", "Community"],
   },
+   {
+    id: "classprofile",
+    title: "SYDE Class of 2030 Profile",
+    year: "2025",
+    description: "WIP project...",
+    image: "images/",
+    logo: "/images/",
+    tags: ["Community", "Web Development", "Data"],
+  },
   {
     id: "yrhacks",
     title: "YRHacks",
