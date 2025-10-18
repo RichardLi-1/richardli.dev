@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
+import { useRouter } from "next/router"
 import type React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -26,17 +27,38 @@ export default function PersonalWebsite() {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    // Optional: skip bots to avoid spam
-    if (/bot|crawler|spider/i.test(navigator.userAgent)) return;
+  const sendVisit = async () => {
+    // Skip bots
+    if (/bot|crawler|spider/i.test(navigator.userAgent)) return
 
-    fetch("https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        content: `👀 New visitor on ${window.location.href}\n🕒 ${new Date().toLocaleString()}`
-      })
-    })
-  }, [])
+    // Skip vusercontent.net URLs
+    if (window.location.href.includes("vusercontent.net")) return
+
+    try {
+      // Get public IP
+      const res = await fetch("https://api.ipify.org?format=json")
+      const data = await res.json()
+      const ip = data.ip
+
+      // Send Discord notification
+      await fetch(
+        "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: `👀 New visitor on ${window.location.href}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`,
+          }),
+        }
+      )
+    } catch (err) {
+      console.error("Failed to send visit notification:", err)
+    }
+  }
+
+  sendVisit()
+}, [])
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
