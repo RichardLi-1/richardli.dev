@@ -34,13 +34,16 @@ export default function PersonalWebsite() {
     // Skip vusercontent.net URLs
     if (window.location.href.includes("vusercontent.net")) return
 
+    let ip = "unknown"
     try {
-      // Get public IP
       const res = await fetch("https://api.ipify.org?format=json")
       const data = await res.json()
-      const ip = data.ip
+      ip = data.ip || "unknown"
+    } catch (err) {
+      console.warn("Failed to get IP, sending notification without it.")
+    }
 
-      // Send Discord notification
+    try {
       await fetch(
         "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",
         {
@@ -52,12 +55,14 @@ export default function PersonalWebsite() {
         }
       )
     } catch (err) {
-      console.error("Failed to send visit notification:", err)
+      console.error("Failed to send Discord notification:", err)
     }
   }
 
   sendVisit()
 }, [])
+
+
 
 
   const handleSubmit = async (e: React.FormEvent) => {
