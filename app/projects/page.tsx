@@ -45,12 +45,12 @@ export default function ProjectsPage() {
             <div className="mb-12">
               <h1 className="text-4xl font-bold mb-4">Work</h1>
               <p className="text-gray-300 text-lg">
-                A collection of work I've done and projects I've built, from mobile games to non-profit initiatives.
+                A collection of work and projects, from mobile games to non-profit initiatives.
               </p>
             </div>
           </StaggeredContent>
           <StaggeredContent delay={100}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
               {allProjects.map((project, index) => (
                 <div
                   key={project.id}
@@ -63,17 +63,17 @@ export default function ProjectsPage() {
                   }}
                 >
                   <Link href={`/projects/${project.id}`}>
-                    <Card className="bg-gray-900 border-gray-700 hover:border-green-400 transition-all duration-300 cursor-pointer group">
+                    <Card className="transition-all duration-300 cursor-pointer group border-background bg-background mb-5">
                       <CardContent className="p-0">
                         <div className="aspect-video w-full bg-gray-800 overflow-hidden">
                           <img
                             src={project.image || "/placeholder.svg"}
                             alt={project.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover transition-transform duration-300"
                           />
                         </div>
-                        <div className="p-6">
-                          <div className="flex mb-4">
+                        <div className="p-6 px-3">
+                          <div className="flex mb-2">
                             <img
                               src={project.logo || "/placeholder.svg?height=80&width=80"}
                               alt={`${project.title} logo`}
@@ -83,22 +83,13 @@ export default function ProjectsPage() {
                             />
                             <div className="flex-grow">
                               <div className="flex items-center justify-between mb-2">
-                                <h3 className="text-xl font-bold text-green-400">{project.title}</h3>
+                                <h3 className="text-xl font-bold text-white -mb-4 -mt-4">{project.title}</h3>
                                 <span className="text-gray-400 text-sm">{project.year}</span>
                               </div>
                               <p className="text-gray-300 text-sm leading-relaxed">{project.description}</p>
                             </div>
                           </div>
-                          <div className="flex flex-wrap gap-2">
-                            {project.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-600"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
+                          
                         </div>
                       </CardContent>
                     </Card>

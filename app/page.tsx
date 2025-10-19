@@ -1,6 +1,5 @@
 "use client"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/router"
 import type React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -14,7 +13,6 @@ import { ResponsiveHeader } from "@/components/responsiveheader"
 import { mainProjects } from "@/components/mainProjects"
 import ReactMarkdown from "react-markdown"
 
-
 interface Message {
   id: string
   role: "user" | "assistant"
@@ -27,43 +25,40 @@ export default function PersonalWebsite() {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-  const sendVisit = async () => {
-    // Skip bots
-    if (/bot|crawler|spider/i.test(navigator.userAgent)) return
+    const sendVisit = async () => {
+      // Skip bots
+      if (/bot|crawler|spider/i.test(navigator.userAgent)) return
 
-    // Skip vusercontent.net URLs
-    if (window.location.href.includes("vusercontent.net")) return
+      // Skip vusercontent.net URLs
+      if (window.location.href.includes("vusercontent.net")) return
 
-    let ip = "unknown"
-    try {
-      const res = await fetch("https://api.ipify.org?format=json")
-      const data = await res.json()
-      ip = data.ip || "unknown"
-    } catch (err) {
-      console.warn("Failed to get IP, sending notification without it.")
+      let ip = "unknown"
+      try {
+        const res = await fetch("https://api.ipify.org?format=json")
+        const data = await res.json()
+        ip = data.ip || "unknown"
+      } catch (err) {
+        console.warn("Failed to get IP, sending notification without it.")
+      }
+
+      try {
+        await fetch(
+          "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              content: `👀 New visitor on ${window.location.href}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`,
+            }),
+          },
+        )
+      } catch (err) {
+        console.error("Failed to send Discord notification:", err)
+      }
     }
 
-    try {
-      await fetch(
-        "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            content: `👀 New visitor on ${window.location.href}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`,
-          }),
-        }
-      )
-    } catch (err) {
-      console.error("Failed to send Discord notification:", err)
-    }
-  }
-
-  sendVisit()
-}, [])
-
-
-
+    sendVisit()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -162,7 +157,6 @@ export default function PersonalWebsite() {
   }
 
   const suggestedQuestions = [
-    "What did you do at Mochi Doh?",
     "Tell me about your role as Shift Leader at CoCo",
     "What was your iOS app development experience like?",
     "What did you do as a tutor?",
@@ -170,13 +164,14 @@ export default function PersonalWebsite() {
     "What are your responsibilities at YRHacks?",
     "What did you achieve at DECA?",
     "Tell me about a project you were very passionate about",
+    "What are you doing this winter?",
   ]
 
   return (
     <AnimatedPage>
       <div className="min-h-screen bg-black text-[#4BDE7F]">
         {/* Header */}
-        
+
         <ResponsiveHeader isHomepage={true} currentPage="/" />
 
         <main className="max-w-4xl mx-auto p-6 space-y-8 pt-[60px] sm:pt-[120px]">
@@ -211,9 +206,7 @@ export default function PersonalWebsite() {
             {" "}
             {/* Changed from 400 */}
             <section className="space-y-4">
-              <h2 className="text-xl">
-                I'm currently...
-              </h2>
+              <h2 className="text-xl">I'm currently...</h2>
               <ul className="space-y-2 text-gray-300 ml-4">
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
@@ -247,21 +240,27 @@ export default function PersonalWebsite() {
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>
-                    developing for <img
+                    developing for{" "}
+                    <img
                       alt=""
                       className="inline w-4 h-4 mr-1"
                       src="https://richardli-1.github.io/Old-Personal-Website/formulatech%20hacks%20logo.jpeg"
                     />
-                    
-                    <a href="https://www.instagram.com/formulatech.hacks/" target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110">formulatech hacks</a>
+                    <a
+                      href="https://www.instagram.com/formulatech.hacks/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
+                    >
+                      formulatech hacks
+                    </a>
                   </span>
                 </li>
-                
 
-<li className="flex items-start">
+                <li className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>
-                    creating a {" "}
+                    creating a{" "}
                     <img
                       alt=""
                       className="inline w-4 h-4 mr-1"
@@ -276,19 +275,13 @@ export default function PersonalWebsite() {
                       {" "}
                       class profile{" "}
                     </a>{" "}
-                    {" "}
-                    
-                    
-                      for the syde class of 2030
+                    for the syde class of 2030
                   </span>
                 </li>
-
-                
 
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
                   open to chatting about fall 2026 internship opportunities
-
                 </li>
               </ul>
             </section>
@@ -301,7 +294,7 @@ export default function PersonalWebsite() {
             <section className="space-y-4">
               <h2 className="text-xl">Previously I...</h2>
               <ul className="space-y-2 text-gray-300 ml-4">
-              <li className="flex items-start">
+                <li className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>interned at a YC-backed SaaS startup, analyzing ai trends and working on UI/UX design</span>
                 </li>
@@ -330,63 +323,63 @@ export default function PersonalWebsite() {
           </StaggeredContent>
 
           {/* Projects */}
-<StaggeredContent delay={500}>
-  <section className="space-y-4">
-    <div className="flex items-center justify-between">
-      <h2 className="text-xl">
-        Some{" "}
-        <a
-          href="/projects"
-          className="underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
-        >
-          projects
-        </a>{" "}
-        I made...
-      </h2>
-      <Link href="/projects">
-     <span className="text-xs text-gray-400 hover:text-gray-300 hover:underline cursor-pointer">
-    See More
-  </span>
-</Link>
-    </div>
+          <StaggeredContent delay={500}>
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl">
+                  Some{" "}
+                  <a
+                    href="/projects"
+                    className="underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
+                  >
+                    projects
+                  </a>{" "}
+                  I made...
+                </h2>
+                <Link href="/projects">
+                  <span className="text-xs text-gray-400 hover:text-gray-300 hover:underline cursor-pointer">
+                    See More
+                  </span>
+                </Link>
+              </div>
 
-    {/* Row of 3 project tiles */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-gray-300">
-      {mainProjects.slice(0, 3).map((project) => (
-        <Link key={project.id} href={`/projects/${project.id}`}>
-          <Card className="bg-gray-900 border-gray-700 hover:border-green-400 transition-all duration-300 cursor-pointer group h-full rounded-lg overflow-hidden">
-  <CardContent className="p-0 h-full flex flex-col">
-    <div className="aspect-video w-full bg-gray-800">
-      <img
-        src={project.image || "/placeholder.svg"}
-        alt={project.title}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-      />
-    </div>
-    <div className="p-4 flex flex-col flex-grow">
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-lg font-bold text-green-400">{project.title}</h3>
-        <span className="text-gray-400 text-xs">{project.year}</span>
-      </div>
-      <p className="text-sm text-gray-300 flex-grow">{project.description}</p>
-      <div className="flex flex-wrap gap-1 mt-3">
-        {project.tags.map((tag) => (
-          <span
-            key={tag}
-            className="px-2 py-0.5 bg-gray-800 text-gray-300 text-xs rounded border border-gray-600"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    </div>
-  </CardContent>
-</Card>
-        </Link>
-      ))}
-    </div>
-  </section>
-</StaggeredContent>
+              {/* Row of 3 project tiles */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-gray-300">
+                {mainProjects.slice(0, 3).map((project) => (
+                  <Link key={project.id} href={`/projects/${project.id}`}>
+                    <Card className="bg-gray-900 border-gray-700 hover:border-green-400 transition-all duration-300 cursor-pointer group h-full rounded-lg overflow-hidden">
+                      <CardContent className="p-0 h-full flex flex-col">
+                        <div className="aspect-video w-full bg-gray-800">
+                          <img
+                            src={project.image || "/placeholder.svg"}
+                            alt={project.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="p-4 flex flex-col flex-grow">
+                          <div className="flex items-center justify-between mb-2">
+                            <h3 className="text-lg font-bold text-green-400">{project.title}</h3>
+                            <span className="text-gray-400 text-xs">{project.year}</span>
+                          </div>
+                          <p className="text-sm text-gray-300 flex-grow">{project.description}</p>
+                          <div className="flex flex-wrap gap-1 mt-3">
+                            {project.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="px-2 py-0.5 bg-gray-800 text-gray-300 text-xs rounded border border-gray-600"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </StaggeredContent>
 
           {/* Future */}
           <StaggeredContent delay={500}>
@@ -395,21 +388,19 @@ export default function PersonalWebsite() {
             <section className="space-y-4">
               <h2 className="text-xl">Looking ahead, I'd like to...</h2>
               <div className="text-gray-300 ml-4">
-              <ul className="space-y-2 ml-4 list-disc">
-              <li>
-              learn about best practices in software engineering and build scalable systems that impact millions of users
-              </li>
-			  <li>
-              contribute to the advancement of the North American public transit industry <img
-                      alt=""
-                      className="inline h-4 mr-1"
-                      src="images/ttcsubwayiconwhite.png"
-                    />
-              </li>
-			  <li>
-              explore design engineering and work in a role combining design, development, and project management
-              </li>
-              </ul>
+                <ul className="space-y-2 ml-4 list-disc">
+                  <li>
+                    learn about best practices in software engineering and build scalable systems that impact millions
+                    of users
+                  </li>
+                  <li>
+                    contribute to the advancement of the North American public transit industry{" "}
+                    <img alt="" className="inline h-4 mr-1" src="images/ttcsubwayiconwhite.png" />
+                  </li>
+                  <li>
+                    explore design engineering and work in a role combining design, development, and project management
+                  </li>
+                </ul>
               </div>
             </section>
           </StaggeredContent>
@@ -435,7 +426,7 @@ export default function PersonalWebsite() {
                             key={question}
                             variant="outline"
                             size="sm"
-                            className="text-xs bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
+                            className="text-xs bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 whitespace-normal text-left h-auto py-2"
                             onClick={() => handleSuggestedQuestion(question)}
                           >
                             {question}
