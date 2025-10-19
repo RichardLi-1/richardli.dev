@@ -39,8 +39,8 @@ export const mainProjects = [
     title: "SYDE Class of 2030 Profile",
     year: "2025",
     description: "WIP project...",
-    image: "images/",
-    logo: "/images/",
+    image: "",
+    logo: "",
     tags: ["Community", "Web Development", "Data"],
   },
   {
@@ -67,7 +67,7 @@ export const mainProjects = [
     year: "2025",
     description: "Eye Tester App",
     image: "",
-    logo: "/images/cec-logo.webp",
+    logo: "",
     tags: ["iOS", "Swift", "App Development"],
   },
 ]

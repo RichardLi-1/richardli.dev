@@ -2,53 +2,7 @@
 import { useState } from "react"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { ProjectContentRenderer } from "./project-content-renderer" // Import new content renderer
-
-const mainProjects = [
-  {
-    id: "boink",
-    title: "Bo!nk",
-    year: "2021",
-    description: "A Windows Vista-inspired inkball game published on the App Store",
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OFGQDkrP2BvNmhLieOxExwEZBsCGcq.png",
-    logo: "/images/boink-logo.webp",
-    tags: ["iOS", "Swift", "Game Development"],
-  },
-  {
-    id: "salespatriot",
-    title: "SalesPatriot (YC W25)",
-    year: "2025",
-    description: "Internship",
-    image: "https://richardli-1.github.io/Personal-Website/salespatriott.png?height=400&width=600",
-    tags: ["Internship", "Product Design", "AI"],
-  },
-  {
-    id: "futureforward",
-    title: "Future Forward",
-    year: "2024-2025",
-    description: "Non-profit focusing on helping students discover their vocations",
-    image: "images/IMG_7745.jpeg",
-    logo: "/images/future-forward-logo.png",
-    tags: ["Non-profit", "Web Development", "Community"],
-  },
-  {
-    id: "yrhacks",
-    title: "YRHacks",
-    year: "2024-2025",
-    description: "Helped organize Canada's largest high school hackathon",
-    image: "images/yrhacks crowd.jpeg",
-    logo: "/images/yrhacks-logo.png",
-    tags: ["Community", "Logistics", "Organizations"],
-  },
-  {
-    id: "cec",
-    title: "Career Education Council",
-    year: "2024-2025",
-    description: "",
-    image: "",
-    logo: "/images/cec-logo.webp",
-    tags: ["iOS", "Swift", "App Development"],
-  },
-]
+import { mainProjects } from "../mainProjects" // Fixed import path to use relative path instead of alias
 
 const additionalProjects = [
   {

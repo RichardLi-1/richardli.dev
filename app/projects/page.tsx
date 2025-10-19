@@ -40,7 +40,7 @@ export default function ProjectsPage() {
           ]}
         />
 
-        <main className="max-w-7xl mx-auto p-6" style={{ paddingTop: "120px" }}>
+        <main className="max-w-screen-2xl mx-auto p-6" style={{ paddingTop: "120px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-12">
               <h1 className="text-4xl font-bold mb-4">Work</h1>
@@ -63,17 +63,17 @@ export default function ProjectsPage() {
                   }}
                 >
                   <Link href={`/projects/${project.id}`}>
-                    <Card className="transition-all duration-300 cursor-pointer group border-background bg-background mb-5">
+                    <Card className="transition-all duration-300 cursor-pointer group border-background bg-background mb-2">
                       <CardContent className="p-0">
-                        <div className="aspect-video w-full bg-gray-800 overflow-hidden">
+                        <div className="aspect-video w-full bg-gray-800 overflow-hidden transition-shadow duration-300 group-hover:shadow-[0_0_30px_rgba(34,197,94,0.6)]">
                           <img
                             src={project.image || "/placeholder.svg"}
                             alt={project.title}
                             className="w-full h-full object-cover transition-transform duration-300"
                           />
                         </div>
-                        <div className="p-6 px-3">
-                          <div className="flex mb-2">
+                        <div className="p-6 mx-0 px-2.5">
+                          <div className="flex -mt-2">
                             <img
                               src={project.logo || "/placeholder.svg?height=80&width=80"}
                               alt={`${project.title} logo`}
@@ -83,13 +83,14 @@ export default function ProjectsPage() {
                             />
                             <div className="flex-grow">
                               <div className="flex items-center justify-between mb-2">
-                                <h3 className="text-xl font-bold text-white -mb-4 -mt-4">{project.title}</h3>
+                                <h3 className="text-xl font-bold text-white -mb-4 -mt-4 group-hover:underline transition-all duration-300">
+                                  {project.title}
+                                </h3>
                                 <span className="text-gray-400 text-sm">{project.year}</span>
                               </div>
-                              <p className="text-gray-300 text-sm leading-relaxed">{project.description}</p>
+                              <p className="text-gray-300 text-sm leading-relaxed -mt-1 mx-[]">{project.description}</p>
                             </div>
                           </div>
-                          
                         </div>
                       </CardContent>
                     </Card>
@@ -99,29 +100,37 @@ export default function ProjectsPage() {
             </div>
           </StaggeredContent>
 
-          {!showAdditional && (
+          <div className="flex justify-center space-x-2">
+            {!showAdditional && (
+              <StaggeredContent delay={700}>
+                  <Button
+                    onClick={() => setShowAdditional(true)}
+                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-2"
+                  >
+                    Load More Projects
+                  </Button>
+              </StaggeredContent>
+            )}
+
             <StaggeredContent delay={700}>
-              <div className="mt-12 text-center flex justify-center gap-4">
-                <Button
-                  onClick={() => setShowAdditional(true)}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2"
-                >
-                  Load More Projects
-                </Button>
                 <Button
                   asChild
                   variant="outline"
                   className="border-green-600 text-green-400 hover:bg-green-600 hover:text-white px-6 py-2 bg-transparent"
                 >
-                  <Link href="https://drive.google.com/file/d/1iwZR7PxbnDqifQlcb7evC5AoHHFYaA30/view?usp=sharing" target="_blank">Resume</Link>
+                  <Link
+                    href="https://drive.google.com/file/d/1iwZR7PxbnDqifQlcb7evC5AoHHFYaA30/view?usp=sharing"
+                    target="_blank"
+                  >
+                    Resume
+                  </Link>
                 </Button>
-              </div>
             </StaggeredContent>
-          )}
+
+          </div>
 
           <StaggeredContent delay={700}>
-            <div className="mt-16 text-center">
-              <h2 className="text-2xl font-bold mb-4">More Projects Coming Soon</h2>
+            <div className="mt-8 text-center">
               <p className="text-gray-300">I'm always working on new projects. Check back soon for updates!</p>
             </div>
           </StaggeredContent>
