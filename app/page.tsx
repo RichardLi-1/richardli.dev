@@ -287,7 +287,7 @@ export default function PersonalWebsite() {
 
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  open to fall 2026 internships!
+                  open to chatting about fall 2026 internship opportunities
 
                 </li>
               </ul>
