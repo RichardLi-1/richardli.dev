@@ -44,7 +44,7 @@ export default function ProjectsPage() {
           <StaggeredContent delay={0}>
             <div className="mb-12">
               <h1 className="text-4xl font-bold mb-4">Work</h1>
-              <p className="text-gray-300 text-lg -mb-4">
+              <p className="text-gray-300 text-lg -mb-8">
                 A collection of work and projects, from mobile games to non-profit initiatives.
               </p>
             </div>
