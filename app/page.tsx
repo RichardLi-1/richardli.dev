@@ -45,7 +45,7 @@ export default function PersonalWebsite() {
     const isLinkedIn = window.location.href === "https://www.richardli.dev/?l"
 
     const message = isLinkedIn
-      ? `👀 New visitor from **LinkedIn**\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
+      ? `👀 New visitor on ${window.location.href} from **LinkedIn**\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
       : `👀 New visitor on ${window.location.href}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
 
     try {
