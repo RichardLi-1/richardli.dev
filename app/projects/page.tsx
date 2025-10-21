@@ -44,7 +44,7 @@ export default function ProjectsPage() {
           <StaggeredContent delay={0}>
             <div className="mb-12">
               <h1 className="text-4xl font-bold mb-4">Work</h1>
-              <p className="text-gray-300 text-lg -mb-8">
+              <p className="text-gray-300 text-lg">
                 A collection of work and projects, from mobile games to non-profit initiatives.
               </p>
             </div>
@@ -74,11 +74,11 @@ export default function ProjectsPage() {
               className="w-full h-full object-cover transition-transform duration-300"
             />
           </div>
-          <div className="p-6 mx-0 px-2.5">
+          <div className="p-6 mx-0 px-0 py-3.5">
             <div className="flex -mt-2">
               
               <div className="flex-grow">
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-[3px]">
                   <h3 className="text-l font-bold text-white -mb-6 -mt-6 group-hover:underline transition-all duration-300">
                     {project.title}
                   </h3>
