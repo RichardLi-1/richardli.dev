@@ -85,15 +85,7 @@ export default function FutureForwardProjectPage() {
                 <div>
                   <h3 className="text-green-400 font-bold mb-2">Links</h3>
                   <div className="space-y-2">
-                    <a
-                      href="https://www.futureforward.info/"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-2 text-gray-300 hover:text-green-400 transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Official Website
-                    </a>
+                    
                     <a
                       href="https://www.youtube.com/@FutureForward.Initiative"
                       target="_blank"

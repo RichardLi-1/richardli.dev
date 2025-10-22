@@ -33,7 +33,7 @@ export default function YRHacksProjectPage() {
           rightLinks={[{ href: "https://www.yrhacks.ca", text: "Website", external: true }]}
         />
 
-        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "120px" }}>
+        <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: "120px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}
@@ -124,8 +124,8 @@ export default function YRHacksProjectPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <img
-                  src="https://media.licdn.com/dms/image/v2/D5622AQGZN8BE5FJD4Q/feedshare-shrink_2048_1536/B56ZYit8sVH0Ao-/0/1744339197563?e=1756944000&v=beta&t=mLCGT5OJ__pZOMYCDg5qhOE532drHYKoymxEt7OgizE"
-                  alt="Fiona's quote"
+                  src="/images/yrhacksphoto1.jpeg"
+                  alt="Preparing bubble tea"
                 />
               </div>
 
@@ -152,7 +152,7 @@ export default function YRHacksProjectPage() {
             {" "}
             {/* Changed from 1300 */}
             {/* Team Photo */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
+            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden">
               <img src="/placeholder.svg" alt="YRHacks lanyards" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
@@ -161,7 +161,19 @@ export default function YRHacksProjectPage() {
             {" "}
             {/* Changed from 1300 */}
             {/* Team Photo */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
+            <div className="relative aspect-video w-full bg-gray-800 overflow-hidden">
+              <img src="/images/yrhacksphoto2.jpeg" alt="YRHacks image 2" className="w-full h-full object-cover" />
+            </div>
+            <p className="text-gray-300">
+              Organizing YRHacks was truly a fun experience. Knowing how transformative YRHacks was for me as my first hackathon, I'm glad to have helped make the same experience happen for everyone who participated this year.
+            </p>
+          </StaggeredContent>
+
+          <StaggeredContent delay={1000}>
+            {" "}
+            {/* Changed from 1300 */}
+            {/* Team Photo */}
+            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden">
               <img
                 src="/images/design-mode/PXL_20240927_153504407.jpg"
                 alt="YRHacks team photo"
