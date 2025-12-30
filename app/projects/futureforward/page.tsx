@@ -31,7 +31,7 @@ export default function FutureForwardProjectPage() {
         <main className="max-w-4xl mx-auto p-6 space-y-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic mb-2 flex items-center justify-center gap-2">
+              <h1 className="text-3xl font-bold italic mb-2 flex items-center justify-center gap-2 text-green-400">
                 <img
                   src="/images/future-forward-logo.png"
                   alt="Future Forward Logo"
@@ -54,14 +54,14 @@ export default function FutureForwardProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={300}>
-          <div className="bg-zinc-800 max-width rounded-md mb-8"> <p className="p-2 py-3 px-3.5 text-zinc-300">🥇 This project was awarded Provincial Champion at DECA Provincials 2025!</p></div>
+          <div className="bg-zinc-800 max-width rounded-md mb-8 border-2"> <p className="p-2 py-3 px-3.5 text-zinc-300">🥇 This project was awarded Provincial Champion at DECA Provincials 2025!</p></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
 
               
               <div className="space-y-6">
                 <div>
                   <h3 className="text-green-400 font-bold mb-2">Timeline</h3>
-                  <p className="text-gray-300">Sept 2024-A</p>
+                  <p className="text-gray-300">Sept 2024-Apr 2025</p>
                 </div>
 
                 <div>
@@ -197,6 +197,12 @@ export default function FutureForwardProjectPage() {
               </div>
               
             </div>
+
+            <p className="text-gray-300">
+                    Thanks <a className="underline" target="_blank" href="https://www.linkedin.com/in/holly-zhang-76702a248/">Holly Zhang</a> for the inspiration.
+                  </p>
+
+            
             <p className="text-gray-300">
                     Unfortunately, now that I've graduated, the project is no longer continued and the website has been taken down. However, our project continues to be used for training at Markville DECA.
                   </p>

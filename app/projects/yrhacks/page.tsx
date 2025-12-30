@@ -33,7 +33,7 @@ export default function YRHacksProjectPage() {
           rightLinks={[{ href: "https://www.yrhacks.ca", text: "Website", external: true }]}
         />
 
-        <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: "120px" }}>
+        <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}

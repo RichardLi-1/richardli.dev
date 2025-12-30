@@ -18,7 +18,7 @@ export default function BoinkProjectPage() {
           ]}
         />
 
-        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "120px" }}>
+        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}

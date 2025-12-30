@@ -15,7 +15,7 @@ export default function SalesPatriotProjectPage() {
           rightLinks={[{ href: "https://github.com/fiof25/father-figure-htn", text: "GitHub", external: true }]}
         />
 
-        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "120px" }}>
+        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}

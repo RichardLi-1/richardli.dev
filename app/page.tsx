@@ -267,7 +267,7 @@ export default function PersonalWebsite() {
                 </li>
                 <li>
                 <span className="mr-2">•</span>
-                  learning angular and postgresql
+                  interning at safuture inc
                 </li>
 
                 <li className="flex items-start">

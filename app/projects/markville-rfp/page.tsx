@@ -28,7 +28,7 @@ export default function MarkvilleRFPProjectPage() {
           ]}
         />
 
-        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "120px" }}>
+        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold italic text-green-400 mb-2">
