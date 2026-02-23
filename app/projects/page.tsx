@@ -66,9 +66,9 @@ export default function ProjectsPage() {
                   }}
                 >
                   <Link href={`/projects/${project.id}`}>
-                    <Card className="transition-all duration-300 cursor-pointer group border-background bg-background mb-6">
+                    <Card className="transition-all duration-300 cursor-pointer group border-background bg-background mb-6 hover:scale-[1.02]">
                       <CardContent className="p-0">
-                        <div className="aspect-video w-full bg-gray-800 overflow-hidden transition-shadow duration-300 group-hover:shadow-[0_0px_200px_-20px_var(--glow-color)]">
+                        <div className="aspect-video w-full bg-gray-800 overflow-hidden rounded-2xl transition-shadow duration-300 group-hover:shadow-[0_0px_200px_-20px_var(--glow-color)]">
                           <ProjectImageCycler
                             images={[project.image, (project as any).image2, (project as any).image3]}
                             alt={project.title}

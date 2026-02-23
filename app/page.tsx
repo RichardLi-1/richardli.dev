@@ -296,33 +296,26 @@ export default function PersonalWebsite() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {mainProjects.slice(0, 3).map((project) => (
                   <Link key={project.id} href={`/projects/${project.id}`}>
-                    <Card className="transition-all duration-300 cursor-pointer group border-gray-700 bg-gray-900 hover:border-green-400 h-full">
+                    <Card
+                      className="transition-all duration-300 cursor-pointer group border-background bg-background h-full hover:scale-[1.02]"
+                      style={{ "--glow-color": project.colors || "#22c55e99" } as React.CSSProperties}
+                    >
                       <CardContent className="p-0 h-full flex flex-col">
-                        <div className="aspect-video w-full bg-gray-800 overflow-hidden">
+                        <div className="aspect-video w-full bg-gray-800 overflow-hidden rounded-2xl transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]">
                           <ProjectImageCycler
                             images={[project.image, (project as any).image2, (project as any).image3]}
                             alt={project.title}
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            className="w-full h-full object-cover transition-transform duration-300"
                           />
                         </div>
-                        <div className="p-4 flex flex-col flex-grow">
-                          <div className="flex items-center justify-between mb-2">
-                            <h3 className="text-lg font-bold text-white group-hover:underline transition-all duration-300">
+                        <div className="py-3 flex flex-col flex-grow">
+                          <div className="flex items-center justify-between mb-1">
+                            <h3 className="text-base font-bold text-white group-hover:underline transition-all duration-300">
                               {project.title}
                             </h3>
                             <span className="text-gray-400 text-sm">{project.year}</span>
                           </div>
-                          <p className="text-sm text-gray-300 leading-relaxed flex-grow">{project.description}</p>
-                          <div className="flex flex-wrap gap-1 mt-3">
-                            {project.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-2 py-1 bg-gray-800 text-gray-400 text-xs rounded border border-gray-600"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
+                          <p className="text-sm text-gray-300 leading-relaxed">{project.description}</p>
                         </div>
                       </CardContent>
                     </Card>
