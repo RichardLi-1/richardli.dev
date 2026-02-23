@@ -297,11 +297,11 @@ export default function PersonalWebsite() {
                 {mainProjects.slice(0, 3).map((project) => (
                   <Link key={project.id} href={`/projects/${project.id}`}>
                     <Card
-                      className="transition-all duration-300 cursor-pointer group border-background bg-background h-full hover:scale-[1.02]"
+                      className="transition-all duration-300 cursor-pointer group border-background bg-background h-full hover:scale-[0.98]"
                       style={{ "--glow-color": project.colors || "#22c55e99" } as React.CSSProperties}
                     >
                       <CardContent className="p-0 h-full flex flex-col">
-                        <div className="aspect-video w-full bg-gray-800 overflow-hidden rounded-2xl transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]">
+                        <div className="aspect-video w-full bg-gray-800 overflow-hidden squircle-lg transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]">
                           <ProjectImageCycler
                             images={[project.image, (project as any).image2, (project as any).image3]}
                             alt={project.title}
@@ -310,7 +310,7 @@ export default function PersonalWebsite() {
                         </div>
                         <div className="py-3 flex flex-col flex-grow">
                           <div className="flex items-center justify-between mb-1">
-                            <h3 className="text-base font-bold text-white group-hover:underline transition-all duration-300">
+                            <h3 className="text-base font-bold text-white transition-all duration-300">
                               {project.title}
                             </h3>
                             <span className="text-gray-400 text-sm">{project.year}</span>

@@ -66,9 +66,9 @@ export default function ProjectsPage() {
                   }}
                 >
                   <Link href={`/projects/${project.id}`}>
-                    <Card className="transition-all duration-300 cursor-pointer group border-background bg-background mb-6 hover:scale-[1.02]">
+                    <Card className="transition-all duration-300 cursor-pointer group border-background bg-background mb-6 hover:scale-[0.98]">
                       <CardContent className="p-0">
-                        <div className="aspect-video w-full bg-gray-800 overflow-hidden rounded-2xl transition-shadow duration-300 group-hover:shadow-[0_0px_200px_-20px_var(--glow-color)]">
+                        <div className="aspect-video w-full bg-gray-800 overflow-hidden squircle-lg transition-shadow duration-300 group-hover:shadow-[0_0px_200px_-20px_var(--glow-color)]">
                           <ProjectImageCycler
                             images={[project.image, (project as any).image2, (project as any).image3]}
                             alt={project.title}
@@ -79,7 +79,7 @@ export default function ProjectsPage() {
                           <div className="flex -mt-2">
                             <div className="flex-grow">
                               <div className="flex items-center justify-between mb-[3px]">
-                                <h3 className="text-l font-bold text-white -mb-6 -mt-6 group-hover:underline transition-all duration-300">
+                                <h3 className="text-l font-bold text-white -mb-6 -mt-6 transition-all duration-300">
                                   {project.title}
                                 </h3>
                                 <span className="text-gray-400 text-sm">{project.year}</span>

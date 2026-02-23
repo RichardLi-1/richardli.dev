@@ -143,13 +143,11 @@ export default function BoinkProjectPage() {
 
               <h2 className="text-2xl font-bold text-green-400 mb-4">Game Design</h2>
               <p className="text-gray-300 mb-4">
-                As the UX designer who conceived the idea, I:
-              </p>
-              <ul className="text-gray-300 space-y-2 mb-6">
-                <li>Directed the vision of the game</li>
-                <li>Created the map of several levels</li>
-              </ul>
-              <p className="text-gray-300 mb-4">
+                As the UX designer who conceived the idea, I
+                <ul className="text-gray-300 space-y-2 mb-6">
+                  <li>• Directed the vision of the game</li>
+                  <li>• Created the map of several levels</li>
+                </ul>
                 We designed Bo!nk to faithfully recreate the core Inkball experience while adapting it for touch
                 interfaces:
               </p>
