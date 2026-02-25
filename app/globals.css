@@ -22,7 +22,7 @@
 /* ── Design tokens – dark (default) ─────────────────── */
 :root,
 .dark {
-  --bg: #0c0c0b;
+  --bg: #000000;
   --text: #e8e4dc;
   --text-2: #b8b4ac;
   --text-3: #888480;

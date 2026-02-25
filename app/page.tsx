@@ -251,7 +251,7 @@ export default function PersonalWebsite() {
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>
-                    helped organize{" "}
+                    organized{" "}
                     <img
                       alt="YRHacks Logo"
                       className="inline w-4 h-4 mr-1"
