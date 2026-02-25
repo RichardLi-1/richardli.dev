@@ -81,4 +81,14 @@ export const mainProjects = [
     tags: ["iOS", "Swift", "App Development"],
     colors: "",
   },
+  {
+    id: "transitto",
+    title: "TO Transit",
+    year: "2026",
+    description: "An open community for Toronto's transit enthusiasts.",
+    image: "/images/totransitbanner.png",
+    logo: "",
+    tags: ["iOS", "Swift", "Game Development"],
+    colors: "#417193",
+  },
 ]
