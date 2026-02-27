@@ -46,7 +46,6 @@ function PhotoImage({
         style={{
           width: "100%",
           borderRadius: 10,
-          boxShadow: "0 4px 28px rgba(0,0,0,0.24)",
           display: "block",
           position: "relative",
           opacity: flipped ? 0 : 1,
@@ -62,8 +61,7 @@ function PhotoImage({
           style={{
             width: "100%",
             borderRadius: 10,
-            boxShadow: "0 4px 28px rgba(0,0,0,0.24)",
-            display: "block",
+              display: "block",
             position: "absolute",
             inset: 0,
             opacity: flipped ? 1 : 0,

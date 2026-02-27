@@ -19,16 +19,11 @@ export default function SalesPatriotProjectPage() {
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
-                <img
-                  src="/images/design-mode/Logo.png"
-                  alt="Father Figure Logo"
-                  className="w-8 h-8 object-contain" // Adjusted size for title
-                />
+            <div className="mb-4">
+              <h1 className="text-4xl mb-2 flex items-left gap-2">
                 Father Figure
               </h1>
-              <p className="text-lg text-gray-300">Project, 2025</p>
+              <h1 className="text-m text-gray-400">Project, 2025</h1>
             </div>
           </StaggeredContent>
 
@@ -36,7 +31,7 @@ export default function SalesPatriotProjectPage() {
             {" "}
             {/* Changed from 400 */}
             {/* Hero Image */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
+            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-xl" style={{cornerShape: "squircle", borderRadius: 30}}>
               <img src="/images/design-mode/fatherfigurebanner.png" alt="screenshots" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
@@ -47,12 +42,12 @@ export default function SalesPatriotProjectPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Timeline</h3>
+                  <h3 className="font-bold mb-2">Timeline</h3>
                   <p className="text-gray-300">Hack the North (September 2025)</p>
                 </div>
 
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Team</h3>
+                  <h3 className=" font-bold mb-2">Team</h3>
                   <a href="https://www.linkedin.com/in/fiona-fangg/" target="_blank"><p>Fiona Fang</p></a>
                   <div className="space-y-1 text-gray-300"></div>
                 </div>
