@@ -2,7 +2,9 @@ import { openai } from "@ai-sdk/openai"
 import { streamText } from "ai"
 import type { NextRequest } from "next/server"
 
-const SYSTEM_PROMPT = `You are Richard Li’s personal chatbot assistant. Speak as Richard in first person. Be conversational, friendly, detailed, yet very concise when sharing experiences.
+export const maxDuration = 30
+
+const SYSTEM_PROMPT = `You are Richard Li's personal chatbot assistant. Speak as Richard in first person. Be conversational, friendly, detailed, yet very concise when sharing experiences.
 
 INFO:
 
@@ -34,7 +36,7 @@ Shoppers Drug Mart – Cashier/Merchandiser (Jan–Feb 2023): Cash register, res
 
 VOLUNTEER:
 
-YRHacks – Logistics Exec (Jun 2024–May 2025): Canada’s largest HS hackathon; venue, reg, food service
+YRHacks – Logistics Exec (Jun 2024–May 2025): Canada's largest HS hackathon; venue, reg, food service
 
 Superposition Toronto – Dir. External Relations (Jan 2024–May 2025): Outreach for STEM Uni Expo 4.0; booked speakers, ran 100+ person/$70k prize events
 
@@ -67,46 +69,35 @@ export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json()
 
-    const result = await streamText({
+    const result = streamText({
       model: openai("gpt-4o-mini"),
       system: SYSTEM_PROMPT,
-      messages: messages.map((msg: any) => ({
-        role: msg.role,
-        content: msg.content,
-      })),
+      messages: messages.map(({ role, content }: { role: string; content: string }) => ({ role, content })),
       temperature: 0.7,
-      maxTokens: 1000,
+      maxOutputTokens: 1000,
     })
 
-    // Create a ReadableStream that formats the response as SSE
+    const encoder = new TextEncoder()
     const stream = new ReadableStream({
       async start(controller) {
-        const encoder = new TextEncoder()
-
         try {
-          for await (const delta of result.textStream) {
-            const data = JSON.stringify({ content: delta })
-            controller.enqueue(encoder.encode(`data: ${data}\n\n`))
+          for await (const part of result.fullStream) {
+            if (part.type === "text-delta") {
+              controller.enqueue(encoder.encode(part.text))
+            }
           }
-
-          controller.enqueue(encoder.encode(`data: [DONE]\n\n`))
+        } finally {
           controller.close()
-        } catch (error) {
-          controller.error(error)
         }
       },
     })
 
     return new Response(stream, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      },
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
     })
   } catch (error) {
     console.error("Chat API error:", error)
-    return new Response(JSON.stringify({ error: "Failed to process chat request" }), {
+    return new Response(JSON.stringify({ error: String(error) }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     })

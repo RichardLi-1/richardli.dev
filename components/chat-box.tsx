@@ -13,20 +13,8 @@ interface Message {
 }
 
 interface ChatBoxProps {
-  /** Makes the message list fill available height (for full-page use) */
   fullHeight?: boolean
 }
-
-const suggestedQuestions = [
-  "Tell me about your role as Shift Leader at CoCo",
-  "What was your iOS app development experience like?",
-  "What did you do as a tutor?",
-  "Tell me about Toteally Yours",
-  "What are your responsibilities at YRHacks?",
-  "What did you achieve at DECA?",
-  "Tell me about a project you were very passionate about",
-  "What are you doing this winter?",
-]
 
 export function ChatBox({ fullHeight = false }: ChatBoxProps) {
   const [messages, setMessages] = useState<Message[]>([])
@@ -85,27 +73,12 @@ export function ChatBox({ fullHeight = false }: ChatBoxProps) {
         while (true) {
           const { done, value } = await reader.read()
           if (done) break
-          const chunk = decoder.decode(value)
-          for (const line of chunk.split("\n")) {
-            if (line.startsWith("data: ")) {
-              const data = line.slice(6)
-              if (data === "[DONE]") {
-                setIsLoading(false)
-                sendChatbotActivity(text, assistantContent)
-                return
-              }
-              try {
-                const parsed = JSON.parse(data)
-                if (parsed.content) {
-                  assistantContent += parsed.content
-                  setMessages((prev) =>
-                    prev.map((msg) => (msg.id === assistantMessage.id ? { ...msg, content: assistantContent } : msg)),
-                  )
-                }
-              } catch {}
-            }
-          }
+          assistantContent += decoder.decode(value, { stream: true })
+          setMessages((prev) =>
+            prev.map((msg) => (msg.id === assistantMessage.id ? { ...msg, content: assistantContent } : msg)),
+          )
         }
+        sendChatbotActivity(text, assistantContent)
       }
     } catch {
       setMessages((prev) => [
@@ -124,7 +97,6 @@ export function ChatBox({ fullHeight = false }: ChatBoxProps) {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Message list */}
       <div
         className="overflow-y-auto flex-1 space-y-5 pr-1"
         style={{ minHeight: 0, maxHeight: fullHeight ? undefined : "24rem" }}
@@ -174,7 +146,6 @@ export function ChatBox({ fullHeight = false }: ChatBoxProps) {
         <div ref={bottomRef} />
       </div>
 
-      {/* Input */}
       <form onSubmit={handleSubmit} className="flex gap-2 pt-4 border-t mt-4" style={{ borderColor: "var(--border-2)" }}>
         <Input
           value={input}

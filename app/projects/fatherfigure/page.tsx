@@ -1,107 +1,10 @@
 "use client"
-import { useState, useEffect, useRef } from "react"
 import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
-
-// ── Draggable sticker ────────────────────────────────────────────────────────
-
-function DraggableSticker({ src, ix, iy, size = 140 }: {
-  src: string; ix: number; iy: number; size?: number
-}) {
-  const imgRef = useRef<HTMLImageElement>(null)
-  const pos = useRef({ x: 0, y: 0 })
-  const offset = useRef({ x: 0, y: 0 })
-  const dragging = useRef(false)
-  const [mounted, setMounted] = useState(false)
-
-  
-
-
-  useEffect(() => {
-    const x = window.innerWidth * ix
-    const y = window.innerHeight * iy
-    pos.current = { x, y }
-    if (imgRef.current) {
-      imgRef.current.style.left = `${x}px`
-      imgRef.current.style.top = `${y}px`
-    }
-    setMounted(true)
-  }, [ix, iy])
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      if (!dragging.current || !imgRef.current) return
-      const x = e.clientX - offset.current.x
-      const y = e.clientY - offset.current.y
-      pos.current = { x, y }
-      imgRef.current.style.left = `${x}px`
-      imgRef.current.style.top = `${y}px`
-    }
-    const onUp = () => {
-      if (!dragging.current || !imgRef.current) return
-      dragging.current = false
-      imgRef.current.style.cursor = "grab"
-    }
-    const onTouchMove = (e: TouchEvent) => {
-      if (!dragging.current || !imgRef.current) return
-      e.preventDefault()
-      const t = e.touches[0]
-      const x = t.clientX - offset.current.x
-      const y = t.clientY - offset.current.y
-      pos.current = { x, y }
-      imgRef.current.style.left = `${x}px`
-      imgRef.current.style.top = `${y}px`
-    }
-    const onTouchEnd = () => { dragging.current = false }
-
-    document.addEventListener("mousemove", onMove)
-    document.addEventListener("mouseup", onUp)
-    document.addEventListener("touchmove", onTouchMove, { passive: false })
-    document.addEventListener("touchend", onTouchEnd)
-    return () => {
-      document.removeEventListener("mousemove", onMove)
-      document.removeEventListener("mouseup", onUp)
-      document.removeEventListener("touchmove", onTouchMove)
-      document.removeEventListener("touchend", onTouchEnd)
-    }
-  }, [])
-
-  if (!mounted) return null
-
-  return (
-    <img
-      ref={imgRef}
-      src={src}
-      alt=""
-      draggable={false}
-      onMouseDown={(e) => {
-        e.preventDefault()
-        offset.current = { x: e.clientX - pos.current.x, y: e.clientY - pos.current.y }
-        dragging.current = true
-        if (imgRef.current) imgRef.current.style.cursor = "grabbing"
-      }}
-      onTouchStart={(e) => {
-        const t = e.touches[0]
-        offset.current = { x: t.clientX - pos.current.x, y: t.clientY - pos.current.y }
-        dragging.current = true
-      }}
-      style={{
-        position: "absolute",
-        left: pos.current.x,
-        top: pos.current.y,
-        width: size,
-        cursor: "grab",
-        userSelect: "none",
-        zIndex: 45,
-      }}
-    />
-  )
-}
-
-// ── Page ─────────────────────────────────────────────────────────────────────
+import { DraggableSticker } from "@/components/draggable-sticker"
 
 export default function SalesPatriotProjectPage() {
   const { isPersonalized } = useWindowsXP()
@@ -168,18 +71,13 @@ export default function SalesPatriotProjectPage() {
           <Footer />
         </StaggeredContent>
 
-        {/* Draggable dad stickers */}
-
         {isPersonalized && (
           <>
             <DraggableSticker src="/images/fatherfigure/Sneeze.png"       ix={0.72} iy={0.55} size={150} />
-             <DraggableSticker src="/images/fatherfigure/Sneeze_Chang.png" ix={0.80} iy={0.25} size={130} />
+            <DraggableSticker src="/images/fatherfigure/Sneeze_Chang.png" ix={0.80} iy={0.25} size={130} />
             <DraggableSticker src="/images/fatherfigure/Sneeze_Dave.png"  ix={0.06} iy={0.45} size={140} />
           </>
-        )
-
-        }
-        
+        )}
       </div>
     </AnimatedPage>
   )

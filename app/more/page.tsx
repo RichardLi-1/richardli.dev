@@ -3,13 +3,15 @@ import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
 import { Footer } from "@/components/footer"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
+import { DraggableSticker } from "@/components/draggable-sticker"
 
 export default function MorePage() {
   const { togglePersonalizedMode } = useWindowsXP()
+  const {isPersonalized} = useWindowsXP()
 
   return (
     <AnimatedPage>
-      <div className="page-bg min-h-screen flex flex-col">
+      <div className="page-bg min-h-screen flex flex-col" style={{ position: "relative" }}>
         <AnimatedHeader currentPage="/more" backHref="/" backText="More" />
 
         <main className="flex flex-1 flex-col items-center justify-center gap-6 px-8 text-center">
@@ -43,6 +45,12 @@ export default function MorePage() {
               check out Windows XP
             </button>
           </p>
+
+          {isPersonalized && (
+            <>
+              <a href="/more/functions"><DraggableSticker src="/images/functions/photo1sticker.png" ix={0.85} iy={0.6} size={120}  /></a>
+            </>
+          )}
         </main>
 
         <Footer />

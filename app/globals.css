@@ -103,6 +103,8 @@
     font-family: var(--font-inter), 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: normal;
     transition: background 0.25s ease, color 0.25s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
