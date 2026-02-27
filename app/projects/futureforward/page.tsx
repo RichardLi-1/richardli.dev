@@ -19,7 +19,7 @@ export default function FutureForwardProjectPage() {
 
   return (
     <AnimatedPage>
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="mx-auto p-6 space-y-6">
         <AnimatedHeader
           backHref="/projects"
           backText="Back"
@@ -28,27 +28,29 @@ export default function FutureForwardProjectPage() {
         />
         
 
-        <main className="max-w-4xl mx-auto p-6 space-y-6" style={{ paddingTop: "60px" }}>
+        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic mb-2 flex items-center justify-center gap-2 text-green-400">
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
                 <img
                   src="/images/future-forward-logo.png"
                   alt="Future Forward Logo"
                   className="w-8 h-8 object-contain"
+                  
                 />
                 Future Forward
               </h1>
-              <p className="text-lg text-gray-300">Non-profit, 2024-2025</p>
+              <h1 className="text-m text-gray-400">Non-profit, 2024-2025</h1>
             </div>
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
-            <div className="relative  aspect-video w-full bg-gray-800 overflow-hidden">
+            <div className="relative  aspect-video w-full overflow-hidden">
               <img
                 src="/images/IMG_7745.jpeg"
                 alt="Future Forward screenshots"
                 className="w-full h-full object-cover mx-0"
+                style={{cornerShape:"squircle", borderRadius:25}}
               />
             </div>
           </StaggeredContent>
@@ -60,13 +62,13 @@ export default function FutureForwardProjectPage() {
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Timeline</h3>
-                  <p className="text-gray-300">Sept 2024-Apr 2025</p>
+                  <h3 className="  font-bold mb-2">Timeline</h3>
+                  <p className=" ">Sept 2024-Apr 2025</p>
                 </div>
 
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Team</h3>
-                  <div className="space-y-1 text-gray-300">
+                  <h3 className="  font-bold mb-2">Team</h3>
+                  <div className="space-y-1  ">
                     <a
                       href="https://www.linkedin.com/in/michelle-matthew-35b6931aa/"
                       target="_blank"
@@ -87,14 +89,14 @@ export default function FutureForwardProjectPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Links</h3>
+                  <h3 className="  font-bold mb-2">Links</h3>
                   <div className="space-y-2">
                     
                     <a
                       href="https://www.youtube.com/@FutureForward.Initiative"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-2 text-gray-300 hover:text-green-400 transition-colors"
+                      className="flex items-center gap-2   hover:  transition-colors"
                     >
                       <Youtube className="w-4 h-4" />
                       YouTube Channel
@@ -104,8 +106,8 @@ export default function FutureForwardProjectPage() {
               </div>
 
               <div>
-                <h3 className="text-green-400 font-bold mb-2 rounded-sm">Overview</h3>
-                <div className="space-y-4 text-gray-300">
+                <h3 className="  font-bold mb-2 rounded-sm">Overview</h3>
+                <div className="space-y-4  ">
                   <p>
                     Future Forward is a non-profit initiative dedicated to helping students discover their vocations and
                     career paths. We aim to provide resources, mentorship, and opportunities to guide students in their
@@ -122,7 +124,7 @@ export default function FutureForwardProjectPage() {
 
           <StaggeredContent delay={200}>
             <div className="mb-8">
-              <h3 className="text-green-400 font-bold mb-4 flex items-center gap-2">
+              <h3 className="  font-bold mb-4 flex items-center gap-2">
                 <Youtube className="w-5 h-5" />
                 Featured Video
               </h3>
@@ -143,8 +145,8 @@ export default function FutureForwardProjectPage() {
 
           <StaggeredContent delay={400}>
             <div className="space-y-4">
-              <h2 className="text-2xl font-bold text-green-400">Marketing Club</h2>
-                <div className="space-y-4 text-gray-300">
+              <h2 className="text-2xl font-bold">Marketing Club</h2>
+                <div className="space-y-4  ">
                   <p>
                     Markville Marketing is a marketing firm that has provided services for six organizations and counting. Inspired by Enactus, we created hands-on education for MSS students, where members rotated jobs, such as Account Manager. Members tried each job and assessed how it aligned with their interests via surveys, which we used to generate nine personalized career results for our most regular members. Using social media, we increased signups by 300% to 59 and hosted our maximum of 20 people per meeting. To run the club, we planned meetings one week in advance, communicated on Instagram, and used survey analytics to guide meeting content. Each member contributed to both internal club initiatives and external client work.
                   </p>
@@ -179,7 +181,7 @@ export default function FutureForwardProjectPage() {
 
           <StaggeredContent delay={500}>
             <div className="mb-12">
-              <h2 className="text-2xl font-bold text-green-400 mb-6">Financial Literacy Series</h2>
+              <h2 className="text-2xl font-bold   mb-6">Financial Literacy Series</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative aspect-video w-full bg-gray-800 overflow-hidden">
                   <img
@@ -188,7 +190,7 @@ export default function FutureForwardProjectPage() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="space-y-4 text-gray-300">
+                <div className="space-y-4  ">
                   <p>
                     As Financial Literacy is crucial to inform career decisions, Future Forward collaborated with the Markville Finance Club to deliver two lessons on financial literacy to 15 students and hosted the University of Waterloo’s Financial Literacy Competition with 11 participants.
                   </p>
@@ -198,12 +200,12 @@ export default function FutureForwardProjectPage() {
               
             </div>
 
-            <p className="text-gray-300">
+            <p className=" ">
                     Thanks <a className="underline" target="_blank" href="https://www.linkedin.com/in/holly-zhang-76702a248/">Holly Zhang</a> for the inspiration.
                   </p>
 
             
-            <p className="text-gray-300">
+            <p className=" ">
                     Unfortunately, now that I've graduated, the project is no longer continued and the website has been taken down. However, our project continues to be used for training at Markville DECA.
                   </p>
           </StaggeredContent>

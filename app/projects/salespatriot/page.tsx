@@ -17,9 +17,9 @@ export default function SalesPatriotProjectPage() {
 
         <main className="antialiased max-w-6xl mx-auto p-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
-            <div className="text-left mb-8">
-              <h1 className="text-4xl font-bold mb-2">SalesPatriot (YC W25)</h1>
-              <p className="text-lg text-gray-300">Work, 2025</p>
+            <div className="text-left mb-4">
+              <h1 className="text-3xl font-bold mb-2">SalesPatriot (YC W25)</h1>
+              <h1 className="text-m text-gray-300">Work, 2025</h1>
             </div>
           </StaggeredContent>
 
