@@ -32,7 +32,7 @@ export const mainProjects = [
     id: "futureforward",
     title: "Future Forward",
     year: "2024-2025",
-    description: "Non-profit focusing on helping students discover their vocations",
+    description: "Helping high school students discover their vocations",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ffbanner.png-JMScQeCriXKG0sG0z3bc8GFrra41av.jpeg",
     image2: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%203.png-jKOva7clSQUCHgEUorDDX86vX0w3Me.jpeg",
     image3: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%204.png-NMSo9ZL9dNWIiNEavhdNlELQycDNz9.jpeg",

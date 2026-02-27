@@ -70,7 +70,7 @@ export default function ProjectsPage() {
                       className="photo-card mb-6 cursor-pointer group"
                       style={{ "--glow-color": (project as any).colors || "#22c55e44" } as React.CSSProperties}
                     >
-                      <div className="aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]" style={{ background: "var(--surface)" }}>
+                      <div className="aspect-video w-full overflow-hidden transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]" style={{ background: "var(--surface)", cornerShape: "squircle", borderRadius: 25 }}>
                         <ProjectImageCycler
                           images={[project.image, (project as any).image2, (project as any).image3]}
                           alt={project.title}
