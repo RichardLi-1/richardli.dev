@@ -126,7 +126,7 @@ export default function SalesPatriotProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-xl" style={{ borderRadius: 30 }}>
+            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-xl" style={{ borderRadius: 25 }}>
               <img src="/images/design-mode/fatherfigurebanner.png" alt="screenshots" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>

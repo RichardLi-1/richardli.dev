@@ -15,17 +15,17 @@ export default function SalesPatriotProjectPage() {
           rightLinks={[{ href: "https://salespatriot.com/", text: "Website", external: true }]}
         />
 
-        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "120px" }}>
+        <main className="antialiased max-w-6xl mx-auto p-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic text-green-400 mb-2">SalesPatriot (YC W25)</h1>
+            <div className="text-left mb-8">
+              <h1 className="text-4xl font-bold mb-2">SalesPatriot (YC W25)</h1>
               <p className="text-lg text-gray-300">Work, 2025</p>
             </div>
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
             {/* Hero Image */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
+            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden" style={{cornerShape:"squircle", borderRadius:25}}>
               <img
                 src="/images/design-mode/salespatriott.png"
                 alt="SalesPatriot screenshots"
@@ -80,7 +80,7 @@ export default function SalesPatriotProjectPage() {
           <StaggeredContent delay={500}>
             <section className="space-y-6 mb-12">
               <h2 className="text-2xl font-bold text-green-400 mb-4">Example Work</h2>
-              <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg border border-gray-700">
+              <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg border border-gray-700" style={{cornerShape:"squircle", borderRadius:25}}>
                 <img
                   src="/images/salespatriot-ai-prototype.png"
                   alt="SalesPatriot AI Proposal Writing Figma Prototype"

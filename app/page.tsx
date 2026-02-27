@@ -18,7 +18,7 @@ export default function PersonalWebsite() {
       <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--text)" }}>
         <ResponsiveHeader isHomepage={true} currentPage="/" />
 
-        <main className="max-w-4xl mx-auto p-6 space-y-8 pt-[60px] sm:pt-[120px]">
+        <main className="antialiased max-w-4xl mx-auto p-6 space-y-8 pt-[60px] sm:pt-[120px]">
           {/* Introduction */}
           <StaggeredContent delay={0}>
             <section className="space-y-4">
