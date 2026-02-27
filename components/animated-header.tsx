@@ -56,6 +56,7 @@ const getSectionName = () => {
     if (currentPage.startsWith("/projects/")) return "Project"
     if (currentPage === "/projects") return "Work"
     if (currentPage.startsWith("/contact")) return "Contact"
+    if (currentPage.startsWith("/more")) return "More"
     if (currentPage.startsWith("/transit/photography")) return "Photography"
     if (currentPage.startsWith("/transit")) return "Transit"
     return backText || ""
@@ -65,6 +66,7 @@ const getSectionName = () => {
     if (isHomepage) {
       return [
         { href: "/projects", label: "Work" },
+        { href: "/more", label: "More" },
         { href: "https://www.linkedin.com/in/richardli0/", label: "LinkedIn", external: true },
         { href: "https://github.com/RichardLi-1", label: "GitHub", external: true },
       ]
