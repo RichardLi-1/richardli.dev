@@ -1,171 +1,26 @@
 "use client"
-import { useState } from "react"
 import type React from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
-import { Send } from "lucide-react"
 import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { ResponsiveHeader } from "@/components/responsiveheader"
 import { mainProjects } from "@/components/mainProjects"
 import { ProjectImageCycler } from "@/components/project-image-cycler"
-import ReactMarkdown from "react-markdown"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
-
-interface Message {
-  id: string
-  role: "user" | "assistant"
-  content: string
-}
+import { ChatBox } from "@/components/chat-box"
 
 export default function PersonalWebsite() {
-  const [messages, setMessages] = useState<Message[]>([])
-  const [input, setInput] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-
   usePageViewTracker()
-
-  const sendChatbotActivity = async (userMessage: string, assistantReply: string) => {
-    try {
-      await fetch(
-        "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            content: `🤖 **Chatbot Activity**\n📝 User: ${userMessage}\n💬 Assistant: ${assistantReply.substring(0, 500)}${assistantReply.length > 500 ? "..." : ""}\n🕒 ${new Date().toLocaleString()}`,
-          }),
-        },
-      )
-    } catch (err) {
-      console.error("Failed to send chatbot activity to Discord:", err)
-    }
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || isLoading) return
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      content: input,
-    }
-
-    setMessages((prev) => [...prev, userMessage])
-    const userMessageContent = input
-    setInput("")
-    setIsLoading(true)
-
-    try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messages: [...messages, userMessage],
-        }),
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to get response")
-      }
-
-      const reader = response.body?.getReader()
-      const decoder = new TextDecoder()
-      let assistantContent = ""
-
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: "",
-      }
-
-      setMessages((prev) => [...prev, assistantMessage])
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-
-          const chunk = decoder.decode(value)
-          const lines = chunk.split("\n")
-
-          for (const line of lines) {
-            if (line.startsWith("data: ")) {
-              const data = line.slice(6)
-              if (data === "[DONE]") {
-                setIsLoading(false)
-                sendChatbotActivity(userMessageContent, assistantContent)
-                return
-              }
-              try {
-                const parsed = JSON.parse(data)
-                if (parsed.content) {
-                  assistantContent += parsed.content
-                  setMessages((prev) =>
-                    prev.map((msg) => (msg.id === assistantMessage.id ? { ...msg, content: assistantContent } : msg)),
-                  )
-                }
-              } catch (e) {
-                // Ignore parsing errors
-              }
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error("Error:", error)
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          role: "assistant",
-          content: "Sorry, I encountered an error. Please try again.",
-        },
-      ])
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleSuggestedQuestion = (question: string) => {
-    setInput(question)
-    const syntheticEvent = {
-      preventDefault: () => {},
-    } as React.FormEvent
-    setTimeout(() => {
-      handleSubmit(syntheticEvent)
-    }, 100)
-  }
-
-  const suggestedQuestions = [
-    "Tell me about your role as Shift Leader at CoCo",
-    "What was your iOS app development experience like?",
-    "What did you do as a tutor?",
-    "Tell me about Toteally Yours",
-    "What are your responsibilities at YRHacks?",
-    "What did you achieve at DECA?",
-    "Tell me about a project you were very passionate about",
-    "What are you doing this winter?",
-  ]
 
   return (
     <AnimatedPage>
       <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--text)" }}>
-        {/* Header */}
-
         <ResponsiveHeader isHomepage={true} currentPage="/" />
 
         <main className="max-w-4xl mx-auto p-6 space-y-8 pt-[60px] sm:pt-[120px]">
           {/* Introduction */}
           <StaggeredContent delay={0}>
-            {" "}
-            {/* Changed from 200 */}
             <section className="space-y-4">
               <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)" }}>Hey, I'm Richard!</h1>
               <div className="space-y-2" style={{ color: "var(--text-2)" }}>
@@ -176,8 +31,6 @@ export default function PersonalWebsite() {
 
           {/* Current Activities */}
           <StaggeredContent delay={100}>
-            {" "}
-            {/* Changed from 400 */}
             <section className="space-y-4">
               <h2 className="text-xl section-label">I'm currently...</h2>
               <ul className="space-y-2 ml-4" style={{ color: "var(--text-2)" }}>
@@ -211,10 +64,9 @@ export default function PersonalWebsite() {
                   </span>
                 </li>
                 <li>
-                <span className="mr-2">•</span>
+                  <span className="mr-2">•</span>
                   interning at safuture inc
                 </li>
-
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
                   open to chatting about fall 2026 internship opportunities
@@ -225,8 +77,6 @@ export default function PersonalWebsite() {
 
           {/* Previous Experience */}
           <StaggeredContent delay={300}>
-            {" "}
-            {/* Changed from 600 */}
             <section className="space-y-4">
               <h2 className="text-xl section-label">Previously I...</h2>
               <ul className="space-y-2 ml-4" style={{ color: "var(--text-2)" }}>
@@ -312,8 +162,6 @@ export default function PersonalWebsite() {
 
           {/* Future */}
           <StaggeredContent delay={500}>
-            {" "}
-            {/* Changed from 800 */}
             <section className="space-y-4">
               <h2 className="text-xl section-label">Looking ahead, I'd like to...</h2>
               <div className="ml-4" style={{ color: "var(--text-2)" }}>
@@ -336,85 +184,18 @@ export default function PersonalWebsite() {
 
           {/* Chatbot Section */}
           <StaggeredContent delay={700}>
-            {" "}
-            {/* Changed from 1000 */}
             <section className="space-y-4">
               <h2 className="text-xl section-label">What else do you want to know about me?</h2>
-
-              <Card className="border" style={{ cornerShape: "superellipse", borderRadius: "24px", background: "var(--card-bg)", borderColor: "var(--border-2)" }}>
-                <CardContent className="p-4">
-                  {messages.length === 0 && (
-                    <div>
-                      <div className="text-sm" style={{ color: "var(--text-4)" }}>
-                        Ask me detailed questions about Richard's specific roles and experiences:
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="space-y-4 mb-4 max-h-96 overflow-y-auto">
-                    {messages.map((message) => (
-                      <div key={message.id} className="space-y-2">
-                        <div className="text-sm font-semibold" style={{ color: "var(--text)" }}>{message.role === "user" ? "You:" : "Richard:"}</div>
-                        <div style={{ color: "var(--text-2)" }}>
-                          {message.role === "assistant" ? (
-                            <ReactMarkdown
-                              className="prose prose-sm max-w-none"
-                              components={{
-                                p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                                strong: ({ children }) => (
-                                  <strong className="font-bold" style={{ color: "var(--text)" }}>{children}</strong>
-                                ),
-                                em: ({ children }) => <em className="italic" style={{ color: "var(--text-2)" }}>{children}</em>,
-                                ul: ({ children }) => <ul className="list-disc list-inside mb-2">{children}</ul>,
-                                ol: ({ children }) => <ol className="list-decimal list-inside mb-2">{children}</ol>,
-                                li: ({ children }) => <li className="mb-1">{children}</li>,
-                                code: ({ children }) => (
-                                  <code className="px-1 py-0.5 rounded" style={{ background: "var(--surface)", color: "var(--text-2)" }}>{children}</code>
-                                ),
-                                a: ({ children, href }) => (
-                                  <a
-                                    href={href}
-                                    className="underline"
-                                    style={{ color: "var(--text)" }}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    {children}
-                                  </a>
-                                ),
-                              }}
-                            >
-                              {message.content}
-                            </ReactMarkdown>
-                          ) : (
-                            <div className="whitespace-pre-wrap">{message.content}</div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                    {isLoading && <div className="text-sm" style={{ color: "var(--text-4)" }}>Richard is thinking...</div>}
-                  </div>
-
-                  <form onSubmit={handleSubmit} className="flex space-x-2">
-                    <Input
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      placeholder="Ask anything about me!"
-                      className="flex-1"
-                      style={{ background: "var(--surface)", borderColor: "var(--border-2)", color: "var(--text)" }}
-                      disabled={isLoading}
-                    />
-                    <Button type="submit" size="icon" style={{ background: "var(--text)", color: "var(--bg)" }} disabled={isLoading}>
-                      <Send className="w-4 h-4" />
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
+              <div
+                className="rounded-3xl border p-4"
+                style={{ background: "var(--card-bg)", borderColor: "var(--border-2)" }}
+              >
+                <ChatBox />
+              </div>
             </section>
           </StaggeredContent>
 
           <StaggeredContent delay={900}>
-            {/* Changed from 1200 */}
             <br />
             <span>
               I'd love to hear from you! Want to hire me? Or wanna chat? Feel free to reach out by{" "}
@@ -436,8 +217,6 @@ export default function PersonalWebsite() {
           </StaggeredContent>
         </main>
         <StaggeredContent delay={1100}>
-          {" "}
-          {/* Changed from 1400 */}
           <Footer />
         </StaggeredContent>
       </div>

@@ -15,7 +15,7 @@ export function Footer() {
 
         {/* Bottom row: built with */}
         <span style={{ fontFamily: "'SFCamera', sans-serif", color: "var(--text-3)", fontSize: "12px", opacity: 0.6 }}>
-          Built with Next.js and TypeScript. Set in SFCamera and Toronto Subway.
+          Written in TypeScript using Next.js. Set in SFCamera and Toronto Subway. Built with ❤️.
         </span>
 
         {/* Spacer for mobile floating pill nav */}
