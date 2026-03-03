@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
       model: "claude-haiku-4-5",
       system: SYSTEM_PROMPT,
       messages: messages.map(({ role, content }: { role: string; content: string }) => ({ role, content })),
-      max_tokens: 1000,
+      max_tokens: 500,
     })
 
     const encoder = new TextEncoder()
