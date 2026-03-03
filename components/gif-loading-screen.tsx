@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 interface GifLoadingScreenProps {
   onComplete: () => void
@@ -9,10 +9,11 @@ export function GifLoadingScreen({ onComplete }: GifLoadingScreenProps) {
   const [isVisible, setIsVisible] = useState(true)
   const [isLifting, setIsLifting] = useState(false)
   const [gifLoaded, setGifLoaded] = useState(false)
+  const gifSrc = useRef(`/images/loading-animation.gif?t=${Date.now()}`)
 
   useEffect(() => {
     const img = new Image()
-    img.src = `/images/loading-animation.gif?t=${Date.now()}`
+    img.src = gifSrc.current
 
     img.onload = () => {
       // Add a small delay to ensure the GIF starts from the beginning
@@ -64,7 +65,7 @@ export function GifLoadingScreen({ onComplete }: GifLoadingScreenProps) {
       <div className="w-96 h-96 flex items-center justify-center">
         {gifLoaded && (
           <img
-            src={`/images/loading-animation.gif?t=${Date.now()}`}
+            src={gifSrc.current}
             alt="Loading animation"
             className="w-full h-full object-contain"
           />
