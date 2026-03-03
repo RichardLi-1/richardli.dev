@@ -1,8 +1,9 @@
-import { openai } from "@ai-sdk/openai"
-import { streamText } from "ai"
+import Anthropic from "@anthropic-ai/sdk"
 import type { NextRequest } from "next/server"
 
 export const maxDuration = 30
+
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 const SYSTEM_PROMPT = `You are Richard Li's personal chatbot assistant. Speak as Richard in first person. Be conversational, friendly, detailed, yet very concise when sharing experiences.
 
@@ -69,21 +70,20 @@ export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json()
 
-    const result = streamText({
-      model: openai("gpt-4o-mini"),
+    const stream = client.messages.stream({
+      model: "claude-haiku-4-5",
       system: SYSTEM_PROMPT,
       messages: messages.map(({ role, content }: { role: string; content: string }) => ({ role, content })),
-      temperature: 0.7,
-      maxOutputTokens: 1000,
+      max_tokens: 1000,
     })
 
     const encoder = new TextEncoder()
-    const stream = new ReadableStream({
+    const readable = new ReadableStream({
       async start(controller) {
         try {
-          for await (const part of result.fullStream) {
-            if (part.type === "text-delta") {
-              controller.enqueue(encoder.encode(part.text))
+          for await (const event of stream) {
+            if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+              controller.enqueue(encoder.encode(event.delta.text))
             }
           }
         } finally {
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    return new Response(stream, {
+    return new Response(readable, {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     })
   } catch (error) {
