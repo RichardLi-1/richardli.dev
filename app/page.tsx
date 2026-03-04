@@ -34,6 +34,7 @@ export default function PersonalWebsite() {
             <section className="space-y-4">
               <h2 className="text-xl section-label">I'm currently...</h2>
               <ul className="space-y-2 ml-4" style={{ color: "var(--text-2)" }}>
+                <li> <span className="mr-2">•</span>rebuilding this site! stay tuned...</li>
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>

@@ -151,6 +151,7 @@ function AboutMeContent() {
 
         <h3 className="font-bold mt-4">Currently:</h3>
         <ul className="list-disc ml-4 space-y-1">
+          <li>rebuilding this site! stay tuned...</li>
           <li>studying systems design engineering at the University of Waterloo</li>
           <li>developing for formulatech hacks</li>
           <li>creating a class profile for the syde class of 2030</li>
