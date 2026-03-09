@@ -95,7 +95,7 @@ export default function PersonalWebsite() {
                       src="/images/design-mode/logo.3aecaa9f.svg"
                     />
                     <a
-                      href="https://yrhacks.ca/"
+                      href=""
                       className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
                       target="_blank"
                       rel="noopener noreferrer"

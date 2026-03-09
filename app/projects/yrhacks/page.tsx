@@ -31,7 +31,7 @@ export default function YRHacksProjectPage() {
           backHref="/projects"
           backText="Back"
           currentPage="/projects/yrhacks"
-          rightLinks={[{ href: "https://www.yrhacks.ca", text: "Website", external: true }]}
+          rightLinks={[{ href: "", text: "Website", external: true }]}
         />
 
         <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: "60px" }}>
