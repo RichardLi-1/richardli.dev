@@ -28,6 +28,16 @@ export const mainProjects = [
     tags: ["Internship", "UI/UX", "AI"],
     colors: "#352F0C",
   },
+    {
+    id: "transitplanner",
+    title: "Transit Planner",
+    year: "2026",
+    description: "Transit planner, more to come...",
+    image: "/images/transitplannerbanner.png",
+    logo: "",
+    tags: ["iOS", "Swift", "Game Development"],
+    colors: "#ffffff",
+  },
   {
     id: "futureforward",
     title: "Future Forward",
