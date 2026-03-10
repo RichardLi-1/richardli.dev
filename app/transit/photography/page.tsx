@@ -2,6 +2,7 @@
 import { useState } from "react"
 import Nav from "@/components/Nav"
 import PhotoModal from "@/components/PhotoModal"
+import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
 const featuredPhoto = {
   title: '"Departing Norfinch"',
@@ -24,6 +25,7 @@ const gridPhotos = [
 ]
 
 export default function PhotographyPage() {
+  usePageViewTracker()
   const [search, setSearch] = useState("")
   const [selectedPhoto, setSelectedPhoto] = useState<typeof gridPhotos[0] | null>(null)
 

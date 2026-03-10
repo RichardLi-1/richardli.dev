@@ -4,6 +4,7 @@ import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
 import { Footer } from "@/components/footer"
 import { useInView } from "@/hooks/use-in-view"
+import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
 // ── Shared photo renderer ─────────────────────────────────────────────────────
 
@@ -253,6 +254,7 @@ const collageItems: ScatterProps[] = [
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function FunctionsPage() {
+  usePageViewTracker()
   return (
     <AnimatedPage>
       <div className="page-bg min-h-screen">

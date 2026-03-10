@@ -9,6 +9,7 @@ import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { mainProjects } from "@/components/mainProjects"
 import { ProjectImageCycler } from "@/components/project-image-cycler"
+import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
 const additionalProjects = [
   {
@@ -23,6 +24,7 @@ const additionalProjects = [
 ]
 
 export default function ProjectsPage() {
+  usePageViewTracker()
   const [showAdditional, setShowAdditional] = useState(false)
 
   const allProjects = showAdditional ? [...mainProjects, ...additionalProjects] : mainProjects

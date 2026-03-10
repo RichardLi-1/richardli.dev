@@ -4,8 +4,10 @@ import { AnimatedHeader } from "@/components/animated-header"
 import { Footer } from "@/components/footer"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { DraggableSticker } from "@/components/draggable-sticker"
+import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
 export default function MorePage() {
+  usePageViewTracker()
   const { togglePersonalizedMode } = useWindowsXP()
   const {isPersonalized} = useWindowsXP()
 

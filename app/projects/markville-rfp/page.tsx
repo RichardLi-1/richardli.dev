@@ -5,8 +5,10 @@ import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Award, FileText } from "lucide-react"
+import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
 export default function MarkvilleRFPProjectPage() {
+  usePageViewTracker()
   return (
     <AnimatedPage>
       <div className="min-h-screen page-bg">

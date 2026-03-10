@@ -5,8 +5,10 @@ import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { RelatedProjects } from "@/components/related-projects"
+import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
 export default function YRHacksProjectPage() {
+  usePageViewTracker()
   const [showAllTeam, setShowAllTeam] = useState(false) // State to manage visibility
 
   const fullTeamMembers = [

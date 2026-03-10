@@ -37,6 +37,16 @@ export function usePageViewTracker() {
       if (hasTracked.current) return
       hasTracked.current = true
 
+      // Build navigation path trail
+      const currentPath = window.location.pathname || "/"
+      const stored = sessionStorage.getItem("nav_path")
+      const pathHistory: string[] = stored ? JSON.parse(stored) : []
+      if (pathHistory[pathHistory.length - 1] !== currentPath) {
+        pathHistory.push(currentPath)
+      }
+      sessionStorage.setItem("nav_path", JSON.stringify(pathHistory))
+      const pathTrail = pathHistory.join(" → ")
+
       let ip = "unknown"
       try {
         const res = await fetch("https://api.ipify.org?format=json")
@@ -50,8 +60,8 @@ export function usePageViewTracker() {
       const isLinkedIn = window.location.href === "https://www.richardli.dev/?l"
 
       const message = isLinkedIn
-        ? `👀 New visitor on ${window.location.href} from **LinkedIn**\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
-        : `👀 New visitor on ${window.location.href}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
+        ? `👀 New visitor on ${window.location.href} from **LinkedIn**\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
+        : `👀 New visitor on ${window.location.href}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
 
       try {
         await fetch(

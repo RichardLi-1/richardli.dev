@@ -6,8 +6,10 @@ import { AnimatedHeader } from "@/components/animated-header"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { DraggableSticker } from "@/components/draggable-sticker"
 import { RelatedProjects } from "@/components/related-projects"
+import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
 export default function SalesPatriotProjectPage() {
+  usePageViewTracker()
   const { isPersonalized } = useWindowsXP()
   return (
     <AnimatedPage>
