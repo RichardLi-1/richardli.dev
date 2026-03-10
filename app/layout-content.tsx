@@ -6,8 +6,10 @@ import { WindowsXPDesktop } from "@/components/windows-xp/desktop"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { GifLoadingScreen } from "@/components/gif-loading-screen"
 import { ThemeProvider } from "@/components/theme-provider"
+import { usePreserveM } from "@/hooks/use-preserve-m"
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
+  usePreserveM()
   const { isXPMode } = useWindowsXP()
   const [showLoading, setShowLoading] = useState(true)
 

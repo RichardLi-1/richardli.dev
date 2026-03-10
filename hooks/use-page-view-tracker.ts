@@ -33,8 +33,8 @@ export function usePageViewTracker() {
       // Skip localhost
       if (window.location.hostname === "localhost") return
 
-      // Skip ?m parameter
-      if (new URLSearchParams(window.location.search).has("m")) return
+      // Skip ?m parameter (current URL or carried over from session)
+      if (new URLSearchParams(window.location.search).has("m") || sessionStorage.getItem("preserve_m")) return
 
       // Only track once per page load
       if (hasTracked.current) return
