@@ -62,6 +62,16 @@ export const mainProjects = [
   //   colors: "",
   // },
   {
+    id: "4sight",
+    title: "4sight",
+    year: "2025",
+    description: "Eye Tester App",
+    image: "/videos/4sight.mp4",
+    logo: "/images/jamAsset.PNG",
+    tags: ["iOS", "Swift", "App Development"],
+    colors: "",
+  },
+  {
     id: "yrhacks",
     title: "YRHacks",
     year: "2024-2025",
@@ -81,16 +91,7 @@ export const mainProjects = [
   //   tags: ["iOS", "Swift", "App Development"],
   //   colors: "#003DA5",
   // },
-  {
-    id: "4sight",
-    title: "4sight",
-    year: "2025",
-    description: "Eye Tester App",
-    image: "/videos/4sight.mp4",
-    logo: "/images/jamAsset.PNG",
-    tags: ["iOS", "Swift", "App Development"],
-    colors: "",
-  },
+  
   {
     id: "transitto",
     title: "TO Transit",

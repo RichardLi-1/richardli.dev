@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 interface ProjectImageCyclerProps {
   images: (string | undefined)[]
@@ -11,6 +11,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
   const validImages = images.filter((img): img is string => !!img)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [loaded, setLoaded] = useState(false)
+  const mediaRef = useRef<HTMLImageElement & HTMLVideoElement>(null)
 
   useEffect(() => {
     if (validImages.length <= 1) return
@@ -24,9 +25,13 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
 
   const current = validImages.length > 0 ? validImages[currentImageIndex] : null
 
-  // Reset loaded state when the source changes
+  // Reset loaded state when source changes; immediately resolve if already cached
   useEffect(() => {
     setLoaded(false)
+    const el = mediaRef.current
+    if (!el) return
+    if (el instanceof HTMLImageElement && el.complete) setLoaded(true)
+    if (el instanceof HTMLVideoElement && el.readyState >= 2) setLoaded(true)
   }, [current])
 
   if (!current) {
@@ -53,6 +58,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
       {/* Media */}
       {isVideo ? (
         <video
+          ref={mediaRef}
           key={current}
           src={current}
           autoPlay
@@ -65,6 +71,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
         />
       ) : (
         <img
+          ref={mediaRef}
           key={current}
           src={current}
           alt={alt}

@@ -31,7 +31,7 @@ export default function PersonalWebsite() {
 
           {/* Current Activities */}
           <StaggeredContent delay={100}>
-            <section className="space-y-4">
+            <section className="space-y-2">
               <h2 className="text-xl section-label">I'm currently...</h2>
               <ul className="space-y-2 ml-4" style={{ color: "var(--text-2)" }}>
                 <li> <span className="mr-2">•</span>rebuilding this site! stay tuned...</li>
@@ -76,7 +76,7 @@ export default function PersonalWebsite() {
             </section>
           </StaggeredContent>
 
-          {/* Previous Experience */}
+          {/* Previous Experience 
           <StaggeredContent delay={300}>
             <section className="space-y-4">
               <h2 className="text-xl section-label">Previously I...</h2>
@@ -107,22 +107,22 @@ export default function PersonalWebsite() {
                 </li>
               </ul>
             </section>
-          </StaggeredContent>
+          </StaggeredContent>*/}
 
           {/* Projects */}
           <StaggeredContent delay={500}>
-            <section className="space-y-4">
+            <section className="space-y-2">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl section-label">
-                  Some{" "}
+                  Some of my{" "}
                   <a
                     href="/projects"
                     className="underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
                     style={{ color: "inherit" }}
                   >
-                    projects
-                  </a>{" "}
-                  I made...
+                    work and projects
+                  </a>
+                  ...
                 </h2>
                 <Link href="/projects">
                   <span className="text-xs hover:underline cursor-pointer" style={{ color: "var(--text-4)" }}>
@@ -132,13 +132,13 @@ export default function PersonalWebsite() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {mainProjects.slice(0, 3).map((project) => (
+                {mainProjects.slice(0, 6).map((project) => (
                   <Link key={project.id} href={`/projects/${project.id}`}>
                     <div
                       className="photo-card h-full flex flex-col cursor-pointer group"
                       style={{ "--glow-color": project.colors || "#22c55e44" } as React.CSSProperties}
                     >
-                      <div className="aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]" style={{ background: "var(--surface)" }}>
+                      <div className="aspect-video w-full overflow-hidden squircle transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]" style={{ background: "var(--surface)" }}>
                         <ProjectImageCycler
                           images={[project.image, (project as any).image2, (project as any).image3]}
                           alt={project.title}
@@ -163,7 +163,7 @@ export default function PersonalWebsite() {
 
           {/* Future */}
           <StaggeredContent delay={500}>
-            <section className="space-y-4">
+            <section className="space-y-2">
               <h2 className="text-xl section-label">Looking ahead, I'd like to...</h2>
               <div className="ml-4" style={{ color: "var(--text-2)" }}>
                 <ul className="space-y-2 ml-4 list-disc">
@@ -185,10 +185,10 @@ export default function PersonalWebsite() {
 
           {/* Chatbot Section */}
           <StaggeredContent delay={700}>
-            <section className="space-y-4">
+            <section className="space-y-2">
               <h2 className="text-xl section-label">What else do you want to know about me?</h2>
               <div
-                className="rounded-3xl border p-4"
+                className="rounded-4xl squircle-lg border p-4"
                 style={{ background: "var(--card-bg)", borderColor: "var(--border-2)" }}
               >
                 <ChatBox />
@@ -199,7 +199,7 @@ export default function PersonalWebsite() {
           <StaggeredContent delay={900}>
             <br />
             <span>
-              I'd love to hear from you! Want to hire me? Or wanna chat? Feel free to reach out by{" "}
+              I'd love to hear from you! Want to hire me or collab on a project? Or wanna chat? Feel free to reach out by{" "}
               <a
                 href="mailto:richardli0@outlook.com"
                 className="text-stone-400 underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"

@@ -9,7 +9,7 @@ export function Footer() {
             <div className="relative flex size-2 items-center justify-center">
               <div className="size-2 rounded-full bg-green-400 animate-pulse-custom"></div>
             </div>
-            <span className="text-sm">Version 2.0.0 - Updated 02/25/2025</span>
+            <span className="text-sm">Version 2.0.1 - Updated 03/10/2025</span>
           </div>
         </div>
 
