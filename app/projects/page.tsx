@@ -27,7 +27,7 @@ export default function ProjectsPage() {
   usePageViewTracker()
   const [showAdditional, setShowAdditional] = useState(false)
 
-  const allProjects = showAdditional ? [...mainProjects, ...additionalProjects] : mainProjects
+  const allProjects = (showAdditional ? [...mainProjects, ...additionalProjects] : mainProjects).filter(p => !(p as any).hidden)
 
   return (
     <AnimatedPage>

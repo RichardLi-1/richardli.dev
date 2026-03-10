@@ -33,7 +33,7 @@ export const mainProjects = [
     title: "Transit Planner",
     year: "2026",
     description: "Transit planner, more to come...",
-    image: "/images/transitplannerbanner.png",
+    image: "/videos/transitplanfinal.mov",
     logo: "",
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#ffffff",
@@ -86,7 +86,7 @@ export const mainProjects = [
     title: "4sight",
     year: "2025",
     description: "Eye Tester App",
-    image: "",
+    image: "/videos/4sight.mp4",
     logo: "/images/jamAsset.PNG",
     tags: ["iOS", "Swift", "App Development"],
     colors: "",
@@ -100,5 +100,6 @@ export const mainProjects = [
     logo: "",
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#417193",
+    hidden: true
   },
 ]

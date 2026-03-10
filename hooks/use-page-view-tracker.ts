@@ -27,15 +27,20 @@ export function usePageViewTracker() {
         return
       }
 
-      // Skip bots
-      if (/bot|crawler|spider/i.test(navigator.userAgent)) return
-
       // Skip vusercontent.net URLs
       if (window.location.href.includes("vusercontent.net")) return
+
+      // Skip localhost
+      if (window.location.hostname === "localhost") return
+
+      // Skip ?m parameter
+      if (new URLSearchParams(window.location.search).has("m")) return
 
       // Only track once per page load
       if (hasTracked.current) return
       hasTracked.current = true
+
+      const isBot = /bot|crawler|spider/i.test(navigator.userAgent)
 
       // Build navigation path trail
       const currentPath = window.location.pathname || "/"
@@ -59,7 +64,9 @@ export function usePageViewTracker() {
       // Check if URL is LinkedIn referral
       const isLinkedIn = window.location.href === "https://www.richardli.dev/?l"
 
-      const message = isLinkedIn
+      const message = isBot
+        ? `🤖 Bot/crawler on ${window.location.href}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}\n🔍 UA: ${navigator.userAgent}`
+        : isLinkedIn
         ? `👀 New visitor on ${window.location.href} from **LinkedIn**\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
         : `👀 New visitor on ${window.location.href}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
 

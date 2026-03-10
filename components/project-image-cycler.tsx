@@ -25,5 +25,21 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
     return <img src="/placeholder.svg" alt={alt} className={className} />
   }
 
-  return <img src={validImages[currentImageIndex] || "/placeholder.svg"} alt={alt} className={className} />
+  const current = validImages[currentImageIndex] || "/placeholder.svg"
+
+  if (current.endsWith(".mp4") || current.endsWith(".mov")) {
+    return (
+      <video
+        src={current}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={className}
+        style={{ objectFit: "cover" }}
+      />
+    )
+  }
+
+  return <img src={current} alt={alt} className={className} />
 }
