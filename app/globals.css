@@ -180,7 +180,8 @@ h3 {
 /* ── Photography-style card ──────────────────────────── */
 .photo-card {
   background: var(--card-bg);
-  border-radius: 28px;
+  border-radius: 48px;
+  corner-shape: squircle;
   overflow: hidden;
   border: 1px solid var(--border-2);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
