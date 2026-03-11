@@ -24,9 +24,17 @@ export default function SalesPatriotProjectPage() {
         <main className="max-w-6xl mx-auto p-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-4">
-              <h1 className="text-4xl mb-2 flex gap-2 text-[#00A6E3] [.light_&]:text-[#0082b12]/70">
+              {isPersonalized && (
+                <h1 className="text-4xl mb-2 flex gap-2 text-[#00A6E3] [.light_&]:text-[#0082b12]/70">
                 Father Figure
               </h1>
+              )}
+              {!isPersonalized && (
+                <h1 className="text-4xl mb-2 flex gap-2 [.light_&]:text-[#0082b12]/70">
+                Father Figure
+              </h1>
+              )}
+              
               <h1 className="text-m text-gray-400">Project, 2025</h1>
             </div>
           </StaggeredContent>
@@ -77,9 +85,9 @@ export default function SalesPatriotProjectPage() {
 
         {isPersonalized && (
           <>
-            <DraggableSticker src="/images/fatherfigure/Sneeze.png"       ix={0.72} iy={0.55} size={150} />
-            <DraggableSticker src="/images/fatherfigure/Sneeze_Chang.png" ix={0.80} iy={0.25} size={130} />
-            <DraggableSticker src="/images/fatherfigure/Sneeze_Dave.png"  ix={0.06} iy={0.45} size={140} />
+            <DraggableSticker src="/images/fatherfigure/Sneeze.png"       ix={0.72} iy={0.55} size={150} delay={0} />
+            <DraggableSticker src="/images/fatherfigure/Sneeze_Chang.png" ix={0.80} iy={0.25} size={130} delay={200} />
+            <DraggableSticker src="/images/fatherfigure/Sneeze_Dave.png"  ix={0.06} iy={0.45} size={140} delay={400} />
           </>
         )}
       </div>

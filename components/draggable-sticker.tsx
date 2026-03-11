@@ -1,11 +1,12 @@
 "use client"
 import { useRef, useState, useEffect, useCallback } from "react"
 
-export function DraggableSticker({ src, ix, iy, size = 120 }: {
+export function DraggableSticker({ src, ix, iy, size = 120, delay = 0 }: {
   src: string
   ix: number
   iy: number
   size?: number
+  delay?: number
 }) {
   const imgRef = useRef<HTMLImageElement>(null)
   const fraction = useRef({ x: ix, y: iy })
@@ -13,6 +14,12 @@ export function DraggableSticker({ src, ix, iy, size = 120 }: {
   const dragging = useRef(false)
   const hasDragged = useRef(false)
   const [ready, setReady] = useState(false)
+  const [popped, setPopped] = useState(false)
+
+  useEffect(() => {
+    const t = setTimeout(() => setPopped(true), delay)
+    return () => clearTimeout(t)
+  }, [delay])
 
   const applyPosition = useCallback(() => {
     if (!imgRef.current) return
@@ -105,7 +112,8 @@ export function DraggableSticker({ src, ix, iy, size = 120 }: {
         userSelect: "none",
         zIndex: 40,
         filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.2))",
-        visibility: ready ? "visible" : "hidden",
+        visibility: ready && popped ? "visible" : "hidden",
+        animation: popped ? "stickerPop 0.55s cubic-bezier(0.34,1.56,0.64,1) forwards" : "none",
       }}
     />
   )

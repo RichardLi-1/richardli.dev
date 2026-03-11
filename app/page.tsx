@@ -138,12 +138,12 @@ export default function PersonalWebsite() {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {mainProjects.slice(0, 6).map((project) => (
                   <Link key={project.id} href={`/projects/${project.id}`}>
                     <div
                       className="photo-card h-full flex flex-col cursor-pointer group"
-                      style={{ "--glow-color": project.colors || "#22c55e44" } as React.CSSProperties}
+                      style={{ "--glow-color": project.colors || "#22c55e44", borderRadius: 32 } as React.CSSProperties}
                     >
                       <div className="aspect-video w-full overflow-hidden squircle transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]" style={{ background: "var(--surface)" }}>
                         <ProjectImageCycler
@@ -196,7 +196,7 @@ export default function PersonalWebsite() {
               <h2 className="text-xl section-label">What else do you want to know about me?</h2>
               <div
                 className="rounded-4xl squircle-lg border p-4"
-                style={{ background: "var(--card-bg)", borderColor: "var(--border-2)" }}
+                style={{ background: "var(--card-bg)", borderColor: "var(--border-2)", borderRadius: 32} as React.CSSProperties } 
               >
                 <ChatBox />
               </div>
