@@ -28,7 +28,7 @@ export default function TransitPlannerProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
-            <div className="relative aspect-video w-full overflow-hidden" style={{ borderRadius: 25 }}>
+            <div className="relative w-full overflow-hidden" style={{ borderRadius: 25 }}>
               <video
                 src="/videos/transitplanfinal.mov"
                 className="w-full h-full object-cover"
@@ -54,9 +54,9 @@ export default function TransitPlannerProjectPage() {
                 <div>
                   <h3 className="font-bold mb-2">Team</h3>
                   <div className="space-y-1">
-                    <p>Fiona Fang</p>
-                    <p>Evan Yang</p>
-                    <p>Christopher Stevers</p>
+                    <a className="hover:underline" href="https://www.linkedin.com/in/fiona-fangg/" target="_blank"><p>Fiona Fang</p></a>
+                    <a className="hover:underline" href="https://www.linkedin.com/in/evanzyang/" target="_blank"><p>Evan Yang</p></a>
+                    <a className="hover:underline" href="https://www.linkedin.com/in/christopher-stevers-07b9a5204" target="_blank"><p>Christopher Stevers</p></a>
                   </div>
                 </div>
                 <div>
@@ -75,7 +75,7 @@ export default function TransitPlannerProjectPage() {
                 <h3 className="font-bold mb-2">Overview</h3>
                 <div className="space-y-4">
                   <p>Transit Planner is an AI-powered transit optimization system that models and routes public transit networks at scale. An orchestrator-agent architecture ingests real-time and historical data — pricing, population density, ridership patterns, and vehicle traffic speeds — and synthesizes optimal routes and timelines.</p>
-                  <p>The system runs on Kubernetes with write-through caching, paired with a Next.js + map frontend for interactive exploration of transit plans.</p>
+                  <p>=Next.js + map frontend for interactive exploration of transit plans.</p>
                 </div>
               </div>
             </div>
