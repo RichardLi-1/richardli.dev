@@ -9,8 +9,15 @@ import { mainProjects } from "@/components/mainProjects"
 import { ProjectImageCycler } from "@/components/project-image-cycler"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { ChatBox } from "@/components/chat-box"
+import { useWindowsXP } from "@/contexts/windows-xp-context"
+import { DraggableSticker } from "@/components/draggable-sticker"
+
+  
 
 export default function PersonalWebsite() {
+  const { togglePersonalizedMode } = useWindowsXP()
+  const {isPersonalized} = useWindowsXP()
+
   usePageViewTracker()
 
   return (
@@ -216,6 +223,12 @@ export default function PersonalWebsite() {
               .
             </span>
           </StaggeredContent>
+          {isPersonalized && (
+            <>
+              <DraggableSticker src="/images/homepagestickers/mollytea.png" ix={0.90} iy={0.55} size={80} />
+            </>
+          )}
+          
         </main>
         <StaggeredContent delay={1100}>
           <Footer />
