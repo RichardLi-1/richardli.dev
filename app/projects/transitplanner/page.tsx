@@ -30,7 +30,7 @@ export default function TransitPlannerProjectPage() {
         <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "40px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-8">
-              <h1 className="text-4xl font-bold mb-2">Transit Planner</h1>
+              <h2 className="text-4xl font-bold mb-2">Transit Planner</h2>
               <p className="text-m text-gray-400">Web App, 2026</p>
             </div>
           </StaggeredContent>
@@ -124,15 +124,23 @@ export default function TransitPlannerProjectPage() {
               <img src="/images/Transit tweet.png" alt="Transit Planner Launch Tweet by Fiona Fang" className="w-full squircle rounded-lg aspect-square sm:aspect-auto object-cover" />
               
               <h2 className="font-bold mt-8 mb-2 text-2xl">More features</h2>
-              <p className="mb-2">We're excited to develop this further. Here are some features I've added since: 
+              <p className="mb-2">We're excited to develop this further. Here are some features I've added since: </p>
                 
                 <h3 className="font-semibold mt-4 mb-2 text-lg">Surface Route Accuracy</h3>
-              Initially, bus and streetcar routes floated from one point to another. I added automatic snapping to roads as well as portals to indicate underground sections that don't have to follow road medians.</p>
+              <p className="mb-2">Initially, bus and streetcar routes floated from one point to another. I added automatic snapping to roads as well as portals to indicate underground sections that don't have to follow road medians.</p>
             <video src="/videos/road-snapping.mov" autoPlay loop muted playsInline className="w-full squircle rounded-lg" />
 
             <p className="mb-2 mt-4">This project has introduced me to much of the small but active community of transit data and modelling professionals, from whom I have a lot to learn from.</p>
              <p className="mb-2 mt-4">I hope to make this project either useful professionally or as an educational tool or game for transit enthusiasts. If you have any feedback or suggestions, or would like to collaborate, please reach out!</p>
             </div>
+
+            <h3 className="font-semibold mt-4 mb-2 text-lg">Next Steps</h3>
+            <p className="mb-2">There are still a lot of features I'd like to explore with Transit Planner. To list a few:</p>
+            <ul className="list-disc list-inside mb-2">
+              <li>Data driven analysis of accessibility</li>
+              <li>GTFS Realtime and visualization of moving vehicles</li>
+              <li>Transit modelling features</li>
+            </ul>                
 
           </StaggeredContent>
 

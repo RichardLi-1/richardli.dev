@@ -103,4 +103,15 @@ export const mainProjects = [
     colors: "#417193",
     hidden: true
   },
+  {
+    id: "safuture",
+    title: "SaFuture Inc and Qwhery",
+    year: "2026",
+    description: "Winter 26 Internship",
+    image: "",
+    logo: "",
+    tags: ["iOS", "Swift", "Game Development"],
+    colors: "#417193",
+    hidden: true
+  },
 ]
