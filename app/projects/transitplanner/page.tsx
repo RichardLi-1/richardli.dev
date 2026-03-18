@@ -36,15 +36,14 @@ export default function TransitPlannerProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
-            <div className="relative w-full overflow-hidden" style={{ borderRadius: 25 }}>
+            <div className="relative w-full overflow-hidden squircle rounded-lg">
               <video
                 src="/videos/transitplanfinal.mov"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover squircle"
                 autoPlay
                 loop
                 muted
                 playsInline
-                style={{ borderRadius: 25 }}
               />
             </div>
           </StaggeredContent>
@@ -122,14 +121,14 @@ export default function TransitPlannerProjectPage() {
 
               <h2 className="font-bold mt-8 mb-2 text-2xl">Initial Development</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
-              <img src="/images/Transit tweet.png" alt="Transit Planner Launch Tweet by Fiona Fang" className="w-full rounded-2xl" />
+              <img src="/images/Transit tweet.png" alt="Transit Planner Launch Tweet by Fiona Fang" className="w-full squircle rounded-lg" />
               
               <h2 className="font-bold mt-8 mb-2 text-2xl">More features</h2>
               <p className="mb-2">We're excited to develop this further. Here are some features I've added since: 
                 
                 <h3 className="font-semibold mt-4 mb-2 text-lg">Surface Route Accuracy</h3>
               Initially, bus and streetcar routes floated from one point to another. I added automatic snapping to roads as well as portals to indicate underground sections that don't have to follow road medians.</p>
-            <video src="/videos/road-snapping.mov" autoPlay loop muted playsInline className="w-full rounded-2xl" />
+            <video src="/videos/road-snapping.mov" autoPlay loop muted playsInline className="w-full squircle rounded-lg" />
 
              <p className="mb-2 mt-4">I hope to make this project either useful professionally or as an educational tool or game for transit enthusiasts. If you have any feedback or suggestions, or would like to collaborate, please reach out!</p>
             </div>
