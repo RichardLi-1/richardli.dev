@@ -205,9 +205,9 @@ const getSectionName = () => {
                   </div>
                   <Link href="/" className="nav-logo">Richard Li</Link>
                   {sectionName && (
-                    <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: "16px", letterSpacing: "0.08em", color: "var(--text-3)" }}>
+                    <Link href={currentPage.startsWith("/projects/") ? "/projects" : "/"} style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: "16px", letterSpacing: "0.08em", color: "var(--text-3)", textDecoration: "none" }}>
                       {sectionName}
-                    </span>
+                    </Link>
                   )}
                 </div>
               )}

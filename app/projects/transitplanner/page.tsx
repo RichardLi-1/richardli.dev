@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image"
 import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
@@ -6,9 +7,16 @@ import { AnimatedHeader } from "@/components/animated-header"
 import { ExternalLink } from "lucide-react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
+import { useEffect } from "react"
 
 export default function TransitPlannerProjectPage() {
   usePageViewTracker()
+
+  useEffect(() => {
+    if ((window as any).twttr?.widgets) {
+      (window as any).twttr.widgets.load()
+    }
+  }, [])
 
   return (
     <AnimatedPage>
@@ -46,13 +54,13 @@ export default function TransitPlannerProjectPage() {
               <div className="flex squircle bg-zinc-200 dark:bg-zinc-800 max-width w-full rounded-xl border-2">
                 <p className="p-2 py-3 px-3.5 text-zinc-800 dark:text-zinc-300">🥇 This project was awarded at Hack Canada 2026 in the Google - Build with AI Track</p>
               </div>
-              <a href="https://transit-planner-web.vercel.app/" target="_blank" rel="noopener noreferrer" className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 shrink-on-hover">Try it out!</a>
+              <a href="https://transit-planner-web.vercel.app/" target="_blank" rel="noopener noreferrer" className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90">Try it out!</a>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
                   <h3 className="font-bold mb-2">Timeline</h3>
-                  <p>2026</p>
+                  <p>2026 - Present</p>
                 </div>
                 <div>
                   <h3 className="font-bold mb-2">Team</h3>
@@ -78,7 +86,10 @@ export default function TransitPlannerProjectPage() {
                 <h3 className="font-bold mb-2">Overview</h3>
                 <div className="space-y-4">
                   <p>Transit Planner is an AI-powered transit optimization system that models and routes public transit networks at scale. An orchestrator-agent architecture ingests real-time and historical data — pricing, population density, ridership patterns, and vehicle traffic speeds — and synthesizes optimal routes and timelines.</p>
-                  <p>=Next.js + map frontend for interactive exploration of transit plans.</p>
+                </div>
+                <h3 className="font-bold mb-2 mt-4">Technologies</h3>
+                <div className="space-y-4">
+                  <p>Next.js + Mapbox frontend, Python + FastAPI backend</p>
                 </div>
               </div>
             </div>
@@ -88,14 +99,28 @@ export default function TransitPlannerProjectPage() {
             <div className="mb-8">
               <h3 className="font-bold mb-4">Initial System Architecture</h3>
               <div className="photo-card" style={{ padding: 0, overflow: "hidden", borderRadius: 20 }}>
-                <img
-                  src="/images/transit-planner/transit-initial-system-diagram.png"
-                  alt="Transit Planner System Diagram"
-                  className="w-full"
-                  style={{ display: "block", borderRadius: 18 }}
-                />
+                <div className="flex items-start gap-6 p-6">
+                  <div className="w-2/3 shrink-0">
+                    <Image
+                      src="/images/transit-planner/transit-initial-system-diagram.png"
+                      alt="Transit Planner System Diagram"
+                      width={1678}
+                      height={1760}
+                      className="w-full h-auto"
+                      style={{ display: "block", borderRadius: 12 }}
+                    />
+                  </div>
+                  <div className="w-1/3">
+                    <p>The initial architecture we drew</p>
+                  </div>
+                </div>
               </div>
+
+
+              <h3 className="font-bold mt-8">Inspiration</h3>
+              <p>As a kid, I spent countless hours on subway builders like JP Wright's <a href="https://jpwright.github.io/subway/" target="_blank" rel="noopener noreferrer" className="underline inline-block transition-transform duration-150 hover:scale-95">Brand New Subway</a>.</p>
             </div>
+
           </StaggeredContent>
 
           <RelatedProjects currentId="transitplanner" />

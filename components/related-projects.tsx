@@ -18,12 +18,12 @@ export function RelatedProjects({ currentId }: { currentId: string }) {
             >
               <div
                 className="w-full overflow-hidden transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]"
-                style={{ aspectRatio: "16/9", background: "var(--surface)", borderRadius: "inherit" }}
+                style={{ aspectRatio: "16/9", background: "var(--surface)", borderRadius: "16px 16px 0 0" }}
               >
                 <ProjectImageCycler
                   images={[project.image, (project as any).image2, (project as any).image3]}
                   alt={project.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-300"
                 />
               </div>
               <div className="px-5 py-4 flex flex-col flex-grow">
