@@ -106,6 +106,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  body.personalized {
+    font-family: 'Google Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
 }
 
 /* Custom scrollbar for chat */

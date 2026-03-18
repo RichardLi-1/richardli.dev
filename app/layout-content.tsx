@@ -10,7 +10,11 @@ import { usePreserveM } from "@/hooks/use-preserve-m"
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   usePreserveM()
-  const { isXPMode } = useWindowsXP()
+  const { isXPMode, isPersonalized } = useWindowsXP()
+
+  useEffect(() => {
+    document.body.classList.toggle("personalized", isPersonalized)
+  }, [isPersonalized])
   const [showLoading, setShowLoading] = useState(true)
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect, useRef } from "react"
+import Image from "next/image"
 
 interface ProjectImageCyclerProps {
   images: (string | undefined)[]
@@ -35,7 +36,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
   }, [current])
 
   if (!current) {
-    return <img src="/placeholder.svg" alt={alt} className={className} />
+    return <Image src="/placeholder.svg" alt={alt} className={className} fill sizes="100vw" />
   }
 
   const isVideo = current.endsWith(".mp4") || current.endsWith(".mov")

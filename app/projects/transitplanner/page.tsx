@@ -19,7 +19,7 @@ export default function TransitPlannerProjectPage() {
           currentPage="/projects/transitplanner"
         />
 
-        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "60px" }}>
+        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "20px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2">Transit Planner</h1>
@@ -42,8 +42,8 @@ export default function TransitPlannerProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={300}>
-            <div className="bg-zinc-800 max-width rounded-md mb-8 border-2">
-              <p className="p-2 py-3 px-3.5 text-zinc-300">🥇 This project was awarded at Hack Canada 2026 in the Google - Build with AI Track!</p>
+            <div className="squircle bg-zinc-200  dark:bg-zinc-800 max-width rounded-xl mb-8 border-2">
+              <p className="p-2 py-3 px-3.5 text-zinc-800 dark:text-zinc-300">🥇 This project was awarded at Hack Canada 2026 in the Google - Build with AI Track!</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
