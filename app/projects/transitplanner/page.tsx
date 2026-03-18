@@ -20,14 +20,14 @@ export default function TransitPlannerProjectPage() {
 
   return (
     <AnimatedPage>
-      <div className="mx-auto p-6 space-y-6">
+      <div className="mx-auto">
         <AnimatedHeader
           backHref="/projects"
           backText="Back"
           currentPage="/projects/transitplanner"
         />
 
-        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "20px" }}>
+        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "40px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2">Transit Planner</h1>
@@ -97,7 +97,7 @@ export default function TransitPlannerProjectPage() {
 
           <StaggeredContent delay={400}>
             <div className="mb-8">
-              <h3 className="font-bold mb-4">Initial System Architecture</h3>
+              <h2 className="font-bold mb-4 text-2xl">Project Origins</h2>
               <div className="photo-card" style={{ padding: 0, overflow: "hidden", borderRadius: 20 }}>
                 <div className="flex items-start gap-6 p-6">
                   <div className="w-2/3 shrink-0">
@@ -117,8 +117,20 @@ export default function TransitPlannerProjectPage() {
               </div>
 
 
-              <h3 className="font-bold mt-8">Inspiration</h3>
+              <h2 className="font-bold mt-8 mb-2 text-2xl">Inspiration</h2>
               <p>As a kid, I spent countless hours on subway builders like JP Wright's <a href="https://jpwright.github.io/subway/" target="_blank" rel="noopener noreferrer" className="underline inline-block transition-transform duration-150 hover:scale-95">Brand New Subway</a>.</p>
+
+              <h2 className="font-bold mt-8 mb-2 text-2xl">Initial Development</h2>
+              <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
+              <img src="/images/Transit tweet.png" alt="Transit Planner Launch Tweet by Fiona Fang" className="w-full rounded-2xl" />
+              
+              <h2 className="font-bold mt-8 mb-2 text-2xl">More features</h2>
+              <p className="mb-2">We're excited to develop this further. Here are some features I've added since: 
+                
+                <h3 className="font-semibold mt-4 mb-2 text-lg">Surface Route Accuracy</h3>
+              Initially, bus and streetcar routes floated from one point to another. I added automatic snapping to roads as well as portals to indicate underground sections that don't have to follow road medians.</p>
+            
+             <p className="mb-2">I hope to make this project either useful professionally or as an educational tool or game for transit enthusiasts. If you have any feedback or suggestions, or would like to collaborate, please reach out!</p>
             </div>
 
           </StaggeredContent>
