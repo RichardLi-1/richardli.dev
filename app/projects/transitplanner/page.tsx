@@ -121,7 +121,7 @@ export default function TransitPlannerProjectPage() {
 
               <h2 className="font-bold mt-8 mb-2 text-2xl">Initial Development</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
-              <img src="/images/Transit tweet.png" alt="Transit Planner Launch Tweet by Fiona Fang" className="w-full squircle rounded-lg aspect-square sm:aspect-video object-cover" />
+              <img src="/images/Transit tweet.png" alt="Transit Planner Launch Tweet by Fiona Fang" className="w-full squircle rounded-lg aspect-square sm:aspect-auto object-cover" />
               
               <h2 className="font-bold mt-8 mb-2 text-2xl">More features</h2>
               <p className="mb-2">We're excited to develop this further. Here are some features I've added since: 
