@@ -7,6 +7,7 @@ import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { GifLoadingScreen } from "@/components/gif-loading-screen"
 import { ThemeProvider } from "@/components/theme-provider"
 import { usePreserveM } from "@/hooks/use-preserve-m"
+import { SwissGrid } from "@/components/swiss-grid"
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   usePreserveM()
@@ -30,6 +31,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <SwissGrid />
       {showLoading && <GifLoadingScreen onComplete={handleLoadingComplete} />}
       {!showLoading && (
         <>

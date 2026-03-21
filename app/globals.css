@@ -152,6 +152,11 @@
   corner-shape: squircle;
 }
 
+.squircle-md {
+  border-radius: 48px;
+  corner-shape: squircle;
+}
+
 .squircle-lg {
   border-radius: 24px;
   corner-shape: squircle;
@@ -182,17 +187,16 @@ h3 {
 
 /* ── Photography-style card ──────────────────────────── */
 .photo-card {
-  background: var(--card-bg);
+  /*background: var(--card-bg); */
   border-radius: 48px;
   corner-shape: squircle;
-  overflow: hidden;
-  border: 1px solid var(--border-2);
+  overflow: visible;
+  /*border: 1px solid var(--border-2); */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .photo-card:hover {
   transform: scale(0.98);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 /* ── Page wrapper utility ────────────────────────────── */

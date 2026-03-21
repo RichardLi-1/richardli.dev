@@ -122,7 +122,7 @@ function StickyScene() {
           {/* Quote text */}
           <p
             style={{
-              fontFamily: "'SFCamera', sans-serif",
+              fontFamily: "'Toronto Subway', sans-serif",
               fontSize: "clamp(2.2rem, 6vw, 5.5rem)",
               lineHeight: 1.1,
               color: "var(--text)",
@@ -222,7 +222,7 @@ function ClosingQuote() {
     >
       <p
         style={{
-          fontFamily: "'SFCamera', sans-serif",
+          fontFamily: "'Toronto Subway', sans-serif",
           fontSize: "clamp(1.4rem, 3.5vw, 2.6rem)",
           lineHeight: 1.3,
           color: "var(--text)",

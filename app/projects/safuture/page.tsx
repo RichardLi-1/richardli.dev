@@ -84,7 +84,7 @@ export default function SaFuturePage() {
               <p>This was my overall favourite project as I got to build it from scratch and pilot it.</p>
 
               <h2 className="font-bold mt-8 mb-2 text-2xl">Work for ERIS</h2>
-              <p>I can't disclose as much for this one, but I made changes</p>
+              <p>I can't disclose as much for this one, but I made changes. This project was interesting, and I learned how to manage stakeholders who are in charge of different parts of the tech stack.</p>
 
               <h2 className="font-bold mt-8 mb-2 text-2xl">The Experience</h2>
               <p>This was my first experience working with professional software engineering processes. I integrated into the team's workflow pretty quickly, shipping code from day two. We were given a lot of ownership over our projects and I learned a lot about both software engineering and mapping technologies.</p>

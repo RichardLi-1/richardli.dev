@@ -93,7 +93,7 @@ const getSectionName = () => {
       <div className="flex items-center justify-between gap-2 p-3">
         {/* Left: logo / back */}
         {isHomepage ? (
-          <Link href="/" style={{ fontFamily: "'SFCamera', 'Toronto Subway', sans-serif", fontSize: "14px", color: "var(--text)", textDecoration: "none" }}>
+          <Link href="/" style={{ fontFamily: "'Toronto Subway', 'Toronto Subway', sans-serif", fontSize: "14px", color: "var(--text)", textDecoration: "none" }}>
             RL
           </Link>
         ) : backHref ? (
@@ -189,7 +189,7 @@ const getSectionName = () => {
               {isScrolled && !isMobile ? (
                 /* Compact: RL or back arrow */
                 isHomepage ? (
-                  <Link href="/" style={{ fontFamily: "'SFCamera', 'Toronto Subway', sans-serif", fontSize: "14px", color: "var(--text)", textDecoration: "none" }}>
+                  <Link href="/" style={{ fontFamily: "'Toronto Subway', 'Toronto Subway', sans-serif", fontSize: "14px", color: "var(--text)", textDecoration: "none" }}>
                     RL
                   </Link>
                 ) : backHref ? (
@@ -201,7 +201,7 @@ const getSectionName = () => {
                 /* Full: avatar circle + wordmark + section */
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <div style={{ width: 32, height: 32, borderRadius: "50%", background: "var(--surface)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ fontFamily: "'SFCamera', 'Toronto Subway', sans-serif", fontSize: "12px", color: "var(--text)" }}>RL</span>
+                    <span style={{ fontFamily: "'Toronto Subway', 'Toronto Subway', sans-serif", fontSize: "12px", color: "var(--text)" }}>RL</span>
                   </div>
                   <Link href="/" className="nav-logo">Richard Li</Link>
                   {sectionName && (

@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 
 interface ProjectImageCyclerProps {
@@ -42,7 +42,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
   const isVideo = current.endsWith(".mp4") || current.endsWith(".mov")
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+    <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", borderRadius: "inherit", cornerShape: "squircle" } as React.CSSProperties}>
       {/* Skeleton shimmer */}
       <div style={{
         position: "absolute",

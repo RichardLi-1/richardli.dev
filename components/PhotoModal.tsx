@@ -78,7 +78,7 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
             <div>
               <p
                 style={{
-                  fontFamily: "'SFCamera', 'Toronto Subway', sans-serif",
+                  fontFamily: "'Toronto Subway', 'Toronto Subway', sans-serif",
                   fontSize: "17px",
                   color: "var(--text)",
                   marginBottom: "4px",

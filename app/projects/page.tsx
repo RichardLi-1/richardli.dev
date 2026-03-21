@@ -26,6 +26,7 @@ const additionalProjects = [
 export default function ProjectsPage() {
   usePageViewTracker()
   const [showAdditional, setShowAdditional] = useState(false)
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   const allProjects = (showAdditional ? [...mainProjects, ...additionalProjects] : mainProjects).filter(p => !(p as any).hidden)
 
@@ -43,7 +44,7 @@ export default function ProjectsPage() {
           ]}
         />
 
-        <main className="max-w-screen-2xl mx-auto p-6" style={{ paddingTop: "100px" }}>
+        <main className="max-w-[98%] mx-auto p-6" style={{ paddingTop: "50px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-12">
               <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", marginBottom: "12px" }}>Work</h1>
@@ -53,7 +54,7 @@ export default function ProjectsPage() {
             </div>
           </StaggeredContent>
           <StaggeredContent delay={100}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-[15px]">
               {allProjects.map((project, index) => (
                 <div
                   key={project.id}
@@ -70,24 +71,38 @@ export default function ProjectsPage() {
                   <Link href={`/projects/${project.id}`}>
                     <div
                       className="photo-card mb-6 cursor-pointer group"
-                      style={{ "--glow-color": (project as any).colors || "#22c55e44" } as React.CSSProperties}
+                      style={{ position: "relative", "--glow-color": (project as any).colors || "#22c55e44" } as React.CSSProperties}
                     >
-                      <div className="aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]" style={{ background: "var(--surface)", borderRadius: 48 }}>
+                      <div className="relative aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300" style={{ background: "var(--surface)", borderRadius: 48 }} onMouseEnter={() => setHoveredId(project.id)} onMouseLeave={() => setHoveredId(null)}>
                         <ProjectImageCycler
                           images={[project.image, (project as any).image2, (project as any).image3]}
                           alt={project.title}
                           className="w-full h-full object-cover transition-transform duration-300"
                         />
-                      </div>
-                      <div className="px-5 py-4">
-                        <div className="flex items-center justify-between mb-1">
-                          <h3 style={{ fontSize: "15px", letterSpacing: "0.02em", fontWeight: 500, color: "var(--text)" }}>
+                        <div className="header-pill absolute bottom-0 backdrop-blur-md flex items-center gap-2 mx-3 my-3 px-4 py-2 shadow-lg border border-white/10"  style={{ background: "var(--glass-bg)", whiteSpace: "nowrap" }}>
+                          <h3 className="text-nowrap" style={{ fontSize: "15px", letterSpacing: "0.02em", fontWeight: 500, color: "var(--text)" }}>
                             {project.title}
                           </h3>
-                          <span style={{ fontSize: "12px", color: "var(--text-3)", letterSpacing: "0.04em" }}>{project.year}</span>
+                          <span style={{ fontSize: "12px", color: "var(--text-3)", letterSpacing: "0.04em", paddingTop: "2px" }}>{project.year}</span>
                         </div>
-                        <p style={{ fontSize: "13px", color: "var(--text-2)", lineHeight: "1.6" }}>{project.description}</p>
                       </div>
+                      
+                      <p style={{
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        top: "100%",
+                        fontSize: "13px",
+                        color: "var(--text-2)",
+                        lineHeight: "1.6",
+                        opacity: hoveredId === project.id ? 1 : 0,
+                        transform: hoveredId === project.id ? "translateY(0)" : "translateY(-6px)",
+                        transition: "opacity 0.25s ease, transform 0.25s ease",
+                        pointerEvents: "none",
+                        paddingTop: "8px",
+                      }}>{project.description}</p>
+                      
+                      
                     </div>
                   </Link>
                 </div>
