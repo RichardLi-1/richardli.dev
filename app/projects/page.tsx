@@ -1,8 +1,6 @@
 "use client"
-import { useState, useEffect } from "react"
-import { ExternalLink } from "lucide-react"
-import Link from "next/link"
-import { Card, CardContent } from "@/components/ui/card"
+import React, { useState, useEffect } from "react"
+import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
@@ -17,8 +15,7 @@ const additionalProjects = [
     id: "markville-rfp",
     title: "RFP: Rebranding the Markville Secondary Plan",
     year: "2024",
-    description:
-      "City Design Challenge hackathon winner - comprehensive rebranding proposal for Markville Secondary Plan",
+    description: "City Design Challenge hackathon winner - comprehensive rebranding proposal for Markville Secondary Plan",
     image: "/images/markville-rfp-cover.png",
     tags: ["Design", "Urban Planning", "Hackathon Winner"],
   },
@@ -28,10 +25,24 @@ export default function ProjectsPage() {
   usePageViewTracker()
   const [showAdditional, setShowAdditional] = useState(false)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => { window.scrollTo(0, 0) }, [])
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
 
   const allProjects = (showAdditional ? [...mainProjects, ...additionalProjects] : mainProjects).filter(p => !(p as any).hidden)
+  const selectedProject = allProjects.find(p => p.id === selectedId)
+
+  const handleCardClick = (id: string) => {
+    if (isMobile) { window.location.href = `/projects/${id}`; return }
+    setSelectedId(prev => prev === id ? null : id)
+  }
 
   return (
     <AnimatedPage>
@@ -48,124 +59,174 @@ export default function ProjectsPage() {
         />
 
         <main className="max-w-[98%] mx-auto p-6" style={{ paddingTop: "50px" }}>
-          <StaggeredContent delay={0}>
-            <div className="mb-12">
-              <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", marginBottom: "12px" }}>Work</h1>
-              <p style={{ fontSize: "14px", color: "var(--text-3)", letterSpacing: "0.02em", marginBottom: "-32px" }}>
-                A collection of work and projects, from mobile games to non-profit initiatives.
-              </p>
-            </div>
-          </StaggeredContent>
           <StaggeredContent delay={100}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-[15px]">
-              {allProjects.map((project, index) => (
-                <div
-                  key={project.id}
-                  className="transition-all duration-700 ease-out"
-                  style={{
-                    animationDelay: `${300 + index * 100}ms`,
-                    opacity: 0,
-                    transform: "translateY(20px)",
-                    animation: "fadeInUp 0.7s ease-out forwards",
-                    // define a variable unique to this card
-                    "--glow-color": project.colors || "#22c55e99",
-                  }}
-                >
-                  <Link href={`/projects/${project.id}`}>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: selectedId ? 16 : 0, transition: "gap 0.45s ease" }}>
+
+              {/* ── Left column ── */}
+              <div style={{
+                width: selectedId ? "15.8%" : "100%", //24.2%, 32.6%
+                minWidth: 0,
+                flexShrink: 0,
+                transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+              }}>
+                <StaggeredContent delay={0}>
+                  <div style={{ marginBottom: "3rem", overflow: "hidden" }}>
+                    <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", marginBottom: "12px" }}>Work</h1>
+                    <p style={{ fontSize: "14px", color: "var(--text-3)", letterSpacing: "0.02em" }}>
+                      A collection of work and projects, from mobile games to non-profit initiatives.
+                    </p>
+                  </div>
+                </StaggeredContent>
+                <div style={{ display: "grid", gridTemplateColumns: (selectedId || isMobile) ? "1fr" : "repeat(2, 1fr)", gap: "15px 16px", transition: "grid-template-columns 0.01s" }}>
+                  {allProjects.map((project, index) => (
                     <div
-                      className="photo-card mb-6 cursor-pointer group"
-                      style={{ position: "relative", "--glow-color": (project as any).colors || "#22c55e44" } as React.CSSProperties}
+                      key={project.id}
+                      style={{
+                        animationDelay: `${300 + index * 100}ms`,
+                        opacity: 0,
+                        transform: "translateY(20px)",
+                        animation: "fadeInUp 0.7s ease-out forwards",
+                      }}
                     >
-                      <div className="relative aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300" style={{ background: "var(--surface)", borderRadius: 52 }} onMouseEnter={() => setHoveredId(project.id)} onMouseLeave={() => setHoveredId(null)}>
-                        <ProjectImageCycler
-                          images={[project.image, (project as any).image2, (project as any).image3]}
-                          alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-300"
-                        />
-                        <div className="liquid-glass-pill squircle absolute bottom-0 flex items-center gap-2 mx-3 my-3 px-4 py-2" style={{ whiteSpace: "nowrap" }}>
-                          <h3 className="text-nowrap" style={{ fontSize: "15px", letterSpacing: "0.02em", fontWeight: 500, color: "inherit" }}>
-                            {project.title}
-                          </h3>
-                          <span style={{ fontSize: "12px", opacity: 0.65, letterSpacing: "0.04em", paddingTop: "2px" }}>{project.year}</span>
+                      <div
+                        className="photo-card mb-6 cursor-pointer group"
+                        onClick={() => handleCardClick(project.id)}
+                        style={{
+                          position: "relative",
+                          cornerShape: "superellipse(1)",
+                          "--glow-color": (project as any).colors || "#22c55e44",
+                          borderRadius: 28,
+                          opacity: selectedId && selectedId !== project.id ? 0.75 : 1,
+                          transform: selectedId === project.id ? "scale(0.96)" : "scale(1)",
+                          boxShadow: selectedId === project.id ? "0 0 0 2.5px var(--text), inset 0 0 0 2.5px var(--text)" : "none",
+                          transition: "transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease",
+                        } as React.CSSProperties}
+                      >
+                        <div
+                          className="relative aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300"
+                          style={{ background: "var(--surface)", borderRadius: 52 }}
+                          onMouseEnter={() => setHoveredId(project.id)}
+                          onMouseLeave={() => setHoveredId(null)}
+                        >
+                          <ProjectImageCycler
+                            images={[project.image, (project as any).image2, (project as any).image3]}
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-transform duration-300"
+                          />
+                          <div className="liquid-glass-pill squircle absolute bottom-0 flex items-center gap-2 mx-3 my-3 px-4 py-2" style={{ whiteSpace: "nowrap" }}>
+                            <h3 className="text-nowrap" style={{ fontSize: "15px", letterSpacing: "0.02em", fontWeight: 500, color: "inherit" }}>{project.title}</h3>
+                            <span style={{ fontSize: "12px", opacity: 0.65, letterSpacing: "0.04em", paddingTop: "2px" }}>{project.year}</span>
+                          </div>
+                          {(hoveredId === project.id && (project as any).externalLink) && (
+                            <a
+                              href={(project as any).externalLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="liquid-glass-pill squircle absolute top-0 right-0 flex items-center gap-2 mx-3 my-3 px-4 py-2"
+                              style={{ whiteSpace: "nowrap", textDecoration: "none", transition: "transform 0.15s ease" }}
+                              onClick={e => e.stopPropagation()}
+                              onMouseDown={e => (e.currentTarget.style.transform = "scale(0.92)")}
+                              onMouseUp={e => (e.currentTarget.style.transform = "scale(1)")}
+                              onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                            >
+                              <span style={{ fontSize: "15px", fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", fontWeight: 500, color: "inherit" }}>Try it out</span>
+                              <ExternalLink style={{ width: "13px", height: "13px", opacity: 0.65 }} />
+                            </a>
+                          )}
                         </div>
-
-                        {(hoveredId === project.id && (project as any).externalLink) && (
-                          <a href={(project as any).externalLink} target="_blank" rel="noopener noreferrer" className="liquid-glass-pill squircle absolute top-0 right-0 flex items-center gap-2 mx-3 my-3 px-4 py-2" style={{ whiteSpace: "nowrap", textDecoration: "none", transition: "transform 0.15s ease" }} onClick={e => e.stopPropagation()} onMouseDown={e => (e.currentTarget.style.transform = "scale(0.92)")} onMouseUp={e => (e.currentTarget.style.transform = "scale(1)")} onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}>
-                            <span style={{ fontSize: "15px", fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", fontWeight: 500, color: "inherit" }}>Try it out</span>
-                            <ExternalLink style={{ width: "13px", height: "13px", opacity: 0.65 }} />
-                          </a>
+                        {/* Description: always visible on mobile, hover-reveal on desktop */}
+                        {(!selectedId || isMobile) && (
+                          <p style={{
+                            position: isMobile ? "static" : "absolute", left: 0, right: 0, top: "100%",
+                            fontSize: "13px", color: "var(--text-2)", lineHeight: "1.6",
+                            opacity: isMobile ? 1 : (hoveredId === project.id ? 1 : 0),
+                            transform: isMobile ? "none" : (hoveredId === project.id ? "translateY(0)" : "translateY(-6px)"),
+                            transition: "opacity 0.25s ease, transform 0.25s ease",
+                            pointerEvents: "none", paddingTop: "8px", paddingLeft: isMobile ? "0" : "13.5px",
+                          }}>{project.description}</p>
                         )}
-                        
                       </div>
-                      
-                      <p style={{
-                        position: "absolute",
-                        left: 0,
-                        right: 0,
-                        top: "100%",
-                        fontSize: "13px",
-                        color: "var(--text-2)",
-                        lineHeight: "1.6",
-                        opacity: hoveredId === project.id ? 1 : 0,
-                        transform: hoveredId === project.id ? "translateY(0)" : "translateY(-6px)",
-                        transition: "opacity 0.25s ease, transform 0.25s ease",
-                        pointerEvents: "none",
-                        paddingTop: "8px",
-                        paddingLeft: "13.5px",
-                      }}>{project.description}</p>
-                      
-                      
                     </div>
-                  </Link>
+                  ))}
                 </div>
-              ))}
+
+                {/* Load more */}
+                <div style={{ opacity: selectedId ? 0 : 1, transition: "opacity 0.3s ease", pointerEvents: selectedId ? "none" : "auto" }}>
+                  <div className="flex justify-center mt-6">
+                    {!showAdditional && (
+                      <Button onClick={() => setShowAdditional(true)} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 squircle-lg">
+                        Load More Projects
+                      </Button>
+                    )}
+                  </div>
+                  <div className="mt-8">
+                    <p style={{ fontSize: "13px", color: "var(--text-3)", letterSpacing: "0.02em" }}>You've reached the terminus, but new projects are always coming. Check back soon for updates!</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── Right panel (desktop only) ── */}
+              {!isMobile && <div style={{
+                flex: 1,
+                position: "sticky",
+                top: "80px",
+                height: "calc(100vh - 96px)",
+                opacity: selectedId ? 1 : 0,
+                transform: selectedId ? "translateX(0)" : "translateX(24px)",
+                transition: "opacity 0.4s ease, transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
+                pointerEvents: selectedId ? "auto" : "none",
+                borderRadius: 24,
+                overflow: "hidden",
+                background: "var(--card-bg)",
+                border: "1px solid var(--border-2)",
+                display: "flex",
+                flexDirection: "column",
+                minWidth: 0,
+              }}>
+                {/* Toolbar */}
+                <div style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "10px 14px", borderBottom: "1px solid var(--border-2)", flexShrink: 0,
+                }}>
+                  {/*<span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 13, color: "var(--text-2)", letterSpacing: "0.04em" }}>
+                    {selectedProject?.title}
+                  </span>
+                  <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                    <a
+                      href={selectedId ? `/projects/${selectedId}` : "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="nav-item"
+                      style={{ fontSize: 11, padding: "4px 8px", display: "flex", alignItems: "center", gap: 4 }}
+                    >
+                      Open <ArrowUpRight style={{ width: 12, height: 12 }} />
+                    </a>
+                    <button onClick={() => setSelectedId(null)} className="nav-item" style={{ padding: "4px 6px" }}>
+                      <X style={{ width: 14, height: 14 }} />
+                    </button>
+                  </div>*/}
+                </div>
+                {/* iframe */}
+                {selectedId && (
+                  <iframe
+                    key={selectedId}
+                    src={`/projects/${selectedId}?panel=1`}
+                    style={{ flex: 1, border: "none", width: "100%", background: "var(--bg)" }}
+                    title={selectedProject?.title}
+                  />
+                )}
+              </div>}
+
             </div>
           </StaggeredContent>
 
-          <div className="flex justify-center space-x-2">
-            {!showAdditional && (
-              <StaggeredContent delay={700}>
-                <Button
-                  onClick={() => setShowAdditional(true)}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 squircle-lg"
-                >
-                  Load More Projects
-                </Button>
-              </StaggeredContent>
-            )}
-
-            {/*
-            <StaggeredContent delay={700}>
-              <Button
-                asChild
-                variant="outline"
-                className="border-green-600 text-green-400 hover:bg-green-600 hover:text-white px-6 py-2 bg-transparent"
-              >
-                <Link
-                  href="https://drive.google.com/file/d/1iwZR7PxbnDqifQlcb7evC5AoHHFYaA30/view?usp=sharing"
-                  target="_blank"
-                >
-                  Resume
-                </Link>
-              </Button>
-            </StaggeredContent> */}
-          </div>
-
-          <StaggeredContent delay={700}>
-            <div className="mt-8  ">
-              <p style={{ fontSize: "13px", color: "var(--text-3)", letterSpacing: "0.02em" }}>You've reached the terminus, but new projects are always coming. Check back soon for updates!</p>
-            </div>
-          </StaggeredContent>
           <Footer />
         </main>
       </div>
 
       <style jsx>{`
         @keyframes fadeInUp {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </AnimatedPage>

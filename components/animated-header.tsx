@@ -27,6 +27,9 @@ export function AnimatedHeader({
   isHomepage = false,
   currentPage = "",
 }: AnimatedHeaderProps) {
+  const [isPanel, setIsPanel] = useState(false)
+  useEffect(() => { if (window.location.search.includes("panel=1")) setIsPanel(true) }, [])
+
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -92,6 +95,8 @@ const getSectionName = () => {
 
   const navItems = getNavItems()
   const sectionName = getSectionName()
+
+  if (isPanel) return null
 
   // Compact pill used for scrolled state
   const PillNav = () => (

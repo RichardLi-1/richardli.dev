@@ -1,8 +1,13 @@
+"use client"
 import type React from "react"
+import { useState, useEffect } from "react"
 
 const small: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", fontSize: "12px", color: "var(--text-3)" }
 
 export function Footer() {
+  const [isPanel, setIsPanel] = useState(false)
+  useEffect(() => { if (window.location.search.includes("panel=1")) setIsPanel(true) }, [])
+  if (isPanel) return null
   return (
     <footer className="w-full border-t px-6 py-4" style={{ borderColor: "var(--border-2)", background: "var(--bg)" }}>
       <div className="flex flex-col gap-2">
