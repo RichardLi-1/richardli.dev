@@ -3,11 +3,12 @@ export const mainProjects = [
     id: "transitplanner",
     title: "Transit Planner",
     year: "2026",
-    description: "Transit sketching tool, gamification and transit analysis tools coming soon....",
+    description: "Transit sketching tool. Gamification and transit analysis tools coming soon....",
     image: "/videos/transitplanfinal.mov",
     logo: "",
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#ffffff",
+    externalLink: "https://transit-planner-web.vercel.app/"
   },
 {
     id: "boink",
@@ -18,6 +19,7 @@ export const mainProjects = [
     logo: "/images/boink-logo.webp",
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#417193",
+    externalLink: "https://apps.apple.com/ca/app/bo-nk/id1570376501"
   },
   {
     id: "fatherfigure",

@@ -42,6 +42,8 @@ export default function TransitPlannerProjectPage() {
                 className="w-full h-full object-cover squircle"
                 autoPlay
                 loop
+                disablePictureInPicture
+                disableRemotePlayback
                 muted
                 playsInline
               />

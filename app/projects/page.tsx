@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
+import { ExternalLink } from "lucide-react"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -87,6 +88,14 @@ export default function ProjectsPage() {
                           </h3>
                           <span style={{ fontSize: "12px", opacity: 0.65, letterSpacing: "0.04em", paddingTop: "2px" }}>{project.year}</span>
                         </div>
+
+                        {(hoveredId === project.id && (project as any).externalLink) && (
+                          <a href={(project as any).externalLink} target="_blank" rel="noopener noreferrer" className="liquid-glass-pill squircle absolute top-0 right-0 flex items-center gap-2 mx-3 my-3 px-4 py-2" style={{ whiteSpace: "nowrap", textDecoration: "none", transition: "transform 0.15s ease" }} onClick={e => e.stopPropagation()} onMouseDown={e => (e.currentTarget.style.transform = "scale(0.92)")} onMouseUp={e => (e.currentTarget.style.transform = "scale(1)")} onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}>
+                            <span style={{ fontSize: "15px", fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", fontWeight: 500, color: "inherit" }}>Try it out</span>
+                            <ExternalLink style={{ width: "13px", height: "13px", opacity: 0.65 }} />
+                          </a>
+                        )}
+                        
                       </div>
                       
                       <p style={{
