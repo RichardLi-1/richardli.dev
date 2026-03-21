@@ -1,22 +1,22 @@
+import type React from "react"
+
+const small: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", fontSize: "12px", color: "var(--text-3)" }
+
 export function Footer() {
   return (
-    <footer className="flex w-full justify-center border-t" style={{ borderColor: "var(--border-2)", color: "var(--text-3)", background: "var(--bg)" }}>
-      <div className="flex w-full max-w-6xl flex-col gap-2 p-4">
-        {/* Top row: name + version */}
+    <footer className="w-full border-t px-6 py-4" style={{ borderColor: "var(--border-2)", background: "var(--bg)" }}>
+      <div className="flex flex-col gap-2">
+        {/* Top row: name */}
+        <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: "18px", color: "var(--text)" }}>Richard Li</span>
+
+        {/* Bottom row: built-with + version */}
         <div className="flex items-center justify-between">
-          <span className="font-serif italic">Richard Li</span>
-          <div className="flex items-center gap-2">
-            <div className="relative flex size-2 items-center justify-center">
-              <div className="size-2 rounded-full bg-green-400 animate-pulse-custom"></div>
-            </div>
-            <span className="text-sm">Version 2.0.1 - Updated 03/18/2025</span>
+          <span style={small}>Written in TypeScript using Next.js. Set in SFCamera and Toronto Subway.</span>
+          <div className="flex items-center gap-2 shrink-0 ml-4">
+            <div className="size-2 rounded-full bg-green-400 animate-pulse-custom" />
+            <span style={small}>v2.0.2 — 03/20/2025</span>
           </div>
         </div>
-
-        {/* Bottom row: built with */}
-        <span style={{ fontFamily: "'SFCamera', sans-serif", color: "var(--text-3)", fontSize: "14px", opacity: 0.6 }}>
-          Written in TypeScript using Next.js. Set in SFCamera and Toronto Subway. Built with ❤️.
-        </span>
 
         {/* Spacer for mobile floating pill nav */}
         <div className="block md:hidden" style={{ height: "4rem" }} />

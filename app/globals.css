@@ -185,11 +185,37 @@ h3 {
   color: var(--text);
 }
 
-/* ── Photography-style card ──────────────────────────── */
+/* ── Liquid glass pill (project card label) ─────────── */
+.liquid-glass-pill {
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-radius: 9999px;
+  corner-shape: initial;
+}
+
+:root .liquid-glass-pill,
+.dark .liquid-glass-pill {
+  background: linear-gradient(135deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.18) 100%);
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.35);
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.light .liquid-glass-pill {
+  background: linear-gradient(135deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.45) 100%);
+  border: 1px solid rgba(230,230,230,0.7);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+  color: #111;
+  text-shadow: none;
+  corner-shape: superellipse(1.01);
+}
+
+/* ── Photography-style card ──────────────────────────── doesnt even do anything*/
 .photo-card {
   /*background: var(--card-bg); */
   border-radius: 48px;
-  corner-shape: squircle;
+  corner-shape: superellipse(1);
   overflow: visible;
   /*border: 1px solid var(--border-2); */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -370,12 +396,35 @@ header {
 .header-pill a,
 .header-pill button,
 .header-pill span {
-  color: var(--text-3);
+  color: var(--text);
   transition: color 0.15s;
+}
+
+.light .header-pill a,
+.light .header-pill button,
+.light .header-pill span {
+  color: var(--text-3);
 }
 
 .header-pill a:hover,
 .header-pill button:hover {
+  color: var(--text);
+}
+
+/* ── Scrolled desktop pill: override text/icon colors ── */
+:root .scrolled-pill a,
+:root .scrolled-pill button,
+:root .scrolled-pill span,
+.dark .scrolled-pill a,
+.dark .scrolled-pill button,
+.dark .scrolled-pill span {
+  color: var(--text-2);
+}
+
+:root .scrolled-pill a:hover,
+:root .scrolled-pill button:hover,
+.dark .scrolled-pill a:hover,
+.dark .scrolled-pill button:hover {
   color: var(--text);
 }
 

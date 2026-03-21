@@ -3,7 +3,7 @@ export const mainProjects = [
     id: "transitplanner",
     title: "Transit Planner",
     year: "2026",
-    description: "Transit planner, more to come...",
+    description: "Transit sketching tool, gamification and transit analysis tools coming soon....",
     image: "/videos/transitplanfinal.mov",
     logo: "",
     tags: ["iOS", "Swift", "Game Development"],
@@ -29,16 +29,7 @@ export const mainProjects = [
     tags: ["Chrome Extension", "JS", "Utilities"],
     colors: "#673435",
   },
-  {
-    id: "salespatriot",
-    title: "SalesPatriot (YC W25)",
-    year: "2025",
-    description: "Completing an end-to-end UX for defense manufacturers",
-    image: "https://richardli-1.github.io/Old-Personal-Website/salespatriott.png?height=400&width=600",
-    tags: ["Internship", "UI/UX", "AI"],
-    colors: "#352F0C",
-  },
-  {
+    {
     id: "futureforward",
     title: "Future Forward",
     year: "2024-2025",
@@ -50,6 +41,16 @@ export const mainProjects = [
     logo: "/images/future-forward-logo.png",
     tags: ["Non-profit", "Project Management", "Community"],
     colors: "#3B369C",
+  },
+
+  {
+    id: "salespatriot",
+    title: "SalesPatriot (YC W25)",
+    year: "2025",
+    description: "Completing an end-to-end UX for defense manufacturers",
+    image: "https://richardli-1.github.io/Old-Personal-Website/salespatriott.png?height=400&width=600",
+    tags: ["Internship", "UI/UX", "AI"],
+    colors: "#352F0C",
   },
   // {
   //   id: "classprofile",

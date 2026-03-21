@@ -18,9 +18,8 @@ export default function ChatPage() {
           </div>
 
             <ChatBox fullHeight />
+          <Footer />
         </main>
-
-        <Footer />
       </div>
     </AnimatedPage>
   )

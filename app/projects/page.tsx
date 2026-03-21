@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -27,6 +27,8 @@ export default function ProjectsPage() {
   usePageViewTracker()
   const [showAdditional, setShowAdditional] = useState(false)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+
+  useEffect(() => { window.scrollTo(0, 0) }, [])
 
   const allProjects = (showAdditional ? [...mainProjects, ...additionalProjects] : mainProjects).filter(p => !(p as any).hidden)
 
@@ -73,17 +75,17 @@ export default function ProjectsPage() {
                       className="photo-card mb-6 cursor-pointer group"
                       style={{ position: "relative", "--glow-color": (project as any).colors || "#22c55e44" } as React.CSSProperties}
                     >
-                      <div className="relative aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300" style={{ background: "var(--surface)", borderRadius: 48 }} onMouseEnter={() => setHoveredId(project.id)} onMouseLeave={() => setHoveredId(null)}>
+                      <div className="relative aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300" style={{ background: "var(--surface)", borderRadius: 52 }} onMouseEnter={() => setHoveredId(project.id)} onMouseLeave={() => setHoveredId(null)}>
                         <ProjectImageCycler
                           images={[project.image, (project as any).image2, (project as any).image3]}
                           alt={project.title}
                           className="w-full h-full object-cover transition-transform duration-300"
                         />
-                        <div className="header-pill absolute bottom-0 backdrop-blur-md flex items-center gap-2 mx-3 my-3 px-4 py-2 shadow-lg border border-white/10"  style={{ background: "var(--glass-bg)", whiteSpace: "nowrap" }}>
-                          <h3 className="text-nowrap" style={{ fontSize: "15px", letterSpacing: "0.02em", fontWeight: 500, color: "var(--text)" }}>
+                        <div className="liquid-glass-pill squircle absolute bottom-0 flex items-center gap-2 mx-3 my-3 px-4 py-2" style={{ whiteSpace: "nowrap" }}>
+                          <h3 className="text-nowrap" style={{ fontSize: "15px", letterSpacing: "0.02em", fontWeight: 500, color: "inherit" }}>
                             {project.title}
                           </h3>
-                          <span style={{ fontSize: "12px", color: "var(--text-3)", letterSpacing: "0.04em", paddingTop: "2px" }}>{project.year}</span>
+                          <span style={{ fontSize: "12px", opacity: 0.65, letterSpacing: "0.04em", paddingTop: "2px" }}>{project.year}</span>
                         </div>
                       </div>
                       
@@ -100,6 +102,7 @@ export default function ProjectsPage() {
                         transition: "opacity 0.25s ease, transform 0.25s ease",
                         pointerEvents: "none",
                         paddingTop: "8px",
+                        paddingLeft: "13.5px",
                       }}>{project.description}</p>
                       
                       
@@ -115,13 +118,14 @@ export default function ProjectsPage() {
               <StaggeredContent delay={700}>
                 <Button
                   onClick={() => setShowAdditional(true)}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2"
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 squircle-lg"
                 >
                   Load More Projects
                 </Button>
               </StaggeredContent>
             )}
 
+            {/*
             <StaggeredContent delay={700}>
               <Button
                 asChild
@@ -135,19 +139,16 @@ export default function ProjectsPage() {
                   Resume
                 </Link>
               </Button>
-            </StaggeredContent>
+            </StaggeredContent> */}
           </div>
 
           <StaggeredContent delay={700}>
-            <div className="mt-8 text-center">
-              <p style={{ fontSize: "13px", color: "var(--text-3)", letterSpacing: "0.02em" }}>I'm always working on new projects. Check back soon for updates!</p>
+            <div className="mt-8  ">
+              <p style={{ fontSize: "13px", color: "var(--text-3)", letterSpacing: "0.02em" }}>You've reached the terminus, but new projects are always coming. Check back soon for updates!</p>
             </div>
           </StaggeredContent>
-        </main>
-
-        <StaggeredContent delay={900}>
           <Footer />
-        </StaggeredContent>
+        </main>
       </div>
 
       <style jsx>{`

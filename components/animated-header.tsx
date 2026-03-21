@@ -31,13 +31,19 @@ export function AnimatedHeader({
   const [isMobile, setIsMobile] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [themeBounce, setThemeBounce] = useState(false)
+  const handleThemeToggle = () => {
+    setTheme(theme === "dark" ? "light" : "dark")
+    setThemeBounce(true)
+    setTimeout(() => setThemeBounce(false), 400)
+  }
   const { isPersonalized, togglePersonalizedMode } = useWindowsXP()
   const { theme, setTheme } = useTheme()
 
   useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50)
+    const handleScroll = () => setIsScrolled(prev => prev ? window.scrollY > 30 : window.scrollY > 60)
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768)
       if (window.innerWidth >= 768) setIsMobileMenuOpen(false)
@@ -156,47 +162,65 @@ const getSectionName = () => {
         <header
           className="sticky top-0 z-50"
           style={{
-            padding: isScrolled && !isMobile ? "12px 16px" : "0",
+            height: "64px",
+            display: "flex",
+            alignItems: "center",
+            padding: isScrolled && !isMobile ? "0 12px" : "0",
             background: isScrolled && !isMobile ? "transparent" : "var(--bg)",
-            borderBottom: isScrolled && !isMobile ? "none" : "1px solid var(--border-2)",
-            transition: "padding 0.7s ease-out, background 0.7s ease-out, border-color 0.7s ease-out",
+            transition: "padding 0.5s cubic-bezier(0.34,1.56,0.64,1)",
           }}
         >
           {/* Container: animates between full-width bar and centered pill using numeric values */}
           <div
             style={{
-              maxWidth: isScrolled && !isMobile ? "384px" : "1200px",
+              flex: "1",
+              maxWidth: isScrolled && !isMobile ? "480px" : "1200px",
               margin: "0 auto",
+              height: isScrolled && !isMobile ? "auto" : "100%",
               borderRadius: isScrolled && !isMobile ? "9999px" : "0px",
-              backdropFilter: isScrolled && !isMobile ? "blur(20px)" : "blur(0px)",
-              WebkitBackdropFilter: isScrolled && !isMobile ? "blur(20px)" : "blur(0px)",
-              background: isScrolled && !isMobile ? "var(--glass-bg)" : "transparent",
-              border: isScrolled && !isMobile ? "1px solid var(--border-2)" : "1px solid transparent",
-              boxShadow: isScrolled && !isMobile ? "0 8px 32px rgba(0,0,0,0.12)" : "none",
-              transition: "max-width 0.7s ease-out, border-radius 0.7s ease-out, backdrop-filter 0.7s ease-out, background 0.5s ease-out, box-shadow 0.5s ease-out",
+              backdropFilter: isScrolled && !isMobile ? "blur(24px) saturate(180%)" : "blur(0px)",
+              WebkitBackdropFilter: isScrolled && !isMobile ? "blur(24px) saturate(180%)" : "blur(0px)",
+              background: isScrolled && !isMobile
+                ? theme === "light"
+                  ? "linear-gradient(135deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.45) 100%)"
+                  : "linear-gradient(135deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.18) 100%)"
+                : "transparent",
+              borderStyle: "solid",
+              borderWidth: "1px",
+              borderTopColor: isScrolled && !isMobile ? (theme === "light" ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.18)") : "transparent",
+              borderRightColor: isScrolled && !isMobile ? (theme === "light" ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.18)") : "transparent",
+              borderBottomColor: theme === "light" ? (isScrolled && !isMobile ? "rgba(255,255,255,0.6)" : "var(--border-2)") : (isScrolled && !isMobile ? "rgba(255,255,255,0.18)" : "var(--border-2)"),
+              borderLeftColor: isScrolled && !isMobile ? (theme === "light" ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.18)") : "transparent",
+              boxShadow: isScrolled && !isMobile ? "0 2px 20px rgba(0,0,0,0.2)" : "none",
+              transition: "max-width 0.65s cubic-bezier(0.34,1.56,0.64,1), border-radius 0.65s cubic-bezier(0.34,1.56,0.64,1), border-color 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease",
             }}
           >
             <div
-              className="flex items-center justify-between"
+              className={`flex items-center justify-between${isScrolled && !isMobile ? " scrolled-pill" : ""}`}
               style={{
                 padding: isScrolled && !isMobile ? "10px 16px" : "0 32px",
-                height: isScrolled && !isMobile ? "auto" : "64px",
+                height: isScrolled && !isMobile ? "auto" : "100%",
                 gap: isScrolled && !isMobile ? "8px" : "0",
-                transition: "padding 0.7s ease-out, height 0.7s ease-out",
+                transition: "padding 0.7s ease-out",
               }}
             >
               {/* ── Left ── */}
               {isScrolled && !isMobile ? (
-                /* Compact: RL or back arrow */
-                isHomepage ? (
-                  <Link href="/" style={{ fontFamily: "'Toronto Subway', 'Toronto Subway', sans-serif", fontSize: "14px", color: "var(--text)", textDecoration: "none" }}>
-                    RL
-                  </Link>
-                ) : backHref ? (
-                  <Link href={backHref} style={{ color: "var(--text-3)", display: "flex", alignItems: "center" }}>
-                    <ArrowLeft className="h-4 w-4" />
-                  </Link>
-                ) : null
+                /* Compact: back arrow + back destination label */
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginRight: "12px" }}>
+                  {isHomepage ? (
+                    <Link href="/" style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: "14px", color: "var(--text)", textDecoration: "none" }}>
+                      RL
+                    </Link>
+                  ) : backHref ? (
+                    <Link href={backHref} style={{ color: "var(--text-2)", display: "flex", alignItems: "center", gap: "5px", textDecoration: "none" }}>
+                      <ArrowLeft className="h-4 w-4" />
+                      <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: "13px", letterSpacing: "0.06em" }}>
+                        {backText || "Home"}
+                      </span>
+                    </Link>
+                  ) : null}
+                </div>
               ) : (
                 /* Full: avatar circle + wordmark + section */
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -216,9 +240,9 @@ const getSectionName = () => {
               {isScrolled && !isMobile ? (
                 /* Compact pill nav */
                 <div className="flex items-center gap-2">
-                  {navItems.map((item, i) => (
-                    <a key={i} href={item.href} target={item.external ? "_blank" : undefined} rel={item.external ? "noopener noreferrer" : undefined}
-                      className="nav-item" style={{ fontSize: "11px", padding: "4px 8px" }}>
+                  {navItems.filter(item => !item.external).map((item, i) => (
+                    <a key={i} href={item.href}
+                      className="nav-item" style={{ fontSize: "11px", padding: item.label === "Home" ? "4px 4px" : "4px 8px" }}>
                       {item.label === "Home" ? <Home className="w-3 h-3" /> : item.label}
                     </a>
                   ))}
@@ -228,9 +252,10 @@ const getSectionName = () => {
                     <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isPersonalized ? "translate-x-6" : "translate-x-1"}`} />
                   </button>
                   {mounted && (
-                    <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                      className="nav-item" style={{ padding: "4px 6px" }} aria-label="Toggle theme">
-                      {theme === "dark" ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
+                    <button onClick={handleThemeToggle} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Toggle theme">
+                      <span style={{ display: "inline-block", animation: themeBounce ? "iconBounce 0.4s cubic-bezier(0.34,1.56,0.64,1)" : "none" }}>
+                        {theme === "dark" ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
+                      </span>
                     </button>
                   )}
                 </div>
@@ -238,9 +263,10 @@ const getSectionName = () => {
                 /* Mobile: theme + hamburger */
                 <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                   {mounted && (
-                    <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                      className="nav-item" aria-label="Toggle theme">
-                      {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                    <button onClick={handleThemeToggle} className="nav-item" aria-label="Toggle theme">
+                      <span style={{ display: "inline-block", animation: themeBounce ? "iconBounce 0.4s cubic-bezier(0.34,1.56,0.64,1)" : "none" }}>
+                        {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                      </span>
                     </button>
                   )}
                   <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="nav-item">
@@ -274,12 +300,10 @@ const getSectionName = () => {
                   {/* Theme toggle */}
                   {mounted && (
                     <li>
-                      <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                        style={{ background: "none", border: "none", cursor: "pointer", padding: "0 6px", color: "var(--text-3)", transition: "color 0.15s", display: "flex", alignItems: "center" }}
-                        onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
-                        onMouseLeave={e => (e.currentTarget.style.color = "var(--text-3)")}
-                        aria-label="Toggle theme">
-                        {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                      <button onClick={handleThemeToggle} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Toggle theme">
+                        <span style={{ display: "inline-block", animation: themeBounce ? "iconBounce 0.4s cubic-bezier(0.34,1.56,0.64,1)" : "none" }}>
+                          {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                        </span>
                       </button>
                     </li>
                   )}

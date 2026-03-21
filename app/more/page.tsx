@@ -53,9 +53,8 @@ export default function MorePage() {
               <a href="/more/functions"><DraggableSticker src="/images/functions/photo1sticker.png" ix={0.85} iy={0.6} size={120}  /></a>
             </>
           )}
+          <Footer />
         </main>
-
-        <Footer />
       </div>
     </AnimatedPage>
   )

@@ -436,12 +436,8 @@ export default function PersonalWebsite() {
               .
             </span>
           </StaggeredContent>
-        </main>
-        <StaggeredContent delay={1100}>
-          {" "}
-          {/* Changed from 1400 */}
           <Footer />
-        </StaggeredContent>
+        </main>
       </div>
     </AnimatedPage>
   )

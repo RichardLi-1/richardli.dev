@@ -66,6 +66,8 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
           loop
           muted
           playsInline
+          disablePictureInPicture
+          disableRemotePlayback
           className={className}
           onLoadedData={() => setLoaded(true)}
           style={{ objectFit: "cover", opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease" }}

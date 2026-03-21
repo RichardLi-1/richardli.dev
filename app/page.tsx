@@ -1,5 +1,6 @@
 "use client"
 import type React from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
@@ -19,6 +20,7 @@ export default function PersonalWebsite() {
   const {isPersonalized} = useWindowsXP()
 
   usePageViewTracker()
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   return (
     <AnimatedPage>
@@ -138,29 +140,45 @@ export default function PersonalWebsite() {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {mainProjects.slice(0, 6).map((project) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 gap-y-10">
+                {mainProjects.slice(0, 4).map((project) => (
                   <Link key={project.id} href={`/projects/${project.id}`}>
                     <div
-                      className="photo-card h-full flex flex-col cursor-pointer group"
-                      style={{ "--glow-color": project.colors || "#22c55e44", borderRadius: 32 } as React.CSSProperties}
+                      className="photo-card cursor-pointer group"
+                      style={{ position: "relative", "--glow-color": project.colors || "#22c55e44" } as React.CSSProperties}
                     >
-                      <div className="aspect-video w-full overflow-hidden squircle transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]" style={{ background: "var(--surface)" }}>
+                      <div
+                        className="relative aspect-video w-full overflow-hidden squircle-md transition-shadow duration-300 group-hover:shadow-[0_0px_80px_-20px_var(--glow-color)]"
+                        style={{ background: "var(--surface)", borderRadius: 48 }}
+                        onMouseEnter={() => setHoveredId(project.id)}
+                        onMouseLeave={() => setHoveredId(null)}
+                      >
                         <ProjectImageCycler
                           images={[project.image, (project as any).image2, (project as any).image3]}
                           alt={project.title}
                           className="w-full h-full object-cover transition-transform duration-300"
                         />
-                      </div>
-                      <div className="px-4 py-3 flex flex-col flex-grow">
-                        <div className="flex items-center justify-between mb-1">
-                          <h3 style={{ fontSize: "14px", letterSpacing: "0.02em", fontWeight: 500, color: "var(--text)" }}>
+                        <div className="liquid-glass-pill absolute bottom-0 flex items-center gap-2 mx-3 my-3 px-4 py-2" style={{ whiteSpace: "nowrap" }}>
+                          <h3 className="text-nowrap" style={{ fontSize: "14px", letterSpacing: "0.02em", fontWeight: 500, color: "inherit" }}>
                             {project.title}
                           </h3>
-                          <span style={{ fontSize: "11px", color: "var(--text-3)", letterSpacing: "0.04em" }}>{project.year}</span>
+                          <span style={{ fontSize: "11px", opacity: 0.65, letterSpacing: "0.04em", paddingTop: "2px" }}>{project.year}</span>
                         </div>
-                        <p style={{ fontSize: "12px", color: "var(--text-2)", lineHeight: "1.6" }}>{project.description}</p>
                       </div>
+                      <p style={{
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        top: "100%",
+                        fontSize: "12px",
+                        color: "var(--text-2)",
+                        lineHeight: "1.6",
+                        opacity: hoveredId === project.id ? 1 : 0,
+                        transform: hoveredId === project.id ? "translateY(0)" : "translateY(-6px)",
+                        transition: "opacity 0.25s ease, transform 0.25s ease",
+                        pointerEvents: "none",
+                        paddingTop: "8px",
+                      }}>{project.description}</p>
                     </div>
                   </Link>
                 ))}
@@ -229,10 +247,8 @@ export default function PersonalWebsite() {
             </>
           )}
           
-        </main>
-        <StaggeredContent delay={1100}>
           <Footer />
-        </StaggeredContent>
+        </main>
       </div>
     </AnimatedPage>
   )

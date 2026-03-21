@@ -30,9 +30,8 @@ export default function ContactPage() {
             </div>
           </StaggeredContent>
         </div>
+        <Footer />
       </main>
-
-      <Footer />
     </AnimatedPage>
   )
 }

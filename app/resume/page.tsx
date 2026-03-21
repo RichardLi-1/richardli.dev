@@ -283,11 +283,8 @@ export default function ResumePage() {
               </section>
             </div>
           </StaggeredContent>
-        </main>
-
-        <StaggeredContent delay={200}>
           <Footer />
-        </StaggeredContent>
+        </main>
       </div>
     </AnimatedPage>
   )
