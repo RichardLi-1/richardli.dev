@@ -76,8 +76,6 @@ const getSectionName = () => {
       return [
         { href: "/projects", label: "Work" },
         { href: "/more", label: "More" },
-        { href: "https://www.linkedin.com/in/richardli0/", label: "LinkedIn", external: true },
-        { href: "https://github.com/RichardLi-1", label: "GitHub", external: true },
       ]
     }
     if (currentPage.startsWith("/projects")) {
@@ -115,7 +113,7 @@ const getSectionName = () => {
         
         {/* Right: compact nav + XP toggle + theme */}
         <div className="flex items-center gap-2">
-          {navItems.map((item, i) => (
+          {navItems.filter(item => item.label.toLowerCase() !== "linkedin" && item.label.toLowerCase() !== "github").map((item, i) => (
             <a
               key={i}
               href={item.href}
