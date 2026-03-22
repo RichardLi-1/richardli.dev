@@ -122,7 +122,7 @@ const getSectionName = () => {
               target={item.external ? "_blank" : undefined}
               rel={item.external ? "noopener noreferrer" : undefined}
               className="nav-item"
-              style={{ fontSize: "11px", padding: "4px 8px" }}
+              style={{ fontSize: "14px", padding: "4px 8px" }}
             >
               {item.label === "Home" ? <Home className="w-3 h-3" /> : item.label === "LinkedIn" ? <Linkedin className="w-3 h-3" /> : item.label === "GitHub" ? <Github className="w-3 h-3" /> : item.label}
             </a>
