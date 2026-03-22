@@ -1,4 +1,5 @@
 "use client"
+import { useState, useEffect } from "react"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
@@ -9,6 +10,13 @@ import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
 export default function ResumePage() {
   usePageViewTracker()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
 
   return (
     <AnimatedPage>
@@ -24,7 +32,7 @@ export default function ResumePage() {
           ]}
         />
 
-        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "120px" }}>
+        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: isMobile ? "0px" : "120px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-8 flex justify-between items-center">
               <h1 className="text-4xl font-bold">Resume</h1>

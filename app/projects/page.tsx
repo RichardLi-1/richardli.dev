@@ -84,7 +84,7 @@ export default function ProjectsPage() {
                 minWidth: 0,
                 paddingRight: isMobile? "0px" : "36px",
                 paddingLeft: isMobile? "0px" : "15px",
-                borderRadius: 24,
+                borderRadius: isMobile? 0 : 24,
                 cornerShape: "superellipse(1)",
                 borderRight: selectedId ? "1px solid var(--border-2)" : "none",
                 borderTop: selectedId ? "1px solid var(--border-2)" : "none",

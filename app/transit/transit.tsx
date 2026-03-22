@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -24,6 +24,13 @@ export default function PersonalWebsite() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -138,7 +145,7 @@ export default function PersonalWebsite() {
         {/* Header */}
         <AnimatedHeader isHomepage={true} currentPage="/" />
 
-        <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: "120px" }}>
+        <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: isMobile ? "0px" : "120px" }}>
           {/* Introduction */}
           <StaggeredContent delay={0}>
             {" "}

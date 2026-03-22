@@ -4,6 +4,7 @@ import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { RelatedProjects } from "@/components/related-projects"
+import { useState, useEffect } from "react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { X, ArrowUpRight } from "lucide-react"
@@ -11,6 +12,13 @@ import { X, ArrowUpRight } from "lucide-react"
 export default function SalesPatriotProjectPage() {
   usePageViewTracker()
   const isPanel = useIsPanel()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
   return (
     <AnimatedPage>
       <div className="min-h-screen page-bg">
@@ -25,7 +33,7 @@ export default function SalesPatriotProjectPage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "60px" }}>
+        <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}

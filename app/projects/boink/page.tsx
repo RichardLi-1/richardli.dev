@@ -6,12 +6,19 @@ import { AnimatedHeader } from "@/components/animated-header"
 import { RelatedProjects } from "@/components/related-projects"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { ExternalLink, X, ArrowUpRight } from "lucide-react"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
 
 export default function BoinkProjectPage() {
   usePageViewTracker()
   const isPanel = useIsPanel()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
   return (
     <AnimatedPage>
       <div className="min-h-screen page-bg">
@@ -25,7 +32,7 @@ export default function BoinkProjectPage() {
           ]}
         />
 
-        <main className="max-w-6xl mx-auto p-6" style={{ paddingTop: "40px" }}>
+        <main className="max-w-6xl mx-auto p-6" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}

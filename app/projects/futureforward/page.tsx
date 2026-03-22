@@ -1,5 +1,5 @@
 "use client"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
@@ -35,6 +35,13 @@ export default function FutureForwardProjectPage() {
   usePageViewTracker()
   const isPanel = useIsPanel()
 
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
   useEffect(() => {
     // window.location.href = "https://www.futureforward.info/"
   }, [])
@@ -52,7 +59,7 @@ export default function FutureForwardProjectPage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "60px" }}>
+        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">

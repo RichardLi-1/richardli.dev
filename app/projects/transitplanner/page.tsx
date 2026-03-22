@@ -7,12 +7,19 @@ import { AnimatedHeader } from "@/components/animated-header"
 import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
 
 export default function TransitPlannerProjectPage() {
   usePageViewTracker()
   const isPanel = useIsPanel()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
 
   useEffect(() => {
     if ((window as any).twttr?.widgets) {
@@ -29,7 +36,7 @@ export default function TransitPlannerProjectPage() {
           currentPage="/projects/transitplanner"
         />
 
-        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "40px" }}>
+        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             <div className="flex">
               <div className="mb-0">

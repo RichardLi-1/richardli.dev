@@ -4,6 +4,7 @@ import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { ExternalLink, X, ArrowUpRight } from "lucide-react"
+import { useState, useEffect } from "react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useIsPanel } from "@/hooks/use-is-panel"
@@ -11,6 +12,13 @@ import { useIsPanel } from "@/hooks/use-is-panel"
 export default function SaFuturePage() {
   usePageViewTracker()
   const isPanel = useIsPanel()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
 
   return (
     <AnimatedPage>
@@ -25,7 +33,7 @@ export default function SaFuturePage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-6xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text)]" style={{ paddingTop: "40px" }}>
+        <main className="max-w-6xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2">SaFuture Inc & Qwhery</h1>

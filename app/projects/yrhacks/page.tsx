@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
@@ -12,6 +12,13 @@ import { X, ArrowUpRight } from "lucide-react"
 export default function YRHacksProjectPage() {
   usePageViewTracker()
   const isPanel = useIsPanel()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
   const [showAllTeam, setShowAllTeam] = useState(false) // State to manage visibility
 
   const fullTeamMembers = [
@@ -43,7 +50,7 @@ export default function YRHacksProjectPage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: "60px" }}>
+        <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}

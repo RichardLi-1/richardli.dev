@@ -124,9 +124,11 @@ const getSectionName = () => {
               className="nav-item"
               style={{ fontSize: "14px", padding: "4px 8px" }}
             >
-              {item.label === "Home" ? <Home className="w-3 h-3" /> : item.label === "LinkedIn" ? <Linkedin className="w-3 h-3" /> : item.label === "GitHub" ? <Github className="w-3 h-3" /> : item.label}
+              {item.label === "Home" ? <Home className="w-3 h-3" /> : item.label}
             </a>
           ))}
+          <a href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }}><Linkedin className="w-3 h-3" /></a>
+          <a href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }}><Github className="w-3 h-3" /></a>
           {/* Personalise toggle switch */}
           <button
             onClick={togglePersonalizedMode}
@@ -157,13 +159,16 @@ const getSectionName = () => {
     <>
       {/* Mobile scrolled: fixed pill at viewport bottom (separate element — position can't animate) */}
       {isMobile && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 z-50">
-          <PillNav />
+        <div className="h-5">
+          <div className="fixed bottom-0 left-0 right-0 p-4 z-50">
+            <PillNav />
+          </div>
         </div>
+        
       )}
 
       {/* Desktop + mobile-unscrolled: single element so the container shape can animate */}
-      {(!isScrolled || !isMobile) && (
+      {(!isScrolled && !isMobile) && (
         <header
           className="sticky top-0 z-50"
           style={{
@@ -176,7 +181,7 @@ const getSectionName = () => {
           }}
         >
           {/* Container: animates between full-width bar and centered pill using numeric values */}
-          {!isMobile && (<div
+          <div
             style={{
               flex: "1",
               maxWidth: isScrolled && !isMobile ? "480px" : "1200px",
@@ -264,21 +269,7 @@ const getSectionName = () => {
                     </button>
                   )}
                 </div>
-              ) : isMobile ? (
-                /* Mobile: theme + hamburger */
-                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                  {mounted && (
-                    <button onClick={handleThemeToggle} className="nav-item" aria-label="Toggle theme">
-                      <span style={{ display: "inline-block", animation: themeBounce ? "iconBounce 0.4s cubic-bezier(0.34,1.56,0.64,1)" : "none" }}>
-                        {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                      </span>
-                    </button>
-                  )}
-                  <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="nav-item">
-                    {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                  </button>
-                </div>
-              ) : (
+              ): (
                 /* Desktop full editorial nav */
                 <ul style={{ display: "flex", alignItems: "center", gap: "4px", listStyle: "none", margin: 0, padding: 0 }}>
                   {navItems.map((item, i) => (
@@ -315,11 +306,11 @@ const getSectionName = () => {
                 </ul>
               )}
             </div>
-          </div>)}
+          </div>
         </header>
       )}
 
-      {/* Mobile menu overlay */}
+      {/* Mobile menu overlay 
       {isMobile && isMobileMenuOpen && !isScrolled && (
         <div
           className="fixed inset-0 z-40 backdrop-blur-sm"
@@ -353,7 +344,7 @@ const getSectionName = () => {
             </nav>
           </div>
         </div>
-      )}
+      )}*/}
     </>
   )
 }
