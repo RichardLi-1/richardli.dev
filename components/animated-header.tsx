@@ -156,7 +156,7 @@ const getSectionName = () => {
   return (
     <>
       {/* Mobile scrolled: fixed pill at viewport bottom (separate element — position can't animate) */}
-      {isScrolled && isMobile && (
+      {isMobile && (
         <div className="fixed bottom-0 left-0 right-0 p-4 z-50">
           <PillNav />
         </div>
@@ -176,7 +176,7 @@ const getSectionName = () => {
           }}
         >
           {/* Container: animates between full-width bar and centered pill using numeric values */}
-          <div
+          {!isMobile && (<div
             style={{
               flex: "1",
               maxWidth: isScrolled && !isMobile ? "480px" : "1200px",
@@ -315,7 +315,7 @@ const getSectionName = () => {
                 </ul>
               )}
             </div>
-          </div>
+          </div>)}
         </header>
       )}
 

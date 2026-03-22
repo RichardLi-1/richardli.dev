@@ -90,11 +90,11 @@ export default function ProjectsPage() {
                 borderTop: selectedId ? "1px solid var(--border-2)" : "none",
                 maxHeight: selectedId ? "calc(100vh - 120px)" : "none",
                 overflow: "auto",
-                paddingTop: "36px"
+                paddingTop: isMobile ? "0px" :"36px"
               }}>
                 <StaggeredContent delay={0}>
                   <div style={{ marginBottom: "3rem", overflow: "hidden" }}>
-                    <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", marginBottom: "12px" }}>Work</h1>
+                    <h1 style={{ fontSize: "clamp(28px, 8vw, 48px)", marginBottom: "12px" }}>Work</h1>
                     <p style={{ fontSize: "14px", color: "var(--text-3)", letterSpacing: "0.02em" }}>
                       A collection of work and projects, from mobile games to non-profit initiatives.
                     </p>

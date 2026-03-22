@@ -1,6 +1,6 @@
 "use client"
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
@@ -18,6 +18,13 @@ import { DraggableSticker } from "@/components/draggable-sticker"
 export default function PersonalWebsite() {
   const { togglePersonalizedMode } = useWindowsXP()
   const {isPersonalized} = useWindowsXP()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+      const check = () => setIsMobile(window.innerWidth < 768)
+      check()
+      window.addEventListener("resize", check)
+      return () => window.removeEventListener("resize", check)
+    }, [])
 
   usePageViewTracker()
   const [hoveredId, setHoveredId] = useState<string | null>(null)
@@ -27,11 +34,12 @@ export default function PersonalWebsite() {
       <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--text)" }}>
         <ResponsiveHeader isHomepage={true} currentPage="/" />
 
-        <main className="antialiased max-w-4xl mx-auto p-6 space-y-8 pt-[60px] sm:pt-[100px]">
+        <main className="antialiased max-w-4xl mx-auto p-6 space-y-8 sm:pt-[100px]"
+        style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           {/* Introduction */}
           <StaggeredContent delay={0}>
             <section className="space-y-4">
-              <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)" }}>Hey, I'm Richard!</h1>
+              <h1 style={{ fontSize: "clamp(28px, 8vw, 48px)" }}>Hey, I'm Richard!</h1>
               <div className="space-y-2" style={{ color: "var(--text-2)" }}>
                 <p>I'm interested in public transportation, AI, PM, design, and development.</p>
               </div>
@@ -43,7 +51,6 @@ export default function PersonalWebsite() {
             <section className="space-y-2">
               <h2 className="text-xl section-label">I'm currently...</h2>
               <ul className="space-y-2 ml-4" style={{ color: "var(--text-2)" }}>
-                <li> <span className="mr-2">•</span>rebuilding this site! stay tuned...</li>
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>
@@ -223,8 +230,8 @@ export default function PersonalWebsite() {
 
           <StaggeredContent delay={900}>
             <br />
-            <span>
-              I'd love to hear from you! Want to hire me or collab on a project? Or wanna chat? Feel free to reach out by{" "}
+            <span style={{ color: "var(--text-2)" }}>
+              <span>I'd love to hear from you! Want to hire me or collab on a project? Or wanna chat? Feel free to reach out by</span>{" "}
               <a
                 href="mailto:richardli0@outlook.com"
                 className="text-stone-400 underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
