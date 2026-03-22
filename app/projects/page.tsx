@@ -82,8 +82,8 @@ export default function ProjectsPage() {
               <motion.div layout transition={{ type: "spring", stiffness: 260, damping: 30 }} style={{
                 flex: selectedId ? "0 0 19.8%" : "1 1 100%", // 15.8%, 24.2%, 32.6%
                 minWidth: 0,
-                paddingRight: "36px",
-                paddingLeft: "15px",
+                paddingRight: isMobile? "0px" : "36px",
+                paddingLeft: isMobile? "0px" : "15px",
                 borderRadius: 24,
                 cornerShape: "superellipse(1)",
                 borderRight: selectedId ? "1px solid var(--border-2)" : "none",
