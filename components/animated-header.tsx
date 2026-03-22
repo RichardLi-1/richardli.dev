@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, ExternalLink, Home, Menu, X, Sun, Moon } from "lucide-react"
+import { ArrowLeft, ExternalLink, Home, Menu, X, Sun, Moon, Linkedin, Github } from "lucide-react"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { useTheme } from "next-themes"
 
@@ -100,7 +100,7 @@ const getSectionName = () => {
 
   // Compact pill used for scrolled state
   const PillNav = () => (
-    <div className="header-pill max-w-sm mx-auto rounded-full backdrop-blur-xl border shadow-2xl">
+    <div className="header-pill max-w-xl mx-auto rounded-full backdrop-blur-xl border shadow-2xl">
       <div className="flex items-center justify-between gap-2 p-3">
         {/* Left: logo / back */}
         {isHomepage ? (
@@ -112,7 +112,7 @@ const getSectionName = () => {
             <ArrowLeft className="h-4 w-4" />
           </Link>
         ) : null}
-
+        
         {/* Right: compact nav + XP toggle + theme */}
         <div className="flex items-center gap-2">
           {navItems.map((item, i) => (
@@ -124,7 +124,7 @@ const getSectionName = () => {
               className="nav-item"
               style={{ fontSize: "11px", padding: "4px 8px" }}
             >
-              {item.label === "Home" ? <Home className="w-3 h-3" /> : item.label}
+              {item.label === "Home" ? <Home className="w-3 h-3" /> : item.label === "LinkedIn" ? <Linkedin className="w-3 h-3" /> : item.label === "GitHub" ? <Github className="w-3 h-3" /> : item.label}
             </a>
           ))}
           {/* Personalise toggle switch */}
@@ -341,7 +341,7 @@ const getSectionName = () => {
                   className="nav-item"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {item.label}
+                  {item.label === "LinkedIn" ? <Linkedin className="w-4 h-4" /> : item.label === "GitHub" ? <Github className="w-4 h-4" /> : item.label}
                 </a>
               ))}
               <button

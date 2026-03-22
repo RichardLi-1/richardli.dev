@@ -355,7 +355,7 @@ h3 {
 
 /* Header pill: true rounded-full, not squircle */
 .header-pill {
-  corner-shape: initial;
+  corner-shape: superellipse(1);
   border-radius: 9999px;
 }
 
@@ -379,13 +379,19 @@ h3 {
 
 /* Header-specific glass pill override for light mode */
 .light .header-pill {
-  background: rgba(245, 244, 240, 0.82);
-  border-color: rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.45) 100%);
+  border-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.12);
 }
 
 .dark .header-pill {
-  background: rgba(12, 12, 11, 0.82);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.18) 100%);
+  border-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Header nav link colors + font → CSS vars */
