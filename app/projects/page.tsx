@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion"
 import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Footer } from "@/components/footer"
@@ -58,16 +59,15 @@ export default function ProjectsPage() {
           ]}
         />
 
-        <main className="max-w-[98%] mx-auto p-6" style={{ paddingTop: "50px" }}>
+        <main className="max-w-[100%] mx-auto p-6" style={{ paddingTop: "50px" }}>
           <StaggeredContent delay={100}>
-            <div style={{ display: "flex", alignItems: "flex-start", gap: selectedId ? 16 : 0, transition: "gap 0.45s ease" }}>
+            <LayoutGroup>
+            <motion.div layout transition={{ type: "spring", stiffness: 260, damping: 30 }} style={{ display: "flex", alignItems: "flex-start", gap: selectedId ? 16 : 0 }}>
 
               {/* ── Left column ── */}
-              <div style={{
-                width: selectedId ? "15.8%" : "100%", //24.2%, 32.6%
+              <motion.div layout transition={{ type: "spring", stiffness: 260, damping: 30 }} style={{
+                flex: selectedId ? "0 0 15.8%" : "1 1 100%", // 15.8%, 24.2%, 32.6%
                 minWidth: 0,
-                flexShrink: 0,
-                transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
               }}>
                 <StaggeredContent delay={0}>
                   <div style={{ marginBottom: "3rem", overflow: "hidden" }}>
@@ -77,16 +77,19 @@ export default function ProjectsPage() {
                     </p>
                   </div>
                 </StaggeredContent>
-                <div style={{ display: "grid", gridTemplateColumns: (selectedId || isMobile) ? "1fr" : "repeat(2, 1fr)", gap: "15px 16px", transition: "grid-template-columns 0.01s" }}>
+                <div style={{ display: "grid", gridTemplateColumns: (selectedId || isMobile) ? "1fr" : "repeat(2, 1fr)", gap: "15px 16px" }}>
                   {allProjects.map((project, index) => (
-                    <div
+                    <motion.div
                       key={project.id}
-                      style={{
-                        animationDelay: `${300 + index * 100}ms`,
-                        opacity: 0,
-                        transform: "translateY(20px)",
-                        animation: "fadeInUp 0.7s ease-out forwards",
+                      layout
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        opacity: { duration: 0.5, delay: 0.3 + index * 0.08 },
+                        y: { duration: 0.5, delay: 0.3 + index * 0.08 },
+                        layout: { type: "spring", stiffness: 280, damping: 28 },
                       }}
+                      style={{ minWidth: 0 }}
                     >
                       <div
                         className="photo-card mb-6 cursor-pointer group"
@@ -146,7 +149,7 @@ export default function ProjectsPage() {
                           }}>{project.description}</p>
                         )}
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
 
@@ -163,61 +166,44 @@ export default function ProjectsPage() {
                     <p style={{ fontSize: "13px", color: "var(--text-3)", letterSpacing: "0.02em" }}>You've reached the terminus, but new projects are always coming. Check back soon for updates!</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* ── Right panel (desktop only) ── */}
-              {!isMobile && <div style={{
-                flex: 1,
-                position: "sticky",
-                top: "80px",
-                height: "calc(100vh - 96px)",
-                opacity: selectedId ? 1 : 0,
-                transform: selectedId ? "translateX(0)" : "translateX(24px)",
-                transition: "opacity 0.4s ease, transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
-                pointerEvents: selectedId ? "auto" : "none",
-                borderRadius: 24,
-                overflow: "hidden",
-                background: "var(--card-bg)",
-                border: "1px solid var(--border-2)",
-                display: "flex",
-                flexDirection: "column",
-                minWidth: 0,
-              }}>
-                {/* Toolbar */}
-                <div style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  padding: "10px 14px", borderBottom: "1px solid var(--border-2)", flexShrink: 0,
-                }}>
-                  {/*<span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 13, color: "var(--text-2)", letterSpacing: "0.04em" }}>
-                    {selectedProject?.title}
-                  </span>
-                  <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                    <a
-                      href={selectedId ? `/projects/${selectedId}` : "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="nav-item"
-                      style={{ fontSize: 11, padding: "4px 8px", display: "flex", alignItems: "center", gap: 4 }}
-                    >
-                      Open <ArrowUpRight style={{ width: 12, height: 12 }} />
-                    </a>
-                    <button onClick={() => setSelectedId(null)} className="nav-item" style={{ padding: "4px 6px" }}>
-                      <X style={{ width: 14, height: 14 }} />
-                    </button>
-                  </div>*/}
-                </div>
-                {/* iframe */}
-                {selectedId && (
-                  <iframe
-                    key={selectedId}
-                    src={`/projects/${selectedId}?panel=1`}
-                    style={{ flex: 1, border: "none", width: "100%", background: "var(--bg)" }}
-                    title={selectedProject?.title}
-                  />
+              <AnimatePresence>
+                {selectedId && !isMobile && (
+                  <motion.div
+                    key="panel"
+                    layout
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 40 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                    style={{
+                      flex: 1,
+                      position: "sticky",
+                      top: "80px",
+                      height: "calc(100vh - 96px)",
+                      borderRadius: 24,
+                      overflow: "hidden",
+                      background: "var(--card-bg)",
+                      borderLeft: "1px solid var(--border-2)",
+                      display: "flex",
+                      flexDirection: "column",
+                      minWidth: 0,
+                    }}
+                  >
+                    <iframe
+                      key={selectedId}
+                      src={`/projects/${selectedId}?panel=1`}
+                      style={{ flex: 1, border: "none", width: "100%", background: "var(--bg)" }}
+                      title={selectedProject?.title}
+                    />
+                  </motion.div>
                 )}
-              </div>}
+              </AnimatePresence>
 
-            </div>
+            </motion.div>
+            </LayoutGroup>
           </StaggeredContent>
 
           <Footer />

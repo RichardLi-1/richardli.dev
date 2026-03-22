@@ -16,7 +16,7 @@ export function Footer() {
 
         {/* Bottom row: built-with + version */}
         <div className="flex items-center justify-between">
-          <span style={small}>Written in TypeScript using Next.js. Set in SFCamera and Toronto Subway.</span>
+          <span style={small}>Written in TypeScript using Next.js. Animations using Framer Motion. Set in SFCamera and Toronto Subway.</span>
           <div className="flex items-center gap-2 shrink-0 ml-4">
             <div className="size-2 rounded-full bg-green-400 animate-pulse-custom" />
             <span style={small}>v2.0.2 — 03/20/2025</span>
