@@ -4,11 +4,13 @@ import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Award, FileText } from "lucide-react"
+import { ExternalLink, Award, FileText, X, ArrowUpRight } from "lucide-react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
+import { useIsPanel } from "@/hooks/use-is-panel"
 
 export default function MarkvilleRFPProjectPage() {
   usePageViewTracker()
+  const isPanel = useIsPanel()
   return (
     <AnimatedPage>
       <div className="min-h-screen page-bg">
@@ -29,6 +31,10 @@ export default function MarkvilleRFPProjectPage() {
             },
           ]}
         />
+        {isPanel && <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 6, zIndex: 50 }}>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")} className="nav-item" style={{ padding: "6px" }}><ArrowUpRight className="w-4 h-4" /></button>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
+        </div>}
 
         <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>

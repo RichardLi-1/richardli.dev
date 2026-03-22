@@ -32,7 +32,7 @@ export default function TransitPlannerProjectPage() {
         <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "40px" }}>
           <StaggeredContent delay={0}>
             <div className="flex">
-              <div className="mb-8">
+              <div className="mb-0">
                 <h2 className="text-4xl font-bold mb-2">Transit Planner</h2>
                 <p className="text-m text-gray-400">Web App, 2026</p>
               </div>

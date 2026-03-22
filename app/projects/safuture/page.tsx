@@ -3,12 +3,14 @@ import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
-import { ExternalLink } from "lucide-react"
+import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
+import { useIsPanel } from "@/hooks/use-is-panel"
 
 export default function SaFuturePage() {
   usePageViewTracker()
+  const isPanel = useIsPanel()
 
   return (
     <AnimatedPage>
@@ -18,6 +20,10 @@ export default function SaFuturePage() {
           backText="Back"
           currentPage="/projects/safuture"
         />
+        {isPanel && <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 6, zIndex: 50 }}>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")} className="nav-item" style={{ padding: "6px" }}><ArrowUpRight className="w-4 h-4" /></button>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
+        </div>}
 
         <main className="max-w-6xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text)]" style={{ paddingTop: "40px" }}>
           <StaggeredContent delay={0}>

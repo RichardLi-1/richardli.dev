@@ -4,9 +4,10 @@ import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
-import { Youtube } from "lucide-react"
+import { Youtube, X, ArrowUpRight } from "lucide-react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
+import { useIsPanel } from "@/hooks/use-is-panel"
 
 const GLOW: React.CSSProperties = { position: "absolute", inset: -20, background: "rgba(59,54,156,0.35)", filter: "blur(36px)", borderRadius: 28, zIndex: 0 }
 const LABEL_STYLE: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, letterSpacing: "0.18em", color: "var(--text-3)", textTransform: "uppercase" }
@@ -32,6 +33,7 @@ function InitiativeImage({ src, alt }: { src: string; alt: string }) {
 
 export default function FutureForwardProjectPage() {
   usePageViewTracker()
+  const isPanel = useIsPanel()
 
   useEffect(() => {
     // window.location.href = "https://www.futureforward.info/"
@@ -45,6 +47,10 @@ export default function FutureForwardProjectPage() {
           backText="Back"
           currentPage="/projects/futureforward"
         />
+        {isPanel && <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 6, zIndex: 50 }}>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")} className="nav-item" style={{ padding: "6px" }}><ArrowUpRight className="w-4 h-4" /></button>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
+        </div>}
 
         <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
@@ -69,8 +75,8 @@ export default function FutureForwardProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={300}>
-            <div className="bg-zinc-800 max-width rounded-md mb-8 border-2">
-              <p className="p-2 py-3 px-3.5 text-zinc-300">🥇 This project was awarded Provincial Champion at DECA Provincials 2025!</p>
+            <div className="mb-4 flex squircle bg-zinc-200 dark:bg-zinc-800 max-width w-full rounded-xl border-2">
+              <p className="p-2 py-3 px-3.5 text-zinc-800 dark:text-zinc-300">🥇 This project was awarded Provincial Champion at Ontario DECA Provincials 2025!</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">

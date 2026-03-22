@@ -7,9 +7,13 @@ import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { DraggableSticker } from "@/components/draggable-sticker"
 import { RelatedProjects } from "@/components/related-projects"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
+import { useIsPanel } from "@/hooks/use-is-panel"
+import { ExternalLink, X, ArrowUpRight } from "lucide-react"
+
 
 export default function SalesPatriotProjectPage() {
   usePageViewTracker()
+  const isPanel = useIsPanel()
   const { isPersonalized } = useWindowsXP()
   return (
     <AnimatedPage>
@@ -23,19 +27,28 @@ export default function SalesPatriotProjectPage() {
 
         <main className="max-w-6xl mx-auto p-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
-            <div className="mb-4">
-              {isPersonalized && (
-                <h1 className="text-4xl mb-2 flex gap-2 text-[#00A6E3] [.light_&]:text-[#0082b12]/70">
-                Father Figure
-              </h1>
+            <div className="flex">
+              <div className="mb-4">
+                {isPersonalized && (
+                  <h1 className="text-4xl mb-2 flex gap-2 text-[#00A6E3] [.light_&]:text-[#0082b12]/70">
+                  Father Figure
+                </h1>
+                )}
+                {!isPersonalized && (
+                  <h1 className="text-4xl mb-2 flex gap-2 [.light_&]:text-[#0082b12]/70">
+                  Father Figure
+                </h1>
+                )}
+                
+                <h1 className="text-m text-gray-400">Project, 2025</h1>
+              </div>
+
+              {isPanel && (
+                <span className="right-4 top-0.5 absolute">
+                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")}><ArrowUpRight className="w-6 h-6" /></button>
+                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")}><X className="w-6 h-6" /></button>
+                </span>
               )}
-              {!isPersonalized && (
-                <h1 className="text-4xl mb-2 flex gap-2 [.light_&]:text-[#0082b12]/70">
-                Father Figure
-              </h1>
-              )}
-              
-              <h1 className="text-m text-gray-400">Project, 2025</h1>
             </div>
           </StaggeredContent>
 

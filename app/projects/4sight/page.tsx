@@ -5,9 +5,12 @@ import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { RelatedProjects } from "@/components/related-projects"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
+import { useIsPanel } from "@/hooks/use-is-panel"
+import { X, ArrowUpRight } from "lucide-react"
 
 export default function SightProjectPage() {
   usePageViewTracker()
+  const isPanel = useIsPanel()
   return (
     <AnimatedPage>
       <div className="min-h-screen page-bg">
@@ -20,6 +23,10 @@ export default function SightProjectPage() {
             { href: "https://github.com/justinwuzijin/eye-tester-app", text: "GITHUB", external: true },
           ]}
         />
+        {isPanel && <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 6, zIndex: 50 }}>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")} className="nav-item" style={{ padding: "6px" }}><ArrowUpRight className="w-4 h-4" /></button>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
+        </div>}
 
         <main className="max-w-4xl mx-auto p-6" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>

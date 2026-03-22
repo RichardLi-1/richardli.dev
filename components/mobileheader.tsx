@@ -25,11 +25,7 @@ export function MobileHeader({
 
   // Scroll detection
   useEffect(() => {
-    const onScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", onScroll)
-    return () => window.removeEventListener("scroll", onScroll)
+    setIsScrolled(true)
   }, [])
 
   const closeMenu = () => setIsMenuOpen(false)

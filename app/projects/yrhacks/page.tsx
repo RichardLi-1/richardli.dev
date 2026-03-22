@@ -6,9 +6,12 @@ import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { RelatedProjects } from "@/components/related-projects"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
+import { useIsPanel } from "@/hooks/use-is-panel"
+import { X, ArrowUpRight } from "lucide-react"
 
 export default function YRHacksProjectPage() {
   usePageViewTracker()
+  const isPanel = useIsPanel()
   const [showAllTeam, setShowAllTeam] = useState(false) // State to manage visibility
 
   const fullTeamMembers = [
@@ -35,13 +38,17 @@ export default function YRHacksProjectPage() {
           currentPage="/projects/yrhacks"
           rightLinks={[{ href: "", text: "Website", external: true }]}
         />
+        {isPanel && <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 6, zIndex: 50 }}>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")} className="nav-item" style={{ padding: "6px" }}><ArrowUpRight className="w-4 h-4" /></button>
+          <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
+        </div>}
 
         <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: "60px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
+            <div className="text-left mb-8">
+              <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-left justify-left gap-2">
                 <img
                   src="/images/yrhacks-logo.png"
                   alt="YRHacks Logo"
