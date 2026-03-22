@@ -37,9 +37,9 @@ export default function TransitPlannerProjectPage() {
                 <p className="text-m text-gray-400">Web App, 2026</p>
               </div>
               {isPanel && (
-                <span className="right-4 top-4 absolute">
-                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")}><ArrowUpRight className="w-4 h-4" /></button>
-                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")}><X className="w-4 h-4" /></button>
+                <span className="right-4 top-0.5 absolute">
+                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")}><ArrowUpRight className="w-6 h-6" /></button>
+                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")}><X className="w-6 h-6" /></button>
                 </span>
               )}
             </div>

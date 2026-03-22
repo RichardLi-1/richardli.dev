@@ -70,15 +70,27 @@ export default function ProjectsPage() {
           ]}
         />
 
-        <main className="max-w-[100%] mx-auto p-6" style={{ paddingTop: "50px" }}>
+        <main className="max-w-[100%] mx-auto p-6" style={{
+          maxHeight: selectedId && !isMobile ? "calc(100vh - 70px)" : "none",
+          overflow: selectedId && !isMobile ? "hidden" : "visible",
+        }}>
           <StaggeredContent delay={100}>
             <LayoutGroup>
             <motion.div layout transition={{ type: "spring", stiffness: 260, damping: 30 }} style={{ display: "flex", alignItems: "flex-start", gap: selectedId ? 16 : 0 }}>
 
               {/* ── Left column ── */}
               <motion.div layout transition={{ type: "spring", stiffness: 260, damping: 30 }} style={{
-                flex: selectedId ? "0 0 15.8%" : "1 1 100%", // 15.8%, 24.2%, 32.6%
+                flex: selectedId ? "0 0 19.8%" : "1 1 100%", // 15.8%, 24.2%, 32.6%
                 minWidth: 0,
+                paddingRight: "36px",
+                paddingLeft: "15px",
+                borderRadius: 24,
+                cornerShape: "superellipse(1)",
+                borderRight: selectedId ? "1px solid var(--border-2)" : "none",
+                borderTop: selectedId ? "1px solid var(--border-2)" : "none",
+                maxHeight: selectedId ? "calc(100vh - 120px)" : "none",
+                overflow: "auto",
+                paddingTop: "36px"
               }}>
                 <StaggeredContent delay={0}>
                   <div style={{ marginBottom: "3rem", overflow: "hidden" }}>
@@ -88,7 +100,11 @@ export default function ProjectsPage() {
                     </p>
                   </div>
                 </StaggeredContent>
-                <div style={{ display: "grid", gridTemplateColumns: (selectedId || isMobile) ? "1fr" : "repeat(2, 1fr)", gap: "15px 16px" }}>
+                <div style={{ 
+                  display: "grid",
+                  gridTemplateColumns: (selectedId || isMobile) ? "1fr" : "repeat(2, 1fr)",
+                  gap: selectedId || isMobile ? 0 : "15px 16px" 
+                  }}>
                   {allProjects.map((project, index) => (
                     <motion.div
                       key={project.id}
@@ -107,9 +123,9 @@ export default function ProjectsPage() {
                         onClick={() => handleCardClick(project.id)}
                         style={{
                           position: "relative",
-                          cornerShape: "superellipse(1)",
+                          cornerShape: "squircle",
                           "--glow-color": (project as any).colors || "#22c55e44",
-                          borderRadius: 28,
+                          borderRadius: 30,
                           opacity: selectedId && selectedId !== project.id ? 0.75 : 1,
                           transform: selectedId === project.id ? "scale(0.96)" : "scale(1)",
                           boxShadow: selectedId === project.id ? "0 0 0 2.5px var(--text), inset 0 0 0 2.5px var(--text)" : "none",
@@ -118,7 +134,9 @@ export default function ProjectsPage() {
                       >
                         <div
                           className="relative aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300"
-                          style={{ background: "var(--surface)", borderRadius: 52 }}
+                          style={{ 
+                            background: "var(--surface)", 
+                            borderRadius: selectedId || isMobile ? 28 : 52 }} // IMPORTANT border radius of cards + image
                           onMouseEnter={() => setHoveredId(project.id)}
                           onMouseLeave={() => setHoveredId(null)}
                         >
@@ -193,11 +211,11 @@ export default function ProjectsPage() {
                       flex: 1,
                       position: "sticky",
                       top: "80px",
-                      height: "calc(100vh - 96px)",
+                      height: "calc(100vh - 120px)", //used to be -96px
                       borderRadius: 24,
+                      marginBottom: 24,
                       overflow: "hidden",
                       background: "var(--card-bg)",
-                      borderLeft: "1px solid var(--border-2)",
                       display: "flex",
                       flexDirection: "column",
                       minWidth: 0,
@@ -217,7 +235,9 @@ export default function ProjectsPage() {
             </LayoutGroup>
           </StaggeredContent>
 
-          <Footer />
+          {!selectedId && (
+            <Footer />
+          )}
         </main>
       </div>
 
