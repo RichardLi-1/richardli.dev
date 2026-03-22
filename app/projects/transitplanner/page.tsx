@@ -4,13 +4,15 @@ import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
-import { ExternalLink } from "lucide-react"
+import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useEffect } from "react"
+import { useIsPanel } from "@/hooks/use-is-panel"
 
 export default function TransitPlannerProjectPage() {
   usePageViewTracker()
+  const isPanel = useIsPanel()
 
   useEffect(() => {
     if ((window as any).twttr?.widgets) {
@@ -29,10 +31,19 @@ export default function TransitPlannerProjectPage() {
 
         <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: "40px" }}>
           <StaggeredContent delay={0}>
-            <div className="mb-8">
-              <h2 className="text-4xl font-bold mb-2">Transit Planner</h2>
-              <p className="text-m text-gray-400">Web App, 2026</p>
+            <div className="flex">
+              <div className="mb-8">
+                <h2 className="text-4xl font-bold mb-2">Transit Planner</h2>
+                <p className="text-m text-gray-400">Web App, 2026</p>
+              </div>
+              {isPanel && (
+                <span className="right-4 top-4 absolute">
+                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")}><ArrowUpRight className="w-4 h-4" /></button>
+                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")}><X className="w-4 h-4" /></button>
+                </span>
+              )}
             </div>
+            
           </StaggeredContent>
 
           <StaggeredContent delay={100}>

@@ -37,6 +37,17 @@ export default function ProjectsPage() {
     return () => window.removeEventListener("resize", check)
   }, [])
 
+
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      if (e.data?.type !== "panel-action") return
+      if (e.data.action === "close") setSelectedId(null)
+      if (e.data.action === "open") window.open(`/projects/${selectedId}`)
+    }
+    window.addEventListener("message", handler)
+    return () => window.removeEventListener("message", handler)
+  }, [selectedId])
+
   const allProjects = (showAdditional ? [...mainProjects, ...additionalProjects] : mainProjects).filter(p => !(p as any).hidden)
   const selectedProject = allProjects.find(p => p.id === selectedId)
 
