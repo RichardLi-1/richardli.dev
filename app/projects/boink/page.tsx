@@ -124,46 +124,35 @@ export default function BoinkProjectPage() {
                     addictive gameplay, nostalgic visuals, combined with the satisfying physics of bouncing balls and
                     strategic hole placement, made it one of my favorite casual games. Like the rest of Vista, InkBall
                     was ahead of its time and removed in Windows 7. When I started learning game development, I knew I
-                    wanted to recreate this experience for mobile devices.
+                    wanted to recreate this nostalgic experience for mobile devices.
                   </p>
                 </div>
                 <div>
-                  <img
-                    src="/images/design-mode/image.png"
-                    alt="Original InkBall game from Windows Vista"
+                  <video
+                    src="/videos/inkball-gameplay.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    disablePictureInPicture
                     className="w-full rounded-lg border border-gray-700"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h3 className="text-green-400 font-bold mb-4">App Icon</h3>
-                  <div className="flex justify-center">
-                    <img
-                      src="/images/design-mode/image.png"
-                      alt="Bo!nk App Icon"
-                      className="w-48 h-48"
-                    />
-                  </div>
-                </div>
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h3 className="text-green-400 font-bold mb-4">Gameplay</h3>
-                  <img
-                    src="/images/design-mode/image.png"
-                    alt="Bo!nk gameplay screenshot showing line drawing mechanics"
-                    className="w-full rounded-lg"
-                  />
-                </div>
-              </div>
+                <h2 className="text-2xl font-bold text-green-400 mb-4">Design and Gameplay</h2>
+                <video
+                  src="/videos/boink-gameplay.MOV"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  disablePictureInPicture
+                  className="w-full rounded-lg mb-4"
+                />
 
-              <h2 className="text-2xl font-bold text-green-400 mb-4">Game Design</h2>
               <p className="text-gray-300 mb-4">
-                As the UX designer who conceived the idea, I
-                <ul className="text-gray-300 space-y-2 mb-6">
-                  <li>• Directed the vision of the game</li>
-                  <li>• Created the map of several levels</li>
-                </ul>
+                As the UX designer who conceived the idea, I directed the vision of the game and created the map of several levels.
                 We designed Bo!nk to faithfully recreate the core Inkball experience while adapting it for touch
                 interfaces:
               </p>
@@ -194,15 +183,14 @@ export default function BoinkProjectPage() {
                 </div>
 
                 <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">Vista Aesthetic</h4>
+                  <h4 className="text-green-400 font-bold mb-2">Modern Yet Nostalgic Aesthetic</h4>
                   <p className="text-gray-300 text-sm">
-                    Carefully recreated Windows Vista visual style with authentic colors, fonts, and UI elements.
+                    Created a new visual style respecting Windows Vista's legacy, with authentic colors, fonts, and UI elements.
                   </p>
                 </div>
               </div>
-              <p>
-                Yet we also added a twist: players have a finite amount of ink to draw lines per level, adding a layer
-                of challenge.
+              <p className="text-gray-300 mb-4">
+                We also added a twist: players have a finite amount of ink to draw lines per level. Thus, players must be frugal in their inputs.
               </p>
 
               <h2 className="text-2xl font-bold text-green-400 mb-4">Technical Implementation</h2>
@@ -275,8 +263,8 @@ export default function BoinkProjectPage() {
                 <li>• Going through the review process and addressing feedback</li>
                 <li>• Understanding app analytics and user engagement metrics</li>
                 <li>
-                  • Renaming the game from "Boink" to "Bo!nk," because the original name is a swear word in Dutch. The
-                  App Store forced us to change this
+                  • Renaming the game from "Boink" to "Bo!nk." Unbeknownst to us, the original name is inappropriate in Dutch. This was one of the first
+                  pieces of feedback the App Store gave us
                 </li>
               </ul>
 
@@ -329,6 +317,12 @@ export default function BoinkProjectPage() {
                 </a>{" "}
                 and represents an important milestone in my development journey. It sparked my passion for creating
                 digital experiences and laid the foundation for my future work in technology and product development.
+              </p>
+
+              <p className="text-gray-300 mt-4">
+                Try it out <a className="font-bold hover:underline" href="https://apps.apple.com/ca/app/bo-nk/id1570376501" target="_blank" rel="noreferrer">here!
+                </a>{" "}
+                
               </p>
             </div>
           </StaggeredContent>
