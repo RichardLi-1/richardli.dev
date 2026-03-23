@@ -32,7 +32,6 @@ export function AnimatedHeader({
 
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [themeBounce, setThemeBounce] = useState(false)
   const handleThemeToggle = () => {
@@ -49,7 +48,6 @@ export function AnimatedHeader({
     const handleScroll = () => setIsScrolled(prev => prev ? window.scrollY > 30 : window.scrollY > 60)
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768)
-      if (window.innerWidth >= 768) setIsMobileMenuOpen(false)
     }
     handleResize()
     window.addEventListener("scroll", handleScroll)
@@ -165,8 +163,8 @@ const getSectionName = () => {
         
       )}
 
-      {/* Desktop + mobile-unscrolled: single element so the container shape can animate */}
-      {(!isScrolled && !isMobile) && (
+      {/* Desktop only: single element so the container shape can animate */}
+      {!isMobile && (
         <header
           className="sticky top-0 z-50"
           style={{
