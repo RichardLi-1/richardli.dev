@@ -78,11 +78,11 @@ export default function ProjectsPage() {
             <LayoutGroup>
             <motion.div layout transition={{ type: "spring", stiffness: 260, damping: 30 }} style={{ display: "flex", alignItems: "flex-start", gap: selectedId ? 16 : 0 }}>
 
-              {/* ── Left column ── */}
+              {/* ── Left Column Left Panel── */}
               <motion.div layout transition={{ type: "spring", stiffness: 260, damping: 30 }} style={{
                 flex: selectedId ? "0 0 19.8%" : "1 1 100%", // 15.8%, 24.2%, 32.6%
                 minWidth: 0,
-                paddingRight: isMobile? "0px" : "36px",
+                paddingRight: isMobile? "0px" : selectedId? "36px" : "15px",
                 paddingLeft: isMobile? "0px" : "15px",
                 borderRadius: isMobile? 0 : 24,
                 cornerShape: "superellipse(1)",
