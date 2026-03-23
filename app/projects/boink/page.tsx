@@ -332,7 +332,9 @@ export default function BoinkProjectPage() {
               </p>
             </div>
           </StaggeredContent>
-          <RelatedProjects currentId="boink" />
+          {!isPanel && (
+            <RelatedProjects currentId="boink" />
+          )}
         </main>
 
         <StaggeredContent delay={1100}>

@@ -139,7 +139,9 @@ export default function SightProjectPage() {
               
 
           </StaggeredContent>
-          <RelatedProjects currentId="4sight" />
+          {!isPanel && (
+            <RelatedProjects currentId="4sight" />
+          )}
         </main>
 
         <StaggeredContent delay={1100}>

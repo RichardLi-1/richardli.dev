@@ -97,7 +97,9 @@ export default function SalesPatriotProjectPage() {
               <p>Designed different personas that were composed of hand-drawn characters with different emotions Created custom event triggers for Dave to pop up on (e.g. tab overload, late night, emotional check-ins) Used Gemini AI to generate conversation and different personalities + ElevenLabs API to simulate dad voice Challenges we ran into but conquered successfully 🥊 Format... we weren't sure how we would display things to ensure convenience and seamlessness, but thank goodness it all worked out Timing the animation and audio correctly for maximum dad-ness 😅 😞</p>
             </div>
           </StaggeredContent>
-          <RelatedProjects currentId="fatherfigure" />
+          {!isPanel && (
+            <RelatedProjects currentId="fatherfigure" />
+          )}
         </main>
 
         <StaggeredContent delay={1100}>

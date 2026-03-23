@@ -83,7 +83,9 @@ export default function SalesPatriotProjectPage() {
               </div>
             </div>
           </StaggeredContent>
-          <RelatedProjects currentId="cec" />
+          {!isPanel && (
+            <RelatedProjects currentId="cec" />
+          )}
         </main>
 
         <StaggeredContent delay={1100}>

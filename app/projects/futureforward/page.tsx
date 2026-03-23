@@ -265,7 +265,9 @@ export default function FutureForwardProjectPage() {
             </p>
           </StaggeredContent>
 
-          <RelatedProjects currentId="futureforward" />
+          {!isPanel && (
+            <RelatedProjects currentId="futureforward" />
+          )}
         </main>
 
         <StaggeredContent delay={1100}>

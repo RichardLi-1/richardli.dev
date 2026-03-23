@@ -105,7 +105,9 @@ export default function SaFuturePage() {
             </div>
           </StaggeredContent>
 
-          <RelatedProjects currentId="safuture" />
+          {!isPanel && (
+            <RelatedProjects currentId="safuture" />
+          )}
         </main>
 
         <StaggeredContent delay={1100}>

@@ -8,6 +8,7 @@ import { ExternalLink, Award, FileText, X, ArrowUpRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useIsPanel } from "@/hooks/use-is-panel"
+import { RelatedProjects } from "@/components/related-projects"
 
 export default function MarkvilleRFPProjectPage() {
   usePageViewTracker()
@@ -213,6 +214,10 @@ export default function MarkvilleRFPProjectPage() {
               </p>
             </div>
           </StaggeredContent>
+
+          {!isPanel && (
+            <RelatedProjects currentId="markville-rfp" />
+          )}
         </main>
 
         <StaggeredContent delay={1100}>

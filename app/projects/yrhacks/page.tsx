@@ -205,7 +205,9 @@ export default function YRHacksProjectPage() {
               me.
             </p>
           </StaggeredContent>
-          <RelatedProjects currentId="yrhacks" />
+          {!isPanel && (
+            <RelatedProjects currentId="yrhacks" />
+          )}
         </main>
 
         <StaggeredContent delay={1100}>

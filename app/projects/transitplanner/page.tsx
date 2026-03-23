@@ -163,8 +163,13 @@ export default function TransitPlannerProjectPage() {
             </ul>                
 
           </StaggeredContent>
-
-          <RelatedProjects currentId="transitplanner" />
+            
+          {!isPanel && (
+            <RelatedProjects currentId="transitplanner" />
+          )
+          
+          }
+          
         </main>
 
         <StaggeredContent delay={1100}>
