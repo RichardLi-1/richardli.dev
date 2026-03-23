@@ -127,7 +127,7 @@ export default function ProjectsPage() {
                           "--glow-color": (project as any).colors || "#22c55e44",
                           borderRadius: 30,
                           opacity: selectedId && selectedId !== project.id ? 0.75 : 1,
-                          transform: selectedId === project.id ? "scale(0.96)" : "scale(1)",
+                          transform: selectedId === project.id ? "scale(0.96)" : hoveredId === project.id ? "scale(0.97)" : "scale(1)",
                           boxShadow: selectedId === project.id ? "0 0 0 2.5px var(--text), inset 0 0 0 2.5px var(--text)" : "none",
                           transition: "transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease",
                         } as React.CSSProperties}
@@ -157,11 +157,17 @@ export default function ProjectsPage() {
                               className="liquid-glass-pill squircle absolute top-0 right-0 flex items-center gap-2 mx-3 my-3 px-4 py-2"
                               style={{ whiteSpace: "nowrap", textDecoration: "none", transition: "transform 0.15s ease" }}
                               onClick={e => e.stopPropagation()}
+                              onMouseEnter={e => (e.currentTarget.style.transform = "scale(0.96)")}
                               onMouseDown={e => (e.currentTarget.style.transform = "scale(0.92)")}
                               onMouseUp={e => (e.currentTarget.style.transform = "scale(1)")}
                               onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
                             >
-                              <span style={{ fontSize: "15px", fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", fontWeight: 500, color: "inherit" }}>Try it out</span>
+                              <span style={{ fontSize: "15px",
+                                fontFamily: "'Toronto Subway', sans-serif",
+                                letterSpacing: "0.02em",
+                                fontWeight: 500,
+                                color: "inherit" }}
+                                >Try it out</span>
                               <ExternalLink style={{ width: "13px", height: "13px", opacity: 0.65 }} />
                             </a>
                           )}
