@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
-import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Download } from 'lucide-react'
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
@@ -291,7 +290,6 @@ export default function ResumePage() {
               </section>
             </div>
           </StaggeredContent>
-          <Footer />
         </main>
       </div>
     </AnimatedPage>

@@ -11,6 +11,7 @@ export interface ContentfulPhoto {
 export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
   const [selected, setSelected] = useState<ContentfulPhoto | null>(null)
   const [search, setSearch] = useState("")
+  const [loadedIds, setLoadedIds] = useState<Set<string>>(new Set())
 
   const filtered = photos.filter(
     (p) =>
@@ -60,11 +61,27 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
         ) : (
           filtered.map((photo) => (
             <div key={photo.id} className="photo-item" onClick={() => setSelected(photo)}>
-              <div className="photo-thumb" style={{ overflow: "hidden", position: "relative" }}>
+              <div
+                className="photo-thumb"
+                style={{
+                  overflow: "hidden",
+                  position: "relative",
+                  aspectRatio: "unset",
+                  height: loadedIds.has(photo.id) ? "auto" : 200,
+                  background: loadedIds.has(photo.id) ? "transparent" : "var(--surface)",
+                }}
+              >
                 <img
-                  src={`${photo.url}?w=600&h=450&fit=fill&f=center`}
+                  src={`${photo.url}?w=800`}
                   alt={photo.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", borderRadius: 20 }}
+                  onLoad={() => setLoadedIds(s => new Set(s).add(photo.id))}
+                  style={{
+                    width: "100%",
+                    display: "block",
+                    borderRadius: 20,
+                    opacity: loadedIds.has(photo.id) ? 1 : 0,
+                    transition: "opacity 0.3s ease",
+                  }}
                 />
               </div>
               {photo.title && <p className="photo-attr">{photo.title}</p>}

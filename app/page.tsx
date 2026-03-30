@@ -2,7 +2,6 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { ResponsiveHeader } from "@/components/responsiveheader"
@@ -13,10 +12,10 @@ import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { DraggableSticker } from "@/components/draggable-sticker"
 
 const activities = [
-  "listening to bollywood music",
   "somewhere on the ttc",
+  "listening to bollywood music",
   "reading about urban planning",
-  "tinkering with geospatial info",
+  "tinkering with geospatial data",
   "photographing line 1",
   "cooking new steak recipes",
   "drinking molly tea",
@@ -67,7 +66,7 @@ export default function PersonalWebsite() {
           {/* ────────────────────── Hero ────────────────────── */}
           <StaggeredContent delay={0}>
             <section style={{ marginBottom: 64, maxWidth: 700 }}>
-              <h1 style={{ fontSize: "clamp(36px, 3vw, 52px)", lineHeight: 1.2, marginBottom: 14, fontFamily: "'SFCamera', sans-serif" }}>
+              <h1 style={{ fontSize: "clamp(40px, 3vw, 56px)", lineHeight: 1.2, letterSpacing: -1, marginBottom: 14, fontFamily: "'SFCamera', sans-serif" }}>
                 Richard Li is a software engineer and full-time public transit enthusiast.
               </h1>
               <p style={{ fontSize: 16, color: "var(--text-3)", letterSpacing: "0.02em" }}>
@@ -181,7 +180,7 @@ export default function PersonalWebsite() {
             <DraggableSticker src="/images/homepagestickers/mollytea.png" ix={0.90} iy={0.55} size={80} />
           )}
 
-          <Footer />
+          
         </main>
       </div>
 

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion"
 import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
@@ -241,9 +240,6 @@ export default function ProjectsPage() {
             </LayoutGroup>
           </StaggeredContent>
 
-          {!selectedId && (
-            <Footer />
-          )}
         </main>
       </div>
 

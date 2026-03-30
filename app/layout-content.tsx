@@ -8,6 +8,7 @@ import { GifLoadingScreen } from "@/components/gif-loading-screen"
 import { ThemeProvider } from "@/components/theme-provider"
 import { usePreserveM } from "@/hooks/use-preserve-m"
 import { SwissGrid } from "@/components/swiss-grid"
+import { Footer } from "@/components/footer"
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   usePreserveM()
@@ -36,7 +37,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       {!showLoading && (
         <>
           {isXPMode && <WindowsXPDesktop />}
-          {!isXPMode && children}
+          {!isXPMode && <>{children}<Footer /></>}
         </>
       )}
     </>

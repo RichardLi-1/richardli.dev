@@ -317,7 +317,7 @@ h3 {
   transition: transform 0.2s ease;
 }
 
-.photo-item:hover { transform: scale(0.97); }
+/*.photo-item:hover { transform: scale(0.97); }*/
 
 .photo-thumb {
   width: 100%;

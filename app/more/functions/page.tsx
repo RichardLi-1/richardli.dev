@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react"
 import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
-import { Footer } from "@/components/footer"
 import { useInView } from "@/hooks/use-in-view"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
@@ -298,7 +297,6 @@ export default function FunctionsPage() {
         </section>
 
         <ClosingQuote />
-        <Footer />
       </div>
     </AnimatedPage>
   )

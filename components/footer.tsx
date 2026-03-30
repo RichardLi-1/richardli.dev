@@ -12,10 +12,10 @@ export function Footer() {
   if (isPanel) return null
   return (
     <>
-      <footer className="w-full border-t px-6 py-4" style={{ borderColor: "var(--border-2)", background: "var(--bg)" }}>
+      <footer className="w-full border-t px-10 py-4" style={{ borderColor: "var(--border-2)", background: "var(--bg)" }}>
         <div className="flex flex-col gap-2">
           {/* Top row: name */}
-          <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: "18px", color: "var(--text)" }}>Richard Li</span>
+          <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: "16px", color: "var(--text)" }}>RICHARD LI</span>
 
           {/* Bottom row: built-with + version */}
           <div className="flex items-center justify-between">

@@ -2,7 +2,6 @@
 import Link from "next/link"
 import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
-import { Footer } from "@/components/footer"
 
 export default function NotFound() {
   return (
@@ -97,7 +96,6 @@ export default function NotFound() {
           </div>
         </main>
 
-        <Footer />
       </div>
     </AnimatedPage>
   )

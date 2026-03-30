@@ -1,7 +1,6 @@
 "use client"
 import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
-import { Footer } from "@/components/footer"
 import { ChatBox } from "@/components/chat-box"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 
@@ -18,7 +17,6 @@ export default function ChatPage() {
           </div>
 
             <ChatBox fullHeight />
-          <Footer />
         </main>
       </div>
     </AnimatedPage>

@@ -7,13 +7,20 @@ const CONTENT_TYPE = "transitPhotos"
 async function getPhotos(): Promise<ContentfulPhoto[]> {
   const token = process.env.CONTENTFUL_ACCESS_TOKEN
   const res = await fetch(
-    `https://cdn.contentful.com/spaces/${SPACE}/environments/master/entries?access_token=${token}&content_type=${CONTENT_TYPE}&include=2`,
+    `https://cdn.contentful.com/spaces/${SPACE}/environments/master/entries?access_token=${token}&content_type=${CONTENT_TYPE}&include=2&limit=1000`,
     { next: { revalidate: 3600 } },
   )
 
-  if (!res.ok) return []
+  if (!res.ok) {
+    console.error("[fanning] fetch failed:", res.status, res.statusText)
+    return []
+  }
 
   const data = await res.json()
+
+  console.log("[fanning] total entries:", data.total)
+  console.log("[fanning] items count:", data.items?.length ?? 0)
+  console.log("[fanning] included assets count:", data.includes?.Asset?.length ?? 0)
 
   // Build a lookup of asset id → asset fields
   const assetMap: Record<string, any> = {}
@@ -24,8 +31,10 @@ async function getPhotos(): Promise<ContentfulPhoto[]> {
   const photos: ContentfulPhoto[] = []
   for (const entry of data.items ?? []) {
     const photoLink = entry.fields?.photo?.sys?.id
-    if (!photoLink) continue
+    if (!photoLink) { console.log(`[fanning] entry ${entry.sys.id}: no photo link, skipping`); continue }
+    console.log(`[fanning] entry ${entry.sys.id}: photoLink=${photoLink}`)
     const asset = assetMap[photoLink]
+    console.log(`[fanning] asset for ${photoLink}:`, asset ? `url=${asset.file?.url}` : "NOT FOUND in assetMap")
     if (!asset?.file?.url) continue
     photos.push({
       id: entry.sys.id,
@@ -35,6 +44,7 @@ async function getPhotos(): Promise<ContentfulPhoto[]> {
     })
   }
 
+  console.log("[fanning] photos resolved:", photos.length)
   return photos
 }
 

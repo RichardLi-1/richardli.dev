@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Send } from "lucide-react"
-import { Footer } from "@/components/footer"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
@@ -443,7 +442,6 @@ export default function PersonalWebsite() {
               .
             </span>
           </StaggeredContent>
-          <Footer />
         </main>
       </div>
     </AnimatedPage>
