@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, ExternalLink, Home, Menu, X, Sun, Moon, Linkedin, Github } from "lucide-react"
+import { ArrowLeft, ExternalLink, Home, Menu, X, Sun, Moon, Linkedin, Github, Mail } from "lucide-react"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { useTheme } from "next-themes"
 
@@ -222,15 +222,10 @@ const getSectionName = () => {
                   </a>
                 </li>
               ))}
-              <li style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0 6px" }}>
-                <span className="nav-item" style={{ background: "none", cursor: "default", color: isPersonalized ? "var(--text)" : "var(--text-3)" }}>
-                  personalise
-                </span>
-                <button onClick={togglePersonalizedMode}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${isPersonalized ? "bg-green-600" : "bg-gray-600"}`}>
-                  <span className="sr-only">Toggle personalized mode</span>
-                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isPersonalized ? "translate-x-6" : "translate-x-1"}`} />
-                </button>
+              <li style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+                <a href="mailto:richardli0@outlook.com" className="nav-item" style={{ padding: "4px 8px" }} aria-label="Email"><Mail className="w-4 h-4" /></a>
+                <a href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="GitHub"><Github className="w-4 h-4" /></a>
+                <a href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a>
               </li>
               {mounted && (
                 <li>

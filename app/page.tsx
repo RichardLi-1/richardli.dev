@@ -2,6 +2,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { ExternalLink } from "lucide-react"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { ResponsiveHeader } from "@/components/responsiveheader"
@@ -37,6 +38,7 @@ export default function PersonalWebsite() {
   const { isPersonalized } = useWindowsXP()
   const [activityIndex, setActivityIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
   usePageViewTracker()
 
   useEffect(() => {
@@ -133,24 +135,47 @@ export default function PersonalWebsite() {
                   <Link key={project.id} href={`/projects/${project.id}`} style={{ textDecoration: "none" }}>
                     <div
                       style={{ cursor: "pointer" }}
-                      onMouseEnter={e => (e.currentTarget.querySelector(".proj-img") as HTMLElement)!.style.transform = "scale(1.02)"}
-                      onMouseLeave={e => (e.currentTarget.querySelector(".proj-img") as HTMLElement)!.style.transform = "scale(1)"}
+                      onMouseEnter={() => { setHoveredId(project.id); (document.querySelector(`#proj-img-${project.id}`) as HTMLElement)!.style.transform = "scale(1.02)" }}
+                      onMouseLeave={() => { setHoveredId(null); (document.querySelector(`#proj-img-${project.id}`) as HTMLElement)!.style.transform = "scale(1)" }}
                     >
                       <div style={{
+                        position: "relative",
                         width: "100%",
                         aspectRatio: "16/9",
-                        overflow: "hidden",
                         borderRadius: 16,
                         background: "var(--surface)",
                         marginBottom: 10,
                       }}>
-                        <div className="proj-img" style={{ width: "100%", height: "100%", transition: "transform 0.35s ease" }}>
-                          <ProjectImageCycler
-                            images={[project.image, (project as any).image2, (project as any).image3]}
-                            alt={project.title}
-                            className="w-full h-full object-cover"
-                          />
+                        <div style={{ width: "100%", height: "100%", overflow: "hidden", borderRadius: 16 }}>
+                          <div id={`proj-img-${project.id}`} className="proj-img" style={{ width: "100%", height: "100%", transition: "transform 0.35s ease" }}>
+                            <ProjectImageCycler
+                              images={[project.image, (project as any).image2, (project as any).image3]}
+                              alt={project.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         </div>
+                        {hoveredId === project.id && (project as any).externalLink && (
+                          <a
+                            href={(project as any).externalLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={e => e.stopPropagation()}
+                            className="liquid-glass-pill squircle"
+                            style={{
+                              position: "absolute", top: 10, right: 10,
+                              display: "flex", alignItems: "center", gap: 6,
+                              padding: "6px 14px",
+                              textDecoration: "none", whiteSpace: "nowrap",
+                              transition: "transform 0.15s ease",
+                            }}
+                            onMouseEnter={e => (e.currentTarget.style.transform = "scale(0.96)")}
+                            onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                          >
+                            <span style={{ fontSize: 13, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", color: "inherit" }}>Try it out</span>
+                            <ExternalLink style={{ width: 12, height: 12, opacity: 0.65 }} />
+                          </a>
+                        )}
                       </div>
                       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
                         <p style={{ fontSize: 13, color: "var(--text)", lineHeight: 1.5, margin: 0 }}>

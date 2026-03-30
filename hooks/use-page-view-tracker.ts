@@ -42,6 +42,15 @@ export function usePageViewTracker() {
 
       const isBot = /bot|crawler|spider/i.test(navigator.userAgent)
 
+      const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
+      const deviceType = isMobile ? "📱 Mobile" : "🖥️ Desktop"
+      const platform = /iPhone|iPad/.test(navigator.userAgent) ? "iOS"
+        : /Android/.test(navigator.userAgent) ? "Android"
+        : /Mac/.test(navigator.platform) ? "macOS"
+        : /Win/.test(navigator.platform) ? "Windows"
+        : /Linux/.test(navigator.platform) ? "Linux"
+        : "Unknown"
+
       // Build navigation path trail
       const currentPath = window.location.pathname || "/"
       const stored = sessionStorage.getItem("nav_path")
@@ -67,8 +76,8 @@ export function usePageViewTracker() {
       const message = isBot
         ? `🤖 Bot/crawler on ${window.location.href}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}\n🔍 UA: ${navigator.userAgent}`
         : isLinkedIn
-        ? `👀 New visitor on ${window.location.href} from **LinkedIn**\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
-        : `👀 New visitor on ${window.location.href}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
+        ? `👀 New visitor on ${window.location.href} from **LinkedIn**\n${deviceType} · ${platform}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
+        : `👀 New visitor on ${window.location.href}\n${deviceType} · ${platform}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
 
       try {
         await fetch(
