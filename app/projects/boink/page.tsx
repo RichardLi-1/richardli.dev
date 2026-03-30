@@ -9,10 +9,26 @@ import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
 
+const allTeam = [
+  { name: "Dorian Chen", role: "Project Lead" },
+  { name: "Richard Li", role: "UX Designer, Concept" },
+  { name: "Jacqueline Ho" },
+  { name: "Jonathan Feng" },
+  { name: "Emily Lim" },
+  { name: "Sky Chen" },
+  { name: "Cynthia Feng" },
+  { name: "Jerry Zhou" },
+  { name: "Tim Yuan" },
+  { name: "Brandon Chen" },
+  { name: "Sarina Li" },
+  { name: "Conan Wang" },
+]
+
 export default function BoinkProjectPage() {
   usePageViewTracker()
   const isPanel = useIsPanel()
   const [isMobile, setIsMobile] = useState(false)
+  const [showAllTeam, setShowAllTeam] = useState(false)
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
     check()
@@ -89,13 +105,30 @@ export default function BoinkProjectPage() {
                     <p>4.6 Star Rating</p>
                   </div>
                 </div>
+                <div>
+                  <h3 className="text-green-400 font-bold mb-2">Team</h3>
+                  <div className="space-y-1 text-gray-300">
+                    {allTeam.slice(0, 3).map((m) => (
+                      <p key={m.name}>{m.name}{m.role ? <span className="text-gray-500"> — {m.role}</span> : null}</p>
+                    ))}
+                    {showAllTeam && allTeam.slice(3).map((m) => (
+                      <p key={m.name}>{m.name}</p>
+                    ))}
+                    <p
+                      className="underline cursor-pointer hover:text-gray-100 transition-colors"
+                      onClick={() => setShowAllTeam(v => !v)}
+                    >
+                      {showAllTeam ? "Show less" : `And ${allTeam.length - 3} more...`}
+                    </p>
+                  </div>
+                </div>
               </div>
               <div>
                 <h3 className="text-green-400 font-bold mb-2">Overview</h3>
                 <div className="space-y-4 text-gray-300">
                   <p>
                     Bo!nk is a Windows Vista-inspired inkball game that I conceptualized and designed. As the lead UX
-                    designer, I worked with a team to bring this nostalgic game to the App Store.
+                    designer, I worked with Markville App Dev Club to bring this nostalgic game to the App Store.
                   </p>
                   <p>
                     The game features classic inkball mechanics with a nostalgic Windows Vista aesthetic, bringing back
@@ -195,8 +228,7 @@ export default function BoinkProjectPage() {
 
               <h2 className="text-2xl font-bold text-green-400 mb-4">Technical Implementation</h2>
               <p className="text-gray-300 mb-4">
-                The game was built in Unity using C#, ShaderLab, and HLSL. While I focused on the UX design and concept,
-                our development team tackled key technical challenges including:
+                The game was built in Unity using C#, ShaderLab, and HLSL. Our team tackled key technical challenges including:
               </p>
 
               <ul className="text-gray-300 space-y-2 mb-6">
@@ -206,34 +238,6 @@ export default function BoinkProjectPage() {
                 <li>• Designing an intuitive level progression system</li>
                 <li>• Implementing proper game state management and save/load functionality</li>
               </ul>
-
-              <h2 className="text-2xl font-bold text-green-400 mb-4">Team</h2>
-              <p className="text-gray-300 mb-4">Bo!nk was developed by a talented team at Markville Dev:</p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">Core Team</h4>
-                  <ul className="text-gray-300 space-y-1">
-                    <li>• Dorian Chen (Project Lead)</li>
-                    <li>• Richard Li (Lead UX Designer, Concept)</li>
-                    <li>• Jacqueline Ho</li>
-                    <li>• Jonathan Feng</li>
-                    <li>• Emily Lim</li>
-                    <li>• Sky Chen</li>
-                  </ul>
-                </div>
-                <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">Contributors</h4>
-                  <ul className="text-gray-300 space-y-1">
-                    <li>• Cynthia Feng</li>
-                    <li>• Jerry Zhou</li>
-                    <li>• Tim Yuan</li>
-                    <li>• Brandon Chen</li>
-                    <li>• Sarina Li</li>
-                    <li>• Conan Wang</li>
-                  </ul>
-                </div>
-              </div>
 
               <h2 className="text-2xl font-bold text-green-400 mb-4">User Reviews</h2>
               <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 mb-8">

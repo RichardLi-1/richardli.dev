@@ -60,6 +60,32 @@ export default function Nav() {
         >
           Work
         </Link>
+        <Link
+          href="/transit/photography"
+          style={{
+            fontFamily: "'Toronto Subway', 'Helvetica Neue', sans-serif",
+            fontSize: "11px",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "var(--text-3)",
+            textDecoration: "none",
+          }}
+        >
+          Photography
+        </Link>
+        <Link
+          href="/transit/fanning"
+          style={{
+            fontFamily: "'Toronto Subway', 'Helvetica Neue', sans-serif",
+            fontSize: "11px",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "var(--text-3)",
+            textDecoration: "none",
+          }}
+        >
+          Fanning
+        </Link>
         {mounted && (
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

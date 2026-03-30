@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react"
 import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Send } from "lucide-react"
+import { Send, Info } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 
 interface Message {
@@ -14,17 +14,28 @@ interface Message {
 
 interface ChatBoxProps {
   fullHeight?: boolean
+  initialMessage?: string
 }
 
-export function ChatBox({ fullHeight = false }: ChatBoxProps) {
+export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [showInfo, setShowInfo] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const firedInitial = useRef(false)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages, isLoading])
+
+  useEffect(() => {
+    if (initialMessage && !firedInitial.current) {
+      firedInitial.current = true
+      handleSuggestion(initialMessage)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialMessage])
 
   const sendChatbotActivity = async (userMessage: string, assistantReply: string) => {
     try {
@@ -96,9 +107,40 @@ export function ChatBox({ fullHeight = false }: ChatBoxProps) {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" style={{ position: "relative" }}>
+      <div style={{ position: "absolute", top: 0, right: 0, zIndex: 10 }}>
+        <button
+          onClick={() => setShowInfo(v => !v)}
+          style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: 20, height: 20, borderRadius: "50%",
+            background: showInfo ? "var(--surface-hover)" : "var(--surface)",
+            border: "1px solid var(--border-2)",
+            color: "var(--text-4)", cursor: "pointer",
+            transition: "background 0.15s, color 0.15s",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = "var(--text-3)"; e.currentTarget.style.background = "var(--surface-hover)" }}
+          onMouseLeave={e => { e.currentTarget.style.color = "var(--text-4)"; e.currentTarget.style.background = showInfo ? "var(--surface-hover)" : "var(--surface)" }}
+        >
+          <Info style={{ width: 10, height: 10 }} />
+        </button>
+
+        {showInfo && (
+          <div style={{
+            position: "absolute", top: "calc(100% + 8px)", right: 0,
+            width: 240, padding: "10px 14px", borderRadius: 12,
+            background: "var(--card-bg)", border: "1px solid var(--border-2)",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
+            fontSize: 12, color: "var(--text-3)", lineHeight: 1.6,
+            fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em",
+            animation: "dropdownEnter 0.15s ease",
+          }}>
+            Powered by the <strong style={{ color: "var(--text-2)" }}>Claude API</strong> using <code style={{ background: "var(--surface)", padding: "1px 5px", borderRadius: 4, fontSize: 11 }}>claude-haiku-4-5</code> and retrieval-augmented generation (RAG). Conversations are not stored.
+          </div>
+        )}
+      </div>
       <div
-        className="overflow-y-auto flex-1 space-y-5 pr-1"
+        className="overflow-y-auto flex-1 pr-1"
         style={{ minHeight: 0, maxHeight: fullHeight ? undefined : "24rem" }}
       >
         {messages.length === 0 && (

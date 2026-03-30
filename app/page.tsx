@@ -9,254 +9,188 @@ import { ResponsiveHeader } from "@/components/responsiveheader"
 import { mainProjects } from "@/components/mainProjects"
 import { ProjectImageCycler } from "@/components/project-image-cycler"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
-import { ChatBox } from "@/components/chat-box"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { DraggableSticker } from "@/components/draggable-sticker"
 
-  
+const activities = [
+  "listening to bollywood music",
+  "somewhere on the ttc",
+  "reading about urban planning",
+  "tinkering with geospatial info",
+  "photographing line 1",
+  "cooking new steak recipes",
+  "drinking molly tea",
+]
+
+const currently = [
+  { image: "/logos/safuture.png", text: "Engineering @ SaFuture Inc." },
+  { image: "/logos/hack-the-north.png", text: "Transportation @ Hack the North" },
+  { image: "/logos/waterloo.png", text: "Systems Design Engineering @ UWaterloo" },
+]
+
+const previously = [
+  { image: "🏎️", text: "Full-Stack Developer @ FormulaTech Hacks" },
+  { image: "🚌", text: "Transportation Logistics" },
+  { image: "💼", text: "Software Developer @ Career Education Council" },
+]
 
 export default function PersonalWebsite() {
-  const { togglePersonalizedMode } = useWindowsXP()
-  const {isPersonalized} = useWindowsXP()
+  const { isPersonalized } = useWindowsXP()
+  const [activityIndex, setActivityIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
-  useEffect(() => {
-      const check = () => setIsMobile(window.innerWidth < 768)
-      check()
-      window.addEventListener("resize", check)
-      return () => window.removeEventListener("resize", check)
-    }, [])
-
   usePageViewTracker()
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => setActivityIndex(i => (i + 1) % activities.length), 3500)
+    return () => clearInterval(interval)
+  }, [])
+
+  const visibleProjects = mainProjects.filter(p => !(p as any).hidden).slice(0, 4)
 
   return (
     <AnimatedPage>
       <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--text)" }}>
         <ResponsiveHeader isHomepage={true} currentPage="/" />
 
-        <main className="antialiased max-w-4xl mx-auto p-6 space-y-8 sm:pt-[100px]"
-        style={{ paddingTop: isMobile ? "0px" : "60px" }}>
-          {/* Introduction */}
+        <main style={{
+          margin: "0 auto",
+          padding: isMobile ? "32px 24px 0" : "80px 40px 0",
+        }}>
+
+          {/* ────────────────────── Hero ────────────────────── */}
           <StaggeredContent delay={0}>
-            <section className="space-y-4">
-              <h1 style={{ fontSize: "clamp(28px, 8vw, 48px)" }}>Hey, I'm Richard!</h1>
-              <div className="space-y-2" style={{ color: "var(--text-2)" }}>
-                <p>I'm interested in public transportation, AI, PM, design, and development.</p>
-              </div>
+            <section style={{ marginBottom: 64, maxWidth: 700 }}>
+              <h1 style={{ fontSize: "clamp(36px, 3vw, 52px)", lineHeight: 1.2, marginBottom: 14, fontFamily: "'SFCamera', sans-serif" }}>
+                Richard Li is a software engineer and full-time public transit enthusiast.
+              </h1>
+              <p style={{ fontSize: 16, color: "var(--text-3)", letterSpacing: "0.02em" }}>
+                Most days, you'll find him —{" "}
+                <span
+                  key={activityIndex}
+                  style={{
+                    color: "var(--text-2)",
+                    display: "inline-block",
+                    animation: "fadeSlideIn 0.4s ease",
+                  }}
+                >
+                  {activities[activityIndex]}
+                </span>
+              </p>
             </section>
           </StaggeredContent>
 
-          {/* Current Activities */}
+          {/* ────────────────────── Currently / Previously ────────────────────── */}
           <StaggeredContent delay={100}>
-            <section className="space-y-2">
-              <h2 className="text-xl section-label">I'm currently...</h2>
-              <ul className="space-y-2 ml-4" style={{ color: "var(--text-2)" }}>
-                <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>
-                    studying{" "}
-                    <a
-                      href="https://uwaterloo.ca/systems-design-engineering/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
-                    >
-                      {" "}
-                      systems design engineering{" "}
-                    </a>{" "}
-                    at the{" "}
-                    <img
-                      alt="University of Waterloo"
-                      className="inline w-4 h-4 mr-1"
-                      src="/images/design-mode/901917f9b6e74d254525c3e37d3dd934.png"
-                    />
-                    <a
-                      href="https://uwaterloo.ca/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
-                    >
-                      university of waterloo
-                    </a>
-                  </span>
-                </li>
-                <li>
-                  <span className="mr-2">•</span>
-                  interning at safuture inc
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  open to chatting about fall 2026 internship opportunities
-                </li>
-              </ul>
+            <section style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+              gap: isMobile ? 32 : 48,
+              marginBottom: 64,
+            }}>
+              <div>
+                <p className="section-label" style={{ marginBottom: 14 }}>Currently</p>
+                <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {currently.map(item => (
+                    <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-2)", listStyle: "none" }}>
+                      <img src={item.image} style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%", objectFit: "cover" }}></img>
+                      {item.text}
+                    </li>
+                  ))}
+                </ul>
+              </div>{/*  
+              <div>
+                <p className="section-label" style={{ marginBottom: 14 }}>Previously</p>
+                <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {previously.map(item => (
+                    <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-2)", listStyle: "none" }}>
+                      <img src={item.image} style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%" }}></img>
+                      {item.text}
+                    </li>
+                  ))}
+                </ul>
+              </div>*/}
             </section>
           </StaggeredContent>
 
-          {/* Previous Experience 
-          <StaggeredContent delay={300}>
-            <section className="space-y-4">
-              <h2 className="text-xl section-label">Previously I...</h2>
-              <ul className="space-y-2 ml-4" style={{ color: "var(--text-2)" }}>
-                <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>interned at a YC-backed SaaS startup, analyzing ai trends and working on UI/UX design</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>
-                    organized{" "}
-                    <img
-                      alt="YRHacks Logo"
-                      className="inline w-4 h-4 mr-1"
-                      src="/images/design-mode/logo.3aecaa9f.svg"
-                    />
-                    <a
-                      href=""
-                      className="underline hover:text-stone-100 transition-colors inline-block transform transition-transform duration-200 hover:scale-110"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      YRHacks
-                    </a>
-                    , Canada's largest high school hackathon
-                  </span>
-                </li>
-              </ul>
-            </section>
-          </StaggeredContent>*/}
-
-          {/* Projects */}
-          <StaggeredContent delay={500}>
-            <section className="space-y-2">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl section-label">
-                  Some of my{" "}
-                  <a
-                    href="/projects"
-                    className="underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
-                    style={{ color: "inherit" }}
-                  >
-                    work and projects
-                  </a>
-                  ...
-                </h2>
-                <Link href="/projects">
-                  <span className="text-xs hover:underline cursor-pointer" style={{ color: "var(--text-4)" }}>
-                    See More
-                  </span>
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 gap-y-10">
-                {mainProjects.slice(0, 4).map((project) => (
-                  <Link key={project.id} href={`/projects/${project.id}`}>
+          {/* ── Projects ── */}
+          <StaggeredContent delay={200}>
+            <section style={{ marginBottom: 64 }}>
+              <p className="section-label" style={{ marginBottom: 20 }}>Projects</p>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+                gap: "32px 24px",
+              }}>
+                {visibleProjects.map(project => (
+                  <Link key={project.id} href={`/projects/${project.id}`} style={{ textDecoration: "none" }}>
                     <div
-                      className="photo-card cursor-pointer group"
-                      style={{ position: "relative", "--glow-color": project.colors || "#22c55e44" } as React.CSSProperties}
+                      style={{ cursor: "pointer" }}
+                      onMouseEnter={e => (e.currentTarget.querySelector(".proj-img") as HTMLElement)!.style.transform = "scale(1.02)"}
+                      onMouseLeave={e => (e.currentTarget.querySelector(".proj-img") as HTMLElement)!.style.transform = "scale(1)"}
                     >
-                      <div
-                        className="relative aspect-video w-full overflow-hidden squircle-md transition-shadow duration-300 group-hover:shadow-[0_0px_80px_-20px_var(--glow-color)]"
-                        style={{ background: "var(--surface)", borderRadius: 48 }}
-                        onMouseEnter={() => setHoveredId(project.id)}
-                        onMouseLeave={() => setHoveredId(null)}
-                      >
-                        <ProjectImageCycler
-                          images={[project.image, (project as any).image2, (project as any).image3]}
-                          alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-300"
-                        />
-                        <div className="liquid-glass-pill absolute bottom-0 flex items-center gap-2 mx-3 my-3 px-4 py-2" style={{ whiteSpace: "nowrap" }}>
-                          <h3 className="text-nowrap" style={{ fontSize: "14px", letterSpacing: "0.02em", fontWeight: 500, color: "inherit" }}>
-                            {project.title}
-                          </h3>
-                          <span style={{ fontSize: "11px", opacity: 0.65, letterSpacing: "0.04em", paddingTop: "2px" }}>{project.year}</span>
+                      <div style={{
+                        width: "100%",
+                        aspectRatio: "16/9",
+                        overflow: "hidden",
+                        borderRadius: 16,
+                        background: "var(--surface)",
+                        marginBottom: 10,
+                      }}>
+                        <div className="proj-img" style={{ width: "100%", height: "100%", transition: "transform 0.35s ease" }}>
+                          <ProjectImageCycler
+                            images={[project.image, (project as any).image2, (project as any).image3]}
+                            alt={project.title}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                       </div>
-                      <p style={{
-                        position: "absolute",
-                        left: 0,
-                        right: 0,
-                        top: "100%",
-                        fontSize: "12px",
-                        color: "var(--text-2)",
-                        lineHeight: "1.6",
-                        opacity: hoveredId === project.id ? 1 : 0,
-                        transform: hoveredId === project.id ? "translateY(0)" : "translateY(-6px)",
-                        transition: "opacity 0.25s ease, transform 0.25s ease",
-                        pointerEvents: "none",
-                        paddingTop: "8px",
-                      }}>{project.description}</p>
+                      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
+                        <p style={{ fontSize: 13, color: "var(--text)", lineHeight: 1.5, margin: 0 }}>
+                          {project.title}
+                          {project.description && (
+                            <span style={{ color: "var(--text-3)" }}> — {project.description}</span>
+                          )}
+                        </p>
+                        <span style={{ fontSize: 12, color: "var(--text-4)", flexShrink: 0, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.03em" }}>
+                          {project.year}
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 ))}
               </div>
-            </section>
-          </StaggeredContent>
-
-          {/* Future */}
-          <StaggeredContent delay={500}>
-            <section className="space-y-2">
-              <h2 className="text-xl section-label">Looking ahead, I'd like to...</h2>
-              <div className="ml-4" style={{ color: "var(--text-2)" }}>
-                <ul className="space-y-2 ml-4 list-disc">
-                  <li>
-                    learn about best practices in software engineering and build scalable systems that impact millions
-                    of users
-                  </li>
-                  <li>
-                    contribute to the advancement of the North American public transit industry{" "}
-                    <img alt="" className="inline h-4 mr-1" src="images/ttcsubwayiconwhite.png" />
-                  </li>
-                  <li>
-                    explore design engineering and work in a role combining design, development, and project management
-                  </li>
-                </ul>
+              <div style={{ marginTop: 16 }}>
+                <Link href="/projects" style={{ fontSize: 12, color: "var(--text-4)", letterSpacing: "0.04em", textTransform: "uppercase", fontFamily: "'Toronto Subway', sans-serif", textDecoration: "none" }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "var(--text-2)"}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "var(--text-4)"}
+                >
+                  See all work →
+                </Link>
               </div>
             </section>
           </StaggeredContent>
 
-          {/* Chatbot Section */}
-          <StaggeredContent delay={700}>
-            <section className="space-y-2">
-              <h2 className="text-xl section-label">What else do you want to know about me?</h2>
-              <div
-                className="rounded-4xl squircle-lg border p-4"
-                style={{ background: "var(--card-bg)", borderColor: "var(--border-2)", borderRadius: 32} as React.CSSProperties } 
-              >
-                <ChatBox />
-              </div>
-            </section>
-          </StaggeredContent>
-
-          <StaggeredContent delay={900}>
-            <br />
-            <span style={{ color: "var(--text-2)" }}>
-              <span>I'd love to hear from you! Want to hire me or collab on a project? Or wanna chat? Feel free to reach out by</span>{" "}
-              <a
-                href="mailto:richardli0@outlook.com"
-                className="text-stone-400 underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
-              >
-                email
-              </a>
-              , or connect with me on{" "}
-              <a
-                href="https://www.linkedin.com/in/richardli0"
-                className="text-stone-400 underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
-              >
-                LinkedIn
-              </a>
-              .
-            </span>
-          </StaggeredContent>
           {isPersonalized && (
-            <>
-              <DraggableSticker src="/images/homepagestickers/mollytea.png" ix={0.90} iy={0.55} size={80} />
-            </>
+            <DraggableSticker src="/images/homepagestickers/mollytea.png" ix={0.90} iy={0.55} size={80} />
           )}
-          
+
           <Footer />
         </main>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeSlideIn {
+          from { opacity: 0; transform: translateY(4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </AnimatedPage>
   )
 }
