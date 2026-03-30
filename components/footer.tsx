@@ -1,7 +1,7 @@
 "use client"
 import type React from "react"
 import { useState, useEffect } from "react"
-import { Changelog } from "@/components/changelog"
+import { Changelog, entries } from "@/components/changelog"
 
 const small: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", fontSize: "12px", color: "var(--text-3)" }
 
@@ -33,7 +33,7 @@ export function Footer() {
                 onMouseEnter={e => (e.currentTarget.style.color = "var(--text-2)")}
                 onMouseLeave={e => (e.currentTarget.style.color = "var(--text-3)")}
               >
-                v2.0.2 — 03/24/2026
+                {entries[0].date}
               </button>
             </div>
           </div>
