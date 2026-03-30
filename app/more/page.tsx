@@ -1,4 +1,5 @@
 "use client"
+import { useRef } from "react"
 import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
@@ -9,6 +10,7 @@ export default function MorePage() {
   usePageViewTracker()
   const { togglePersonalizedMode } = useWindowsXP()
   const {isPersonalized} = useWindowsXP()
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   return (
     <AnimatedPage>
@@ -26,6 +28,24 @@ export default function MorePage() {
           >
             soon to come...
           </p>
+
+          <button
+            onClick={() => audioRef.current?.play()}
+            style={{
+              background: "var(--surface)",
+              border: "1px solid var(--border-2)",
+              borderRadius: 9999,
+              padding: "10px 22px",
+              color: "var(--text)",
+              fontFamily: "'Toronto Subway', sans-serif",
+              fontSize: 13,
+              letterSpacing: "0.04em",
+              cursor: "pointer",
+            }}
+          >
+            ▶ Play
+          </button>
+          <audio ref={audioRef} src="/audio/placeholder.mp3" />
 
           <p style={{ color: "var(--text-3)", fontSize: "15px", maxWidth: "360px", lineHeight: 1.6 }}>
             in the meantime,{" "}

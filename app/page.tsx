@@ -65,7 +65,9 @@ export default function PersonalWebsite() {
 
           {/* ────────────────────── Hero ────────────────────── */}
           <StaggeredContent delay={0}>
-            <section style={{ marginBottom: 64, maxWidth: 700 }}>
+            <section style={{ 
+              marginBottom: isMobile? 48 : 64,
+               maxWidth: 700 }}>
               <h1 style={{ fontSize: "clamp(40px, 3vw, 56px)", lineHeight: 1.2, letterSpacing: -1, marginBottom: 14, fontFamily: "'SFCamera', sans-serif" }}>
                 Richard Li is a software engineer and full-time public transit enthusiast.
               </h1>
@@ -91,7 +93,7 @@ export default function PersonalWebsite() {
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
               gap: isMobile ? 32 : 48,
-              marginBottom: 64,
+              marginBottom: isMobile ? 48 : 64,
             }}>
               <div>
                 <p className="section-label" style={{ marginBottom: 14 }}>Currently</p>
