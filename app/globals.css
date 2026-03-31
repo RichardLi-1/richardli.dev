@@ -304,7 +304,7 @@ h3 {
 
 /* ── Photo grid ─────────────────────────────────────────────────── */
 .photo-grid {
-  display: grid;
+  columns: 3;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
@@ -315,6 +315,8 @@ h3 {
   gap: 6px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  break-inside: avoid;
+  margin-bottom: 16px;
 }
 
 /*.photo-item:hover { transform: scale(0.97); }*/
@@ -574,7 +576,7 @@ header {
 
 /* ── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .photo-grid { grid-template-columns: repeat(2, 1fr); }
+  .photo-grid { grid-template-columns: repeat(2, 1fr); columns: 2; }
   .featured-caption-row { flex-direction: column; }
   .featured-meta-grid { gap: 16px; }
   .meta-col { text-align: left; }

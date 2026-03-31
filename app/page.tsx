@@ -70,7 +70,7 @@ export default function PersonalWebsite() {
             <section style={{ 
               marginBottom: isMobile? 48 : 64,
                maxWidth: 700 }}>
-              <h1 style={{ fontSize: "clamp(40px, 3vw, 56px)", lineHeight: 1.2, letterSpacing: -1, marginBottom: 14, fontFamily: "'SFCamera', sans-serif" }}>
+              <h1 style={{ fontSize: "clamp(40px, 7vw, 56px)", lineHeight: 1.2, letterSpacing: -1, marginBottom: 14, fontFamily: "'SFCamera', sans-serif" }}>
                 Richard Li is a software engineer and full-time public transit enthusiast.
               </h1>
               <p style={{ fontSize: 16, color: "var(--text-3)", letterSpacing: "0.02em" }}>
