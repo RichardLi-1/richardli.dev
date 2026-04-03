@@ -28,6 +28,11 @@ const currently = [
   { image: "/logos/waterloo.png", text: "Systems Design Engineering @ UWaterloo" },
 ]
 
+const currently_more = [
+  { image: "/logos/safuture.png", text: "Organizer @ Canadian Undergraduate Tech Conference" },
+  { image: "/logos/hack-the-north.png", text: "Events @ Institute of Transport Engineers UW" },
+]
+
 const previously = [
   { image: "🏎️", text: "Full-Stack Developer @ FormulaTech Hacks" },
   { image: "🚌", text: "Transportation Logistics" },

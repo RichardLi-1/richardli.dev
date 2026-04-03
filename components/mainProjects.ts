@@ -64,7 +64,7 @@ export const mainProjects = [
   //   tags: ["Community", "Web Development", "Data"],
   //   colors: "",
   // },
-  {
+  /*{
     id: "4sight",
     title: "4sight",
     year: "2025",
@@ -73,7 +73,7 @@ export const mainProjects = [
     logo: "/images/jamAsset.PNG",
     tags: ["iOS", "Swift", "App Development"],
     colors: "",
-  },
+  },*/
   {
     id: "yrhacks",
     title: "YRHacks",

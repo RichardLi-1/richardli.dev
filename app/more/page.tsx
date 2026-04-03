@@ -28,7 +28,7 @@ export default function MorePage() {
           >
             soon to come...
           </p>
-
+            {/* Placeholder for audio player 
           <button
             onClick={() => audioRef.current?.play()}
             style={{
@@ -45,7 +45,7 @@ export default function MorePage() {
           >
             ▶ Play
           </button>
-          <audio ref={audioRef} src="/audio/placeholder.mp3" />
+          <audio ref={audioRef} src="/audio/placeholder.mp3" />*/}
 
           <p style={{ color: "var(--text-3)", fontSize: "15px", maxWidth: "360px", lineHeight: 1.6 }}>
             in the meantime,{" "}
@@ -73,6 +73,61 @@ export default function MorePage() {
             </>
           )}
         </main>
+
+        <section
+          style={{
+            padding: "32px 32px 48px",
+            maxWidth: 480,
+            margin: "0 auto",
+            width: "100%",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "'Toronto Subway', sans-serif",
+              fontSize: 11,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "var(--text-4)",
+              marginBottom: 16,
+            }}
+          >
+            Updates
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: 14,
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "'Toronto Subway', sans-serif",
+                  fontSize: 11,
+                  color: "var(--text-4)",
+                  letterSpacing: "0.04em",
+                  flexShrink: 0,
+                  paddingTop: 1,
+                }}
+              >
+                prev
+              </span>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: "var(--text-3)",
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                april 2: today is autism acceptance day!
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
     </AnimatedPage>
   )

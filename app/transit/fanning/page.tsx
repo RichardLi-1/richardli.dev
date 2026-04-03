@@ -41,6 +41,9 @@ async function getPhotos(): Promise<ContentfulPhoto[]> {
       url: `https:${asset.file.url}`,
       title: asset.title ?? entry.fields?.title ?? "",
       description: asset.description ?? entry.fields?.description ?? "",
+      fStop: entry.fields?.fStopReal ?? undefined,
+      exposureTime: entry.fields?.exposureTime ?? undefined,
+      camera: entry.fields?.camera ?? undefined,
     })
   }
 

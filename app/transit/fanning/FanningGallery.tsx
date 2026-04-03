@@ -6,6 +6,9 @@ export interface ContentfulPhoto {
   url: string
   title: string
   description: string
+  fStop?: string
+  exposureTime?: string
+  camera?: string
 }
 
 export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
@@ -131,6 +134,11 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
                   {selected.description && (
                     <p style={{ fontSize: 12, color: "var(--text-3)", letterSpacing: "0.02em", lineHeight: 1.6 }}>
                       {selected.description}
+                    </p>
+                  )}
+                  {(selected.fStop || selected.exposureTime || selected.camera) && (
+                    <p style={{ fontSize: 11, color: "var(--text-4)", fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.04em", marginTop: 6 }}>
+                      {[selected.camera, selected.fStop && `f/${selected.fStop}`, selected.exposureTime].filter(Boolean).join("  ·  ")}
                     </p>
                   )}
                 </div>
