@@ -50,7 +50,7 @@ export function LayoutClient({
   children: React.ReactNode
 }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
       <WindowsXPProvider>
         <LayoutContent>{children}</LayoutContent>
       </WindowsXPProvider>

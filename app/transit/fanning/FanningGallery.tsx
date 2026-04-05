@@ -6,17 +6,36 @@ export interface ContentfulPhoto {
   url: string
   title: string
   description: string
+  featured?: boolean
+  agency?: string
+  station?: string
+  vehicle?: string
   fStop?: string
   exposureTime?: string
+  focal?: string
   camera?: string
 }
+
+const SKELETON_COLORS = [
+  "#c8d4c8", // sage green
+  "#b0c4d8", // steel blue
+  "#d4c8b0", // warm sand
+  "#c4b8d0", // soft lavender
+  "#b8d4c0", // mint
+  "#d0c4b8", // warm beige
+]
 
 export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
   const [selected, setSelected] = useState<ContentfulPhoto | null>(null)
   const [search, setSearch] = useState("")
   const [loadedIds, setLoadedIds] = useState<Set<string>>(new Set())
+  const [featuredLoaded, setFeaturedLoaded] = useState(false)
 
-  const filtered = photos.filter(
+  // Use the explicitly featured photo, fallback to first
+  const featured = photos.find((p) => p.featured) ?? photos[0] ?? null
+  const gridPhotos = photos.filter((p) => p !== featured)
+
+  const filtered = gridPhotos.filter(
     (p) =>
       search === "" ||
       p.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -30,6 +49,53 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
         <p className="hero-sub">Photos from around the network</p>
       </div>
 
+      {/* ── Featured card ── */}
+      {featured && (
+        <div className="featured-card" onClick={() => setSelected(featured)} style={{ cursor: "pointer" }}>
+          <div className="featured-image-wrap" style={{ position: "relative" }}>
+            {!featuredLoaded && <div className="featured-image-placeholder" />}
+            <img
+              src={`${featured.url}?w=1400`}
+              alt={featured.title}
+              onLoad={() => setFeaturedLoaded(true)}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+                opacity: featuredLoaded ? 1 : 0,
+                transition: "opacity 0.4s ease",
+                position: featuredLoaded ? "static" : "absolute",
+              }}
+            />
+          </div>
+          <div className="featured-caption-row">
+            <div className="featured-caption-left">
+              <p className="featured-title">{featured.title}</p>
+              <p className="featured-by">@_transitfanner</p>
+            </div>
+            <div className="featured-meta-grid">
+              {(featured.agency || featured.station || featured.vehicle) && (
+                <div className="meta-col">
+                  {featured.agency    && <span>{featured.agency}</span>}
+                  {featured.station   && <span>{featured.station}</span>}
+                  {featured.vehicle   && <span>{featured.vehicle}</span>}
+                </div>
+              )}
+              {(featured.camera || featured.focal || featured.fStop || featured.exposureTime) && (
+                <div className="meta-col">
+                  {featured.camera       && <span>{featured.camera}</span>}
+                  {featured.focal        && <span>{featured.focal}</span>}
+                  {featured.fStop        && <span>f/{featured.fStop}</span>}
+                  {featured.exposureTime && <span>{featured.exposureTime}s</span>}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Search toolbar ── */}
       <div className="toolbar">
         <div className="search-wrap">
           <svg
@@ -56,13 +122,14 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
         </div>
       </div>
 
-      <div className="photo-grid">
+      {/* ── Photo grid ── */}
+      <div className="fanning-grid">
         {filtered.length === 0 ? (
-          <p style={{ color: "var(--text-3)", gridColumn: "1 / -1", fontSize: 14 }}>
-            {photos.length === 0 ? "No photos yet." : "No photos match your search."}
+          <p style={{ color: "var(--text-3)", fontSize: 14 }}>
+            {gridPhotos.length === 0 ? "No photos yet." : "No photos match your search."}
           </p>
         ) : (
-          filtered.map((photo) => (
+          filtered.map((photo, i) => (
             <div key={photo.id} className="photo-item" onClick={() => setSelected(photo)}>
               <div
                 className="photo-thumb"
@@ -71,7 +138,12 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
                   position: "relative",
                   aspectRatio: "unset",
                   height: loadedIds.has(photo.id) ? "auto" : 200,
-                  background: loadedIds.has(photo.id) ? "transparent" : "var(--surface)",
+                  backgroundColor: loadedIds.has(photo.id) ? "transparent" : SKELETON_COLORS[i % SKELETON_COLORS.length],
+                  backgroundImage: loadedIds.has(photo.id)
+                    ? "none"
+                    : "linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.28) 50%, transparent 70%)",
+                  backgroundSize: "200% 100%",
+                  animation: loadedIds.has(photo.id) ? "none" : "shimmer 2s ease-in-out infinite",
                 }}
               >
                 <img
@@ -93,6 +165,7 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
         )}
       </div>
 
+      {/* ── Modal ── */}
       {selected && (
         <div
           onClick={() => setSelected(null)}
@@ -114,33 +187,35 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
               background: "var(--card-bg)",
               borderRadius: 28,
               overflow: "hidden",
-              width: "min(700px, 92vw)",
+              // fit-content lets the card shrink to the image's natural rendered width
+              width: "fit-content",
+              maxWidth: "52vw",
               boxShadow: "0 24px 80px rgba(0,0,0,0.45)",
             }}
           >
             <img
-              src={`${selected.url}?w=1400&fit=fill`}
+              src={`${selected.url}?w=1400`}
               alt={selected.title}
-              style={{ width: "100%", display: "block", maxHeight: "72vh", objectFit: "contain" }}
+              style={{
+                display: "block",
+                // constrain by height so portrait photos don't overflow the screen,
+                // width:auto lets it scale proportionally — the card then hugs that width
+                maxHeight: "70vh",
+                maxWidth: "52vw",
+                width: "auto",
+                height: "auto",
+              }}
             />
-            {(selected.title || selected.description) && (
-              <div style={{ padding: "16px 22px 20px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+            <div style={{ padding: "20px 24px 24px" }}>
+              {/* Title row + close button */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
                 <div>
-                  {selected.title && (
-                    <p style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 15, color: "var(--text)", marginBottom: 4, letterSpacing: "0.01em" }}>
-                      {selected.title}
-                    </p>
-                  )}
-                  {selected.description && (
-                    <p style={{ fontSize: 12, color: "var(--text-3)", letterSpacing: "0.02em", lineHeight: 1.6 }}>
-                      {selected.description}
-                    </p>
-                  )}
-                  {(selected.fStop || selected.exposureTime || selected.camera) && (
-                    <p style={{ fontSize: 11, color: "var(--text-4)", fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.04em", marginTop: 6 }}>
-                      {[selected.camera, selected.fStop && `f/${selected.fStop}`, selected.exposureTime].filter(Boolean).join("  ·  ")}
-                    </p>
-                  )}
+                  <p style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 17, color: "var(--text)", marginBottom: 4, letterSpacing: "0.01em" }}>
+                    {selected.title}
+                  </p>
+                  <p style={{ fontSize: 12, color: "var(--text-3)", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                    @_transitfanner
+                  </p>
                 </div>
                 <button
                   onClick={() => setSelected(null)}
@@ -148,8 +223,8 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
                     background: "var(--surface)",
                     border: "none",
                     borderRadius: "50%",
-                    width: 30,
-                    height: 30,
+                    width: 32,
+                    height: 32,
                     cursor: "pointer",
                     color: "var(--text-3)",
                     display: "flex",
@@ -162,7 +237,29 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
                   ×
                 </button>
               </div>
-            )}
+
+              {/* 2-column metadata grid */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 24px" }}>
+                {[
+                  selected.agency        ? ["Agency",        selected.agency]                  : null,
+                  selected.camera        ? ["Camera",        selected.camera]                  : null,
+                  selected.station       ? ["Station",       selected.station]                 : null,
+                  selected.focal         ? ["Focal Length",  selected.focal]                   : null,
+                  selected.vehicle       ? ["Vehicle",       selected.vehicle]                 : null,
+                  selected.fStop         ? ["Aperture",      `f/${selected.fStop}`]            : null,
+                  selected.exposureTime  ? ["Exposure",      `${selected.exposureTime}s`]      : null,
+                ].filter(Boolean).map(([label, value]) => (
+                  <div key={label as string}>
+                    <p style={{ fontSize: 10, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-4)", marginBottom: 2 }}>
+                      {label}
+                    </p>
+                    <p style={{ fontSize: 13, color: "var(--text-2)", letterSpacing: "0.02em" }}>
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}

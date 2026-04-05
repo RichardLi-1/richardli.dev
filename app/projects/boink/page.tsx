@@ -162,6 +162,7 @@ export default function BoinkProjectPage() {
                 <div>
                   <video
                     src="/videos/inkball-gameplay.mp4"
+                    aria-label="InkBall gameplay footage"
                     autoPlay
                     loop
                     muted
@@ -175,6 +176,7 @@ export default function BoinkProjectPage() {
                 <h2 className="text-2xl font-bold text-green-400 mb-4">Design and Gameplay</h2>
                 <video
                   src="/videos/boink-gameplay.MOV"
+                  aria-label="Bo!nk gameplay footage"
                   autoPlay
                   loop
                   muted

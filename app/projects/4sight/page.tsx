@@ -43,7 +43,7 @@ export default function SightProjectPage() {
               <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
                 <img
                   src="/images/jamAsset.PNG"
-                  alt="Bo!nk Logo"
+                  alt="4Sight project logo"
                   className="w-8 h-8 object-contain rounded-md" // Adjusted size for title
                 />
                 4Sight
@@ -58,7 +58,7 @@ export default function SightProjectPage() {
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
               <img
                 src=""
-                alt="Bo!nk game screenshots"
+                alt="4Sight project screenshots"
                 className="w-full h-full object-cover"
               />
             </div>

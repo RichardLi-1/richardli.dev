@@ -1,5 +1,11 @@
 {
   "name": "richardli-dot-dev",
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead",
+    "not IE 11"
+  ],
   "version": "0.1.0",
   "private": true,
   "scripts": {

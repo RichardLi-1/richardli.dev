@@ -54,7 +54,7 @@ export default function SalesPatriotProjectPage() {
             {/* Changed from 400 */}
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
-              <img src="/placeholder.svg" alt="screenshots" className="w-full h-full object-cover" />
+              <img src="/placeholder.svg" alt="" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
 

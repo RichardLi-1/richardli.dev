@@ -107,7 +107,7 @@ export default function PersonalWebsite() {
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {currently.map(item => (
                     <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-2)", listStyle: "none" }}>
-                      <img src={item.image} style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%", objectFit: "cover" }}></img>
+                      <img src={item.image} alt="" style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%", objectFit: "cover" }}></img>
                       {item.text}
                     </li>
                   ))}
@@ -161,17 +161,15 @@ export default function PersonalWebsite() {
                           </div>
                         </div>
                         {hoveredId === project.id && (project as any).externalLink && (
-                          <a
-                            href={(project as any).externalLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={e => e.stopPropagation()}
+                          <button
+                            onClick={e => { e.preventDefault(); e.stopPropagation(); window.open((project as any).externalLink, "_blank", "noopener,noreferrer") }}
                             className="liquid-glass-pill squircle"
                             style={{
                               position: "absolute", top: 10, right: 10,
                               display: "flex", alignItems: "center", gap: 6,
                               padding: "6px 14px",
-                              textDecoration: "none", whiteSpace: "nowrap",
+                              background: "none", border: "none", cursor: "pointer",
+                              whiteSpace: "nowrap",
                               transition: "transform 0.15s ease",
                             }}
                             onMouseEnter={e => (e.currentTarget.style.transform = "scale(0.96)")}
@@ -179,7 +177,7 @@ export default function PersonalWebsite() {
                           >
                             <span style={{ fontSize: 13, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", color: "inherit" }}>Try it out</span>
                             <ExternalLink style={{ width: 12, height: 12, opacity: 0.65 }} />
-                          </a>
+                          </button>
                         )}
                       </div>
                       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>

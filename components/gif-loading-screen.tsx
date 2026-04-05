@@ -68,6 +68,7 @@ export function GifLoadingScreen({ onComplete }: GifLoadingScreenProps) {
             src={gifSrc.current}
             alt="Loading animation"
             className="w-full h-full object-contain"
+            fetchPriority="high"
           />
         )}
       </div>

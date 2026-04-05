@@ -93,7 +93,7 @@ export default function ProjectsPage() {
               }}>
                 <StaggeredContent delay={0}>
                   <div style={{ marginBottom: "3rem", overflow: "hidden" }}>
-                    <h1 style={{ fontSize: "clamp(28px, 8vw, 48px)", marginBottom: "12px" }}>Work</h1>
+                    <h1 style={{ fontSize: "clamp(28px, 8vw, 48px)", marginBottom: "12px" }}>Work</h1>{/* Consider changing this to 56px max */}
                     <p style={{ fontSize: "14px", color: "var(--text-3)", letterSpacing: "0.02em" }}>
                       A collection of work and projects, from mobile games to non-profit initiatives.
                     </p>
@@ -108,14 +108,16 @@ export default function ProjectsPage() {
                     <motion.div
                       key={project.id}
                       layout
+                      transition={{ layout: { type: "spring", stiffness: 280, damping: 28 } }}
+                      style={{ minWidth: 0 }}
+                    >
+                    <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{
                         opacity: { duration: 0.5, delay: 0.3 + index * 0.08 },
                         y: { duration: 0.5, delay: 0.3 + index * 0.08 },
-                        layout: { type: "spring", stiffness: 280, damping: 28 },
                       }}
-                      style={{ minWidth: 0 }}
                     >
                       <div
                         className="photo-card mb-6 cursor-pointer group"
@@ -183,6 +185,7 @@ export default function ProjectsPage() {
                           }}>{project.description}</p>
                         )}
                       </div>
+                    </motion.div>
                     </motion.div>
                   ))}
                 </div>

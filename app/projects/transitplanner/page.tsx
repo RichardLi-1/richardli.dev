@@ -56,6 +56,7 @@ export default function TransitPlannerProjectPage() {
             <div className="relative w-full overflow-hidden squircle rounded-lg bg-[var(--surface)]" style={{ aspectRatio: "960/594" }}>
               <video
                 src="/videos/transitplanfinal.mov"
+                aria-label="Transit Planner app demo"
                 className="w-full h-full object-cover squircle"
                 autoPlay
                 loop
@@ -147,7 +148,7 @@ export default function TransitPlannerProjectPage() {
                 
                 <h3 className="font-semibold mt-4 mb-2 text-lg">Surface Route Accuracy</h3>
               <p className="mb-2">Initially, bus and streetcar routes floated from one point to another. I added automatic snapping to roads as well as portals to indicate underground sections that don't have to follow road medians.</p>
-            <video src="/videos/road-snapping.mov" autoPlay loop muted playsInline className="w-full squircle rounded-lg" />
+            <video src="/videos/road-snapping.mov" aria-label="Road snapping feature demo" autoPlay loop muted playsInline className="w-full squircle rounded-lg" />
 
             <p className="mb-2 mt-4">This project has introduced me to much of the small but active community of transit data and modelling professionals, from whom I have a lot to learn from.</p>
              <p className="mb-2 mt-4">I hope to make this project either useful professionally or as an educational tool or game for transit enthusiasts. If you have any feedback or suggestions, or would like to collaborate, please reach out!</p>

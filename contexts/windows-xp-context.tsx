@@ -1,6 +1,6 @@
 "use client"
 import type React from "react"
-import { createContext, useContext, useState, useCallback } from "react"
+import { createContext, useContext, useState, useCallback, useEffect } from "react"
 
 interface WindowXPWindow {
   id: string
@@ -28,6 +28,8 @@ interface WindowsXPContextType {
   updateWindowSize: (id: string, size: { width: number; height: number }) => void
   isStartMenuOpen: boolean
   toggleStartMenu: () => void
+  isHighContrast: boolean
+  toggleHighContrast: () => void
 }
 
 const WindowsXPContext = createContext<WindowsXPContextType | undefined>(undefined)
@@ -38,6 +40,14 @@ export function WindowsXPProvider({ children }: { children: React.ReactNode }) {
     if (typeof window === "undefined") return false
     return localStorage.getItem("isPersonalized") === "true"
   })
+  const [isHighContrast, setIsHighContrast] = useState(() => {
+    if (typeof window === "undefined") return false
+    return localStorage.getItem("isHighContrast") === "true"
+  })
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("hc", isHighContrast)
+  }, [isHighContrast])
   const [windows, setWindows] = useState<WindowXPWindow[]>([])
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false)
   const [nextZIndex, setNextZIndex] = useState(1000)
@@ -74,6 +84,14 @@ export function WindowsXPProvider({ children }: { children: React.ReactNode }) {
     setIsPersonalized((prev) => {
       const next = !prev
       localStorage.setItem("isPersonalized", String(next))
+      return next
+    })
+  }, [])
+
+  const toggleHighContrast = useCallback(() => {
+    setIsHighContrast((prev) => {
+      const next = !prev
+      localStorage.setItem("isHighContrast", String(next))
       return next
     })
   }, [])
@@ -141,6 +159,8 @@ export function WindowsXPProvider({ children }: { children: React.ReactNode }) {
         updateWindowSize,
         isStartMenuOpen,
         toggleStartMenu,
+        isHighContrast,
+        toggleHighContrast,
       }}
     >
       {children}

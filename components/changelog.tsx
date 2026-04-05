@@ -16,6 +16,22 @@ interface ChangelogEntry {
 
 export const entries: ChangelogEntry[] = [
   {
+    date: "04/05/2026 - v2.2.0",
+    changes: [
+      { text: "Targeting Lighthouse performance score", badge: "Ongoing" },
+      "Removed render-blocking Google Fonts — all fonts now load from local @font-face",
+      "Added preload hints for Toronto Subway and SFCamera to break font dependency chain",
+      "fetchPriority=\"high\" on loading GIF to improve LCP",
+      "Navigation sound — windows-navigation-start.mp3 plays on route change",
+      "About page redesign — two-column layout with bio, Things I love sticker grid, portrait, and Experiences",
+      "About page collapses to single column on mobile",
+      "Transit Fanning — per-card colorful shimmer skeletons, featured card hero, upgraded photo modal with full metadata",
+      "High contrast mode header fix — inline styles now respond correctly to hc toggle",
+      "Accessibility: aria-label on icon-only nav links",
+      "Shimmer gradient direction changed to horizontal",
+    ],
+  },
+  {
     date: "03/30/2026 - v2.1.0",
     media: { type: "image", src: "/images/changelogs/v2.1.0.png", alt: "v2.1.0 changelog" },
     changes: [
@@ -192,6 +208,7 @@ export function Changelog({ onClose }: { onClose: () => void }) {
             ) : (
               <video
                 src={entry.media.src}
+                aria-label={entry.media.alt ?? "Changelog video"}
                 autoPlay loop muted playsInline
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />

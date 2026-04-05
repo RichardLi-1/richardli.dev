@@ -215,7 +215,7 @@ h3 {
   height: 100%;
   background-image:
     linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.18) 50%, transparent 70%),
-    linear-gradient(135deg, #b8c8b8 0%, #8faabc 50%, #c4b89e 100%);
+    linear-gradient(to right, #b8c8b8 0%, #8faabc 50%, #c4b89e 100%);
   background-size: 200% 100%, 100% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
@@ -307,6 +307,13 @@ h3 {
   columns: 3;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+}
+
+/* Fanning gallery — CSS multi-column masonry (display:block + columns) */
+.fanning-grid {
+  display: block;
+  columns: 3;
+  column-gap: 16px;
 }
 
 .photo-item {
@@ -498,6 +505,11 @@ header {
 }
 
 /* ── Animations ─────────────────────────────────────────────────── */
+@keyframes modalEnter {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 14px)); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
 @keyframes shimmer {
   from { background-position: 150% 0; }
   to   { background-position: -150% 0; }
@@ -573,6 +585,53 @@ header {
 .page-bg .text-yellow-400       { color: #c9a227; }
 
 .light .hover\:text-stone-100:hover { color: var(--text); }
+
+/* ── High contrast mode ─────────────────────────────────────────── */
+html.hc {
+  --bg: #000;
+  --text: #fff;
+  --text-2: #e0e0e0;
+  --text-3: #c0c0c0;
+  --text-4: #a0a0a0;
+  --text-5: #707070;
+  --card-bg: #000;
+  --surface: #000;
+  --surface-hover: #111;
+  --border-2: #fff;
+  --glass-bg: rgba(0, 0, 0, 0.97);
+}
+
+/* Glass pills: drop blur, go solid black/white */
+html.hc .liquid-glass-pill,
+html.hc .header-pill {
+  background: #000 !important;
+  border: 2px solid #fff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  color: #fff !important;
+  text-shadow: none !important;
+}
+
+/* Cards: drop shadows, add outline border */
+html.hc .featured-card { box-shadow: none !important; border: 1px solid #fff !important; }
+
+/* Focus rings: high-visibility yellow */
+html.hc *:focus-visible { outline: 3px solid #ff0 !important; outline-offset: 2px !important; }
+
+/* Inputs and selects */
+html.hc input:not([type="range"]):not([type="checkbox"]),
+html.hc textarea {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+  border-width: 2px !important;
+}
+html.hc select {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
 
 /* ── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 640px) {

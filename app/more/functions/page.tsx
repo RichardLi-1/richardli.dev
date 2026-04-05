@@ -13,6 +13,7 @@ function PhotoImage({
   rotation,
   width,
   visible,
+  alt = "",
   style = {},
 }: {
   src: string
@@ -20,6 +21,7 @@ function PhotoImage({
   rotation: number
   width: number
   visible: boolean
+  alt?: string
   style?: React.CSSProperties
 }) {
   const [flipped, setFlipped] = useState(false)
@@ -41,7 +43,7 @@ function PhotoImage({
     >
       <img
         src={`/images/functions/${src}`}
-        alt=""
+        alt={alt}
         draggable={false}
         style={{
           width: "100%",
@@ -56,7 +58,7 @@ function PhotoImage({
       {realSrc && (
         <img
           src={`/images/functions/${realSrc}`}
-          alt=""
+          alt={alt}
           draggable={false}
           style={{
             width: "100%",
@@ -138,6 +140,7 @@ function StickyScene() {
             <PhotoImage
               src="photo1sticker.png"
               realSrc="photo1.JPG"
+              alt="Functions event photo"
               rotation={-8}
               width={200}
               visible={show1}
@@ -149,6 +152,7 @@ function StickyScene() {
           <div style={{ position: "absolute", top: "-120px", right: "-80px", zIndex: 2 }}>
             <PhotoImage
               src="IMG_3330.JPG"
+              alt="Functions event photo"
               rotation={10}
               width={190}
               visible={show2}
@@ -163,6 +167,7 @@ function StickyScene() {
           }}>
             <PhotoImage
               src="photo3sticker.png"
+              alt="Functions event photo"
               rotation={0}
               width={170}
               visible={show3}
@@ -181,6 +186,7 @@ function StickyScene() {
 interface ScatterProps {
   src: string
   realSrc?: string
+  alt?: string
   x: string
   y: string
   rotation: number
@@ -188,13 +194,14 @@ interface ScatterProps {
   delay?: number
 }
 
-function ScatterPhoto({ src, realSrc, x, y, rotation, size, delay = 0 }: ScatterProps) {
+function ScatterPhoto({ src, realSrc, alt, x, y, rotation, size, delay = 0 }: ScatterProps) {
   const { ref, inView } = useInView(0.1)
   return (
     <div ref={ref} style={{ position: "absolute", left: x, top: y, zIndex: 1 }}>
       <PhotoImage
         src={src}
         realSrc={realSrc}
+        alt={alt}
         rotation={rotation}
         width={size}
         visible={inView}
@@ -239,15 +246,15 @@ function ClosingQuote() {
 // ── Collage data ──────────────────────────────────────────────────────────────
 
 const collageItems: ScatterProps[] = [
-  { src: "photo2sticker.png", realSrc: "photo2.JPG", x: "4%",  y: "0px",   rotation: -6,  size: 220, delay: 0  },
-  { src: "IMG_3326.JPG",                              x: "54%", y: "20px",  rotation:  7,  size: 220, delay: 40 },
-  { src: "photo4sticker.png",                         x: "30%", y: "220px", rotation: -3,  size: 165, delay: 80 },
-  { src: "photo5sticker.png", realSrc: "photo5.JPG",  x: "6%",  y: "380px", rotation: -4,  size: 240, delay: 0  },
-  { src: "IMG_5442.jpg",                              x: "62%", y: "340px", rotation: -7,  size: 200, delay: 60 },
-  { src: "photo6sticker.png", realSrc: "photo6.JPG",  x: "14%", y: "600px", rotation:  5,  size: 250, delay: 0  },
-  { src: "photo7sticker.png", realSrc: "photo7.JPG",  x: "3%",  y: "820px", rotation:  8,  size: 230, delay: 0  },
-  { src: "photo8sticker.png", realSrc: "photo8.JPG",  x: "46%", y: "780px", rotation: -3,  size: 260, delay: 40 },
-  { src: "IMG_3731.JPG",                              x: "68%", y: "580px", rotation: 11,  size: 190, delay: 80 },
+  { src: "photo2sticker.png", realSrc: "photo2.JPG", alt: "Functions event photo",  x: "4%",  y: "0px",   rotation: -6,  size: 220, delay: 0  },
+  { src: "IMG_3326.JPG",                             alt: "Functions event photo",  x: "54%", y: "20px",  rotation:  7,  size: 220, delay: 40 },
+  { src: "photo4sticker.png",                        alt: "Functions event photo",  x: "30%", y: "220px", rotation: -3,  size: 165, delay: 80 },
+  { src: "photo5sticker.png", realSrc: "photo5.JPG", alt: "Functions event photo",  x: "6%",  y: "380px", rotation: -4,  size: 240, delay: 0  },
+  { src: "IMG_5442.jpg",                             alt: "Functions event photo",  x: "62%", y: "340px", rotation: -7,  size: 200, delay: 60 },
+  { src: "photo6sticker.png", realSrc: "photo6.JPG", alt: "Functions event photo",  x: "14%", y: "600px", rotation:  5,  size: 250, delay: 0  },
+  { src: "photo7sticker.png", realSrc: "photo7.JPG", alt: "Functions event photo",  x: "3%",  y: "820px", rotation:  8,  size: 230, delay: 0  },
+  { src: "photo8sticker.png", realSrc: "photo8.JPG", alt: "Functions event photo",  x: "46%", y: "780px", rotation: -3,  size: 260, delay: 40 },
+  { src: "IMG_3731.JPG",                             alt: "Functions event photo",  x: "68%", y: "580px", rotation: 11,  size: 190, delay: 80 },
 ]
 
 // ── Page ─────────────────────────────────────────────────────────────────────
