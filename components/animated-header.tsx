@@ -71,19 +71,16 @@ export function AnimatedHeader({
   const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, w: 520, h: 540 })
   const chatInitialized = useRef(false)
   const audioRef = useRef<HTMLAudioElement>(null)
-  const isFirstMount = useRef(true)
   const pathname = usePathname()
 
-  // Play nav sound whenever the route changes (skip the very first mount —
-  // browsers block autoplay before any user gesture has occurred on the page)
+  // Play nav sound on every mount except the very first page load.
+  // We use sessionStorage because the header remounts on every navigation
+  // (it lives inside each page, not the root layout), so useRef resets each time.
   useEffect(() => {
-    if (isFirstMount.current) {
-      isFirstMount.current = false
-      return
-    }
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0
-      audioRef.current.play().catch(() => {})
+    if (sessionStorage.getItem("nav_visited")) {
+      audioRef.current?.play().catch(() => {})
+    } else {
+      sessionStorage.setItem("nav_visited", "1")
     }
   }, [pathname])
 
