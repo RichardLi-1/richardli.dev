@@ -1,22 +1,3 @@
-/* ── Site wrapper ─────────────────────────────────────── */
-.site {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-  color: var(--text);
-}
-
-.site-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 24px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 /* ── Hero ────────────────────────────────────────────── */
 .main {
   flex: 1;
@@ -52,6 +33,7 @@
 .featured-card {
   background: var(--card-bg);
   border-radius: 32px;
+  corner-shape: squircle;
   overflow: hidden;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 }
@@ -71,8 +53,8 @@
   width: 100%;
   height: 100%;
   background-image:
-    linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.18) 50%, transparent 70%),
-    linear-gradient(to right, #b8c8b8 0%, #8faabc 50%, #c4b89e 100%);
+    linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%),
+    linear-gradient(135deg, #b8c8b8 0%, #8faabc 50%, #c4b89e 100%);
   background-size: 200% 100%, 100% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
@@ -151,6 +133,7 @@
   padding: 9px 16px 9px 36px;
   border: 1px solid var(--border-2);
   border-radius: 9999px;
+  corner-shape: squircle;
   background: var(--surface);
   outline: none;
   width: 240px;
@@ -177,6 +160,7 @@
   padding: 9px 16px;
   border: 1px solid var(--border-2);
   border-radius: 9999px;
+  corner-shape: squircle;
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
@@ -211,11 +195,12 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   border-radius: 20px;
+  corner-shape: squircle;
   overflow: hidden;
   background-image: linear-gradient(
     100deg,
     transparent 30%,
-    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.28) 50%,
     transparent 70%
   );
   background-size: 200% 100%;
@@ -226,40 +211,4 @@
   font-size: 11px;
   color: var(--text-4);
   letter-spacing: 0.03em;
-}
-
-/* ── Footer ──────────────────────────────────────────── */
-.photo-footer {
-  padding: 24px 0;
-  border-top: 1px solid var(--border-2);
-  text-align: center;
-}
-
-.discord-link {
-  font-family: 'Toronto Subway', 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-
-.discord-link:hover {
-  color: var(--text);
-}
-
-@media (max-width: 640px) {
-  .photo-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .featured-caption-row {
-    flex-direction: column;
-  }
-  .featured-meta-grid {
-    gap: 16px;
-  }
-  .meta-col {
-    text-align: left;
-  }
 }
