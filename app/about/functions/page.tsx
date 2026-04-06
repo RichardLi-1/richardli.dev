@@ -264,7 +264,7 @@ export default function FunctionsPage() {
   return (
     <AnimatedPage>
       <div className="page-bg min-h-screen">
-        <AnimatedHeader currentPage="/more/functions" backHref="/more" backText="Functions" />
+        <AnimatedHeader currentPage="/about/functions" backHref="/about" backText="Functions" />
 
         {/* ── Hero ── */}
         <section style={{ padding: "80px 40px 120px" }}>

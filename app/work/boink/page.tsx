@@ -38,9 +38,9 @@ export default function BoinkProjectPage() {
     <AnimatedPage>
       <div className="min-h-screen page-bg">
         <AnimatedHeader
-          backHref="/projects"
+          backHref="/work"
           backText="Back"
-          currentPage="/projects/boink"
+          currentPage="/work/boink"
           rightLinks={[
             { href: "https://apps.apple.com/ca/app/bo-nk/id1570376501", text: "App Store", external: true },
             { href: "https://github.com/MarkvilleDev/Boink", text: "GITHUB", external: true },

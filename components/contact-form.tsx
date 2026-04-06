@@ -14,6 +14,10 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
+  // A single handler works for all fields because e.target.name matches the
+  // formData key names (fullName, email, phone, message).
+  // [e.target.name] is computed property syntax — it evaluates the variable as the key.
+  // 📖 Learn: computed property names — https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#computed_property_names
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({
       ...prev,
@@ -46,7 +50,9 @@ export function ContactForm() {
       setIsSubmitting(false)
     }
 
-    // Reset form after 3 seconds
+    // Reset the success state after 3 s so the form reappears for another message.
+    // Note: this timeout is not cleared on unmount — a minor leak, but benign since
+    // the contact page is rarely unmounted while this timeout is pending.
     setTimeout(() => {
       setSubmitted(false)
       setFormData({ fullName: "", email: "", phone: "", message: "" })

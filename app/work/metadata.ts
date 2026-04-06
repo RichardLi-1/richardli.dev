@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "Projects - Richard Li",
     description:
       "Explore Richard Li's portfolio of full-stack development projects including iOS apps, web applications, and AI integrations.",
-    url: "https://richardli.dev/projects",
+    url: "https://richardli.dev/work",
     type: "website",
   },
 }

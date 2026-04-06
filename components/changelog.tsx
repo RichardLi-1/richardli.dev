@@ -16,6 +16,17 @@ interface ChangelogEntry {
 
 export const entries: ChangelogEntry[] = [
   {
+    date: "04/06/2026 - v2.2.2",
+    changes: [
+      "Renamed /projects → /work and /more → /about across all routes and sitemap",
+      "Added inline code comments across the entire codebase for readability",
+      "Discord webhook tracking moved server-side via new /api/track route — URL no longer exposed in browser bundle",
+      "Click tracking added for GitHub, LinkedIn, Email, theme toggle, high contrast, and chat buttons",
+      "About page layout refactored from absolute positioning to CSS grid",
+      "Light high contrast mode — HC button now adapts to current theme (white bg + black text in light mode, yellow focus rings swap to blue)",
+    ],
+  },
+  {
     date: "04/05/2026 - v2.2.0",
     changes: [
       { text: "Targeting Lighthouse performance score", badge: "Ongoing" },
@@ -59,26 +70,35 @@ export const entries: ChangelogEntry[] = [
 export function Changelog({ onClose }: { onClose: () => void }) {
   const [index, setIndex] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
+  // menuRef lets us detect clicks outside the dropdown to close it.
   const menuRef = useRef<HTMLDivElement>(null)
   const entry = entries[index]
 
+  // Close the whole modal on Escape key press — standard accessible modal behaviour.
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
     window.addEventListener("keydown", handler)
     return () => window.removeEventListener("keydown", handler)
   }, [onClose])
 
-  // Close menu on outside click
+  // Close the version dropdown when the user clicks anywhere outside it.
+  // The effect only attaches when the menu is open to avoid an always-on listener.
   useEffect(() => {
     if (!menuOpen) return
     const handler = (e: MouseEvent) => {
+      // `contains` checks if the click target is inside the menuRef element.
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false)
     }
     document.addEventListener("mousedown", handler)
     return () => document.removeEventListener("mousedown", handler)
   }, [menuOpen])
 
+  // createPortal renders the modal into document.body instead of its parent DOM
+  // node. This sidesteps z-index stacking context issues — the modal will always
+  // appear on top regardless of where in the component tree it's rendered.
+  // 📖 Learn: React portals — https://react.dev/reference/react-dom/createPortal
   return createPortal(
+    // Clicking the backdrop (not the card) closes the modal.
     <div
       onClick={onClose}
       style={{
@@ -90,6 +110,8 @@ export function Changelog({ onClose }: { onClose: () => void }) {
         padding: "24px",
       }}
     >
+      {/* stopPropagation prevents clicks inside the card from bubbling up to the
+          backdrop and accidentally closing the modal. */}
       <div
         onClick={e => e.stopPropagation()}
         style={{
@@ -219,7 +241,9 @@ export function Changelog({ onClose }: { onClose: () => void }) {
         {/* Changes */}
         <div style={{ padding: "20px 24px" }}>
           <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 10 }}>
-            {entry.changes.map((c, i) => {
+            {/* Each change can be a plain string or a { text, badge } object.
+            The typeof check narrows the union type before accessing .badge. */}
+        {entry.changes.map((c, i) => {
               const text = typeof c === "string" ? c : c.text
               const badge = typeof c === "string" ? undefined : c.badge
               return (

@@ -1,12 +1,19 @@
 "use client"
 import { useEffect, useState } from "react"
 
+// Developer-only overlay that renders a 12-column + 8px baseline grid (Swiss/
+// International Typographic Style). Toggle with:
+//   Cmd+G       — column + baseline grid
+//   Cmd+Shift+G — 64px horizontal row grid
+// The component renders nothing at all when both toggles are off, so it has
+// zero visual impact in normal use.
 export function SwissGrid() {
   const [showColumns, setShowColumns] = useState(false)
   const [showRows, setShowRows] = useState(false)
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // e.metaKey is the Cmd key on Mac; e.ctrlKey is Ctrl on Windows/Linux.
       if (e.key === "g" && (e.ctrlKey || e.metaKey) && !e.shiftKey) {
         e.preventDefault()
         setShowColumns((v) => !v)
@@ -27,6 +34,8 @@ export function SwissGrid() {
   const rowHeight = 64 // px per horizontal band
 
   return (
+    // pointerEvents: "none" means the grid overlay never intercepts mouse clicks
+    // on the actual page content beneath it.
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999 }}>
       {/* Vertical column grid */}
       {showColumns && (

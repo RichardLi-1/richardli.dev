@@ -235,7 +235,7 @@ function InternetExplorerContent() {
           <div className="flex-1 mx-2">
             <input
               type="text"
-              value="http://richardli.dev/projects"
+              value="http://richardli.dev/work"
               readOnly
               className="w-full px-2 py-1 border border-gray-400 text-black"
             />

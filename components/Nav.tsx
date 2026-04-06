@@ -48,7 +48,7 @@ export default function Nav() {
           Home
         </Link>
         <Link
-          href="/projects"
+          href="/work"
           style={{
             fontFamily: "'Toronto Subway', 'Helvetica Neue', sans-serif",
             fontSize: "11px",

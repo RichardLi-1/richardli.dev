@@ -8,6 +8,9 @@ const small: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif",
 export function Footer() {
   const [isPanel, setIsPanel] = useState(false)
   const [showChangelog, setShowChangelog] = useState(false)
+  // Hide the footer when rendered inside the /work split-pane iframe —
+  // it looks wrong at the bottom of a narrow side panel.
+  // Reads window.location in a useEffect to avoid SSR issues.
   useEffect(() => { if (window.location.search.includes("panel=1")) setIsPanel(true) }, [])
   if (isPanel) return null
   return (
@@ -22,6 +25,8 @@ export function Footer() {
             <span style={small}>Written in TypeScript using Next.js. Animations using Framer Motion. Set in SFCamera and Toronto Subway. Made with ❤️.</span>
             <div className="flex items-center gap-2 shrink-0 ml-4">
               <div className="size-2 rounded-full animate-pulse-custom" style={{ background: "var(--text-3)" }} />
+              {/* Show the latest changelog date as the clickable version label.
+                  `entries[0]` is always the most recent entry. */}
               <button
                 onClick={() => setShowChangelog(true)}
                 style={{

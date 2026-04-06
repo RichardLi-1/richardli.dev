@@ -93,12 +93,20 @@ function DraggableSticker({ src, ix, iy, size = 120 }: {
   )
 }
 
+// GlobalStickers renders a set of draggable decorative stickers when personalized
+// mode is active. It's mounted once in layout-content.tsx and is always in the
+// tree; it simply renders null when the mode is off (cheap no-op render).
+//
+// The local DraggableSticker here uses `position: fixed` and pixel coordinates —
+// unlike the version in draggable-sticker.tsx which uses `position: absolute` with
+// fractional positioning. This one is simpler and stays fixed to the viewport.
 export function GlobalStickers() {
   const { isPersonalized } = useWindowsXP()
   if (!isPersonalized) return null
 
   return (
     <>
+      {/* ix and iy are 0–1 fractions of viewport width/height for initial placement */}
       <DraggableSticker src="/images/clippynew.png"                                          ix={0.88} iy={0.65} size={110} />
       <DraggableSticker src="/images/design-mode/pngtree-goose-flat-icon-png-image_9148185.png" ix={0.04} iy={0.70} size={90}  />
       <DraggableSticker src="/images/functions/photo1sticker.png"                            ix={0.90} iy={0.20} size={100} />

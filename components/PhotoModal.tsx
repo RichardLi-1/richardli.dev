@@ -20,6 +20,9 @@ interface PhotoModalProps {
 }
 
 export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
+  // Escape key closes the modal — standard accessible modal keyboard behaviour.
+  // `onClose` is included in the dependency array because the effect captures it
+  // in a closure; if the parent passes a new function reference, we re-register.
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
@@ -29,6 +32,8 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
   }, [onClose])
 
   return (
+    {/* Clicking the dark backdrop closes the modal; clicking the card does not
+        (stopPropagation below). WebkitBackdropFilter is the Safari vendor prefix. */}
     <div
       onClick={onClose}
       style={{
@@ -126,6 +131,8 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
               gap: "8px 24px",
             }}
           >
+            {/* Rendering metadata as a data-driven array avoids repetitive JSX.
+                Each pair is [label, value] and mapped to a two-column grid cell. */}
             {[
               ["Agency", photo.agency],
               ["Camera", photo.camera],

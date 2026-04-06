@@ -112,7 +112,7 @@ function InternetExplorerContent() {
           <div className="flex-1 mx-2">
             <input
               type="text"
-              value="http://richardli.dev/projects"
+              value="http://richardli.dev/work"
               readOnly
               className="w-full px-2 py-1 border border-gray-400 text-black"
             />
@@ -204,7 +204,7 @@ function ProjectDetailContent({ projectSlug, title }: { projectSlug: string; tit
         <div className="flex items-center mt-2 space-x-2">
           <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Back</button>
           <div className="flex-1 bg-white border border-gray-400 px-2 py-1 text-sm">
-            richardli.dev/projects/{projectSlug}
+            richardli.dev/work/{projectSlug}
           </div>
         </div>
       </div>

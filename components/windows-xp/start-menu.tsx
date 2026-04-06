@@ -2,7 +2,7 @@
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { useEffect, useRef } from "react"
 import type React from "react"
-import { ProjectsIEContent } from "./projects-ie-content"
+import { ProjectsIEContent } from "./work-ie-content"
 import { MailProgram } from "./mail-program" // Import MailProgram component
 import { WindowsMediaPlayer } from "./windows-media-player" // Import Windows Media Player component
 import { Notepad } from "./notepad" // Import Notepad component

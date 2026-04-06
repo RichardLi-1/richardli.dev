@@ -11,7 +11,7 @@ export function RelatedProjects({ currentId }: { currentId: string }) {
       <p className="section-label mb-6">Also check out</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {related.map((project) => (
-          <Link key={project.id} href={`/projects/${project.id}`}>
+          <Link key={project.id} href={`/work/${project.id}`}>
             <div
               className="photo-card h-full flex flex-col cursor-pointer group"
               style={{ "--glow-color": project.colors || "#22c55e44" } as React.CSSProperties}

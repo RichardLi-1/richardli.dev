@@ -1,3 +1,13 @@
+// Single source of truth for all project data.
+// Both the homepage grid and the /work page import from here so they always
+// stay in sync. To hide a project without deleting it, set `hidden: true`.
+//
+// Fields:
+//   id          — URL slug used in /work/[id] routing
+//   image/image2/image3 — ProjectImageCycler cycles through all three
+//   colors      — hex accent used for hover glow effects
+//   externalLink — if present, a "Try it out" button appears on hover
+//   hidden      — excludes the project from all grids
 export const mainProjects = [
       {
     id: "transitplanner",

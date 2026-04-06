@@ -28,6 +28,8 @@ export default function ProjectsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
 
+  // Scroll to top on mount — prevents the browser from restoring a previous
+  // scroll position when navigating back to this page.
   useEffect(() => { window.scrollTo(0, 0) }, [])
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
@@ -36,12 +38,15 @@ export default function ProjectsPage() {
     return () => window.removeEventListener("resize", check)
   }, [])
 
-
+  // Listen for postMessage events from the iframe panel (individual project pages).
+  // The iframe can't directly call setSelectedId — it lives in a different
+  // browsing context — so it uses window.parent.postMessage instead.
+  // 📖 Learn: window.postMessage — https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
   useEffect(() => {
     const handler = (e: MessageEvent) => {
       if (e.data?.type !== "panel-action") return
       if (e.data.action === "close") setSelectedId(null)
-      if (e.data.action === "open") window.open(`/projects/${selectedId}`)
+      if (e.data.action === "open") window.open(`/work/${selectedId}`)
     }
     window.addEventListener("message", handler)
     return () => window.removeEventListener("message", handler)
@@ -50,8 +55,10 @@ export default function ProjectsPage() {
   const allProjects = (showAdditional ? [...mainProjects, ...additionalProjects] : mainProjects).filter(p => !(p as any).hidden)
   const selectedProject = allProjects.find(p => p.id === selectedId)
 
+  // On mobile: full-page navigation (no space for a side panel).
+  // On desktop: toggle the right-panel iframe. Clicking the same card again closes it.
   const handleCardClick = (id: string) => {
-    if (isMobile) { window.location.href = `/projects/${id}`; return }
+    if (isMobile) { window.location.href = `/work/${id}`; return }
     setSelectedId(prev => prev === id ? null : id)
   }
 
@@ -61,7 +68,7 @@ export default function ProjectsPage() {
         <AnimatedHeader
           backHref="/"
           backText="Back"
-          currentPage="/projects"
+          currentPage="/work"
           rightLinks={[
             { href: "mailto:richardli0@outlook.com", text: "CONTACT" },
             { href: "https://www.linkedin.com/in/richardli0/", text: "LINKEDIN", external: true },
@@ -206,6 +213,9 @@ export default function ProjectsPage() {
               </motion.div>
 
               {/* ── Right panel (desktop only) ── */}
+              {/* AnimatePresence lets Framer Motion animate the panel's exit.
+                  Without it, the panel would disappear instantly when selectedId is cleared.
+                  📖 Learn: AnimatePresence — https://www.framer.com/motion/animate-presence/ */}
               <AnimatePresence>
                 {selectedId && !isMobile && (
                   <motion.div
@@ -217,9 +227,10 @@ export default function ProjectsPage() {
                     transition={{ type: "spring", stiffness: 260, damping: 30 }}
                     style={{
                       flex: 1,
+                      // sticky keeps the panel in view while scrolling the left project list
                       position: "sticky",
                       top: "80px",
-                      height: "calc(100vh - 120px)", //used to be -96px
+                      height: "calc(100vh - 120px)",
                       borderRadius: 24,
                       marginBottom: 24,
                       overflow: "hidden",
@@ -229,9 +240,11 @@ export default function ProjectsPage() {
                       minWidth: 0,
                     }}
                   >
+                    {/* key={selectedId} remounts the iframe when the project changes,
+                        forcing a fresh page load instead of navigating within the iframe. */}
                     <iframe
                       key={selectedId}
-                      src={`/projects/${selectedId}?panel=1`}
+                      src={`/work/${selectedId}?panel=1`}
                       style={{ flex: 1, border: "none", width: "100%", background: "var(--bg)" }}
                       title={selectedProject?.title}
                     />

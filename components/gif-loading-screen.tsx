@@ -9,6 +9,9 @@ export function GifLoadingScreen({ onComplete }: GifLoadingScreenProps) {
   const [isVisible, setIsVisible] = useState(true)
   const [isLifting, setIsLifting] = useState(false)
   const [gifLoaded, setGifLoaded] = useState(false)
+  // Append a timestamp query string to bust the browser cache so the GIF always
+  // restarts from frame 1. Without this, a cached GIF might start mid-animation.
+  // Using useRef means the timestamp is computed once and never changes.
   const gifSrc = useRef(`/images/loading-animation.gif?t=${Date.now()}`)
 
   useEffect(() => {
@@ -28,6 +31,12 @@ export function GifLoadingScreen({ onComplete }: GifLoadingScreenProps) {
     }
   }, [])
 
+  // Three staggered timers orchestrate the exit sequence:
+  //   1700 ms — start the CSS lift animation (panel slides up)
+  //   2000 ms — call onComplete so the page content below begins rendering
+  //   2700 ms — set isVisible=false to fully unmount this overlay from the DOM
+  // Returning the clearTimeout calls ensures the timers are cancelled if the
+  // component unmounts early (e.g. fast navigation).
   useEffect(() => {
     if (!gifLoaded) return
 
@@ -53,6 +62,10 @@ export function GifLoadingScreen({ onComplete }: GifLoadingScreenProps) {
   if (!isVisible) return null
 
   return (
+    // The overlay slides upward off-screen using a CSS transform rather than
+    // opacity fade, giving a more dramatic "curtain lift" feel.
+    // Both the Tailwind class and inline style set the transform — the inline
+    // style takes precedence; the class is a fallback in case inline is stripped.
     <div
       className={`fixed inset-0 z-50 bg-black flex items-center justify-center transition-transform duration-1000 ease-in ${
         isLifting ? "-translate-y-full" : "translate-y-0"

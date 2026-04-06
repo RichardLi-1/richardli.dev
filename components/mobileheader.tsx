@@ -35,7 +35,7 @@ export function MobileHeader({
     if (isHomepage) {
       return (
         <>
-          <Link href="/projects" onClick={closeMenu} className="hover:text-green-300 transition-colors">
+          <Link href="/work" onClick={closeMenu} className="hover:text-green-300 transition-colors">
             WORK
           </Link>
           <a

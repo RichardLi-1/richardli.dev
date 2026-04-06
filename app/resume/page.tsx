@@ -21,7 +21,7 @@ export default function ResumePage() {
     <AnimatedPage>
       <div className="min-h-screen bg-black text-green-400">
         <AnimatedHeader
-          backHref="/projects"
+          backHref="/work"
           backText="Back to Projects"
           currentPage="/resume"
           rightLinks={[

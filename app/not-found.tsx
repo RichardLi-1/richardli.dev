@@ -71,7 +71,7 @@ export default function NotFound() {
                 Go Home
               </Link>
               <Link
-                href="/projects"
+                href="/work"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",

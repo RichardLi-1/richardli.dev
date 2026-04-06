@@ -22,7 +22,11 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [showInfo, setShowInfo] = useState(false)
+  // bottomRef marks an invisible div at the end of the message list.
+  // Scrolling it into view keeps the latest message visible as the chat grows.
   const bottomRef = useRef<HTMLDivElement>(null)
+  // firedInitial prevents the initial suggestion from being sent twice in
+  // React Strict Mode (which intentionally mounts effects twice in development).
   const firedInitial = useRef(false)
 
   useEffect(() => {
@@ -35,6 +39,8 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
       handleSuggestion(initialMessage)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // handleSuggestion is intentionally excluded from deps to avoid re-firing —
+  // we only want this to run once when the component first mounts.
   }, [initialMessage])
 
   const sendChatbotActivity = async (userMessage: string, assistantReply: string) => {
@@ -73,10 +79,14 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
 
       if (!response.ok) throw new Error("Failed to get response")
 
+      // `response.body` is a ReadableStream. getReader() gives us a pull-based
+      // reader to consume chunks one at a time as they arrive from the server.
+      // 📖 Learn: ReadableStream — https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream
       const reader = response.body?.getReader()
       const decoder = new TextDecoder()
       let assistantContent = ""
 
+      // Add an empty assistant message immediately so the UI shows it streaming in.
       const assistantMessage: Message = { id: (Date.now() + 1).toString(), role: "assistant", content: "" }
       setMessages((prev) => [...prev, assistantMessage])
 
@@ -84,7 +94,10 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
         while (true) {
           const { done, value } = await reader.read()
           if (done) break
+          // { stream: true } keeps the decoder's internal state between chunks so
+          // multi-byte UTF-8 characters that span chunk boundaries are handled correctly.
           assistantContent += decoder.decode(value, { stream: true })
+          // Update only the assistant message by ID, leaving all other messages untouched.
           setMessages((prev) =>
             prev.map((msg) => (msg.id === assistantMessage.id ? { ...msg, content: assistantContent } : msg)),
           )
@@ -101,6 +114,9 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
     }
   }
 
+  // handleSuggestion lets suggestion chips submit without a real form event.
+  // We pass a fake event object with a no-op preventDefault to satisfy the
+  // function signature without needing a separate code path.
   const handleSuggestion = (q: string) => {
     setInput(q)
     handleSubmit({ preventDefault: () => {} } as React.FormEvent, q)

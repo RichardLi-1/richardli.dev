@@ -587,6 +587,12 @@ header {
 .light .hover\:text-stone-100:hover { color: var(--text); }
 
 /* ── High contrast mode ─────────────────────────────────────────── */
+/* html.hc alone = dark high contrast (black bg, white text).
+   html.hc.light = light high contrast (white bg, black text).
+   next-themes sets a `light` class on <html> in light mode, so we get
+   the right variant purely through CSS — no JS changes needed.
+   📖 Learn: CSS specificity — .hc.light overrides .hc because it has
+   two classes instead of one, so it wins without needing !important. */
 html.hc {
   --bg: #000;
   --text: #fff;
@@ -601,6 +607,21 @@ html.hc {
   --glass-bg: rgba(0, 0, 0, 0.97);
 }
 
+/* Light high contrast — pure white + pure black for maximum contrast ratio */
+html.hc.light {
+  --bg: #fff;
+  --text: #000;
+  --text-2: #1a1a1a;
+  --text-3: #333;
+  --text-4: #555;
+  --text-5: #777;
+  --card-bg: #fff;
+  --surface: #fff;
+  --surface-hover: #eee;
+  --border-2: #000;
+  --glass-bg: rgba(255, 255, 255, 0.97);
+}
+
 /* Glass pills: drop blur, go solid black/white */
 html.hc .liquid-glass-pill,
 html.hc .header-pill {
@@ -613,11 +634,21 @@ html.hc .header-pill {
   text-shadow: none !important;
 }
 
+/* Light HC: flip pills to white-on-black border */
+html.hc.light .liquid-glass-pill,
+html.hc.light .header-pill {
+  background: #fff !important;
+  border: 2px solid #000 !important;
+  color: #000 !important;
+}
+
 /* Cards: drop shadows, add outline border */
 html.hc .featured-card { box-shadow: none !important; border: 1px solid #fff !important; }
+html.hc.light .featured-card { border-color: #000 !important; }
 
-/* Focus rings: high-visibility yellow */
+/* Focus rings: yellow pops on dark, blue pops on white */
 html.hc *:focus-visible { outline: 3px solid #ff0 !important; outline-offset: 2px !important; }
+html.hc.light *:focus-visible { outline: 3px solid #0055ff !important; }
 
 /* Inputs and selects */
 html.hc input:not([type="range"]):not([type="checkbox"]),
@@ -631,6 +662,17 @@ html.hc select {
   background-color: #000 !important;
   color: #fff !important;
   border-color: #fff !important;
+}
+html.hc.light input:not([type="range"]):not([type="checkbox"]),
+html.hc.light textarea {
+  background-color: #fff !important;
+  color: #000 !important;
+  border-color: #000 !important;
+}
+html.hc.light select {
+  background-color: #fff !important;
+  color: #000 !important;
+  border-color: #000 !important;
 }
 
 /* ── Responsive ─────────────────────────────────────────────────── */

@@ -1,9 +1,16 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import { trackEvent } from "@/lib/track"
 
+// Fires a Discord webhook once per page load to log visitor info.
+// Using a ref (not state) for `hasTracked` avoids triggering a re-render —
+// it's a mutable value we only need internally.
+// 📖 Learn: useRef for mutable values — https://react.dev/reference/react/useRef#referencing-a-value-with-a-ref
 export function usePageViewTracker() {
   const hasTracked = useRef(false)
+  // Holding "/" suppresses the tracker, useful when testing locally without
+  // resorting to localhost (which is already skipped).
   const slashKeyHeld = useRef(false)
 
   useEffect(() => {
@@ -51,7 +58,8 @@ export function usePageViewTracker() {
         : /Linux/.test(navigator.platform) ? "Linux"
         : "Unknown"
 
-      // Build navigation path trail
+      // Accumulate visited paths across navigations within the same session so the
+      // Discord message shows the full journey (e.g. "/" → "/projects" → "/chat").
       const currentPath = window.location.pathname || "/"
       const stored = sessionStorage.getItem("nav_path")
       const pathHistory: string[] = stored ? JSON.parse(stored) : []
@@ -61,6 +69,8 @@ export function usePageViewTracker() {
       sessionStorage.setItem("nav_path", JSON.stringify(pathHistory))
       const pathTrail = pathHistory.join(" → ")
 
+      // ipify is a free public API that returns the caller's public IP address.
+      // The try/catch ensures a failed IP lookup doesn't block the whole webhook.
       let ip = "unknown"
       try {
         const res = await fetch("https://api.ipify.org?format=json")
@@ -73,24 +83,22 @@ export function usePageViewTracker() {
       // Check if URL is LinkedIn referral
       const isLinkedIn = window.location.href === "https://www.richardli.dev/?l"
 
-      const message = isBot
-        ? `🤖 Bot/crawler on ${window.location.href}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}\n🔍 UA: ${navigator.userAgent}`
+      // Build the event label and pass structured metadata to trackEvent.
+      // trackEvent() calls /api/track on our own server — the Discord webhook
+      // URL never leaves the server, so it can't be scraped from the browser.
+      const eventLabel = isBot
+        ? `🤖 Bot/crawler on ${window.location.href}`
         : isLinkedIn
-        ? `👀 New visitor on ${window.location.href} from **LinkedIn**\n${deviceType} · ${platform}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
-        : `👀 New visitor on ${window.location.href}\n${deviceType} · ${platform}\n🛤️ Path: ${pathTrail}\n🕒 ${new Date().toLocaleString()}\n🌐 IP: ${ip}`
+        ? `👀 New visitor from LinkedIn on ${window.location.href}`
+        : `👀 New visitor on ${window.location.href}`
 
-      try {
-        await fetch(
-          "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ content: message }),
-          },
-        )
-      } catch (err) {
-        console.error("Failed to send Discord notification:", err)
-      }
+      trackEvent(eventLabel, {
+        "🖥️ Device": `${deviceType} · ${platform}`,
+        "🛤️ Path": pathTrail,
+        "🕒 Time": new Date().toLocaleString(),
+        "🌐 IP": ip,
+        ...(isBot ? { "🔍 UA": navigator.userAgent } : {}),
+      })
     }
 
     sendVisit()

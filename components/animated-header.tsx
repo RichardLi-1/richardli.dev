@@ -4,7 +4,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ArrowLeft, Home, X, Sun, Moon, Linkedin, Github, Mail, Contrast, MessageCircle } from "lucide-react"
 import { ChatBox } from "@/components/chat-box"
+import { trackEvent } from "@/lib/track"
 
+// Tooltip that appears below any element on hover (desktop only — no touch support needed)
 function Tip({ label, children }: { label: string; children: React.ReactNode }) {
   const tipRef = useRef<HTMLSpanElement>(null)
   return (
@@ -40,42 +42,52 @@ interface NavItem {
   active?: boolean
 }
 
+// Props passed in by each page to customize the header's nav links and context
 interface AnimatedHeaderProps {
-  backHref?: string
-  backText?: string
-  rightLinks?: Array<{ href: string; text: string; external?: boolean }>
-  isHomepage?: boolean
-  currentPage?: string
+  backHref?: string   // If set, shows a back arrow on mobile pointing here
+  backText?: string   // Label for the back link (currently unused in PillNav)
+  rightLinks?: Array<{ href: string; text: string; external?: boolean }> // Extra links appended to nav (e.g. live demo, source)
+  isHomepage?: boolean  // Switches nav to homepage-specific items (Work, More)
+  currentPage?: string  // Current route path — used to decide which nav items to show
 }
 
 export function AnimatedHeader({
   backHref,
-  backText,
   rightLinks = [],
   isHomepage = false,
   currentPage = "",
 }: AnimatedHeaderProps) {
+  // Hide the header entirely when rendered inside the split-pane project iframe (?panel=1)
   const [isPanel, setIsPanel] = useState(false)
   useEffect(() => { if (window.location.search.includes("panel=1")) setIsPanel(true) }, [])
-  
+
+  // Tracks whether the user has scrolled past 10px — triggers the glass pill style on desktop
   const [isScrolled, setIsScrolled] = useState(false)
+  // True when viewport width < 768px — switches between desktop sticky header and mobile bottom pill
   const [isMobile, setIsMobile] = useState(false)
+  // Prevents the theme toggle from rendering on the server (avoids hydration mismatch with next-themes)
+  // 📖 Learn: hydration mismatch — https://nextjs.org/docs/messages/react-hydration-error
   const [mounted, setMounted] = useState(false)
+  // Briefly true after theme toggle to fire the bounce animation on the sun/moon icon
   const [themeBounce, setThemeBounce] = useState(false)
+
+  // ── Chat window state ──
   const [isChatOpen, setIsChatOpen] = useState(false)
-  const [chatPos, setChatPos] = useState({ x: 0, y: 0 })
-  const [chatSize, setChatSize] = useState({ w: 520, h: 540 })
-  const [chatDragOffset, setChatDragOffset] = useState({ x: 0, y: 0 })
+  const [chatPos, setChatPos] = useState({ x: 0, y: 0 })              // top-left position of the floating window
+  const [chatSize, setChatSize] = useState({ w: 520, h: 540 })        // current dimensions
+  const [chatDragOffset, setChatDragOffset] = useState({ x: 0, y: 0 }) // cursor offset from window corner at drag start
   const [isDraggingChat, setIsDraggingChat] = useState(false)
   const [isResizingChat, setIsResizingChat] = useState(false)
-  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, w: 520, h: 540 })
+  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, w: 520, h: 540 }) // snapshot of size + cursor at resize start
+  // Ensures the window is only centered on the very first open, not re-centered on re-renders
   const chatInitialized = useRef(false)
+
   const audioRef = useRef<HTMLAudioElement>(null)
   const pathname = usePathname()
 
-  // Play nav sound on every mount except the very first page load.
-  // We use sessionStorage because the header remounts on every navigation
-  // (it lives inside each page, not the root layout), so useRef resets each time.
+  // Play a navigation sound on every page transition except the very first load.
+  // sessionStorage persists across navigations within a tab (unlike useRef, which resets on remount).
+  // 📖 Learn: sessionStorage vs localStorage — sessionStorage clears when the tab closes
   useEffect(() => {
     if (sessionStorage.getItem("nav_visited")) {
       audioRef.current?.play().catch(() => {})
@@ -84,16 +96,19 @@ export function AnimatedHeader({
     }
   }, [pathname])
 
+  const { isHighContrast, toggleHighContrast } = useWindowsXP()
+  const { theme, setTheme } = useTheme()
+
   const handleThemeToggle = () => {
     setTheme(theme === "dark" ? "light" : "dark")
     setThemeBounce(true)
     setTimeout(() => setThemeBounce(false), 400)
   }
-  const { isPersonalized, togglePersonalizedMode, isHighContrast, toggleHighContrast } = useWindowsXP()
-  const { theme, setTheme } = useTheme()
 
+  // Set mounted = true after first client render so theme-dependent UI can appear safely
   useEffect(() => { setMounted(true) }, [])
 
+  // Keep isMobile in sync with window width; cleans up the listener on unmount
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768)
     handleResize()
@@ -101,12 +116,14 @@ export function AnimatedHeader({
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
+  // Track scroll position to toggle the glass pill style on the desktop header
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Center the chat window on first open; skip re-centering on subsequent opens
   useEffect(() => {
     if (isChatOpen && !chatInitialized.current) {
       chatInitialized.current = true
@@ -117,6 +134,7 @@ export function AnimatedHeader({
     }
   }, [isChatOpen])
 
+  // While dragging: track mouse globally so the window follows even if cursor leaves the title bar
   useEffect(() => {
     if (!isDraggingChat) return
     const handleMove = (e: MouseEvent) => {
@@ -134,6 +152,7 @@ export function AnimatedHeader({
     }
   }, [isDraggingChat, chatDragOffset])
 
+  // While resizing: compute new dimensions from how far the cursor has moved since resize started
   useEffect(() => {
     if (!isResizingChat) return
     const handleMove = (e: MouseEvent) => {
@@ -151,59 +170,43 @@ export function AnimatedHeader({
     }
   }, [isResizingChat, resizeStart])
 
-const getSectionName = () => {
-    if (isHomepage) return ""
-    if (currentPage.startsWith("/projects/")) return "Project"
-    if (currentPage === "/projects") return "Work"
-    if (currentPage.startsWith("/contact")) return "Contact"
-    if (currentPage.startsWith("/more")) return "More"
-    if (currentPage.startsWith("/transit/photography")) return "Photography"
-    if (currentPage.startsWith("/transit/fanning")) return "Fanning"
-    if (currentPage.startsWith("/transit")) return "Transit"
-    return backText || ""
-  }
-
+  // Builds the nav link list for the mobile pill.
+  // Always Home + any extra links the page passed in via the `rightLinks` prop (e.g. live demo, source repo).
   const getNavItems = (): NavItem[] => {
-    if (isHomepage) {
-      return [
-        { href: "/projects", label: "Work" },
-        { href: "/more", label: "More" },
-      ]
-    }
-    if (currentPage.startsWith("/projects")) {
-      return [
-        { href: "/", label: "Home" },
-        ...(currentPage !== "/projects" ? [{ href: "/projects", label: "Work" }] : []),
-        ...rightLinks.map(l => ({ href: l.href, label: l.text, external: l.external })),
-      ]
-    }
     return [
-      { href: "/", label: "Home" },
+      //{ href: "/", label: "Home" },
+      { href: "/work", label: "Work" },
+      { href: "/about", label: "About" },
       ...rightLinks.map(l => ({ href: l.href, label: l.text, external: l.external })),
     ]
   }
 
   const navItems = getNavItems()
 
+  // Return nothing if inside the project split-pane iframe
   if (isPanel) return null
 
-  // Compact pill used for mobile
+  // ── Mobile bottom pill ──
+  // This is a fixed pill pinned to the bottom of the viewport on mobile.
+  // It's a separate component defined inline so it can close over all the state above.
   const PillNav = () => (
-    <div className="header-pill max-w-xl mx-auto rounded-full backdrop-blur-xl border shadow-2xl">
+    <div className="header-pill max-w-xl mx-auto rounded-full backdrop-blur-xl border shadow-2xl h-[54px]">
       <div className="flex items-center justify-between gap-2 p-3">
-        {/* Left: logo / back */}
+        {/* Left side: "RL" logo on homepage, back arrow on detail pages, nothing otherwise */}
         {isHomepage ? (
           <Link href="/" style={{ fontFamily: "'Toronto Subway', 'Toronto Subway', sans-serif", fontSize: "14px", color: "var(--text)", textDecoration: "none" }}>
             RL
           </Link>
-        ) : backHref ? (
-          <Link href={backHref} style={{ color: "var(--text-3)", display: "flex", alignItems: "center" }}>
+        ) : (
+          <Link href={"/"} style={{ color: "var(--text-3)", display: "flex", alignItems: "center" }}>
             <ArrowLeft className="h-4 w-4" />
           </Link>
-        ) : null}
-        
-        {/* Right: compact nav + XP toggle + theme */}
+        )}
+
+        {/* Right side: nav links + social icons + toggles */}
         <div className="flex items-center gap-2">
+          {/* Nav links from getNavItems(), but drop any that are labelled LinkedIn/GitHub
+              since those are hardcoded as icon buttons below */}
           {navItems.filter(item => item.label.toLowerCase() !== "linkedin" && item.label.toLowerCase() !== "github").map((item, i) => (
             <a
               key={i}
@@ -213,26 +216,18 @@ const getSectionName = () => {
               className="nav-item"
               style={{ fontSize: "14px", padding: "4px 8px" }}
             >
+              {/* Render a home icon instead of the word "Home" to save space */}
               {item.label === "Home" ? <Home className="w-3 h-3" /> : item.label}
             </a>
           ))}
-          <a href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="LinkedIn"><Linkedin className="w-3 h-3" /></a>
-          <a href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="GitHub"><Github className="w-3 h-3" /></a>
-          {/* Personalise toggle switch */}
-          <button
-            onClick={togglePersonalizedMode}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
-              isPersonalized ? "bg-green-600" : "bg-gray-600"
-            }`}
-          >
-            <span className="sr-only">Toggle personalized mode</span>
-            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isPersonalized ? "translate-x-6" : "translate-x-1"}`} />
-          </button>
-          {/* Theme toggle */}
+          {/* Social icons — always shown regardless of page */}
+          <a onClick={() => trackEvent("🔗 LinkedIn clicked", { location: "mobile pill" })} href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="LinkedIn"><Linkedin className="w-3 h-3" /></a>
+          <a onClick={() => trackEvent("🐙 GitHub clicked", { location: "mobile pill" })} href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="GitHub"><Github className="w-3 h-3" /></a>
+          {/* Theme-dependent buttons only render after mount to avoid hydration mismatch */}
           {mounted && (
             <>
               <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onClick={() => { setTheme(theme === "dark" ? "light" : "dark"); trackEvent("🌓 Theme toggled", { from: theme ?? "dark", location: "mobile pill" }) }}
                 className="nav-item"
                 style={{ padding: "4px 6px" }}
                 aria-label="Toggle theme"
@@ -240,7 +235,7 @@ const getSectionName = () => {
                 {theme === "dark" ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
               </button>
               <button
-                onClick={toggleHighContrast}
+                onClick={() => { toggleHighContrast(); trackEvent("◑ High contrast toggled", { location: "mobile pill" }) }}
                 className="nav-item"
                 style={{ padding: "4px 6px", color: isHighContrast ? "var(--text)" : "var(--text-2)" }}
                 aria-label="Toggle high contrast"
@@ -248,7 +243,7 @@ const getSectionName = () => {
                 <Contrast className="w-3 h-3" />
               </button>
               <button
-                onClick={() => setIsChatOpen(true)}
+                onClick={() => { setIsChatOpen(true); trackEvent("💬 Chat opened", { location: "mobile pill" }) }}
                 className="nav-item"
                 style={{ padding: "4px 6px" }}
                 aria-label="Open chat"
@@ -264,20 +259,20 @@ const getSectionName = () => {
 
   return (
     <>
-      {/* Hidden audio element for nav click sound */}
+      {/* Hidden audio element — src swapped at runtime for the nav click sound */}
       <audio ref={audioRef} src="/sounds/windows-navigation-start.mp3" preload="auto" style={{ display: "none" }} />
 
-      {/* Mobile scrolled: fixed pill at viewport bottom (separate element — position can't animate) ────────────────────── */}
+      {/* ── Mobile: fixed bottom pill ── */}
+      {/* h-5 spacer pushes page content up so it isn't hidden behind the fixed pill */}
       {isMobile && (
         <div className="h-5">
           <div className="fixed bottom-0 left-0 right-0 p-4 z-50">
             <PillNav />
           </div>
         </div>
-        
       )}
 
-      {/* ────────────────────── Chat window (draggable) ────────────────────── */}
+      {/* ── Draggable chat window (shown on both mobile and desktop) ── */}
       {isChatOpen && (
         <div
           style={{
@@ -293,10 +288,11 @@ const getSectionName = () => {
             borderRadius: 20,
             boxShadow: "0 24px 60px rgba(0,0,0,0.4)",
             overflow: "hidden",
+            // Disable text selection while dragging/resizing to avoid accidental highlights
             userSelect: isDraggingChat || isResizingChat ? "none" : "auto",
           }}
         >
-          {/* Title bar — drag handle */}
+          {/* Title bar — mousedown here starts a drag */}
           <div
             onMouseDown={e => {
               setChatDragOffset({ x: e.clientX - chatPos.x, y: e.clientY - chatPos.y })
@@ -315,6 +311,7 @@ const getSectionName = () => {
               <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 13, color: "var(--text)", letterSpacing: "0.03em" }}>Ask Richard anything</span>
               <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, color: "var(--text-4)", letterSpacing: "0.04em" }}>Powered by Claude Haiku</span>
             </div>
+            {/* stopPropagation prevents the close button click from also starting a drag */}
             <button
               onMouseDown={e => e.stopPropagation()}
               onClick={() => setIsChatOpen(false)}
@@ -325,11 +322,11 @@ const getSectionName = () => {
               <X className="w-4 h-4" />
             </button>
           </div>
-          {/* Body */}
+          {/* Chat body — flex: 1 so it fills remaining height; minHeight: 0 prevents flex overflow */}
           <div style={{ flex: 1, overflow: "hidden", padding: "16px 18px", minHeight: 0 }}>
             <ChatBox fullHeight />
           </div>
-          {/* Resize handle — SE corner */}
+          {/* SE corner resize handle — mousedown here starts a resize */}
           <div
             onMouseDown={e => {
               e.stopPropagation()
@@ -347,7 +344,8 @@ const getSectionName = () => {
         </div>
       )}
 
-      {/* ────────────────────── Desktop ────────────────────── */}
+      {/* ── Desktop: sticky top header ── */}
+      {/* Not shown on mobile — PillNav handles mobile instead */}
       {!isMobile && (
         <header
           className="sticky top-0 z-50"
@@ -355,11 +353,13 @@ const getSectionName = () => {
             height: "64px",
             display: "flex",
             alignItems: "center",
-            borderBottom: isScrolled? "0px" : "1px solid var(--border-2)",
+            // Hide the bottom border once scrolled — the glass pill provides enough visual separation
+            borderBottom: isScrolled ? "0px" : "1px solid var(--border-2)",
           }}
         >
           <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%", padding: "0 32px" }}>
-            {/* ── Left: wordmark ── */}
+            {/* ── Left pill: wordmark ── */}
+            {/* Gains a glass background + border when the user scrolls */}
             <div style={{
               display: "flex",
               alignItems: "center",
@@ -372,14 +372,12 @@ const getSectionName = () => {
               WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? "blur(24px) saturate(180%)" : "none",
               boxShadow: isHighContrast ? "none" : isScrolled ? "0 2px 20px rgba(0,0,0,0.2)" : "none",
               transition: "border-color 0.2s, box-shadow 0.2s, background 0.2s",
-              }}>
-              {/* Avatar <div style={{ width: 32, height: 32, borderRadius: "50%", background: "var(--surface)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: "12px", color: "var(--text)" }}>RL</span>
-              </div>*/}
+            }}>
               <Link href="/" className="nav-logo">Richard Li</Link>
             </div>
 
-            {/* ── Right: nav + toggles ── */}
+            {/* ── Right pill: nav links + icon buttons + toggles ── */}
+            {/* Desktop nav is hardcoded (Home, Work, Transit) — it doesn't use getNavItems() */}
             <ul style={{
               display: "flex",
               alignItems: "center",
@@ -397,9 +395,9 @@ const getSectionName = () => {
             }}>
               {[
                 { href: "/", label: "Home" },
-                { href: "/projects", label: "Work" },
+                { href: "/work", label: "Work" },
                 { href: "/transit/fanning", label: "Transit" },
-                // { href: "/more", label: "More" },
+                // { href: "/about", label: "About" },
               ].map((item, i) => (
                 <li key={i}>
                   <a href={item.href} className="nav-item">
@@ -408,15 +406,16 @@ const getSectionName = () => {
                 </li>
               ))}
               <li style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-                <Tip label="Email"><a href="mailto:richardli0@outlook.com" className="nav-item" style={{ padding: "4px 8px" }} aria-label="Email"><Mail className="w-4 h-4" /></a></Tip>
-                <Tip label="GitHub"><a href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="GitHub"><Github className="w-4 h-4" /></a></Tip>
-                <Tip label="LinkedIn"><a href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a></Tip>
+                <Tip label="Email"><a onClick={() => trackEvent("✉️ Email clicked", { location: "desktop nav" })} href="mailto:richardli0@outlook.com" className="nav-item" style={{ padding: "4px 8px" }} aria-label="Email"><Mail className="w-4 h-4" /></a></Tip>
+                <Tip label="GitHub"><a onClick={() => trackEvent("🐙 GitHub clicked", { location: "desktop nav" })} href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="GitHub"><Github className="w-4 h-4" /></a></Tip>
+                <Tip label="LinkedIn"><a onClick={() => trackEvent("🔗 LinkedIn clicked", { location: "desktop nav" })} href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a></Tip>
               </li>
+              {/* Theme-dependent buttons only render after mount */}
               {mounted && (
                 <>
                   <li>
                     <Tip label={theme === "dark" ? "Light mode" : "Dark mode"}>
-                      <button onClick={handleThemeToggle} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Toggle theme">
+                      <button onClick={() => { handleThemeToggle(); trackEvent("🌓 Theme toggled", { from: theme ?? "dark", location: "desktop nav" }) }} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Toggle theme">
                         <span style={{ display: "inline-block", animation: themeBounce ? "iconBounce 0.4s cubic-bezier(0.34,1.56,0.64,1)" : "none" }}>
                           {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                         </span>
@@ -425,14 +424,14 @@ const getSectionName = () => {
                   </li>
                   <li>
                     <Tip label="High contrast">
-                      <button onClick={toggleHighContrast} className="nav-item" style={{ padding: "4px 6px", color: isHighContrast ? "var(--text)" : "var(--text-2)" }} aria-label="Toggle high contrast">
+                      <button onClick={() => { toggleHighContrast(); trackEvent("◑ High contrast toggled", { location: "desktop nav" }) }} className="nav-item" style={{ padding: "4px 6px", color: isHighContrast ? "var(--text)" : "var(--text-2)" }} aria-label="Toggle high contrast">
                         <Contrast className="w-4 h-4" />
                       </button>
                     </Tip>
                   </li>
                   <li>
                     <Tip label="Ask Richard">
-                      <button onClick={() => setIsChatOpen(true)} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Open chat">
+                      <button onClick={() => { setIsChatOpen(true); trackEvent("💬 Chat opened", { location: "desktop nav" }) }} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Open chat">
                         <MessageCircle className="w-4 h-4" />
                       </button>
                     </Tip>

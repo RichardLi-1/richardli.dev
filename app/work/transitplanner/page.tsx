@@ -30,9 +30,9 @@ export default function TransitPlannerProjectPage() {
     <AnimatedPage>
       <div className="mx-auto">
         <AnimatedHeader
-          backHref="/projects"
+          backHref="/work"
           backText="Back"
-          currentPage="/projects/transitplanner"
+          currentPage="/work/transitplanner"
         />
 
         <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: isMobile ? "0px" : "40px" }}>

@@ -48,7 +48,7 @@ export function ProjectsIEContent() {
         <div className="flex items-center mt-2 space-x-2">
           <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Back</button>
           <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Forward</button>
-          <div className="flex-1 bg-white border border-gray-400 px-2 py-1 text-sm">richardli.dev/projects</div>
+          <div className="flex-1 bg-white border border-gray-400 px-2 py-1 text-sm">richardli.dev/work</div>
           <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Go</button>
         </div>
       </div>
@@ -122,7 +122,7 @@ function ProjectDetailContent({ project }: { project: any }) {
         <div className="flex items-center mt-2 space-x-2">
           <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Back</button>
           <div className="flex-1 bg-white border border-gray-400 px-2 py-1 text-sm">
-            richardli.dev/projects/{project.id}
+            richardli.dev/work/{project.id}
           </div>
         </div>
       </div>

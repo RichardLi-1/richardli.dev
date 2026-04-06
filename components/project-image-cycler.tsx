@@ -9,6 +9,8 @@ interface ProjectImageCyclerProps {
 }
 
 export function ProjectImageCycler({ images, alt, className = "" }: ProjectImageCyclerProps) {
+  // Filter out undefined/null entries. The type predicate `img is string` narrows
+  // the array type from (string | undefined)[] to string[] after this call.
   const validImages = images.filter((img): img is string => !!img)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [loaded, setLoaded] = useState(false)
@@ -26,7 +28,11 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
 
   const current = validImages.length > 0 ? validImages[currentImageIndex] : null
 
-  // Reset loaded state when source changes; immediately resolve if already cached
+  // When the displayed media source changes, hide it (setLoaded(false)) to show
+  // the skeleton shimmer again. But if the browser already has it cached
+  // (el.complete / readyState >= 2), skip the shimmer and show it immediately.
+  // readyState >= 2 means the video has enough data to play (HAVE_CURRENT_DATA).
+  // 📖 Learn: HTMLMediaElement.readyState — https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/readyState
   useEffect(() => {
     setLoaded(false)
     const el = mediaRef.current
@@ -43,7 +49,8 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", borderRadius: "inherit", cornerShape: "squircle" } as React.CSSProperties}>
-      {/* Skeleton shimmer */}
+      {/* Skeleton shimmer: visible while the image/video is loading, then fades out.
+          pointerEvents: "none" so it doesn't block hover/click on the media below. */}
       <div style={{
         position: "absolute",
         inset: 0,
@@ -56,7 +63,8 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
         <div className="skeleton-shimmer" />
       </div>
 
-      {/* Media */}
+      {/* `key={current}` forces React to unmount and remount the element when the
+          source changes, which resets the video playback to the beginning. */}
       {isVideo ? (
         <video
           ref={mediaRef}

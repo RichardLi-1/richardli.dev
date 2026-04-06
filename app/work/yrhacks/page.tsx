@@ -39,9 +39,9 @@ export default function YRHacksProjectPage() {
     <AnimatedPage>
       <div className="min-h-screen page-bg">
         <AnimatedHeader
-          backHref="/projects"
+          backHref="/work"
           backText="Back"
-          currentPage="/projects/yrhacks"
+          currentPage="/work/yrhacks"
           rightLinks={[{ href: "", text: "Website", external: true }]}
         />
         {isPanel && <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 6, zIndex: 50 }}>

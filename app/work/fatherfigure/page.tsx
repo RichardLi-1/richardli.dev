@@ -26,9 +26,9 @@ export default function SalesPatriotProjectPage() {
     <AnimatedPage>
       <div className="min-h-screen page-bg" style={{ position: "relative" }}>
         <AnimatedHeader
-          backHref="/projects"
+          backHref="/work"
           backText="Back"
-          currentPage="/projects/fatherfigure"
+          currentPage="/work/fatherfigure"
           rightLinks={[{ href: "https://github.com/fiof25/father-figure-htn", text: "GitHub", external: true }]}
         />
 

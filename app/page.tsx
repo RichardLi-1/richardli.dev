@@ -46,6 +46,9 @@ export default function PersonalWebsite() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   usePageViewTracker()
 
+  // Detect viewport width on mount and on every resize.
+  // The cleanup `return` removes the listener when the component unmounts,
+  // preventing a memory leak.
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
     check()
@@ -53,11 +56,16 @@ export default function PersonalWebsite() {
     return () => window.removeEventListener("resize", check)
   }, [])
 
+  // Cycle through activities every 3.5 s using setInterval.
+  // The cleanup clears the interval so it doesn't keep firing after unmount.
+  // 📖 Learn: useEffect cleanup — https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
   useEffect(() => {
     const interval = setInterval(() => setActivityIndex(i => (i + 1) % activities.length), 3500)
     return () => clearInterval(interval)
   }, [])
 
+  // Cast to `any` to access optional fields (image2, image3, hidden) that aren't
+  // in the TypeScript type — a pragmatic shortcut while the data model is loose.
   const visibleProjects = mainProjects.filter(p => !(p as any).hidden).slice(0, 4)
 
   return (
@@ -137,9 +145,12 @@ export default function PersonalWebsite() {
                 gap: "32px 24px",
               }}>
                 {visibleProjects.map(project => (
-                  <Link key={project.id} href={`/projects/${project.id}`} style={{ textDecoration: "none" }}>
+                  <Link key={project.id} href={`/work/${project.id}`} style={{ textDecoration: "none" }}>
                     <div
                       style={{ cursor: "pointer" }}
+                      // Imperatively scale the image wrapper on hover. Using direct DOM
+                      // manipulation (querySelector) here avoids re-rendering the whole
+                      // card just to update a CSS transform.
                       onMouseEnter={() => { setHoveredId(project.id); (document.querySelector(`#proj-img-${project.id}`) as HTMLElement)!.style.transform = "scale(1.02)" }}
                       onMouseLeave={() => { setHoveredId(null); (document.querySelector(`#proj-img-${project.id}`) as HTMLElement)!.style.transform = "scale(1)" }}
                     >
@@ -160,8 +171,10 @@ export default function PersonalWebsite() {
                             />
                           </div>
                         </div>
+                        {/* "Try it out" button only appears on hover and only if the project has an external link */}
                         {hoveredId === project.id && (project as any).externalLink && (
                           <button
+                            // stopPropagation prevents the card's Link from also navigating
                             onClick={e => { e.preventDefault(); e.stopPropagation(); window.open((project as any).externalLink, "_blank", "noopener,noreferrer") }}
                             className="liquid-glass-pill squircle"
                             style={{
@@ -196,7 +209,7 @@ export default function PersonalWebsite() {
                 ))}
               </div>
               <div style={{ marginTop: 16 }}>
-                <Link href="/projects" style={{ fontSize: 12, color: "var(--text-4)", letterSpacing: "0.04em", textTransform: "uppercase", fontFamily: "'Toronto Subway', sans-serif", textDecoration: "none" }}
+                <Link href="/work" style={{ fontSize: 12, color: "var(--text-4)", letterSpacing: "0.04em", textTransform: "uppercase", fontFamily: "'Toronto Subway', sans-serif", textDecoration: "none" }}
                   onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "var(--text-2)"}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "var(--text-4)"}
                 >
@@ -214,6 +227,9 @@ export default function PersonalWebsite() {
         </main>
       </div>
 
+      {/* `style jsx` is a styled-jsx block — scoped CSS that only applies to this
+          component. The fadeSlideIn animation is used by the cycling activity line.
+          📖 Learn: styled-jsx — https://github.com/vercel/styled-jsx */}
       <style jsx>{`
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateY(4px); }

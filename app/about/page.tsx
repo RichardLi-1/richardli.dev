@@ -28,14 +28,14 @@ const EXPERIENCES = [
   },
   {
     logo: "/logos/hack-the-north.png",
-    title: "Software Engineer",
-    company: "Company Name",
-    year: "2024",
+    title: "Logistics Organizer",
+    company: "Hack the North",
+    year: "2026",
   },
   {
     logo: "/logos/safuture.png",
     title: "Software Engineer",
-    company: "Company Name",
+    company: "Career Education Council",
     year: "2023",
   },
 ]
@@ -60,7 +60,7 @@ export default function MorePage() {
   return (
     <AnimatedPage>
       <div className="page-bg min-h-screen flex flex-col" style={{ position: "relative" }}>
-        <AnimatedHeader currentPage="/more" backHref="/" backText="More" />
+        <AnimatedHeader currentPage="/about" backHref="/" backText="About" />
 
         <div
           style={{
@@ -68,7 +68,7 @@ export default function MorePage() {
             padding: "80px 24px 0",
             // Two-column layout matching the screenshot's 50/50 split
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 41.05%",
             gap: 64,
             alignItems: "start",
           }}
@@ -91,36 +91,21 @@ export default function MorePage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <p
                 style={{
-                  fontFamily: "'Toronto Subway', sans-serif",
-                  fontSize: 15,
+                  fontFamily: "'SFCamera', sans-serif",
+                  fontSize: 20,
                   lineHeight: 1.7,
                   color: "var(--text-2)",
                   margin: 0,
                   maxWidth: 480,
                 }}
               >
-                I care a lot about accessibility, in both software and our cities.
-                More text more text more text More text more text more textMore text
-                more text more text
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Toronto Subway', sans-serif",
-                  fontSize: 15,
-                  lineHeight: 1.7,
-                  color: "var(--text-2)",
-                  margin: 0,
-                  maxWidth: 480,
-                }}
-              >
-                More text more text more textMore text more text more textMore text
-                more text more textMore text more text more text
+                Shh... you've discovered a secret page! I care a lot about accessibility, in both software and our cities. There’s no one to distill myself into one paragraph, but here are some things I love:
+                
               </p>
             </div>
 
             {/* Things I love */}
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <p className="section-label" style={{ margin: 0 }}>Things I love</p>
 
               {/*
                 CSS multi-column layout creates a masonry-like effect automatically.
@@ -141,6 +126,7 @@ export default function MorePage() {
           </div>
 
           {/* ── Right column: portrait + experiences ── */}
+          {/* No positioning needed — the parent grid places this automatically in column 2 */}
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
             {/* Portrait — swap the commented-out img for a real photo */}
             {!isMobile && (
@@ -191,7 +177,7 @@ export default function MorePage() {
                     <div style={{ flex: 1 }}>
                       <p
                         style={{
-                          fontFamily: "'Toronto Subway', sans-serif",
+                          fontFamily: "'SFCamera', sans-serif",
                           fontSize: 14,
                           color: "var(--text)",
                           margin: 0,
@@ -236,7 +222,7 @@ export default function MorePage() {
               <section
                 style={{
                   width: "100%",
-                  padding: "32px",
+                  paddingTop: "32px",
                   borderTop: "1px solid var(--border-2)",
                 }}
               >
@@ -271,7 +257,7 @@ export default function MorePage() {
 
         {/* Personalized mode draggable sticker */}
         {isPersonalized && (
-          <a href="/more/functions">
+          <a href="/about/functions">
             <DraggableSticker src="/images/functions/photo1sticker.png" ix={0.85} iy={0.6} size={120} />
           </a>
         )}

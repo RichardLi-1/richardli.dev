@@ -23,9 +23,9 @@ export default function SaFuturePage() {
     <AnimatedPage>
       <div className="mx-auto">
         <AnimatedHeader
-          backHref="/projects"
+          backHref="/work"
           backText="Back"
-          currentPage="/projects/safuture"
+          currentPage="/work/safuture"
         />
         {isPanel && <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 6, zIndex: 50 }}>
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")} className="nav-item" style={{ padding: "6px" }}><ArrowUpRight className="w-4 h-4" /></button>
