@@ -32,8 +32,8 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
   }, [onClose])
 
   return (
-    {/* Clicking the dark backdrop closes the modal; clicking the card does not
-        (stopPropagation below). WebkitBackdropFilter is the Safari vendor prefix. */}
+    // Clicking the dark backdrop closes the modal; clicking the card does not
+    // (stopPropagation below). WebkitBackdropFilter is the Safari vendor prefix.
     <div
       onClick={onClose}
       style={{
