@@ -184,7 +184,7 @@ export function AnimatedHeader({
     return [
       //{ href: "/", label: "Home" },
       { href: "/work", label: "Work" },
-      { href: "/about", label: "About" },
+      { href: "/transit/fanning", label: "Transit" },
       ...rightLinks.map(l => ({ href: l.href, label: l.text, external: l.external })),
     ]
   }

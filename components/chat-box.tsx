@@ -152,7 +152,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
             fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em",
             animation: "dropdownEnter 0.15s ease",
           }}>
-            Powered by the <strong style={{ color: "var(--text-2)" }}>Claude API</strong> using <code style={{ background: "var(--surface)", padding: "1px 5px", borderRadius: 4, fontSize: 11 }}>claude-haiku-4-5</code> and retrieval-augmented generation (RAG). Conversations are not stored.
+            Powered by the <strong style={{ color: "var(--text-2)" }}>Claude API</strong> using <code style={{ background: "var(--surface)", padding: "1px 5px", borderRadius: 4, fontSize: 11 }}>claude-haiku-4-5</code> and retrieval-augmented generation (RAG).
           </div>
         )}
       </div>
