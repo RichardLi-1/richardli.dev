@@ -334,9 +334,15 @@ export function AnimatedHeader({
             onTouchEnd={(e) => {
               const dy = e.changedTouches[0].clientY - sheetDragStartY.current
               const velocity = dy / (Date.now() - sheetDragStartTime.current) // px/ms
-              // iOS-style spring cubic-bezier: overshoots slightly for a natural snap-back feel
-              const spring = "cubic-bezier(0.34, 1.56, 0.64, 1)"
               const dismiss = "cubic-bezier(0.32, 0.72, 0, 1)"
+              // Spring overshoot (for the sheet): goes slightly past translateY(0) then settles.
+              // This overshoots upward which is fine on a bottom-pinned sheet.
+              const sheetSpring = "cubic-bezier(0.34, 1.56, 0.64, 1)"
+              // Plain deceleration (for the pill nav): no overshoot.
+              // The spring curve would make the pill briefly shoot above its rest position and
+              // then fall back down, which reads as a confusing "up then down" jitter in mid-screen.
+              // 📖 Learn: iOS deceleration curve — cubic-bezier(0.25, 0.46, 0.45, 0.94)
+              const pillEase = "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
               if (dy > 80 || velocity > 0.4) {
                 // Animate out, then actually close
                 if (mobileSheetRef.current) {
@@ -354,13 +360,14 @@ export function AnimatedHeader({
                   if (pillNavRef.current) { pillNavRef.current.style.transform = ""; pillNavRef.current.style.transition = "" }
                 }, 280)
               } else {
-                // Snap back with spring physics
+                // Sheet snaps back with spring (upward overshoot looks natural on a bottom sheet)
                 if (mobileSheetRef.current) {
-                  mobileSheetRef.current.style.transition = `transform 0.4s ${spring}`
+                  mobileSheetRef.current.style.transition = `transform 0.4s ${sheetSpring}`
                   mobileSheetRef.current.style.transform = "translateY(0)"
                 }
+                // Pill snaps back with plain ease-out — no overshoot so it doesn't jitter
                 if (pillNavRef.current) {
-                  pillNavRef.current.style.transition = `transform 0.4s ${spring}`
+                  pillNavRef.current.style.transition = `transform 0.35s ${pillEase}`
                   pillNavRef.current.style.transform = "translateY(0)"
                 }
               }
