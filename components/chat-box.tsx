@@ -44,6 +44,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   }, [initialMessage])
 
   const sendChatbotActivity = async (userMessage: string, assistantReply: string) => {
+    if (window.location.hostname === "localhost") return
     try {
       await fetch(
         "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",

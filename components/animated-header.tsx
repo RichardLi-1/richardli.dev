@@ -82,6 +82,14 @@ export function AnimatedHeader({
   // Ensures the window is only centered on the very first open, not re-centered on re-renders
   const chatInitialized = useRef(false)
 
+  // ── Mobile sheet swipe-to-dismiss ──
+  // Using refs (not state) so touch drag doesn't trigger React re-renders at 60fps.
+  // 📖 Learn: direct DOM mutation vs. setState for animation — https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
+  const mobileSheetRef = useRef<HTMLDivElement>(null)
+  const pillNavRef = useRef<HTMLDivElement>(null)  // ref to the pill nav wrapper so it can follow the sheet drag
+  const sheetDragStartY = useRef(0)
+  const sheetDragStartTime = useRef(0)
+
   const audioRef = useRef<HTMLAudioElement>(null)
   const pathname = usePathname()
 
@@ -266,14 +274,127 @@ export function AnimatedHeader({
       {/* h-5 spacer pushes page content up so it isn't hidden behind the fixed pill */}
       {isMobile && (
         <div className="h-5">
-          <div className="fixed bottom-0 left-0 right-0 p-4 z-50">
+          <div
+            ref={pillNavRef}
+            className="fixed left-0 right-0 p-4 z-[70]"
+            style={{
+              bottom: isChatOpen ? "50vh" : 0,
+              transition: "bottom 0.32s cubic-bezier(0.32, 0.72, 0, 1)",
+            }}
+          >
             <PillNav />
           </div>
         </div>
       )}
 
-      {/* ── Draggable chat window (shown on both mobile and desktop) ── */}
-      {isChatOpen && (
+      {/* ── Chat window: bottom sheet on mobile, draggable window on desktop ── */}
+      {isChatOpen && isMobile && (
+        // Mobile: fixed bottom sheet, slides up to cover the bottom half of the screen.
+        // z-index 62 keeps it above page content but below the pill nav (z-index 70).
+        // borderRadius only on top corners — it's flush with the bottom edge.
+        <div
+          ref={mobileSheetRef}
+          style={{
+            position: "fixed",
+            bottom: 0, left: 0,
+            width: "100%",
+            height: "50vh",
+            zIndex: 62,
+            display: "flex", flexDirection: "column",
+            background: "var(--glass-bg)",
+            backdropFilter: "blur(20px) saturate(160%)",
+            WebkitBackdropFilter: "blur(20px) saturate(160%)",
+            border: "1px solid var(--border-2)",
+            borderRadius: "20px 20px 0 0",
+            boxShadow: "0 -8px 40px rgba(0,0,0,0.35)",
+            overflow: "hidden",
+            animation: "slideUpSheet 0.32s cubic-bezier(0.32, 0.72, 0, 1)",
+          }}
+        >
+          {/* Title bar — swipe down here to dismiss the sheet.
+              Touch handlers update the sheet + pill transforms directly via refs (no setState)
+              so we get 60fps drag without React re-renders on every touchmove.
+              📖 Learn: cubic-bezier spring — https://cubic-bezier.com/#.34,1.56,.64,1 */}
+          <div
+            onTouchStart={(e) => {
+              sheetDragStartY.current = e.touches[0].clientY
+              sheetDragStartTime.current = Date.now()
+              // Disable CSS transitions while finger is down so the sheet follows instantly
+              if (mobileSheetRef.current) mobileSheetRef.current.style.transition = "none"
+              if (pillNavRef.current) pillNavRef.current.style.transition = "none"
+            }}
+            onTouchMove={(e) => {
+              const dy = e.touches[0].clientY - sheetDragStartY.current
+              // Only allow dragging downward (dy > 0); ignore upward swipes
+              if (dy > 0) {
+                if (mobileSheetRef.current) mobileSheetRef.current.style.transform = `translateY(${dy}px)`
+                if (pillNavRef.current) pillNavRef.current.style.transform = `translateY(${dy}px)`
+              }
+            }}
+            onTouchEnd={(e) => {
+              const dy = e.changedTouches[0].clientY - sheetDragStartY.current
+              const velocity = dy / (Date.now() - sheetDragStartTime.current) // px/ms
+              // iOS-style spring cubic-bezier: overshoots slightly for a natural snap-back feel
+              const spring = "cubic-bezier(0.34, 1.56, 0.64, 1)"
+              const dismiss = "cubic-bezier(0.32, 0.72, 0, 1)"
+              if (dy > 80 || velocity > 0.4) {
+                // Animate out, then actually close
+                if (mobileSheetRef.current) {
+                  mobileSheetRef.current.style.transition = `transform 0.28s ${dismiss}`
+                  mobileSheetRef.current.style.transform = "translateY(100%)"
+                }
+                if (pillNavRef.current) {
+                  pillNavRef.current.style.transition = `transform 0.28s ${dismiss}`
+                  pillNavRef.current.style.transform = "translateY(100%)"
+                }
+                setTimeout(() => {
+                  setIsChatOpen(false)
+                  // Reset transforms so the elements are clean when next opened
+                  if (mobileSheetRef.current) { mobileSheetRef.current.style.transform = ""; mobileSheetRef.current.style.transition = "" }
+                  if (pillNavRef.current) { pillNavRef.current.style.transform = ""; pillNavRef.current.style.transition = "" }
+                }, 280)
+              } else {
+                // Snap back with spring physics
+                if (mobileSheetRef.current) {
+                  mobileSheetRef.current.style.transition = `transform 0.4s ${spring}`
+                  mobileSheetRef.current.style.transform = "translateY(0)"
+                }
+                if (pillNavRef.current) {
+                  pillNavRef.current.style.transition = `transform 0.4s ${spring}`
+                  pillNavRef.current.style.transform = "translateY(0)"
+                }
+              }
+            }}
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "12px 16px",
+              borderBottom: "1px solid var(--border-2)",
+              flexShrink: 0,
+              cursor: "grab",
+              touchAction: "none", // prevents the browser's own scroll-on-drag from competing
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 13, color: "var(--text)", letterSpacing: "0.03em" }}>Ask Richard anything</span>
+              <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, color: "var(--text-4)", letterSpacing: "0.04em" }}>Powered by Claude Haiku</span>
+            </div>
+            <button
+              onClick={() => setIsChatOpen(false)}
+              className="nav-item"
+              style={{ padding: "4px 6px", cursor: "pointer" }}
+              aria-label="Close chat"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <div style={{ flex: 1, overflow: "hidden", padding: "16px 18px", minHeight: 0 }}>
+            <ChatBox fullHeight />
+          </div>
+        </div>
+      )}
+
+      {isChatOpen && !isMobile && (
+        // Desktop: draggable + resizable floating window (unchanged behaviour)
         <div
           style={{
             position: "fixed",

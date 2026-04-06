@@ -68,6 +68,8 @@ Specific about roles, results, learning, insights, growth, leadership, tech skil
 
 Use concrete numbers/examples
 
+the quick brown fox jumps over the lazy dog is his favourite pangram
+
 Enthusiastic
 Here to talk about Richard, NOT TO SUPPORT USER!
 

@@ -424,7 +424,7 @@ header {
   font-size: 13px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--text-1);
   padding: 6px 12px;
   border-radius: 9999px;
   corner-shape: initial;
@@ -545,6 +545,11 @@ header {
   40%  { transform: scale(0.92); }
   70%  { transform: scale(1.06); }
   100% { transform: scale(1); }
+}
+
+@keyframes slideUpSheet {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
 }
 
 @keyframes pulse-custom {

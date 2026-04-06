@@ -209,9 +209,9 @@ export default function PersonalWebsite() {
                 ))}
               </div>
               <div style={{ marginTop: 16 }}>
-                <Link href="/work" style={{ fontSize: 12, color: "var(--text-4)", letterSpacing: "0.04em", textTransform: "uppercase", fontFamily: "'Toronto Subway', sans-serif", textDecoration: "none" }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "var(--text-2)"}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "var(--text-4)"}
+                <Link href="/work" style={{ fontSize: 12, color: "var(--text-2)", letterSpacing: "0.04em", textTransform: "uppercase", fontFamily: "'Toronto Subway', sans-serif", textDecoration: "none" }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "var(--text-1)"}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "var(--text-2)"}
                 >
                   See all work →
                 </Link>

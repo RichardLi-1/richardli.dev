@@ -74,16 +74,18 @@ export function WindowsXPProvider({ children }: { children: React.ReactNode }) {
       if (!prev) {
         const timeTaken = ((Date.now() - pageLoadTime) / 1000).toFixed(2)
 
-        fetch(
-          "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              content: `🖥️ **Windows XP Mode Activated**\n⏱️ Time taken: ${timeTaken} seconds after page load\n🕒 ${new Date().toLocaleString()}`,
-            }),
-          },
-        ).catch(console.error)
+        if (window.location.hostname !== "localhost") {
+          fetch(
+            "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                content: `🖥️ **Windows XP Mode Activated**\n⏱️ Time taken: ${timeTaken} seconds after page load\n🕒 ${new Date().toLocaleString()}`,
+              }),
+            },
+          ).catch(console.error)
+        }
 
         const audio = new Audio("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ytmp3free.cc_microsoft-windows-xp-startup-sound-youtubemp3free.org-jm7S6oGjDVJxF19pr1JBJX95evAsxg.mp3")
         audio.play().catch(console.error)

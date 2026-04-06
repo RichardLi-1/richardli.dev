@@ -79,7 +79,11 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
           className={className}
           onLoadedData={() => setLoaded(true)}
           style={{ objectFit: "cover", opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease" }}
-        />
+        >
+          {/* Required for accessibility (Lighthouse) — muted demo videos have no spoken content,
+              so the track is empty. `default` makes it active without user interaction. */}
+          <track kind="captions" srcLang="en" label="No captions" default />
+        </video>
       ) : (
         <img
           ref={mediaRef}
