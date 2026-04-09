@@ -559,7 +559,7 @@ export function AnimatedHeader({
                   </li>
                   <li>
                     <Tip label="Ask Richard">
-                      <button onClick={() => { setIsChatOpen(true); trackEvent("💬 Chat opened", { location: "desktop nav" }) }} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Open chat">
+                      <button onClick={() => { isChatOpen ? setIsChatOpen(false) : setIsChatOpen(true); trackEvent("💬 Chat opened", { location: "desktop nav" }) }} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Open chat">
                         <MessageCircle className="w-4 h-4" />
                       </button>
                     </Tip>
