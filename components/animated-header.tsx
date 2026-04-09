@@ -413,7 +413,8 @@ export function AnimatedHeader({
             display: "flex", flexDirection: "column",
             background: "var(--card-bg)",
             border: "1px solid var(--border-2)",
-            borderRadius: 20,
+            borderRadius: 40,
+            cornerShape: "squircle",
             boxShadow: "0 24px 60px rgba(0,0,0,0.4)",
             overflow: "hidden",
             // Disable text selection while dragging/resizing to avoid accidental highlights
