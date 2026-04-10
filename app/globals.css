@@ -102,6 +102,7 @@
     transition: background 0.25s ease, color 0.25s ease;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden; /* prevent any element from causing horizontal scroll */
   }
 }
 
@@ -396,11 +397,18 @@ h3 {
 }
 
 /* ── Squircles ──────────────────────────────────────────────────── */
-.squircle { border-radius: 16px; corner-shape: squircle; }
-.squircle-md { border-radius: 48px; corner-shape: squircle; }
-.squircle-lg { border-radius: 24px; corner-shape: squircle; }
+/* Fallback: conservative radii for browsers without corner-shape support */
+.squircle    { border-radius: 5px; }
+.squircle-md { border-radius: 10px; }
+.squircle-lg { border-radius: 7px; }
 
-[class*="rounded-"] { corner-shape: squircle; }
+/* Progressive enhancement: full squircle when supported */
+@supports (corner-shape: squircle) {
+  .squircle    { border-radius: 16px; corner-shape: squircle; }
+  .squircle-md { border-radius: 48px; corner-shape: squircle; }
+  .squircle-lg { border-radius: 24px; corner-shape: squircle; }
+  [class*="rounded-"] { corner-shape: squircle; }
+}
 
 /* ── Navigation ─────────────────────────────────────────────────── */
 header {

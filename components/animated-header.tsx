@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ArrowLeft, Home, X, Sun, Moon, Linkedin, Github, Mail, Contrast, MessageCircle } from "lucide-react"
+import { ArrowLeft, Home, X, Sun, Moon, Linkedin, Github, Mail, Contrast, MessageCircle, Volume2, VolumeX, Play } from "lucide-react"
 import { ChatBox } from "@/components/chat-box"
 import { trackEvent } from "@/lib/track"
 
@@ -32,6 +32,75 @@ function Tip({ label, children }: { label: string; children: React.ReactNode }) 
     </span>
   )
 }
+// Sounds the panel can play — label shown to user + audio src (local or remote)
+const SOUNDS = [
+  { label: "Navigation",        src: "/sounds/windows-navigation-start.mp3" },
+  { label: "Windows XP Startup", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ytmp3free.cc_microsoft-windows-xp-startup-sound-youtubemp3free.org-jm7S6oGjDVJxF19pr1JBJX95evAsxg.mp3" },
+  { label: "Windows XP Error",  src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Windows%20XP%20Error-8o0fMisJfb1IUupzn1eg9cQWGg7uGA.mp3" },
+  { label: "Cha-ching",         src: "/sounds/cha ching.mp3" },
+]
+
+// Panel component — positioned absolutely so it drops below the trigger button.
+// Props are passed down from AnimatedHeader's state instead of using a separate context.
+function SoundPanel({ soundEnabled, onToggle, onClose }: { soundEnabled: boolean; onToggle: () => void; onClose: () => void }) {
+  return (
+    <div
+      style={{
+        position: "absolute", top: "calc(100% + 10px)", right: 0,
+        width: 220, padding: "10px 0",
+        borderRadius: 16, zIndex: 200,
+        background: "var(--card-bg)", border: "1px solid var(--border-2)",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+        animation: "dropdownEnter 0.15s ease",
+      }}
+      // Clicking inside the panel shouldn't close it via the outside-click handler
+      onMouseDown={e => e.stopPropagation()}
+    >
+      {/* Mute toggle row */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "6px 14px 8px" }}>
+        <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, color: "var(--text-3)", letterSpacing: "0.06em", textTransform: "uppercase" }}>Sounds</span>
+        <button
+          onClick={onToggle}
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 4,
+            padding: "3px 8px", borderRadius: 8,
+            background: soundEnabled ? "var(--surface-hover)" : "var(--surface)",
+            border: "1px solid var(--border-2)",
+            color: soundEnabled ? "var(--text)" : "var(--text-4)",
+            fontSize: 11, fontFamily: "'Toronto Subway', sans-serif",
+            cursor: "pointer", transition: "background 0.15s, color 0.15s",
+          }}
+        >
+          {soundEnabled ? <Volume2 style={{ width: 11, height: 11 }} /> : <VolumeX style={{ width: 11, height: 11 }} />}
+          {soundEnabled ? "On" : "Off"}
+        </button>
+      </div>
+      <div style={{ height: 1, background: "var(--border-2)", margin: "0 10px 6px" }} />
+      {/* Playable sound rows */}
+      {SOUNDS.map(({ label, src }) => (
+        <button
+          key={src}
+          onClick={() => { new Audio(src).play().catch(() => {}); onClose() }}
+          style={{
+            display: "flex", alignItems: "center", gap: 10,
+            width: "100%", padding: "7px 14px",
+            background: "transparent", border: "none",
+            color: "var(--text-2)", fontSize: 12,
+            fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em",
+            cursor: "pointer", textAlign: "left",
+            transition: "background 0.1s",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = "var(--surface-hover)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+        >
+          <Play style={{ width: 11, height: 11, color: "var(--text-4)", flexShrink: 0 }} />
+          {label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { useTheme } from "next-themes"
 
@@ -82,6 +151,23 @@ export function AnimatedHeader({
   // Ensures the window is only centered on the very first open, not re-centered on re-renders
   const chatInitialized = useRef(false)
 
+  // soundEnabled persists in localStorage so the nav sound respects the user's preference across pages.
+  // Default true — new visitors hear the sound; they can mute from the panel.
+  const [soundEnabled, setSoundEnabled] = useState(true)
+  const [showSoundPanel, setShowSoundPanel] = useState(false)
+
+  useEffect(() => {
+    const stored = localStorage.getItem("soundEnabled")
+    if (stored !== null) setSoundEnabled(stored === "true")
+  }, [])
+
+  const toggleSound = () => {
+    setSoundEnabled(v => {
+      localStorage.setItem("soundEnabled", String(!v))
+      return !v
+    })
+  }
+
   // ── Mobile sheet swipe-to-dismiss ──
   // Using refs (not state) so touch drag doesn't trigger React re-renders at 60fps.
   // 📖 Learn: direct DOM mutation vs. setState for animation — https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
@@ -98,11 +184,11 @@ export function AnimatedHeader({
   // 📖 Learn: sessionStorage vs localStorage — sessionStorage clears when the tab closes
   useEffect(() => {
     if (sessionStorage.getItem("nav_visited")) {
-      audioRef.current?.play().catch(() => {})
+      if (soundEnabled) audioRef.current?.play().catch(() => {})
     } else {
       sessionStorage.setItem("nav_visited", "1")
     }
-  }, [pathname])
+  }, [pathname, soundEnabled])
 
   const { isHighContrast, toggleHighContrast } = useWindowsXP()
   const { theme, setTheme } = useTheme()
@@ -130,6 +216,14 @@ export function AnimatedHeader({
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  // Close the sound panel when the user clicks anywhere outside of it
+  useEffect(() => {
+    if (!showSoundPanel) return
+    const close = () => setShowSoundPanel(false)
+    document.addEventListener("mousedown", close)
+    return () => document.removeEventListener("mousedown", close)
+  }, [showSoundPanel])
 
   // Center the chat window on first open; skip re-centering on subsequent opens
   useEffect(() => {
@@ -258,6 +352,25 @@ export function AnimatedHeader({
               >
                 <MessageCircle className="w-3 h-3" />
               </button>
+              {/* Sound panel button — hidden for now
+              <div style={{ position: "relative" }}>
+                <button
+                  onClick={() => setShowSoundPanel(v => !v)}
+                  className="nav-item"
+                  style={{ padding: "4px 6px", color: soundEnabled ? "var(--text-2)" : "var(--text-4)" }}
+                  aria-label="Sound settings"
+                >
+                  {soundEnabled ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
+                </button>
+                {showSoundPanel && (
+                  <SoundPanel
+                    soundEnabled={soundEnabled}
+                    onToggle={toggleSound}
+                    onClose={() => setShowSoundPanel(false)}
+                  />
+                )}
+              </div>
+              */}
             </>
           )}
         </div>
@@ -382,7 +495,7 @@ export function AnimatedHeader({
             }}
           >
             <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 13, color: "var(--text)", letterSpacing: "0.03em" }}>Ask Richard anything</span>
+              <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 13, color: "var(--text)", letterSpacing: "0.03em" }}>Richard</span>
               <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, color: "var(--text-4)", letterSpacing: "0.04em" }}>Powered by Claude Haiku</span>
             </div>
             <button
@@ -411,7 +524,9 @@ export function AnimatedHeader({
             width: chatSize.w,
             height: chatSize.h,
             display: "flex", flexDirection: "column",
-            background: "var(--card-bg)",
+            background: "var(--glass-bg)",
+            backdropFilter: "blur(24px) saturate(180%)",
+            WebkitBackdropFilter: "blur(24px) saturate(180%)",
             border: "1px solid var(--border-2)",
             borderRadius: 40,
             cornerShape: "squircle",
@@ -437,8 +552,8 @@ export function AnimatedHeader({
             }}
           >
             <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 13, color: "var(--text)", letterSpacing: "0.03em" }}>Ask Richard anything</span>
-              <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, color: "var(--text-4)", letterSpacing: "0.04em" }}>Powered by Claude Haiku</span>
+              <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 14, color: "var(--text)"}}>Richard</span>
+              {/* <span style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 10, color: "var(--text-4)", letterSpacing: "0.04em" }}>Powered by Claude Haiku</span>8*/}
             </div>
             {/* stopPropagation prevents the close button click from also starting a drag */}
             <button
@@ -565,6 +680,27 @@ export function AnimatedHeader({
                       </button>
                     </Tip>
                   </li>
+                  {/* Sound panel button — hidden for now
+                  <li style={{ position: "relative" }}>
+                    <Tip label={soundEnabled ? "Sounds" : "Sounds (muted)"}>
+                      <button
+                        onClick={() => setShowSoundPanel(v => !v)}
+                        className="nav-item"
+                        style={{ padding: "4px 6px", color: soundEnabled ? "var(--text-2)" : "var(--text-4)" }}
+                        aria-label="Sound settings"
+                      >
+                        {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                      </button>
+                    </Tip>
+                    {showSoundPanel && (
+                      <SoundPanel
+                        soundEnabled={soundEnabled}
+                        onToggle={toggleSound}
+                        onClose={() => setShowSoundPanel(false)}
+                      />
+                    )}
+                  </li>
+                  */}
                 </>
               )}
             </ul>

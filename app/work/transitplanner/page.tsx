@@ -160,7 +160,14 @@ export default function TransitPlannerProjectPage() {
               <li>Data driven analysis of accessibility</li>
               <li>GTFS Realtime and visualization of moving vehicles</li>
               <li>Transit modelling features</li>
-            </ul>                
+            </ul>
+
+            <p className="mt-4" style={{ color: "var(--text-3)" }}>
+              The project is open source on GitHub —{" "}
+              <a href="https://github.com/evanzyang91/transit-planner" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text)", textDecoration: "underline" }}>
+                give it a star!
+              </a>
+            </p>
 
           </StaggeredContent>
             
@@ -172,8 +179,6 @@ export default function TransitPlannerProjectPage() {
           
         </main>
 
-        <StaggeredContent delay={1100}>
-        </StaggeredContent>
       </div>
     </AnimatedPage>
   )

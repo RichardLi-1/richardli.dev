@@ -16,12 +16,23 @@ interface ChangelogEntry {
 
 export const entries: ChangelogEntry[] = [
   {
-    date: "04/06/2026 - v2.2.2",
+    date: "04/10/2026 - v2.3.0",
+    media: { type: "video", src: "/videos/2.3.0 changes.mov", alt: "v2.3.0 feature showcase" },
+    changes: [
+      "Border radii unified to 40px with squircle corner shape across all project cards and media",
+      { text: "AI chat: follow-up question chip appears after every response", badge: "New" },
+      { text: "AI chat: proactive link cards — Claude now drops cards for anything mentionable", badge: "New" },
+      "AI chat: Apple Music iframe no longer reloads mid-response (React.memo on MessageItem)",
+      "AI chat: sound panel built with mute toggle and site-sound previews (hidden for now)",
+      "Ask Richard button now toggles the chat window closed too",
+    ],
+  },
+  {
+    date: "04/06/2026 - v2.2.1",
     changes: [
       "Renamed /projects → /work and /more → /about across all routes and sitemap",
       "Added inline code comments across the entire codebase for readability",
-      "Discord webhook tracking moved server-side via new /api/track route — URL no longer exposed in browser bundle",
-      "Click tracking added for GitHub, LinkedIn, Email, theme toggle, high contrast, and chat buttons",
+      "Some API calls moved server-side via new /api/track route — URL no longer exposed in browser bundle",
       "About page layout refactored from absolute positioning to CSS grid",
       "Light high contrast mode — HC button now adapts to current theme (white bg + black text in light mode, yellow focus rings swap to blue)",
     ],

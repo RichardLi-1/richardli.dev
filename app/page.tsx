@@ -158,11 +158,12 @@ export default function PersonalWebsite() {
                         position: "relative",
                         width: "100%",
                         aspectRatio: "16/9",
-                        borderRadius: 16,
+                        borderRadius: 40,
+                        cornerShape: "squircle",
                         background: "var(--surface)",
                         marginBottom: 10,
                       }}>
-                        <div style={{ width: "100%", height: "100%", overflow: "hidden", borderRadius: 16 }}>
+                        <div style={{ width: "100%", height: "100%", overflow: "hidden", borderRadius: 40, cornerShape: "squircle" } as React.CSSProperties}>
                           <div id={`proj-img-${project.id}`} className="proj-img" style={{ width: "100%", height: "100%", transition: "transform 0.35s ease" }}>
                             <ProjectImageCycler
                               images={[project.image, (project as any).image2, (project as any).image3]}

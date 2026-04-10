@@ -144,7 +144,7 @@ export default function ProjectsPage() {
                           className="relative aspect-video w-full overflow-hidden squircle-lg transition-shadow duration-300"
                           style={{ 
                             background: "var(--surface)", 
-                            borderRadius: selectedId || isMobile ? 28 : 52 }} // IMPORTANT border radius of cards + image
+                            borderRadius: selectedId || isMobile ? 28 : 40 }} // IMPORTANT border radius of cards + image
                           onMouseEnter={() => setHoveredId(project.id)}
                           onMouseLeave={() => setHoveredId(null)}
                         >
