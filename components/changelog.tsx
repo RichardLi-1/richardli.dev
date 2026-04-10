@@ -17,7 +17,7 @@ interface ChangelogEntry {
 export const entries: ChangelogEntry[] = [
   {
     date: "04/10/2026 - v2.3.0",
-    media: { type: "video", src: "/videos/2.3.0 changes.mov", alt: "v2.3.0 feature showcase" },
+    media: { type: "video", src: "/videos/2.3.0 changes.mp4", alt: "v2.3.0 feature showcase" },
     changes: [
       "Border radii unified to 40px with squircle corner shape across all project cards and media",
       { text: "AI chat: follow-up question chip appears after every response", badge: "New" },
