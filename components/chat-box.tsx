@@ -341,6 +341,20 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
     return () => clearInterval(interval)
   }, [])
 
+  // Document-level Tab handler so the user doesn't need to focus the input first.
+  // Only fires when there's a follow-up question and the input is empty.
+  useEffect(() => {
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab" || input || isLoading) return
+      if (followUpQuestion) {
+        e.preventDefault()
+        handleSuggestion(followUpQuestion)
+      }
+    }
+    document.addEventListener("keydown", handleTab)
+    return () => document.removeEventListener("keydown", handleTab)
+  }, [followUpQuestion, input, isLoading])
+
   useEffect(() => {
     if (initialMessage && !firedInitial.current) {
       firedInitial.current = true
@@ -353,6 +367,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
 
   const sendChatbotActivity = async (userMessage: string, assistantReply: string) => {
     if (window.location.hostname === "localhost") return
+    if (localStorage.getItem("skip_tracking")) return
     try {
       // Using embeds instead of plain content: embed description allows up to 4096 chars,
       // vs. the 2000-char limit on plain content that forced the old 500-char truncation.
@@ -399,7 +414,11 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
         body: JSON.stringify({ messages: [...messages, userMessage] }),
       })
 
-      if (!response.ok) throw new Error("Failed to get response")
+      if (!response.ok) {
+        const errText = await response.text()
+        setMessages(prev => [...prev, { id: Date.now().toString(), role: "assistant", content: errText || "something went wrong" }])
+        return
+      }
 
       // `response.body` is a ReadableStream. getReader() gives us a pull-based
       // reader to consume chunks one at a time as they arrive from the server.
@@ -531,7 +550,21 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
             onMouseEnter={e => { e.currentTarget.style.background = "var(--surface-hover)"; e.currentTarget.style.color = "var(--text-2)" }}
             onMouseLeave={e => { e.currentTarget.style.background = "var(--surface)"; e.currentTarget.style.color = "var(--text-3)" }}
           >
-            {followUpQuestion} →
+            <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {followUpQuestion}
+              <span className="hidden md:inline" style={{
+                fontSize: 10,
+                color: "var(--text-4)",
+                background: "var(--card-bg)",
+                border: "1px solid var(--border-2)",
+                borderRadius: 6,
+                padding: "1px 6px",
+                fontFamily: "'Toronto Subway', sans-serif",
+                letterSpacing: "0.04em",
+                lineHeight: "16px",
+                flexShrink: 0,
+              }}>tab</span>
+            </span>
           </button>
         </div>
       )}
@@ -541,7 +574,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Tab" && !input) {
+            if (e.key === "Tab" && !input && !followUpQuestion) {
               e.preventDefault()
               setInput(placeholders[placeholderIndex])
             }

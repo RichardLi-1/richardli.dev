@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git rebase:*)"
+      "Bash(git rebase:*)",
+      "Bash(npm install:*)",
+      "Bash(node -e \"const v = require\\('voyageai'\\); console.log\\(Object.keys\\(v\\)\\)\")"
     ]
   }
 }

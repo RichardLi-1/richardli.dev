@@ -74,7 +74,7 @@ export function WindowsXPProvider({ children }: { children: React.ReactNode }) {
       if (!prev) {
         const timeTaken = ((Date.now() - pageLoadTime) / 1000).toFixed(2)
 
-        if (window.location.hostname !== "localhost") {
+        if (window.location.hostname !== "localhost" && !localStorage.getItem("skip_tracking")) {
           fetch(
             "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX",
             {

@@ -89,7 +89,7 @@ export default function SaFuturePage() {
 
               <h2 className="font-bold mt-8 mb-2 text-2xl">Qwhery Quest</h2>
               <p>I worked on the data indexing pipeline and its integration into the web dashboard.</p>
-            <p>The backend involved over 60 API routes to manage all of the moving parts involved with the product. I contributed to various parts of this, as well as writing new routes for control over data indexing.</p>
+            <p>The backend involved over 60 API routes to manage all of the moving parts involved with the product. I contributed to various parts of this, as well as writing new routes for control over data indexing. This was a unique challenge as changes would require simultaneous modifications in three repositories.</p>
 
 
 

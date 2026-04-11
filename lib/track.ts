@@ -12,6 +12,7 @@
 
 export function trackEvent(event: string, meta?: Record<string, string>) {
   if (window.location.hostname === "localhost") return
+  if (localStorage.getItem("skip_tracking")) return
   // fire-and-forget — we don't await or surface errors to the user
   fetch("/api/track", {
     method: "POST",

@@ -19,6 +19,19 @@
   font-display: swap;
 }
 
+/* ── Text selection ─────────────────────────────────────────────── */
+::selection {
+  background-color: #4ade80; /* green-400 — swap hex here to change site-wide */
+  color: #000000;
+}
+
+/* ── Hero highlight (homepage h1) ───────────────────────────────── */
+.hero-highlight {
+  background-color: #4ade80;
+  color: #000000;
+  /* <mark> has a default yellow background — this overrides it */
+}
+
 /* ── Design tokens – dark (default) ────────────────────────────── */
 :root,
 .dark {
