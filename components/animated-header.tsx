@@ -307,9 +307,8 @@ export function AnimatedHeader({
 
         {/* Right side: nav links + social icons + toggles */}
         <div className="flex items-center gap-2">
-          {/* Nav links from getNavItems(), but drop any that are labelled LinkedIn/GitHub
-              since those are hardcoded as icon buttons below */}
-          {navItems.filter(item => item.label.toLowerCase() !== "linkedin" && item.label.toLowerCase() !== "github").map((item, i) => (
+          {/* Nav links from getNavItems(), but drop LinkedIn/GitHub (hardcoded as icons below) and Contact */}
+          {navItems.filter(item => !["linkedin", "github", "contact"].includes(item.label.toLowerCase())).map((item, i) => (
             <a
               key={i}
               href={item.href}

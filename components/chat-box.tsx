@@ -7,20 +7,36 @@ import { Input } from "@/components/ui/input"
 import { Send, Info, ArrowUpRight, Mail } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+import { mainProjects } from "@/components/mainProjects"
+
+// Videos can't be used as <img> thumbnails — fall back to logo, then nothing.
+function projectThumbnail(p: typeof mainProjects[number]): string | undefined {
+  const isVideo = (s?: string) => s?.endsWith(".mov") || s?.endsWith(".mp4")
+  if (!isVideo(p.image)) return p.image || undefined
+  return p.logo || undefined
+}
 
 // Metadata for internal pages — used to render link cards in chat responses.
 // When Claude references a page with a markdown link like [text](/path), the
 // `a` component below intercepts it and renders this card instead of plain text.
+// Work project entries are generated from mainProjects so they stay in sync automatically.
 const PAGE_META: Record<string, { label: string; description: string; image?: string }> = {
-  "/":                    { label: "Home",                description: "Hero, current roles, featured projects", image: "/images/website-thumbnail.png" },
-  "/work":                { label: "Work",                description: "All projects",                          image: "/images/transitplannerbanner.png" },
-  "/transit/photography": { label: "Transit Photography", description: "Photos from the TTC and beyond",        image: "/images/IMG_7099.jpeg" },
-  "/transit/fanning":     { label: "Fanning Gallery",     description: "Fanning-style photo layout",            image: "/images/IMG_7099.jpeg" },
-  "/transit/hypo-maps":   { label: "Hypo Maps",           description: "Hypothetical transit map designs",      image: "/images/totransitbanner.png" },
-  "/chat":                { label: "Chat",                description: "This chatbot" },
-  "/contact":             { label: "Contact",             description: "Get in touch" },
-  "/resume":              { label: "Resume",              description: "Full résumé" },
-  "/more":                { label: "More",                description: "More about Richard" },
+  "/":                    { label: "Home",             description: "Hero, current roles, featured projects", image: "/images/website-thumbnail.png" },
+  "/work":                { label: "Work",             description: "All projects",                          image: "/images/transitplannerbanner.png" },
+  "/transit/photography": { label: "Transit Photography", description: "Photos from the TTC and beyond",    image: "/images/IMG_7099.jpeg" },
+  "/transit/fanning":     { label: "Fanning Gallery",  description: "Fanning-style photo layout",           image: "/images/IMG_7099.jpeg" },
+  "/transit/hypo-maps":   { label: "Hypo Maps",        description: "Hypothetical transit map designs",     image: "/images/totransitbanner.png" },
+  "/chat":                { label: "Chat",              description: "This chatbot" },
+  "/contact":             { label: "Contact",           description: "Get in touch" },
+  "/resume":              { label: "Resume",            description: "Full résumé" },
+  "/more":                { label: "More",              description: "More about Richard" },
+  // Spread project entries so adding a project to mainProjects.ts is all that's needed.
+  ...Object.fromEntries(
+    mainProjects.map(p => [
+      `/work/${p.id}`,
+      { label: p.title, description: p.description ?? "", image: projectThumbnail(p) },
+    ])
+  ),
 }
 
 function PageCard({ href, children }: { href: string; children: React.ReactNode }) {
@@ -67,10 +83,48 @@ function PageCard({ href, children }: { href: string; children: React.ReactNode 
 // Curated metadata for known external URLs Claude might reference.
 // For anything not listed here, ExternalCard falls back to showing the domain + favicon.
 const KNOWN_LINKS: Record<string, { label: string; description: string }> = {
-  "https://github.com/evanzyang91/transit-planner": { label: "Transit Planner", description: "Open source on GitHub — give it a star!" },
-  "https://github.com/richardli":                   { label: "GitHub",           description: "@richardli" },
-  "https://linkedin.com/in/richardli":               { label: "LinkedIn",         description: "Richard Li" },
-  "https://apps.apple.com/app/boink":                { label: "Bo!nk on App Store", description: "Download on iOS" },
+  "https://github.com/evanzyang91/transit-planner":  { label: "Transit Planner",         description: "Open source on GitHub — give it a star!" },
+  "https://github.com/richardli":                    { label: "GitHub",                  description: "@richardli" },
+  "https://linkedin.com/in/richardli":               { label: "LinkedIn",                description: "Richard Li" },
+  "https://apps.apple.com/app/boink":                { label: "Bo!nk",                   description: "Windows Vista-inspired inkball game on the App Store" },
+  "https://transit-planner-web.vercel.app/map":      { label: "Transit Planner App",     description: "Try the live app" },
+  "https://youtu.be/Pkpd0WDR_sA":                   { label: "Father Figure Demo",      description: "Watch the Hack the North demo" },
+  "https://devpost.com/software/transit-planner":    { label: "Transit Planner Devpost", description: "Hack Canada 2026 — Google AI Track winner" },
+}
+
+// Metadata for font cards rendered via the custom font: URL scheme.
+// FontCard shows the typeface rendered in itself so the user immediately sees what it looks like.
+const FONT_META: Record<string, { name: string; family: string; description: string }> = {
+  "toronto-subway": { name: "Toronto Subway", family: "'Toronto Subway', sans-serif", description: "Body text, UI labels & nav" },
+  "sfcamera":       { name: "SFCamera",       family: "'SFCamera', sans-serif",       description: "Hero headings (h1 only)" },
+}
+
+function FontCard({ href }: { href: string }) {
+  const key = href.replace("font:", "")
+  const meta = FONT_META[key]
+  if (!meta) return null
+  return (
+    <div style={{ margin: "8px 0" }}>
+      <span style={{
+        display: "inline-flex", alignItems: "center", gap: 12,
+        padding: "10px 14px", borderRadius: 12,
+        background: "var(--surface)", border: "1px solid var(--border-2)",
+        maxWidth: 280,
+      }}>
+        {/* Sample rendered in the actual font so it speaks for itself */}
+        <span style={{
+          fontFamily: meta.family, fontSize: 20, color: "var(--text)",
+          lineHeight: 1, flexShrink: 0, letterSpacing: "0.02em",
+        }}>
+          Aa
+        </span>
+        <span style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
+          <span style={{ fontSize: 12, color: "var(--text)", fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", whiteSpace: "nowrap" }}>{meta.name}</span>
+          <span style={{ fontSize: 11, color: "var(--text-4)", fontFamily: "'Toronto Subway', sans-serif", whiteSpace: "nowrap" }}>{meta.description}</span>
+        </span>
+      </span>
+    </div>
+  )
 }
 
 function ExternalCard({ href, children }: { href: string; children: React.ReactNode }) {
@@ -146,6 +200,36 @@ function EmailCard({ href }: { href: string }) {
   )
 }
 
+// tel: links open the native dialer on mobile — renders identically to EmailCard but with a phone icon.
+function PhoneCard({ href }: { href: string }) {
+  const number = href.replace("tel:", "")
+  return (
+    <div style={{ margin: "8px 0" }}>
+      <a href={href} style={{ textDecoration: "none" }}>
+        <span style={{
+          display: "inline-flex", alignItems: "center", gap: 10,
+          padding: "8px 12px", borderRadius: 12,
+          background: "var(--surface)", border: "1px solid var(--border-2)",
+          transition: "background 0.15s",
+        }}
+          onMouseEnter={e => (e.currentTarget.style.background = "var(--surface-hover)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "var(--surface)")}
+        >
+          {/* Using inline SVG so we don't need to add a new lucide import */}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--text-3)", flexShrink: 0 }}>
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.06 6.06l1.27-.85a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <span style={{ fontSize: 12, color: "var(--text)", fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em" }}>Call Richard</span>
+            <span style={{ fontSize: 11, color: "var(--text-4)", fontFamily: "'Toronto Subway', sans-serif" }}>{number}</span>
+          </span>
+          <ArrowUpRight style={{ width: 12, height: 12, color: "var(--text-4)", flexShrink: 0 }} />
+        </span>
+      </a>
+    </div>
+  )
+}
+
 interface Message {
   id: string
   role: "user" | "assistant"
@@ -187,7 +271,11 @@ const MessageItem = memo(function MessageItem({ message }: { message: Message })
               code: ({ children }) => (
                 <code className="px-1 py-0.5 rounded" style={{ background: "var(--surface)", color: "var(--text-2)" }}>{children}</code>
               ),
-              a: ({ children, href = "" }) => href.startsWith("/")
+              a: ({ children, href = "" }) => href.startsWith("font:")
+                ? <FontCard href={href} />
+                : href.startsWith("tel:")
+                ? <PhoneCard href={href} />
+                : href.startsWith("/")
                 ? <PageCard href={href}>{children}</PageCard>
                 : href.startsWith("mailto:")
                   ? <EmailCard href={href} />
