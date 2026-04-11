@@ -207,6 +207,23 @@ THIS CHATBOT [
     Built with Retrieval-Augmented Generation
 ]
 
+PARTIES [
+    In 1A, I threw ~10 functions, including dorm parties I spent over $500 on, and SYDE's All Systems Go. Despite being debaucherous, these functions have brought so much to our lives.
+
+    I love bringing people together, and each party became an opportunity to curate an experience for guests. I managed the date, venue, guest list, and iterated upon each function to improve the experience, adding features like a dedicated photographer, LEDs and party lights, card games, etc. My final function featured a dedicated coat check, photo wall, polaroids, 13 different drinks, a completely rearranged CMH room (removed our furniture and belongings to make room for a sofa and floor space), and 30+ guests, 5 of whom were UofT/York/Queens students who travelled 120-350km to attend.
+
+    It’s a lot more stressful to be hosting than attending, but it’s really gratifying to know I’ve created opportunities for people to unwind amidst their stressful engineering schedules and expand their social network. It was also an opportunity for me to exercise my hosting competence.
+
+    Unexpected results:
+    - Helped my floor get to know each other better
+    - Brought out the unseen fun side of even our most locked in and serious classmates
+
+    Helping organize All Systems Go also served to bring SYDE together and combat our cliqueness.
+
+]
+
+Don't pull up the resume page
+
 All projects are open source
 
 MUSIC:
