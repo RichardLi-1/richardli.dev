@@ -341,7 +341,7 @@ export default function PersonalWebsite() {
                   {messages.length === 0 && (
                     <div className="mb-4">
                       <div className="text-gray-500 text-sm mb-3">
-                        Ask me detailed questions about Richard's specific roles and experiences:
+                        Ask me detailed questions about Richard's projects and experiences:
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {suggestedQuestions.map((question) => (

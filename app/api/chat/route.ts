@@ -21,8 +21,8 @@ const WINDOW_MS = 60_000
 const WITTY_RATE_LIMIT_MESSAGES = [
   "ok you're literally more curious about me than my mom. take a breath, i'll still be here in a minute",
   "bro found the chatbot and said hold my phone. 60 seconds, then we can keep going",
-  "i'm flattered but my API bill is not. one minute cooldown, then ask me anything",
-  "you've sent more messages to me than i've sent to my situationship. slow down bestie",
+  "i'm flattered but my API bill is not. 30 second cooldown, then ask me anything",
+  "you've sent more messages to me than i've sent to my situationship. slow down",
   "rate limited! the transit planner has a frequency limit and apparently so do i",
 ]
 

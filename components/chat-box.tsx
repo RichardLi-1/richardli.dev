@@ -302,7 +302,7 @@ interface ChatBoxProps {
 }
 
 const placeholders = [
-  "Ask me what's my favourite pangram",
+  "What's your favourite pangram?",
   "Show me Richard's transit photos",
   "What projects has Richard built?",
   "How do I get in touch with Richard?",
@@ -331,6 +331,10 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   // firedInitial prevents the initial suggestion from being sent twice in
   // React Strict Mode (which intentionally mounts effects twice in development).
   const firedInitial = useRef(false)
+  // infoRef wraps the info button + dropdown so we can detect outside clicks.
+  const infoRef = useRef<HTMLDivElement>(null)
+  // inputRef lets the document-level Tab handler focus the input when filling a placeholder.
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -346,9 +350,13 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   useEffect(() => {
     const handleTab = (e: KeyboardEvent) => {
       if (e.key !== "Tab" || input || isLoading) return
+      e.preventDefault()
       if (followUpQuestion) {
-        e.preventDefault()
         handleSuggestion(followUpQuestion)
+      } else {
+        // No follow-up chip — fill the input with the current placeholder and focus it
+        setInput(placeholders[placeholderIndex])
+        inputRef.current?.focus()
       }
     }
     document.addEventListener("keydown", handleTab)
@@ -364,6 +372,20 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   // handleSuggestion is intentionally excluded from deps to avoid re-firing —
   // we only want this to run once when the component first mounts.
   }, [initialMessage])
+
+  // Close the info dropdown when the user clicks anywhere outside it.
+  // mousedown fires before blur/focus so the dropdown closes before any other
+  // click handler runs — avoids flicker from open → close → open.
+  useEffect(() => {
+    if (!showInfo) return
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (infoRef.current && !infoRef.current.contains(e.target as Node)) {
+        setShowInfo(false)
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick)
+    return () => document.removeEventListener("mousedown", handleOutsideClick)
+  }, [showInfo])
 
   const sendChatbotActivity = async (userMessage: string, assistantReply: string) => {
     if (window.location.hostname === "localhost") return
@@ -477,7 +499,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
 
   return (
     <div className="flex flex-col h-full" style={{ position: "relative" }}>
-      <div style={{ position: "absolute", top: 0, right: 0, zIndex: 10 }}>
+      <div ref={infoRef} style={{ position: "absolute", top: -2, right: 10, zIndex: 10 }}>
         <button
           onClick={() => setShowInfo(v => !v)}
           style={{
@@ -504,7 +526,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
             fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em",
             animation: "dropdownEnter 0.15s ease",
           }}>
-            Powered by the <strong style={{ color: "var(--text-2)" }}>Claude API</strong> using <code style={{ background: "var(--surface)", padding: "1px 5px", borderRadius: 4, fontSize: 11 }}>claude-haiku-4-5</code> and retrieval-augmented generation (RAG).
+            Powered by <strong style={{ color: "var(--text-2)" }}>Claude, Voyage AI, and Supabase</strong> using <code style={{ background: "var(--surface)", padding: "1px 5px", borderRadius: 4, fontSize: 11 }}>claude-haiku-4-5</code> and retrieval-augmented generation (RAG).
           </div>
         )}
       </div>
@@ -514,7 +536,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
       >
         {messages.length === 0 && (
           <p className="text-sm" style={{ color: "var(--text-4)", marginRight: 8 }}>
-            Ask me detailed questions about Richard's specific roles and experiences:
+            Ask me detailed questions about Richard's projects and experiences:
           </p>
         )}
 
@@ -571,6 +593,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
 
       <form onSubmit={handleSubmit} className="flex gap-1 pt-4 border-t mt-4" style={{ borderColor: "var(--border-2)" }}>
         <Input
+          ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
@@ -579,7 +602,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
               setInput(placeholders[placeholderIndex])
             }
           }}
-          placeholder={placeholders[placeholderIndex]}
+          placeholder={followUpQuestion ? "" : placeholders[placeholderIndex]}
           className="flex-1"
           style={{ background: "var(--surface)", borderColor: "var(--border-2)", color: "var(--text)", cornerShape: "squircle", borderRadius: 20 }}
           disabled={isLoading}

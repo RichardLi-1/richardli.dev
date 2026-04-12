@@ -3,6 +3,18 @@
 import { useEffect, useRef } from "react"
 import { trackEvent } from "@/lib/track"
 
+// ─── Edit this to add/rename referral sources ─────────────────────────────────
+// key   = the URL query param (e.g. "l" matches "?l" or "?l=anything")
+// value = display name that gets **bolded** in the Discord message
+const REFERRAL_SOURCES: Record<string, string> = {
+  l: "LinkedIn",
+  r: "Resume",
+  t: "Twitter/X",
+  e: "Email",
+  g: "GitHub",
+}
+// ──────────────────────────────────────────────────────────────────────────────
+
 // Fires a Discord webhook once per page load to log visitor info.
 // Using a ref (not state) for `hasTracked` avoids triggering a re-render —
 // it's a mutable value we only need internally.
@@ -80,17 +92,32 @@ export function usePageViewTracker() {
         console.warn("Failed to get IP, sending notification without it.")
       }
 
-      // Check if URL is LinkedIn referral
-      const isLinkedIn = window.location.href === "https://www.richardli.dev/?l"
+      // Read ?param from the URL, look it up in REFERRAL_SOURCES, then strip it.
+      // replaceState rewrites the URL bar without a page reload or a history entry —
+      // so the param disappears immediately and the back button isn't affected.
+      // 📖 Learn: history.replaceState — https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState
+      const params = new URLSearchParams(window.location.search)
+      let referralSource: string | null = null
+      for (const key of params.keys()) {
+        if (REFERRAL_SOURCES[key]) {
+          referralSource = REFERRAL_SOURCES[key]
+          break
+        }
+      }
+      // Always strip query params so the URL stays clean for the visitor
+      if (params.toString()) {
+        window.history.replaceState({}, "", window.location.pathname)
+      }
 
       // Build the event label and pass structured metadata to trackEvent.
+      // **bold** is Discord markdown — the source name will render bolded in the channel.
       // trackEvent() calls /api/track on our own server — the Discord webhook
       // URL never leaves the server, so it can't be scraped from the browser.
       const eventLabel = isBot
-        ? `🤖 Bot/crawler on ${window.location.href}`
-        : isLinkedIn
-        ? `👀 New visitor from LinkedIn on ${window.location.href}`
-        : `👀 New visitor on ${window.location.href}`
+        ? `🤖 Bot/crawler on ${window.location.pathname}`
+        : referralSource
+        ? `👀 New visitor from **${referralSource}**`
+        : `👀 New visitor on ${window.location.pathname}`
 
       trackEvent(eventLabel, {
         "🖥️ Device": `${deviceType} · ${platform}`,
