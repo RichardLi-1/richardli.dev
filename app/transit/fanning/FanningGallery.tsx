@@ -43,7 +43,7 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
   )
 
   return (
-    <main className="main">
+    <main className="main max-w-[815px] mx-auto">
       <div className="hero">
         <h1 className="hero-title">Transit Fanning</h1>
         <p className="hero-sub">Photos from around the network</p>
@@ -248,7 +248,7 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
                   selected.vehicle       ? ["Vehicle",       selected.vehicle]                 : null,
                   selected.fStop         ? ["Aperture",      `f/${selected.fStop}`]            : null,
                   selected.exposureTime  ? ["Exposure",      `${selected.exposureTime}s`]      : null,
-                ].filter(Boolean).map(([label, value]) => (
+                ].filter((x): x is string[] => x !== null).map(([label, value]) => (
                   <div key={label as string}>
                     <p style={{ fontSize: 10, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-4)", marginBottom: 2 }}>
                       {label}

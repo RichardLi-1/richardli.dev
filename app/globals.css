@@ -220,7 +220,6 @@ h3 {
 
 .featured-image-wrap {
   width: 100%;
-  aspect-ratio: 16 / 7;
   overflow: hidden;
 }
 
@@ -326,7 +325,7 @@ h3 {
 /* Fanning gallery — CSS multi-column masonry (display:block + columns) */
 .fanning-grid {
   display: block;
-  columns: 3;
+  columns: 2;
   column-gap: 16px;
 }
 
