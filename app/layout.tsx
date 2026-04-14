@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { LayoutClient } from "./layout-content"
+import { Analytics } from "@vercel/analytics/react"
 
 // Inter is loaded via next/font/google (zero-CLS font loading). It exposes a CSS
 // variable so Tailwind classes like `font-sans` can reference it.
@@ -170,6 +171,7 @@ export default function RootLayout({
       </head>
       <body className={inter.variable}>
         <LayoutClient>{children}</LayoutClient>
+        <Analytics /> {/* This is the part that actually "counts" the visitor */}
       </body>
     </html>
   )

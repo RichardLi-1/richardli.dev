@@ -248,7 +248,7 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
                   selected.vehicle       ? ["Vehicle",       selected.vehicle]                 : null,
                   selected.fStop         ? ["Aperture",      `f/${selected.fStop}`]            : null,
                   selected.exposureTime  ? ["Exposure",      `${selected.exposureTime}s`]      : null,
-                ].filter((x): x is string[] => x !== null).map(([label, value]) => (
+                ].filter(Boolean).map(([label, value]) => (
                   <div key={label as string}>
                     <p style={{ fontSize: 10, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-4)", marginBottom: 2 }}>
                       {label}
