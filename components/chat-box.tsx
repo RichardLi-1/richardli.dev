@@ -87,7 +87,7 @@ const KNOWN_LINKS: Record<string, { label: string; description: string }> = {
   "https://github.com/richardli":                    { label: "GitHub",                  description: "@richardli" },
   "https://linkedin.com/in/richardli":               { label: "LinkedIn",                description: "Richard Li" },
   "https://apps.apple.com/app/boink":                { label: "Bo!nk",                   description: "Windows Vista-inspired inkball game on the App Store" },
-  "https://transit-planner-web.vercel.app/map":      { label: "Transit Planner App",     description: "Try the live app" },
+  "https://www.transitplan.xyz/map":      { label: "Transit Planner App",     description: "Try the live app" },
   "https://youtu.be/Pkpd0WDR_sA":                   { label: "Father Figure Demo",      description: "Watch the Hack the North demo" },
   "https://devpost.com/software/transit-planner":    { label: "Transit Planner Devpost", description: "Hack Canada 2026 — Google AI Track winner" },
 }

@@ -189,21 +189,21 @@ export default function PersonalWebsite() {
                             onMouseEnter={e => (e.currentTarget.style.transform = "scale(0.96)")}
                             onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
                           >
-                            <span style={{ fontSize: 13, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", color: "inherit" }}>Try it out</span>
+                            <span style={{ fontSize: 16, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", color: "inherit" }}>Try it out</span>
                             <ExternalLink style={{ width: 12, height: 12, opacity: 0.65 }} />
                           </button>
                         )}
                       </div>
                       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
-                        <p style={{ fontSize: 13, color: "var(--text)", lineHeight: 1.5, margin: 0 }}>
+                        <p style={{ fontSize: 14, color: "var(--text)", lineHeight: 1.5, margin: 0 }}>
                           {project.title}
                           {project.description && (
                             <span style={{ color: "var(--text-3)" }}> — {project.description}</span>
                           )}
                         </p>
-                        <span style={{ fontSize: 12, color: "var(--text-4)", flexShrink: 0, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.03em" }}>
-                          {project.year}
-                        </span>
+                        {/*<span style={{ fontSize: 12, color: "var(--text-4)", flexShrink: 0, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.03em" }}>
+                          {project.year
+                        </span>}*/}
                       </div>
                     </div>
                   </Link>

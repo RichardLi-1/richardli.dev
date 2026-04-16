@@ -73,7 +73,7 @@ export default function TransitPlannerProjectPage() {
               <div className="flex squircle bg-zinc-200 dark:bg-zinc-800 max-width w-full rounded-xl border-2">
                 <p className="p-2 py-3 px-3.5 text-zinc-800 dark:text-zinc-300">🥇 This project was awarded at Hack Canada 2026 in the Google - Build with AI Track</p>
               </div>
-              <a href="https://transit-planner-web.vercel.app/" target="_blank" rel="noopener noreferrer" className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90">Try it out!</a>
+              <a href="https://www.transitplan.xyz/" target="_blank" rel="noopener noreferrer" className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90">Try it out!</a>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
@@ -91,7 +91,7 @@ export default function TransitPlannerProjectPage() {
                 </div>
                 <div>
                   <h3 className="font-bold mb-2">Links</h3>
-                  <a href="https://transit-planner-web.vercel.app/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
+                  <a href="https://www.transitplan.xyz/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
                     <ExternalLink className="w-4 h-4" />
                     Transit Planner App
                   </a>

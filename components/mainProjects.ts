@@ -18,7 +18,7 @@ export const mainProjects = [
     logo: "",
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#ffffff",
-    externalLink: "https://transit-planner-web.vercel.app/"
+    externalLink: "https://www.transitplan.xyz/"
   },
 {
     id: "boink",

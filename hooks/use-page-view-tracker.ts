@@ -97,6 +97,9 @@ export function usePageViewTracker() {
       // so the param disappears immediately and the back button isn't affected.
       // 📖 Learn: history.replaceState — https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState
       const params = new URLSearchParams(window.location.search)
+      // Capture the raw query string before stripping so it's always logged.
+      // This preserves unrecognized params (e.g. ?utm_source=foo) in the Discord message.
+      const rawParams = params.toString()
       let referralSource: string | null = null
       for (const key of params.keys()) {
         if (REFERRAL_SOURCES[key]) {
@@ -105,7 +108,7 @@ export function usePageViewTracker() {
         }
       }
       // Always strip query params so the URL stays clean for the visitor
-      if (params.toString()) {
+      if (rawParams) {
         window.history.replaceState({}, "", window.location.pathname)
       }
 
@@ -117,6 +120,8 @@ export function usePageViewTracker() {
         ? `🤖 Bot/crawler on ${window.location.pathname}`
         : referralSource
         ? `👀 New visitor from **${referralSource}**`
+        : rawParams
+        ? `👀 New visitor — CUSTOM REFERRAL on ${window.location.pathname}`
         : `👀 New visitor on ${window.location.pathname}`
 
       trackEvent(eventLabel, {
@@ -124,6 +129,7 @@ export function usePageViewTracker() {
         "🛤️ Path": pathTrail,
         "🕒 Time": new Date().toLocaleString(),
         "🌐 IP": ip,
+        ...(rawParams ? { "🔗 Params": `?${rawParams}` } : {}),
         ...(isBot ? { "🔍 UA": navigator.userAgent } : {}),
       })
     }

@@ -85,7 +85,7 @@ export default function SaFuturePage() {
               <p>SaFuture Inc and Qwhery are two startups focused on developing IT and GIS solutions for municipalities</p>
 
               <h2 className="font-bold mt-8 mb-2 text-2xl">What I Did</h2>
-              <p>Add content here.</p>
+              <p>The internship was split in three parts with the intent goal of (1) creating an improved data indexing pipeline, (2) automating sales prospecting, and (3) on knocking out a long list of feature requests for a client.</p>
 
               <h2 className="font-bold mt-8 mb-2 text-2xl">Qwhery Quest</h2>
               <p>I worked on the data indexing pipeline and its integration into the web dashboard.</p>
@@ -96,8 +96,8 @@ export default function SaFuturePage() {
               <h2 className="font-bold mt-8 mb-2 text-2xl">Sales Lead Identifier</h2>
               <p>This was my overall favourite project as I got to build it from scratch and pilot it.</p>
 
-              <h2 className="font-bold mt-8 mb-2 text-2xl">Work for ERIS</h2>
-              <p>I can't disclose as much for this one, but I made changes. This project was interesting, and I learned how to manage stakeholders who are in charge of different parts of the tech stack.</p>
+              <h2 className="font-bold mt-8 mb-2 text-2xl">Work for Clients</h2>
+              <p>I can't disclose as much for this one, but I shipped 25+ feature requests. This project was interesting, and I learned how to manage stakeholders who are in charge of different parts of the tech stack.</p>
 
               <h2 className="font-bold mt-8 mb-2 text-2xl">The Experience</h2>
               <p>This was my first experience working with professional software engineering processes. I integrated into the team's workflow pretty quickly, shipping code from day two. We were given a lot of ownership over our projects and I learned a lot about both software engineering and mapping technologies.</p>
