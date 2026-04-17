@@ -65,7 +65,6 @@ export async function retrieve(query: string, count = 5): Promise<string[]> {
   const { data, error } = await supabase.rpc("match_chunks", {
     query_embedding: embedding,
     match_count: count,
-    match_threshold: 0.75,
   })
 
   if (error) {

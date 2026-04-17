@@ -263,7 +263,7 @@ const MessageItem = memo(function MessageItem({ message }: { message: Message })
             remarkPlugins={[remarkGfm]}
             components={{
               p: ({ children }) => <div className="mb-1 last:mb-0">{children}</div>,
-              strong: ({ children }) => <strong className="font-bold" style={{ color: "var(--text)" }}>{children}</strong>,
+              strong: ({ children }) => <strong className="font-bold" style={{ color: "#4ade80" }}>{children}</strong>,
               em: ({ children }) => <em className="italic" style={{ color: "var(--text-2)" }}>{children}</em>,
               ul: ({ children }) => <ul className="list-disc list-inside mb-2">{children}</ul>,
               ol: ({ children }) => <ol className="list-decimal list-inside mb-2">{children}</ol>,
@@ -592,21 +592,45 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
       )}
 
       <form onSubmit={handleSubmit} className="flex gap-1 pt-4 border-t mt-4" style={{ borderColor: "var(--border-2)" }}>
-        <Input
-          ref={inputRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Tab" && !input && !followUpQuestion) {
-              e.preventDefault()
-              setInput(placeholders[placeholderIndex])
-            }
-          }}
-          placeholder={followUpQuestion ? "" : placeholders[placeholderIndex]}
-          className="flex-1"
-          style={{ background: "var(--surface)", borderColor: "var(--border-2)", color: "var(--text)", cornerShape: "squircle", borderRadius: 20 }}
-          disabled={isLoading}
-        />
+        <div className="flex-1 relative">
+          <Input
+            ref={inputRef}
+            autoFocus
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Tab" && !input && !followUpQuestion) {
+                e.preventDefault()
+                setInput(placeholders[placeholderIndex])
+              }
+            }}
+            placeholder={followUpQuestion ? "" : placeholders[placeholderIndex]}
+            className="w-full"
+            style={{ background: "var(--surface)", borderColor: "var(--border-2)", color: "var(--text)", cornerShape: "squircle", borderRadius: 20 }}
+            disabled={isLoading}
+          />
+          {/* Tab hint — invisible ghost text matches placeholder width, badge lands right after it */}
+          {!followUpQuestion && !input && (
+            <div className="hidden md:flex absolute inset-0 items-center pointer-events-none pl-3">
+              <span style={{ visibility: "hidden", fontSize: "0.875rem", whiteSpace: "nowrap" }}>
+                {placeholders[placeholderIndex]}
+              </span>
+              <span style={{
+                marginLeft: 6,
+                fontSize: 10,
+                color: "var(--text-4)",
+                background: "var(--card-bg)",
+                border: "1px solid var(--border-2)",
+                borderRadius: 6,
+                padding: "1px 6px",
+                fontFamily: "'Toronto Subway', sans-serif",
+                letterSpacing: "0.04em",
+                lineHeight: "16px",
+                flexShrink: 0,
+              }}>tab</span>
+            </div>
+          )}
+        </div>
         <Button type="submit" size="icon" style={{ background: "var(--text)", color: "var(--bg)", cornerShape: "squircle", borderRadius: 20 }} disabled={isLoading}>
           <Send className="w-4 h-4" />
         </Button>
