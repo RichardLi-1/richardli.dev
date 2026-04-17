@@ -163,9 +163,9 @@ export default function TransitPlannerProjectPage() {
             </ul>
 
             <p className="mt-4" style={{ color: "var(--text-3)" }}>
-              The project is open source on GitHub —{" "}
+              The project is fully open source on GitHub —{" "}
               <a href="https://github.com/evanzyang91/transit-planner" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text)", textDecoration: "underline" }}>
-                give it a star!
+                give it a star 🙏
               </a>
             </p>
 

@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk"
 import type { NextRequest } from "next/server"
 import { SYSTEM_PROMPT } from "@/lib/system-prompt"
-import { retrieve } from "@/lib/retrieve"
+import { retrieve, rewriteQuery } from "@/lib/retrieve"
 
 // maxDuration tells Vercel's serverless runtime to allow up to 30 seconds before
 // timing out. Streaming responses can take longer than the default 10 s limit.
@@ -51,10 +51,11 @@ export async function POST(req: NextRequest) {
 
     const { messages } = await req.json()
 
-    // Pull the last user message and retrieve relevant chunks from Supabase.
-    // These get prepended to the system prompt so Claude only sees what's relevant.
-    const lastUserMessage = [...messages].reverse().find((m: { role: string }) => m.role === "user")?.content ?? ""
-    const chunks = await retrieve(lastUserMessage)
+    // Rewrite the full conversation into a standalone query before retrieval.
+    // This fixes vague follow-ups like "tell me more about that" — the rewriter
+    // resolves the pronoun/reference using prior turns before we embed anything.
+    const searchQuery = await rewriteQuery(messages)
+    const chunks = await retrieve(searchQuery)
     const context = chunks.length
       ? `\n\nRELEVANT CONTEXT:\n${chunks.map((c, i) => `${i + 1}. ${c}`).join("\n\n")}`
       : ""
