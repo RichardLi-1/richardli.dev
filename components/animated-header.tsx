@@ -649,7 +649,7 @@ export function AnimatedHeader({
                 </li>
               ))}
               <li style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-                <Tip label="Email"><a onClick={() => trackEvent("✉️ Email clicked", { location: "desktop nav" })} href="mailto:richardli0@outlook.com" className="nav-item" style={{ padding: "4px 8px" }} aria-label="Email"><Mail className="w-4 h-4" /></a></Tip>
+                <Tip label="Email"><a onClick={() => trackEvent("✉️ Email clicked", { location: "desktop nav" })} href="mailto:richardli0@outlook.com?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D" className="nav-item" style={{ padding: "4px 8px" }} aria-label="Email"><Mail className="w-4 h-4" /></a></Tip>
                 <Tip label="GitHub"><a onClick={() => trackEvent("🐙 GitHub clicked", { location: "desktop nav" })} href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="GitHub"><Github className="w-4 h-4" /></a></Tip>
                 <Tip label="LinkedIn"><a onClick={() => trackEvent("🔗 LinkedIn clicked", { location: "desktop nav" })} href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a></Tip>
               </li>

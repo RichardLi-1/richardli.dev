@@ -25,7 +25,7 @@ export default function ResumePage() {
           backText="Back to Projects"
           currentPage="/resume"
           rightLinks={[
-            { href: "mailto:richardli0@outlook.com", text: "CONTACT" },
+            { href: "mailto:richardli0@outlook.com?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D", text: "CONTACT" },
             { href: "https://www.linkedin.com/in/richardli0/", text: "LINKEDIN", external: true },
             { href: "https://github.com/RichardLi-1", text: "GITHUB", external: true },
           ]}
@@ -50,7 +50,7 @@ export default function ResumePage() {
               <div className="text-center border-b border-gray-700 pb-6">
                 <h2 className="text-3xl font-bold text-green-400 mb-2">Richard Li</h2>
                 <div className="text-gray-300 text-sm space-x-2">
-                  <a href="mailto:r575li@uwaterloo.ca" className="hover:text-green-400">
+                  <a href="mailto:r575li@uwaterloo.ca?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D" className="hover:text-green-400">
                     r575li@uwaterloo.ca
                   </a>
                   <span>|</span>

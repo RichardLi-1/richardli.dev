@@ -427,7 +427,7 @@ export default function PersonalWebsite() {
             <span>
               I'd love to hear from you! Want to hire me? or simply wanna chat? Feel free to reach out by{" "}
               <a
-                href="mailto:richardli0@outlook.com"
+                href="mailto:richardli0@outlook.com?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D"
                 className="text-stone-400 underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
               >
                 email

@@ -70,7 +70,7 @@ export default function ProjectsPage() {
           backText="Back"
           currentPage="/work"
           rightLinks={[
-            { href: "mailto:richardli0@outlook.com", text: "CONTACT" },
+            { href: "mailto:richardli0@outlook.com?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D", text: "CONTACT" },
             { href: "https://www.linkedin.com/in/richardli0/", text: "LINKEDIN", external: true },
             { href: "https://github.com/RichardLi-1", text: "GITHUB", external: true },
           ]}
