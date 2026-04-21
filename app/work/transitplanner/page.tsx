@@ -226,7 +226,13 @@ export default function TransitPlannerProjectPage() {
 
               <h2 id="initial-development" className="font-bold mt-8 mb-2 text-2xl">Initial Development</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
-              <img src="/images/projects/transitplanner/launch-tweet.png" alt="Transit Planner Launch Tweet by Fiona Fang" className="w-full squircle rounded-lg aspect-square sm:aspect-auto object-cover" />
+              <div className="w-full overflow-hidden squircle rounded-lg" style={{ aspectRatio: "4 / 3" }}>
+                <img
+                  src="/images/projects/transitplanner/launch-tweet.png"
+                  alt="Transit Planner Launch Tweet by Fiona Fang"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               
               <h2 id="more-features" className="font-bold mt-8 mb-2 text-2xl">More features</h2>
               <p className="mb-2">We're excited to develop this further. Here are some features I've added since: </p>
