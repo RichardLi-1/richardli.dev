@@ -34,9 +34,8 @@ const currently_more = [
 ]
 
 const previously = [
-  { image: "🏎️", text: "Full-Stack Developer @ FormulaTech Hacks" },
-  { image: "🚌", text: "Transportation Logistics" },
-  { image: "💼", text: "Software Developer @ Career Education Council" },
+  { image: "/logos/formulatech-hacks.jpeg", text: "Full-Stack Developer @ FormulaTech Hacks" },
+  { image: "/images/projects/cec/logo.webp", text: "Software Developer @ Career Education Council" },
 ]
 
 export default function PersonalWebsite() {
@@ -66,7 +65,7 @@ export default function PersonalWebsite() {
 
   // Cast to `any` to access optional fields (image2, image3, hidden) that aren't
   // in the TypeScript type — a pragmatic shortcut while the data model is loose.
-  const visibleProjects = mainProjects.filter(p => !(p as any).hidden).slice(0, 4)
+  const visibleProjects = mainProjects.filter(p => !(p as any).hidden).slice(0, 7)
 
   return (
     <AnimatedPage>
@@ -209,14 +208,14 @@ export default function PersonalWebsite() {
                   </Link>
                 ))}
               </div>
-              <div style={{ marginTop: 16 }}>
+              {/*<div style={{ marginTop: 16 }}>
                 <Link href="/work" style={{ fontSize: 12, color: "var(--text-2)", letterSpacing: "0.04em", textTransform: "uppercase", fontFamily: "'Toronto Subway', sans-serif", textDecoration: "none" }}
                   onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "var(--text-1)"}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "var(--text-2)"}
                 >
                   See all work →
                 </Link>
-              </div>
+              </div>*/}
             </section>
           </StaggeredContent>
 

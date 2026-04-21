@@ -9,7 +9,18 @@
 //   externalLink — if present, a "Try it out" button appears on hover
 //   hidden      — excludes the project from all grids
 export const mainProjects = [
-      {
+    {
+    id: "safuture",
+    title: "SaFuture Inc and Qwhery",
+    year: "2026",
+    description: "Building GIS and municipal AI",
+    image: "/images/projects/safuture/SaFuture Banner.png",
+    logo: "",
+    tags: ["iOS", "Swift", "Game Development"],
+    colors: "#417193",
+    hidden: false
+  },
+  {
     id: "transitplanner",
     title: "Transit Planner",
     year: "2026",
@@ -115,16 +126,5 @@ export const mainProjects = [
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#417193",
     hidden: true
-  },
-  {
-    id: "safuture",
-    title: "SaFuture Inc and Qwhery",
-    year: "2026",
-    description: "Winter 26 Internship",
-    image: "/images/projects/safuture/SaFuture Banner.png",
-    logo: "",
-    tags: ["iOS", "Swift", "Game Development"],
-    colors: "#417193",
-    hidden: false
-  },
+  }
 ]

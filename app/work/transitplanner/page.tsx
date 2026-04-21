@@ -13,6 +13,9 @@ export default function TransitPlannerProjectPage() {
   usePageViewTracker()
   const isPanel = useIsPanel()
   const [isMobile, setIsMobile] = useState(false)
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null)
+  const [zoom, setZoom] = useState({ scale: 1, tx: 0, ty: 0 })
+  const [dragging, setDragging] = useState<{ startX: number; startY: number; startTx: number; startTy: number } | null>(null)
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
     check()
@@ -28,6 +31,74 @@ export default function TransitPlannerProjectPage() {
 
   return (
     <AnimatedPage>
+      {zoomedImage && (
+        <div
+          onClick={() => { setZoomedImage(null); setZoom({ scale: 1, tx: 0, ty: 0 }) }}
+          className="fixed inset-0 z-[200] overflow-hidden"
+          style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", cursor: dragging ? "grabbing" : zoom.scale > 1 ? "grab" : "zoom-in" }}
+          onWheel={(e) => {
+            e.preventDefault()
+            // Cursor position relative to the viewport
+            const cx = e.clientX
+            const cy = e.clientY
+            const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15
+            const newScale = Math.min(Math.max(zoom.scale * factor, 1), 8)
+            // Keep the pixel under the cursor fixed: shift translate proportionally
+            setZoom(prev => ({
+              scale: newScale,
+              tx: cx - (cx - prev.tx) * (newScale / prev.scale),
+              ty: cy - (cy - prev.ty) * (newScale / prev.scale),
+            }))
+          }}
+          onMouseDown={(e) => {
+            if (zoom.scale <= 1) return
+            e.stopPropagation()
+            setDragging({ startX: e.clientX, startY: e.clientY, startTx: zoom.tx, startTy: zoom.ty })
+          }}
+          onMouseMove={(e) => {
+            if (!dragging) return
+            setZoom(prev => ({ ...prev, tx: dragging.startTx + (e.clientX - dragging.startX), ty: dragging.startTy + (e.clientY - dragging.startY) }))
+          }}
+          onMouseUp={() => setDragging(null)}
+          onMouseLeave={() => setDragging(null)}
+        >
+          <button
+            onClick={(e) => { e.stopPropagation(); setZoomedImage(null); setZoom({ scale: 1, tx: 0, ty: 0 }) }}
+            className="absolute top-4 right-4 flex items-center justify-center w-9 h-9 rounded-full z-10"
+            style={{ background: "var(--surface)", color: "var(--text-2)" }}
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <img
+            src={zoomedImage}
+            onClick={(e) => {
+              e.stopPropagation()
+              if (zoom.scale > 1) {
+                setZoom({ scale: 1, tx: 0, ty: 0 })
+              } else {
+                const newScale = 2.5
+                const cx = e.clientX
+                const cy = e.clientY
+                setZoom(prev => ({
+                  scale: newScale,
+                  tx: cx - (cx - prev.tx) * (newScale / prev.scale),
+                  ty: cy - (cy - prev.ty) * (newScale / prev.scale),
+                }))
+              }
+            }}
+            draggable={false}
+            className="absolute max-w-[90vw] max-h-[90vh] w-auto h-auto rounded-xl shadow-2xl"
+            style={{
+              top: "50%",
+              left: "50%",
+              transformOrigin: "0 0",
+              transform: `translate(calc(-50% + ${zoom.tx}px), calc(-50% + ${zoom.ty}px)) scale(${zoom.scale})`,
+              transition: dragging ? "none" : "transform 0.15s ease-out",
+              cursor: zoom.scale > 1 ? "zoom-out" : "zoom-in",
+            }}
+          />
+        </div>
+      )}
       <div className="mx-auto">
         <AnimatedHeader
           backHref="/work"
@@ -120,14 +191,19 @@ export default function TransitPlannerProjectPage() {
               <div className="photo-card" style={{ padding: 0, overflow: "hidden", borderRadius: 20 }}>
                 <div className="flex items-start gap-6 p-6">
                   <div className="w-2/3 shrink-0">
-                    <Image
-                      src="/images/projects/transitplanner/initial-system-diagram.png"
-                      alt="Transit Planner System Diagram"
-                      width={1678}
-                      height={1760}
-                      className="w-full h-auto"
-                      style={{ display: "block", borderRadius: 12 }}
-                    />
+                    <button
+                      onClick={() => setZoomedImage("/images/projects/transitplanner/initial-system-diagram.png")}
+                      className="w-full p-0 border-0 bg-transparent cursor-zoom-in"
+                    >
+                      <Image
+                        src="/images/projects/transitplanner/initial-system-diagram.png"
+                        alt="Transit Planner System Diagram"
+                        width={1678}
+                        height={1760}
+                        className="w-full h-auto"
+                        style={{ display: "block", borderRadius: 12 }}
+                      />
+                    </button>
                   </div>
                   <div className="w-1/3">
                     <p>The initial architecture we drew</p>

@@ -128,7 +128,7 @@ export default function MorePage() {
           {/* ── Right column: portrait + experiences ── */}
           {/* No positioning needed — the parent grid places this automatically in column 2 */}
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            {/* Portrait — swap the commented-out img for a real photo */}
+            {/* Portrait — swap the commented-out img for a real photo
             {!isMobile && (
               <div
               style={{
@@ -139,9 +139,9 @@ export default function MorePage() {
                 background: "var(--card-bg)",
                 border: "1px solid var(--border-2)",
               }}>
-              {/* <img src="/images/your-portrait.jpg" alt="Richard Li" style={{ width:"100%", height:"100%", objectFit:"cover" }} /> */}
+              <img src="/images/your-portrait.jpg" alt="Richard Li" style={{ width:"100%", height:"100%", objectFit:"cover" }} /> 
             </div>
-            )}
+            )} */}
             
               
 
