@@ -107,9 +107,9 @@ export function GlobalStickers() {
   return (
     <>
       {/* ix and iy are 0–1 fractions of viewport width/height for initial placement */}
-      <DraggableSticker src="/images/clippynew.png"                                          ix={0.88} iy={0.65} size={110} />
-      <DraggableSticker src="/images/design-mode/pngtree-goose-flat-icon-png-image_9148185.png" ix={0.04} iy={0.70} size={90}  />
-      <DraggableSticker src="/images/functions/photo1sticker.png"                            ix={0.90} iy={0.20} size={100} />
+      <DraggableSticker src="/images/decorative/mascots/clippy.png"                         ix={0.88} iy={0.65} size={110} />
+      <DraggableSticker src="/images/decorative/stickers/goose.png"                         ix={0.04} iy={0.70} size={90}  />
+      <DraggableSticker src="/images/about/functions/photo1sticker.png"                     ix={0.90} iy={0.20} size={100} />
     </>
   )
 }

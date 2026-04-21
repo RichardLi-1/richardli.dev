@@ -115,12 +115,12 @@ export default function PersonalWebsite() {
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {currently.map(item => (
                     <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-2)", listStyle: "none" }}>
-                      <img src={item.image} alt="" style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%", objectFit: "cover" }}></img>
+                      <img src={item.image} alt="" width={18} height={18} style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%", objectFit: "cover" }} />
                       {item.text}
                     </li>
                   ))}
                 </ul>
-              </div>{/*  
+              </div>  
               <div>
                 <p className="section-label" style={{ marginBottom: 14 }}>Previously</p>
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -131,7 +131,7 @@ export default function PersonalWebsite() {
                     </li>
                   ))}
                 </ul>
-              </div>*/}
+              </div>
             </section>
           </StaggeredContent>
 
@@ -221,7 +221,7 @@ export default function PersonalWebsite() {
           </StaggeredContent>
 
           {isPersonalized && (
-            <DraggableSticker src="/images/homepagestickers/mollytea.png" ix={0.90} iy={0.55} size={80} />
+            <DraggableSticker src="/images/decorative/stickers/molly-tea.png" ix={0.90} iy={0.55} size={80} />
           )}
 
           

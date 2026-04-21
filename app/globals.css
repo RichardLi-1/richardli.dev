@@ -410,9 +410,9 @@ h3 {
 
 /* ── Squircles ──────────────────────────────────────────────────── */
 /* Fallback: conservative radii for browsers without corner-shape support */
-.squircle    { border-radius: 5px; }
-.squircle-md { border-radius: 10px; }
-.squircle-lg { border-radius: 7px; }
+.squircle    { border-radius: 3px; }
+.squircle-md { border-radius: 5px; }
+.squircle-lg { border-radius: 4px; }
 
 /* Progressive enhancement: full squircle when supported */
 @supports (corner-shape: squircle) {

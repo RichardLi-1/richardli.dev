@@ -90,6 +90,8 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
           key={current}
           src={current}
           alt={alt}
+          loading="lazy"
+          decoding="async"
           className={className}
           onLoad={() => setLoaded(true)}
           style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease" }}

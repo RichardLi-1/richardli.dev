@@ -62,7 +62,7 @@ export default function FutureForwardProjectPage() {
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
-                <img src="/images/future-forward-logo.png" alt="Future Forward Logo" className="w-8 h-8 object-contain" />
+                <img src="/images/projects/future-forward/logo.png" alt="Future Forward Logo" className="w-8 h-8 object-contain" />
                 Future Forward
               </h1>
               <h1 className="text-m text-gray-400">Non-profit, 2024-2025</h1>
@@ -72,7 +72,7 @@ export default function FutureForwardProjectPage() {
           <StaggeredContent delay={100}>
             <div className="relative aspect-video w-full overflow-hidden">
               <img
-                src="/images/IMG_7745.jpeg"
+                src="/images/projects/future-forward/workshop-hero.jpeg"
                 alt="Future Forward screenshots"
                 className="w-full h-full object-cover mx-0"
                 style={{ borderRadius: 25 }}
@@ -152,7 +152,7 @@ export default function FutureForwardProjectPage() {
                     {["59 members", "6 clients served", "+300% signups"].map(s => <StatBadge key={s} label={s} />)}
                   </div>
                 </div>
-                <InitiativeImage src="/images/IMG_7099.jpeg" alt="Marketing Club workshop" />
+                <InitiativeImage src="/images/projects/future-forward/workshop-1.jpeg" alt="Marketing Club workshop" />
               </div>
 
               {/* 02 */}
@@ -168,7 +168,7 @@ export default function FutureForwardProjectPage() {
                   </p>
                 </div>
                 <div className="md:order-1">
-                  <InitiativeImage src="/images/IMG_8320.jpeg" alt="Financial literacy session" />
+                  <InitiativeImage src="/images/projects/future-forward/workshop-2.jpeg" alt="Financial literacy session" />
                 </div>
               </div>
 
@@ -235,7 +235,7 @@ export default function FutureForwardProjectPage() {
                   <p style={{ color: "var(--text-3)", fontSize: 13, fontStyle: "italic" }}>"I now know a whole lot more about the business sector and may like to pursue that path." — Student</p>
                 </div>
                 <div className="md:order-1">
-                  <InitiativeImage src="/images/IMG_7745.jpeg" alt="Middle school mentorship workshop" />
+                  <InitiativeImage src="/images/projects/future-forward/workshop-hero.jpeg" alt="Middle school mentorship workshop" />
                 </div>
               </div>
 
@@ -252,7 +252,7 @@ export default function FutureForwardProjectPage() {
                   </div>
                   <p style={{ color: "var(--text-3)", fontSize: 13, fontStyle: "italic" }}>"My students are so unengaged — I want Future Forward in my classes!" — Accounting 11 Teacher</p>
                 </div>
-                <InitiativeImage src="/images/IMG_8320.jpeg" alt="High school mentorship session" />
+                <InitiativeImage src="/images/projects/future-forward/workshop-2.jpeg" alt="High school mentorship session" />
               </div>
 
             </div>

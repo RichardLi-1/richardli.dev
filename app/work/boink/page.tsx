@@ -53,7 +53,7 @@ export default function BoinkProjectPage() {
             {/* Changed from 200 */}
             <div className="text-left mb-8">
               <h1 className="text-4xl font-bold text-green-400 mb-2 flex items-left justify-left gap-2">
-                <img src="/images/boink-logo.webp" alt="Bo!nk Logo" className="w-8 h-8 object-contain rounded-md" />
+                <img src="/images/projects/boink/logo.webp" alt="Bo!nk Logo" className="w-8 h-8 object-contain rounded-md" />
                 Bo!nk
               </h1>
               <p className="text-lg text-gray-300">Game, 2021</p>
@@ -71,7 +71,7 @@ export default function BoinkProjectPage() {
             {/* Changed from 400 */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
               <img
-                src="/images/design-mode/image.png"
+                src="/images/projects/boink/hero.png"
                 alt="Bo!nk game screenshots"
                 className="w-full h-full object-cover"
               />

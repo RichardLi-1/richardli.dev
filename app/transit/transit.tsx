@@ -195,7 +195,7 @@ export default function PersonalWebsite() {
                     <img
                       alt="University of Waterloo"
                       className="inline w-4 h-4 mr-1"
-                      src="/images/design-mode/901917f9b6e74d254525c3e37d3dd934.png"
+                      src="/images/projects/transit/community-poster.png"
                     />
                     <a
                       href="https://uwaterloo.ca/"
@@ -233,7 +233,7 @@ export default function PersonalWebsite() {
                     <img
                       alt="YRHacks Logo"
                       className="inline w-4 h-4 mr-1"
-                      src="/images/design-mode/logo.3aecaa9f.svg"
+                      src="/images/projects/transit/logo.svg"
                     />
                     <a
                       href=""

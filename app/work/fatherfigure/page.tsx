@@ -61,7 +61,7 @@ export default function SalesPatriotProjectPage() {
 
           <StaggeredContent delay={100}>
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-xl" style={{ borderRadius: 25 }}>
-              <img src="/images/design-mode/fatherfigurebanner.png" alt="Father Figure app banner" className="w-full h-full object-cover" />
+              <img src="/images/projects/fatherfigure/banner.png" alt="Father Figure app banner" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
 
@@ -106,9 +106,9 @@ export default function SalesPatriotProjectPage() {
 
         {isPersonalized && (
           <>
-            <DraggableSticker src="/images/fatherfigure/Sneeze.png"       ix={0.72} iy={0.55} size={150} delay={0} />
-            <DraggableSticker src="/images/fatherfigure/Sneeze_Chang.png" ix={0.80} iy={0.25} size={130} delay={200} />
-            <DraggableSticker src="/images/fatherfigure/Sneeze_Dave.png"  ix={0.06} iy={0.45} size={140} delay={400} />
+            <DraggableSticker src="/images/projects/fatherfigure/sneeze.png"       ix={0.72} iy={0.55} size={150} delay={0} />
+            <DraggableSticker src="/images/projects/fatherfigure/sneeze-chang.png" ix={0.80} iy={0.25} size={130} delay={200} />
+            <DraggableSticker src="/images/projects/fatherfigure/sneeze-dave.png"  ix={0.06} iy={0.45} size={140} delay={400} />
           </>
         )}
       </div>

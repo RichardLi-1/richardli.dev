@@ -121,6 +121,11 @@ export default function RootLayout({
             crossOrigin="anonymous" is required for preloading cross-origin fonts. */}
         <link rel="preload" href="/fonts/Toronto-Subway-W01-Regular.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/SFCamera-Regular.otf" as="font" type="font/otf" crossOrigin="anonymous" />
+        {/* Preconnect so the browser opens a TCP+TLS connection before the first image request fires.
+            PageSpeed flags this origin as saving ~300ms on LCP. dns-prefetch is a lighter fallback for
+            browsers that ignore preconnect. */}
+        <link rel="preconnect" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com" />
+        <link rel="dns-prefetch" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com" />
         {/* Disable the browser's built-in scroll restoration so our own
             loading screen + animations always start from the top. */}
         <script dangerouslySetInnerHTML={{ __html: 'history.scrollRestoration = "manual"' }} />

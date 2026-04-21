@@ -39,7 +39,7 @@ export default function SalesPatriotProjectPage() {
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
                 <img
-                  src="/images/cec-logo.webp"
+                  src="/images/projects/cec/logo.webp"
                   alt="Career Education Council Logo"
                   className="w-8 h-8 object-contain" // Adjusted size for title
                 />

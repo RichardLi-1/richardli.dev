@@ -37,7 +37,7 @@ function BoinkContentExtractor() {
     <div className="p-4 space-y-6">
       <div className="text-center mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <img src="/images/boink-logo.webp" alt="Bo!nk Logo" className="w-8 h-8 object-contain rounded-md" />
+          <img src="/images/projects/boink/logo.webp" alt="Bo!nk Logo" className="w-8 h-8 object-contain rounded-md" />
           <h1 className="text-2xl font-bold">Bo!nk</h1>
         </div>
         <p className="text-gray-600">Game, 2021</p>
@@ -45,7 +45,7 @@ function BoinkContentExtractor() {
 
       <div className="mb-6">
         <img
-          src="/images/design-mode/image.png"
+          src="/images/projects/boink/hero.png"
           alt="Bo!nk game screenshots"
           className="w-full max-h-64 object-cover rounded border"
         />
@@ -124,14 +124,14 @@ function FutureForwardContentExtractor() {
     <div className="p-4 space-y-6">
       <div className="text-center mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <img src="/images/future-forward-logo.png" alt="Future Forward Logo" className="w-8 h-8 object-contain" />
+          <img src="/images/projects/future-forward/logo.png" alt="Future Forward Logo" className="w-8 h-8 object-contain" />
           <h1 className="text-2xl font-bold">Future Forward</h1>
         </div>
         <p className="text-gray-600">Non-profit, 2024-2025</p>
       </div>
 
       <div className="mb-6">
-        <img src="/images/IMG_7745.jpeg" alt="Future Forward" className="w-full max-h-64 object-cover rounded border" />
+        <img src="/images/projects/future-forward/workshop-hero.jpeg" alt="Future Forward" className="w-full max-h-64 object-cover rounded border" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -200,7 +200,7 @@ function YRHacksContentExtractor() {
     <div className="p-4 space-y-6">
       <div className="text-center mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <img src="/images/yrhacks-logo.png" alt="YRHacks Logo" className="w-8 h-8 object-contain" />
+          <img src="/images/projects/yrhacks/logo.png" alt="YRHacks Logo" className="w-8 h-8 object-contain" />
           <h1 className="text-2xl font-bold">YRHacks</h1>
         </div>
         <p className="text-gray-600">Hackathon, 2024-2025</p>
@@ -208,7 +208,7 @@ function YRHacksContentExtractor() {
 
       <div className="mb-6">
         <img
-          src="/images/yrhacks crowd.jpeg"
+          src="/images/projects/yrhacks/crowd.jpeg"
           alt="YRHacks crowd"
           className="w-full max-h-64 object-cover rounded border"
         />
@@ -265,7 +265,7 @@ function CECContentExtractor() {
     <div className="p-4 space-y-6">
       <div className="text-center mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <img src="/images/cec-logo.webp" alt="CEC Logo" className="w-8 h-8 object-contain" />
+          <img src="/images/projects/cec/logo.webp" alt="CEC Logo" className="w-8 h-8 object-contain" />
           <h1 className="text-2xl font-bold">Career Education Council</h1>
         </div>
         <p className="text-gray-600">Education, 2024-2025</p>

@@ -22,10 +22,10 @@ function projectThumbnail(p: typeof mainProjects[number]): string | undefined {
 // Work project entries are generated from mainProjects so they stay in sync automatically.
 const PAGE_META: Record<string, { label: string; description: string; image?: string }> = {
   "/":                    { label: "Home",             description: "Hero, current roles, featured projects", image: "/images/website-thumbnail.png" },
-  "/work":                { label: "Work",             description: "All projects",                          image: "/images/transitplannerbanner.png" },
-  "/transit/photography": { label: "Transit Photography", description: "Photos from the TTC and beyond",    image: "/images/IMG_7099.jpeg" },
-  "/transit/fanning":     { label: "Fanning Gallery",  description: "Fanning-style photo layout",           image: "/images/IMG_7099.jpeg" },
-  "/transit/hypo-maps":   { label: "Hypo Maps",        description: "Hypothetical transit map designs",     image: "/images/totransitbanner.png" },
+  "/work":                { label: "Work",             description: "All projects",                          image: "/images/projects/transitplanner/banner.png" },
+  "/transit/photography": { label: "Transit Photography", description: "Photos from the TTC and beyond",    image: "/images/projects/future-forward/workshop-1.jpeg" },
+  "/transit/fanning":     { label: "Fanning Gallery",  description: "Fanning-style photo layout",           image: "/images/projects/future-forward/workshop-1.jpeg" },
+  "/transit/hypo-maps":   { label: "Hypo Maps",        description: "Hypothetical transit map designs",     image: "/images/projects/transit/banner.png" },
   "/chat":                { label: "Chat",              description: "This chatbot" },
   "/contact":             { label: "Contact",           description: "Get in touch" },
   "/resume":              { label: "Resume",            description: "Full résumé" },
@@ -302,7 +302,7 @@ interface ChatBoxProps {
 }
 
 const placeholders = [
-  "What's your favourite pangram?",
+  "What's your favourite song?",
   "Show me Richard's transit photos",
   "What projects has Richard built?",
   "How do I get in touch with Richard?",
@@ -311,6 +311,7 @@ const placeholders = [
   "Where can I see all of Richard's work?",
   "Can I hire Richard?",
   "What's Richard's favourite transit line?",
+  "What's your favourite pangram?",
   "Show me something Richard has designed",
   "What did Richard win at DECA?",
   "Ask me about Transit Planner",

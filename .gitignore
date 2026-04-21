@@ -31,3 +31,6 @@ next-env.d.ts
 .idea/vcs.xml
 .idea/hi-sg.iml
 CONTENTFUL_PATTERNS.md
+scripts/embed.ts
+CLAUDE.md
+lib/chunks.json

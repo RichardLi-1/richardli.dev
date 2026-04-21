@@ -8,14 +8,14 @@ import { useEffect, useState } from "react"
 
 // Sticker images for the "Things I love" masonry grid
 const LOVE_STICKERS = [
-  { src: "/images/functions/photo1sticker.png", alt: "" },
-  { src: "/images/functions/photo2sticker.png", alt: "" },
-  { src: "/images/functions/photo3sticker.png", alt: "" },
-  { src: "/images/functions/photo4sticker.png", alt: "" },
-  { src: "/images/functions/photo5sticker.png", alt: "" },
-  { src: "/images/functions/photo6sticker.png", alt: "" },
-  { src: "/images/functions/photo7sticker.png", alt: "" },
-  { src: "/images/functions/photo8sticker.png", alt: "" },
+  { src: "/images/about/functions/photo1sticker.png", alt: "" },
+  { src: "/images/about/functions/photo2sticker.png", alt: "" },
+  { src: "/images/about/functions/photo3sticker.png", alt: "" },
+  { src: "/images/about/functions/photo4sticker.png", alt: "" },
+  { src: "/images/about/functions/photo5sticker.png", alt: "" },
+  { src: "/images/about/functions/photo6sticker.png", alt: "" },
+  { src: "/images/about/functions/photo7sticker.png", alt: "" },
+  { src: "/images/about/functions/photo8sticker.png", alt: "" },
 ]
 
 // Placeholder experience data — fill in real entries
@@ -258,7 +258,7 @@ export default function MorePage() {
         {/* Personalized mode draggable sticker */}
         {isPersonalized && (
           <a href="/about/functions">
-            <DraggableSticker src="/images/functions/photo1sticker.png" ix={0.85} iy={0.6} size={120} />
+            <DraggableSticker src="/images/about/functions/photo1sticker.png" ix={0.85} iy={0.6} size={120} />
           </a>
         )}
       </div>

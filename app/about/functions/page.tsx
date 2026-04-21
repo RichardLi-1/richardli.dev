@@ -42,7 +42,7 @@ function PhotoImage({
       }}
     >
       <img
-        src={`/images/functions/${src}`}
+        src={`/images/about/functions/${src}`}
         alt={alt}
         draggable={false}
         style={{
@@ -57,7 +57,7 @@ function PhotoImage({
       />
       {realSrc && (
         <img
-          src={`/images/functions/${realSrc}`}
+          src={`/images/about/functions/${realSrc}`}
           alt={alt}
           draggable={false}
           style={{

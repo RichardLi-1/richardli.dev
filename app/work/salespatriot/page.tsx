@@ -44,7 +44,7 @@ export default function SalesPatriotProjectPage() {
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden" style={{cornerShape:"squircle", borderRadius:25}}>
               <img
-                src="/images/design-mode/salespatriott.png"
+                src="/images/projects/salespatriot/hero.png"
                 alt="SalesPatriot screenshots"
                 className="w-full h-full object-cover"
               />
@@ -99,7 +99,7 @@ export default function SalesPatriotProjectPage() {
               <h2 className="text-2xl font-bold text-green-400 mb-4">Example Work</h2>
               <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg border border-gray-700" style={{cornerShape:"squircle", borderRadius:25}}>
                 <img
-                  src="/images/salespatriot-ai-prototype.png"
+                  src="/images/projects/salespatriot/ai-prototype.png"
                   alt="SalesPatriot AI Proposal Writing Figma Prototype"
                   className="w-full h-full object-cover"
                 />

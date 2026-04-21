@@ -1,9 +1,14 @@
 "use client"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
+import { getSuggestedWorkSlug } from "@/lib/work-slug-suggestions"
 
 export default function NotFound() {
+  const pathname = usePathname()
+  const suggestedWorkSlug = getSuggestedWorkSlug(pathname)
+
   return (
     <AnimatedPage>
       <div className="min-h-screen page-bg flex flex-col">
@@ -46,6 +51,31 @@ export default function NotFound() {
             >
               this stop doesn't exist
             </p>
+
+            {suggestedWorkSlug && (
+              <p
+                style={{
+                  color: "var(--text-2)",
+                  marginTop: -12,
+                  marginBottom: 28,
+                  fontSize: 15,
+                  lineHeight: 1.5,
+                }}
+              >
+                Did you mean{" "}
+                <Link
+                  href={`/work/${suggestedWorkSlug.slug}`}
+                  style={{
+                    color: "var(--text)",
+                    textDecoration: "underline",
+                    textUnderlineOffset: 3,
+                  }}
+                >
+                  {suggestedWorkSlug.label}
+                </Link>
+                ?
+              </p>
+            )}
 
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
               <Link

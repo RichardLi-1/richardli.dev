@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav"
 import { FanningGallery, type ContentfulPhoto } from "./FanningGallery"
+import { StaggeredContent } from "@/components/staggered-content"
 
 const SPACE = "arb5i7blr266"
 const CONTENT_TYPE = "transitPhotos"
@@ -67,12 +68,15 @@ export default async function FanningPage() {
   return (
     <div className="site">
       <AnimatedPage>
-      <AnimatedHeader currentPage="/404" backHref="/" backText="Home" />
+      <StaggeredContent delay={0}>
+        <AnimatedHeader currentPage="/404" backHref="/" backText="Home" />
+      </StaggeredContent>
 
       <div className="site-inner">
-
         {false && <Nav /> }
-        <FanningGallery photos={photos} />
+        <StaggeredContent delay={100}>
+          <FanningGallery photos={photos} />
+        </StaggeredContent>
       </div>
       </AnimatedPage>
     </div>

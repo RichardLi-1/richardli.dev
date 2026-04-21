@@ -42,7 +42,7 @@ export default function SightProjectPage() {
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
                 <img
-                  src="/images/jamAsset.PNG"
+                  src="/images/projects/4sight/logo.png"
                   alt="4Sight project logo"
                   className="w-8 h-8 object-contain rounded-md" // Adjusted size for title
                 />

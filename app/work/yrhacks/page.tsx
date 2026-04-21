@@ -56,7 +56,7 @@ export default function YRHacksProjectPage() {
             <div className="text-left mb-8">
               <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-left justify-left gap-2">
                 <img
-                  src="/images/yrhacks-logo.png"
+                  src="/images/projects/yrhacks/logo.png"
                   alt="YRHacks Logo"
                   className="w-8 h-8 object-contain" // Adjusted size for title
                 />
@@ -71,7 +71,7 @@ export default function YRHacksProjectPage() {
             {/* Changed from 400 */}
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
-              <img src="/images/yrhacks crowd.jpeg" alt="YRHacks event photos" className="w-full h-full object-cover" />
+              <img src="/images/projects/yrhacks/crowd.jpeg" alt="YRHacks event photos" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
 
@@ -140,7 +140,7 @@ export default function YRHacksProjectPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <img
-                  src="/images/yrhacksphoto1.jpeg"
+                  src="/images/projects/yrhacks/photo-1.jpeg"
                   alt="Preparing bubble tea"
                 />
               </div>
@@ -181,7 +181,7 @@ export default function YRHacksProjectPage() {
             {/* Changed from 1300 */}
             {/* Team Photo */}
             <div className="relative aspect-video w-full bg-gray-800 overflow-hidden">
-              <img src="/images/yrhacksphoto2.jpeg" alt="YRHacks image 2" className="w-full h-full object-cover" />
+              <img src="/images/projects/yrhacks/photo-2.jpeg" alt="YRHacks image 2" className="w-full h-full object-cover" />
             </div>
             <p className="text-gray-300">
               Organizing YRHacks was truly a fun experience. Knowing how transformative YRHacks was for me as my first hackathon, I'm glad to have helped make the same experience happen for everyone who participated this year.
@@ -194,7 +194,7 @@ export default function YRHacksProjectPage() {
             {/* Team Photo */}
             <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden">
               <img
-                src="/images/design-mode/PXL_20240927_153504407.jpg"
+                src="/images/projects/yrhacks/station-photo.jpg"
                 alt="YRHacks team photo"
                 className="w-full h-full object-cover"
               />
