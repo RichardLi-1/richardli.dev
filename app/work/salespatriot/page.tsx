@@ -32,7 +32,7 @@ export default function SalesPatriotProjectPage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="antialiased max-w-6xl mx-auto p-6" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
+        <main className="antialiased max-w-3xl mx-auto p-6" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             <div className="text-left mb-4">
               <h1 className="text-3xl font-bold mb-2">SalesPatriot (YC W25)</h1>

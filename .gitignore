@@ -34,3 +34,4 @@ CONTENTFUL_PATTERNS.md
 scripts/embed.ts
 CLAUDE.md
 lib/chunks.json
+**/.DS_Store

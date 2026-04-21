@@ -8,6 +8,7 @@ import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
+import { CaseStudyNav } from "@/components/case-study-nav"
 
 export default function TransitPlannerProjectPage() {
   usePageViewTracker()
@@ -99,6 +100,14 @@ export default function TransitPlannerProjectPage() {
           />
         </div>
       )}
+      {!isPanel && (
+        <CaseStudyNav sections={[
+          { id: "project-origins", label: "Project Origins" },
+          { id: "inspiration", label: "Inspiration" },
+          { id: "initial-development", label: "Initial Development" },
+          { id: "more-features", label: "More Features" },
+        ]} />
+      )}
       <div className="mx-auto">
         <AnimatedHeader
           backHref="/work"
@@ -106,7 +115,7 @@ export default function TransitPlannerProjectPage() {
           currentPage="/work/transitplanner"
         />
 
-        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
+        <main className="max-w-3xl mx-auto p-6 space-y-6" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             <div className="flex">
               <div className="mb-0">
@@ -187,7 +196,7 @@ export default function TransitPlannerProjectPage() {
 
           <StaggeredContent delay={400}>
             <div className="mb-8">
-              <h2 className="font-bold mb-4 text-2xl">Project Origins</h2>
+              <h2 id="project-origins" className="font-bold mb-4 text-2xl">Project Origins</h2>
               <div className="photo-card" style={{ padding: 0, overflow: "hidden", borderRadius: 20 }}>
                 <div className="flex items-start gap-6 p-6">
                   <div className="w-2/3 shrink-0">
@@ -212,14 +221,14 @@ export default function TransitPlannerProjectPage() {
               </div>
 
 
-              <h2 className="font-bold mt-8 mb-2 text-2xl">Inspiration</h2>
+              <h2 id="inspiration" className="font-bold mt-8 mb-2 text-2xl">Inspiration</h2>
               <p>As a kid, I spent countless hours on subway builders like JP Wright's <a href="https://jpwright.github.io/subway/" target="_blank" rel="noopener noreferrer" className="underline inline-block transition-transform duration-150 hover:scale-95">Brand New Subway</a>.</p>
 
-              <h2 className="font-bold mt-8 mb-2 text-2xl">Initial Development</h2>
+              <h2 id="initial-development" className="font-bold mt-8 mb-2 text-2xl">Initial Development</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
               <img src="/images/projects/transitplanner/launch-tweet.png" alt="Transit Planner Launch Tweet by Fiona Fang" className="w-full squircle rounded-lg aspect-square sm:aspect-auto object-cover" />
               
-              <h2 className="font-bold mt-8 mb-2 text-2xl">More features</h2>
+              <h2 id="more-features" className="font-bold mt-8 mb-2 text-2xl">More features</h2>
               <p className="mb-2">We're excited to develop this further. Here are some features I've added since: </p>
                 
                 <h3 className="font-semibold mt-4 mb-2 text-lg">Surface Route Accuracy</h3>

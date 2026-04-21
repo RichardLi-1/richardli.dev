@@ -48,7 +48,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <>
           {/* XP mode completely replaces the normal site with the desktop overlay */}
           {isXPMode && <WindowsXPDesktop />}
-          {!isXPMode && <>{children}<Footer /></>}
+          {!isXPMode && (
+            <div className="app-scroll-shell">
+              {children}
+              <Footer />
+            </div>
+          )}
         </>
       )}
     </>

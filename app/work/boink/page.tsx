@@ -7,6 +7,7 @@ import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
+import { CaseStudyNav } from "@/components/case-study-nav"
 
 const allTeam = [
   { name: "Dorian Chen", role: "Project Lead" },
@@ -36,6 +37,16 @@ export default function BoinkProjectPage() {
   }, [])
   return (
     <AnimatedPage>
+      {!isPanel && (
+        <CaseStudyNav sections={[
+          { id: "bk-background", label: "Background" },
+          { id: "bk-design", label: "Design & Gameplay" },
+          { id: "bk-technical", label: "Technical" },
+          { id: "bk-reviews", label: "User Reviews" },
+          { id: "bk-appstore", label: "App Store Journey" },
+          { id: "bk-takeaways", label: "Results & Takeaways" },
+        ]} />
+      )}
       <div className="min-h-screen page-bg">
         <AnimatedHeader
           backHref="/work"
@@ -47,7 +58,7 @@ export default function BoinkProjectPage() {
           ]}
         />
 
-        <main className="max-w-6xl mx-auto p-6" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
+        <main className="max-w-3xl mx-auto p-6" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}
@@ -149,7 +160,7 @@ export default function BoinkProjectPage() {
             <div className="prose prose-invert prose-green max-w-none">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                 <div>
-                  <h2 className="text-2xl font-bold text-green-400 mb-4">Background</h2>
+                  <h2 id="bk-background" className="text-2xl font-bold text-green-400 mb-4">Background</h2>
                   <p className="text-gray-300">
                     Growing up, I spent countless hours on virtual machines, experimenting with old Windows versions. In
                     particular, Windows Vista always stood out to me, especially the game InkBall. The simple yet
@@ -173,7 +184,7 @@ export default function BoinkProjectPage() {
                 </div>
               </div>
 
-                <h2 className="text-2xl font-bold text-green-400 mb-4">Design and Gameplay</h2>
+                <h2 id="bk-design" className="text-2xl font-bold text-green-400 mb-4">Design and Gameplay</h2>
                 <video
                   src="/videos/boink-gameplay.MOV"
                   aria-label="Bo!nk gameplay footage"
@@ -227,7 +238,7 @@ export default function BoinkProjectPage() {
                 We also added a twist: players have a finite amount of ink to draw lines per level. Thus, players must be frugal in their inputs.
               </p>
 
-              <h2 className="text-2xl font-bold text-green-400 mb-4">Technical Implementation</h2>
+              <h2 id="bk-technical" className="text-2xl font-bold text-green-400 mb-4">Technical Implementation</h2>
               <p className="text-gray-300 mb-4">
                 The game was built in Unity using C#, ShaderLab, and HLSL. Our team tackled key technical challenges including:
               </p>
@@ -240,7 +251,7 @@ export default function BoinkProjectPage() {
                 <li>• Implementing proper game state management and save/load functionality</li>
               </ul>
 
-              <h2 className="text-2xl font-bold text-green-400 mb-4">User Reviews</h2>
+              <h2 id="bk-reviews" className="text-2xl font-bold text-green-400 mb-4">User Reviews</h2>
               <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 mb-8">
                 <div className="flex items-center mb-2">
                   <div className="flex text-yellow-400 mr-2">
@@ -256,7 +267,7 @@ export default function BoinkProjectPage() {
                 </p>
               </div>
 
-              <h2 className="text-2xl font-bold text-green-400 mb-4">App Store Journey</h2>
+              <h2 id="bk-appstore" className="text-2xl font-bold text-green-400 mb-4">App Store Journey</h2>
               <p className="text-gray-300 mb-4">
                 Publishing Bo!nk on the App Store was a significant learning experience. The process involved:
               </p>
@@ -273,7 +284,7 @@ export default function BoinkProjectPage() {
                 </li>
               </ul>
 
-              <h2 className="text-2xl font-bold text-green-400 mb-4">Results & Takeaways</h2>
+              <h2 id="bk-takeaways" className="text-2xl font-bold text-green-400 mb-4">Results &amp; Takeaways</h2>
               <p className="text-gray-300 mb-4">
                 Bo!nk successfully launched on the App Store and provided valuable insights into mobile game
                 development:
@@ -336,8 +347,6 @@ export default function BoinkProjectPage() {
           )}
         </main>
 
-        <StaggeredContent delay={1100}>
-        </StaggeredContent>
       </div>
     </AnimatedPage>
   )

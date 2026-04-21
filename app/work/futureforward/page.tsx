@@ -7,6 +7,7 @@ import { Youtube, X, ArrowUpRight } from "lucide-react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useIsPanel } from "@/hooks/use-is-panel"
+import { CaseStudyNav } from "@/components/case-study-nav"
 
 const GLOW: React.CSSProperties = { position: "absolute", inset: -20, background: "rgba(59,54,156,0.35)", filter: "blur(36px)", borderRadius: 28, zIndex: 0 }
 const LABEL_STYLE: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, letterSpacing: "0.18em", color: "var(--text-3)", textTransform: "uppercase" }
@@ -47,6 +48,17 @@ export default function FutureForwardProjectPage() {
 
   return (
     <AnimatedPage>
+      {!isPanel && (
+        <CaseStudyNav sections={[
+          { id: "ff-marketing", label: "Marketing Club" },
+          { id: "ff-financial", label: "Financial Literacy" },
+          { id: "ff-careerfair", label: "Career Fair" },
+          { id: "ff-app", label: "FF Careers App" },
+          { id: "ff-branches", label: "Branches" },
+          { id: "ff-ms-mentorship", label: "Middle School" },
+          { id: "ff-hs-mentorship", label: "High School" },
+        ]} />
+      )}
       <div className="mx-auto p-6 space-y-6">
         <AnimatedHeader
           backHref="/work"
@@ -58,7 +70,7 @@ export default function FutureForwardProjectPage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-6xl mx-auto p-6 space-y-6" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
+        <main className="max-w-3xl mx-auto p-6 space-y-6" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
@@ -144,7 +156,7 @@ export default function FutureForwardProjectPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3">
                   <p style={LABEL_STYLE}>Initiative 01</p>
-                  <h3 style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>📊 Marketing Club</h3>
+                  <h3 id="ff-marketing" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>📊 Marketing Club</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     A hands-on marketing firm serving six organizations. Members rotated through roles like Account Manager, tried each job, and got personalized career results based on surveys. Grew signups 300% to 59 members.
                   </p>
@@ -159,7 +171,7 @@ export default function FutureForwardProjectPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3 md:order-2">
                   <p style={LABEL_STYLE}>Initiative 02</p>
-                  <h3 style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>💰 Financial Literacy Series</h3>
+                  <h3 id="ff-financial" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>💰 Financial Literacy Series</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Partnered with Markville Finance Club to deliver two financial literacy lessons to 15 students and hosted the University of Waterloo Financial Literacy Competition with 11 participants.
                   </p>
@@ -176,7 +188,7 @@ export default function FutureForwardProjectPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3">
                   <p style={LABEL_STYLE}>Initiative 03</p>
-                  <h3 style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🎤 Career Fair</h3>
+                  <h3 id="ff-careerfair" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🎤 Career Fair</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Hosted a virtual career fair with 6 speakers including the CEO of Basel Medical Group, a McKinsey Business Analyst, and a Program Manager at Alstom. Attendees completed surveys tied to the FF Careers AI to receive personalized career reports.
                   </p>
@@ -192,7 +204,7 @@ export default function FutureForwardProjectPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3 md:order-2">
                   <p style={LABEL_STYLE}>Initiative 04</p>
-                  <h3 style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>📱 FF Careers App</h3>
+                  <h3 id="ff-app" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>📱 FF Careers App</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Built an AI-powered career matching app at ffcareers.app. Instead of generic career tests, it prompts reflection questions and curates ranked careers with outlook ratings. Mentored by a former Apple Software Engineer and featured at an Apple × CEC App Showcase.
                   </p>
@@ -210,7 +222,7 @@ export default function FutureForwardProjectPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3">
                   <p style={LABEL_STYLE}>Initiative 05</p>
-                  <h3 style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🌐 Branches & Community</h3>
+                  <h3 id="ff-branches" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🌐 Branches & Community</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Launched a Discord server and grew a 308-member community. Started FF New York and FF California branches with pre-packaged resources, which spun up their own social media and community servers totalling 200 members.
                   </p>
@@ -225,7 +237,7 @@ export default function FutureForwardProjectPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3 md:order-2">
                   <p style={LABEL_STYLE}>Initiative 06</p>
-                  <h3 style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🏫 Middle School Mentorship</h3>
+                  <h3 id="ff-ms-mentorship" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🏫 Middle School Mentorship</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Visited grades 7–8 at three Crowle Public Schools to introduce students to business careers before high school. Each session included a live trading game teaching collaboration, negotiation, and delegation.
                   </p>
@@ -243,7 +255,7 @@ export default function FutureForwardProjectPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3">
                   <p style={LABEL_STYLE}>Initiative 07</p>
-                  <h3 style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🎓 High School Mentorship</h3>
+                  <h3 id="ff-hs-mentorship" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🎓 High School Mentorship</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Delivered in-class presentations to grades 9–11 covering the FF Five framework, business case studies, and a LinkedIn Masterclass where students practiced networking with real professionals. Posted all recordings to YouTube for those who couldn't attend.
                   </p>
