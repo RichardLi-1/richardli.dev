@@ -46,6 +46,7 @@
   --surface-hover: #1e1c1a;
   --border-2: rgba(255, 255, 255, 0.08);
   --glass-bg: rgba(12, 12, 11, 0.85);
+  --pure: #000000;
 
   --background: 0 0% 5%;
   --foreground: 30 8% 91%;
@@ -82,6 +83,7 @@
   --surface-hover: #e5e3de;
   --border-2: rgba(0, 0, 0, 0.09);
   --glass-bg: rgba(245, 244, 240, 0.85);
+  --pure: #ffffff;
 
   --background: 40 15% 95%;
   --foreground: 25 10% 10%;

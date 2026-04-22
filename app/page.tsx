@@ -159,7 +159,7 @@ export default function PersonalWebsite() {
                         aspectRatio: "16/9",
                         borderRadius: 16,
                         cornerShape: "squircle",
-                        background: "var(--surface)",
+                        background: "var(--pure)",
                         marginBottom: 10,
                       }}>
                         <div style={{ width: "100%", height: "100%", overflow: "hidden", borderRadius: 16, cornerShape: "squircle" } as React.CSSProperties}>
