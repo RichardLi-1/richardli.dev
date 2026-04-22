@@ -151,7 +151,7 @@ export default function TransitPlannerProjectPage() {
           <StaggeredContent delay={300}>
             <div className="flex space-x-3 mb-4">
               <div className="flex squircle bg-zinc-200 dark:bg-zinc-800 max-width w-full rounded-xl border-2">
-                <p className="p-2 py-3 px-3.5 text-zinc-800 dark:text-zinc-300">🥇 This project was awarded at Hack Canada 2026 in the Google - Build with AI Track</p>
+                <p className="p-2 py-3 px-3.5 text-zinc-800 dark:text-zinc-300">🥇 This project was awarded at Hack Canada 2026</p>
               </div>
               <a href="https://www.transitplan.xyz/" target="_blank" rel="noopener noreferrer" className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90">Try it out!</a>
             </div>
