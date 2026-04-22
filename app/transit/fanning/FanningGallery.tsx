@@ -1,5 +1,7 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
+import { StaggeredContent } from "@/components/staggered-content"
 
 export interface ContentfulPhoto {
   id: string
@@ -30,6 +32,8 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
   const [search, setSearch] = useState("")
   const [loadedIds, setLoadedIds] = useState<Set<string>>(new Set())
   const [featuredLoaded, setFeaturedLoaded] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   // Use the explicitly featured photo, fallback to first
   const featured = photos.find((p) => p.featured) ?? photos[0] ?? null
@@ -44,129 +48,136 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
 
   return (
     <main className="main max-w-[815px] mx-auto">
-      <div className="hero">
-        <h1 className="hero-title">Transit Fanning</h1>
-        <p className="hero-sub">Photos from around the network</p>
-      </div>
+      <StaggeredContent delay={0}>
+        <div className="hero">
+          <h1 className="hero-title">Transit Fanning</h1>
+          <p className="hero-sub">Photos from around the network</p>
+        </div>
+      </StaggeredContent>
 
       {/* ── Featured card ── */}
       {featured && (
-        <div className="featured-card" onClick={() => setSelected(featured)} style={{ cursor: "pointer" }}>
-          <div className="featured-image-wrap" style={{ position: "relative" }}>
-            {!featuredLoaded && <div className="featured-image-placeholder" />}
-            <img
-              src={`${featured.url}?w=1400`}
-              alt={featured.title}
-              onLoad={() => setFeaturedLoaded(true)}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-                opacity: featuredLoaded ? 1 : 0,
-                transition: "opacity 0.4s ease",
-                position: featuredLoaded ? "static" : "absolute",
-              }}
-            />
-          </div>
-          <div className="featured-caption-row">
-            <div className="featured-caption-left">
-              <p className="featured-title">{featured.title}</p>
-              <p className="featured-by">@_transitfanner</p>
+        <StaggeredContent delay={100}>
+          <div className="featured-card" onClick={() => setSelected(featured)} style={{ cursor: "pointer" }}>
+            <div className="featured-image-wrap" style={{ position: "relative", minHeight: featuredLoaded ? undefined : 240 }}>
+              <div className="featured-image-placeholder" style={{ position: "absolute", inset: 0, opacity: featuredLoaded ? 0 : 1, transition: "opacity 0.4s ease", pointerEvents: "none" }} />
+              <img
+                ref={(el) => { if (el?.complete && !featuredLoaded) setFeaturedLoaded(true) }}
+                src={`${featured.url}?w=1400`}
+                alt={featured.title}
+                onLoad={() => setFeaturedLoaded(true)}
+                onError={() => setFeaturedLoaded(true)}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                  opacity: featuredLoaded ? 1 : 0,
+                  transition: "opacity 0.4s ease",
+                }}
+              />
             </div>
-            <div className="featured-meta-grid">
-              {(featured.agency || featured.station || featured.vehicle) && (
-                <div className="meta-col">
-                  {featured.agency    && <span>{featured.agency}</span>}
-                  {featured.station   && <span>{featured.station}</span>}
-                  {featured.vehicle   && <span>{featured.vehicle}</span>}
-                </div>
-              )}
-              {(featured.camera || featured.focal || featured.fStop || featured.exposureTime) && (
-                <div className="meta-col">
-                  {featured.camera       && <span>{featured.camera}</span>}
-                  {featured.focal        && <span>{featured.focal}</span>}
-                  {featured.fStop        && <span>f/{featured.fStop}</span>}
-                  {featured.exposureTime && <span>{featured.exposureTime}s</span>}
-                </div>
-              )}
+            <div className="featured-caption-row">
+              <div className="featured-caption-left">
+                <p className="featured-title">{featured.title}</p>
+                <p className="featured-by">@_transitfanner</p>
+              </div>
+              <div className="featured-meta-grid">
+                {(featured.agency || featured.station || featured.vehicle) && (
+                  <div className="meta-col">
+                    {featured.agency    && <span>{featured.agency}</span>}
+                    {featured.station   && <span>{featured.station}</span>}
+                    {featured.vehicle   && <span>{featured.vehicle}</span>}
+                  </div>
+                )}
+                {(featured.camera || featured.focal || featured.fStop || featured.exposureTime) && (
+                  <div className="meta-col">
+                    {featured.camera       && <span>{featured.camera}</span>}
+                    {featured.focal        && <span>{featured.focal}</span>}
+                    {featured.fStop        && <span>f/{featured.fStop}</span>}
+                    {featured.exposureTime && <span>{featured.exposureTime}s</span>}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </StaggeredContent>
       )}
 
       {/* ── Search toolbar ── */}
-      <div className="toolbar">
-        <div className="search-wrap">
-          <svg
-            className="search-icon"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <input
-            className="search-input"
-            type="text"
-            placeholder="Search photos…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+      <StaggeredContent delay={200}>
+        <div className="toolbar">
+          <div className="search-wrap">
+            <svg
+              className="search-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Search photos…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
+      </StaggeredContent>
 
       {/* ── Photo grid ── */}
-      <div className="fanning-grid">
-        {filtered.length === 0 ? (
-          <p style={{ color: "var(--text-3)", fontSize: 14 }}>
-            {gridPhotos.length === 0 ? "No photos yet." : "No photos match your search."}
-          </p>
-        ) : (
-          filtered.map((photo, i) => (
-            <div key={photo.id} className="photo-item" onClick={() => setSelected(photo)}>
-              <div
-                className="photo-thumb"
-                style={{
-                  overflow: "hidden",
-                  position: "relative",
-                  aspectRatio: "unset",
-                  height: loadedIds.has(photo.id) ? "auto" : 200,
-                  backgroundColor: loadedIds.has(photo.id) ? "transparent" : SKELETON_COLORS[i % SKELETON_COLORS.length],
-                  backgroundImage: loadedIds.has(photo.id)
-                    ? "none"
-                    : "linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.28) 50%, transparent 70%)",
-                  backgroundSize: "200% 100%",
-                  animation: loadedIds.has(photo.id) ? "none" : "shimmer 2s ease-in-out infinite",
-                }}
-              >
-                <img
-                  src={`${photo.url}?w=800`}
-                  alt={photo.title}
-                  onLoad={() => setLoadedIds(s => new Set(s).add(photo.id))}
+      <StaggeredContent delay={300}>
+        <div className="fanning-grid">
+          {filtered.length === 0 ? (
+            <p style={{ color: "var(--text-3)", fontSize: 14 }}>
+              {gridPhotos.length === 0 ? "No photos yet." : "No photos match your search."}
+            </p>
+          ) : (
+            filtered.map((photo, i) => (
+              <div key={photo.id} className="photo-item" onClick={() => setSelected(photo)}>
+                <div
+                  className="photo-thumb"
                   style={{
-                    width: "100%",
-                    display: "block",
-                    borderRadius: 20,
-                    opacity: loadedIds.has(photo.id) ? 1 : 0,
-                    transition: "opacity 0.3s ease",
+                    position: "relative",
+                    ...(loadedIds.has(photo.id)
+                      ? { backgroundImage: "none", animation: "none" }
+                      : { backgroundColor: SKELETON_COLORS[i % SKELETON_COLORS.length] }),
                   }}
-                />
+                >
+                  <img
+                    src={`${photo.url}?w=800`}
+                    alt={photo.title}
+                    ref={(el) => { if (el?.complete && !loadedIds.has(photo.id)) setLoadedIds(s => new Set(s).add(photo.id)) }}
+                    onLoad={() => setLoadedIds(s => new Set(s).add(photo.id))}
+                    onError={() => setLoadedIds(s => new Set(s).add(photo.id))}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      opacity: loadedIds.has(photo.id) ? 1 : 0,
+                      transition: "opacity 0.3s ease",
+                    }}
+                  />
+                </div>
+                {photo.title && <p className="photo-attr">{photo.title}</p>}
               </div>
-              {photo.title && <p className="photo-attr">{photo.title}</p>}
-            </div>
-          ))
-        )}
-      </div>
+            ))
+          )}
+        </div>
+      </StaggeredContent>
 
       {/* ── Modal ── */}
-      {selected && (
+      {selected && mounted && createPortal(
         <div
           onClick={() => setSelected(null)}
           style={{
@@ -261,7 +272,8 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </main>
   )

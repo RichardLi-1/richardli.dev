@@ -68,9 +68,7 @@ export default async function FanningPage() {
   return (
     <div className="site">
       <AnimatedPage>
-      <StaggeredContent delay={0}>
         <AnimatedHeader currentPage="/404" backHref="/" backText="Home" />
-      </StaggeredContent>
 
       <div className="site-inner">
         {false && <Nav /> }

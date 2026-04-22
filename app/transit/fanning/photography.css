@@ -51,7 +51,7 @@
 /* ── Featured card ───────────────────────────────────── */
 .featured-card {
   background: var(--card-bg);
-  border-radius: 32px;
+  border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 }
@@ -188,6 +188,12 @@
 }
 
 /* ── Photo grid ──────────────────────────────────────── */
+.fanning-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -209,7 +215,7 @@
 .photo-thumb {
   width: 100%;
   aspect-ratio: 4 / 3;
-  border-radius: 20px;
+  border-radius: 8px;
   overflow: hidden;
   background-image: linear-gradient(
     100deg,
@@ -249,6 +255,9 @@
 }
 
 @media (max-width: 640px) {
+  .fanning-grid {
+    grid-template-columns: 1fr;
+  }
   .photo-grid {
     grid-template-columns: repeat(2, 1fr);
   }
