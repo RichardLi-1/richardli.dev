@@ -508,16 +508,16 @@ header {
 .dark .header-pill {
   background: linear-gradient(135deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.18) 100%);
   border-color: rgba(255,255,255,0.18);
-  backdrop-filter: blur(8px) saturate(180%);
-  -webkit-backdrop-filter: blur(8px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow: 0 2px 20px rgba(0,0,0,0.2);
 }
 
 .light .header-pill {
   background: linear-gradient(135deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.45) 100%);
   border-color: rgba(255,255,255,0.6);
-  backdrop-filter: blur(8px) saturate(180%);
-  -webkit-backdrop-filter: blur(8px) saturate(180%);
+  backdrop-filter: blur(4px) saturate(180%);
+  -webkit-backdrop-filter: blur(4px) saturate(180%);
   box-shadow: 0 2px 20px rgba(0,0,0,0.12);
 }
 

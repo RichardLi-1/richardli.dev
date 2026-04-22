@@ -617,8 +617,8 @@ export function AnimatedHeader({
               borderRadius: "20px",
               border: isHighContrast ? "2px solid var(--text)" : isScrolled ? "1px solid rgba(255,255,255,0.18)" : "1px solid transparent",
               background: isHighContrast ? "var(--bg)" : isScrolled ? (theme === "dark" ? "linear-gradient(135deg, rgba(0,0,0,0.32), rgba(0,0,0,0.18))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
-              backdropFilter: isHighContrast ? "none" : isScrolled ? "blur(8px) saturate(180%)" : "none",
-              WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? "blur(8px) saturate(180%)" : "none",
+              backdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
+              WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
               boxShadow: isHighContrast ? "none" : isScrolled ? "0 2px 20px rgba(0,0,0,0.2)" : "none",
               transition: "border-color 0.2s, box-shadow 0.2s, background 0.2s",
             }}>
@@ -637,8 +637,8 @@ export function AnimatedHeader({
               borderRadius: "20px",
               border: isHighContrast ? "2px solid var(--text)" : isScrolled ? "1px solid rgba(255,255,255,0.18)" : "1px solid transparent",
               background: isHighContrast ? "var(--bg)" : isScrolled ? (theme === "dark" ? "linear-gradient(135deg, rgba(0,0,0,0.32), rgba(0,0,0,0.18))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
-              backdropFilter: isHighContrast ? "none" : isScrolled ? "blur(8px) saturate(180%)" : "none",
-              WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? "blur(8px) saturate(180%)" : "none",
+              backdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
+              WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
               boxShadow: isHighContrast ? "none" : isScrolled ? "0 2px 20px rgba(0,0,0,0.2)" : "none",
               transition: "border-color 0.2s, box-shadow 0.2s, background 0.2s",
             }}>
