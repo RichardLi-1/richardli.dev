@@ -150,7 +150,7 @@ export default function SaFuturePage() {
                 <div>
                   <Users className="w-6 h-6 mb-4" style={{ color: "var(--text)" }} />
                   <h3 className="font-bold mb-2">Teamwork & Collaboration</h3>
-                  <p style={{ color: "var(--text-2)" }}>Effective communication in projects with many moving parts.</p>
+                  <p style={{ color: "var(--text-2)" }}>Effective cross-functional communication in projects with many moving parts.</p>
                 </div>
               </div>
             </div>

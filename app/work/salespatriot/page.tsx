@@ -42,7 +42,7 @@ export default function SalesPatriotProjectPage() {
 
           <StaggeredContent delay={100}>
             {/* Hero Image */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden" style={{cornerShape:"squircle", borderRadius:25}}>
+            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden" style={{cornerShape:"squircle", borderRadius:16}}>
               <img
                 src="/images/projects/salespatriot/hero.png"
                 alt="SalesPatriot screenshots"
@@ -97,7 +97,7 @@ export default function SalesPatriotProjectPage() {
           <StaggeredContent delay={500}>
             <section className="space-y-6 mb-12">
               <h2 className="text-2xl font-bold text-green-400 mb-4">Example Work</h2>
-              <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg border border-gray-700" style={{cornerShape:"squircle", borderRadius:25}}>
+              <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg border border-gray-700" style={{cornerShape:"squircle", borderRadius:16}}>
                 <img
                   src="/images/projects/salespatriot/ai-prototype.png"
                   alt="SalesPatriot AI Proposal Writing Figma Prototype"

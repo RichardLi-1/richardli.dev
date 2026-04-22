@@ -607,7 +607,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
             }}
             placeholder={followUpQuestion ? "" : placeholders[placeholderIndex]}
             className="w-full"
-            style={{ background: "var(--surface)", borderColor: "var(--border-2)", color: "var(--text)", cornerShape: "squircle", borderRadius: 20 }}
+            style={{ background: "var(--surface)", borderColor: "var(--border-2)", color: "var(--text)", cornerShape: "squircle", borderRadius: 16 }}
             disabled={isLoading}
           />
           {/* Tab hint — invisible ghost text matches placeholder width, badge lands right after it */}
@@ -632,7 +632,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
             </div>
           )}
         </div>
-        <Button type="submit" size="icon" style={{ background: "var(--text)", color: "var(--bg)", cornerShape: "squircle", borderRadius: 20 }} disabled={isLoading}>
+        <Button type="submit" size="icon" style={{ background: "var(--text)", color: "var(--bg)", cornerShape: "squircle", borderRadius: 16 }} disabled={isLoading}>
           <Send className="w-4 h-4" />
         </Button>
       </form>

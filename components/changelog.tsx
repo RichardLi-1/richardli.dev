@@ -16,6 +16,21 @@ interface ChangelogEntry {
 
 export const entries: ChangelogEntry[] = [
   {
+    date: "04/21/2026 - v2.4.0",
+    changes: [
+      "Case study navigation added on desktop, with active-section tracking tied to the page midpoint for more natural scroll progress",
+      "Case study layouts standardized to a shared reading width, plus improved responsiveness across project pages",
+      "Scroll handling moved into an inner app shell to reduce bounce while preserving trackpad back/forward gestures",
+      "Transit Planner case study expanded with zoomable detail imagery and improved media cropping",
+      "Homepage now carries the main projects experience, while /work is de-emphasized",
+      { text: "404 page now suggests likely matches using Levenshtein distance", badge: "New" },
+      "Image library reorganized into cleaner project/about folders, with multiple case study assets refreshed",
+      "AI chat retrieval improved with query rewriting, stronger system prompt guidance, and cleaner text/input styling",
+      "Email links now open with prefilled subject/body, and the loading screen/session gating was removed for faster entry",
+      "Header glass styling tuned further, with theme-specific blur values for light and dark mode",
+    ],
+  },
+  {
     date: "04/10/2026 - v2.3.0",
     media: { type: "video", src: "/videos/2.3.0 changes.mp4", alt: "v2.3.0 feature showcase" },
     changes: [

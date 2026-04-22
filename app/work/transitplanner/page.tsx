@@ -133,7 +133,7 @@ export default function TransitPlannerProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
-            <div className="relative w-full overflow-hidden squircle rounded-lg bg-[var(--surface)]" style={{ aspectRatio: "960/594" }}>
+            <div className="relative w-full overflow-hidden squircle rounded-lg bg-[var(--surface)]" style={{ aspectRatio: "960/594", borderRadius: 16 }}>
               <video
                 src="/videos/transitplanfinal.mov"
                 aria-label="Transit Planner app demo"

@@ -82,12 +82,11 @@ export default function FutureForwardProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
-            <div className="relative aspect-video w-full overflow-hidden">
+            <div className="relative aspect-video w-full overflow-hidden squircle" style={{ borderRadius: 16 }}>
               <img
                 src="/images/projects/future-forward/workshop-hero.jpeg"
                 alt="Future Forward screenshots"
                 className="w-full h-full object-cover mx-0"
-                style={{ borderRadius: 25 }}
               />
             </div>
           </StaggeredContent>

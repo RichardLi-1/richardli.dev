@@ -280,7 +280,7 @@ export default function PersonalWebsite() {
                       style={{ "--glow-color": project.colors || "#22c55e99" } as React.CSSProperties}
                     >
                       <CardContent className="p-0 h-full flex flex-col">
-                        <div className="aspect-video w-full bg-gray-800 overflow-hidden squircle-lg transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]">
+                        <div className="aspect-video w-full bg-gray-800 overflow-hidden squircle-lg transition-shadow duration-300 group-hover:shadow-[0_0px_120px_-20px_var(--glow-color)]" style={{ borderRadius: 16 }}>
                           <ProjectImageCycler
                             images={[project.image, (project as any).image2, (project as any).image3]}
                             alt={project.title}

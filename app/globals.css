@@ -387,8 +387,7 @@ h3 {
 
 /* ── Card ───────────────────────────────────────────────────────── */
 .photo-card {
-  border-radius: 48px;
-  corner-shape: superellipse(1);
+  border-radius: 14px;
   overflow: visible;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -423,12 +422,33 @@ h3 {
 
 /* ── Squircles ──────────────────────────────────────────────────── */
 /* Fallback: conservative radii for browsers without corner-shape support */
-.squircle    { border-radius: 3px; }
-.squircle-md { border-radius: 5px; }
-.squircle-lg { border-radius: 4px; }
+@supports not (corner-shape: squircle) {
+  .photo-card {
+    border-radius: 14px;
+  }
+
+  .squircle {
+    border-radius: 3px !important;
+  }
+
+  .squircle-md {
+    border-radius: 14px !important;
+  }
+
+  .squircle-lg {
+    border-radius: 4px !important;
+  }
+
+  /* Some components set a large inline borderRadius alongside corner-shape.
+     Clamp those back down on unsupported browsers, especially mobile Safari. */
+  [style*="corner-shape"] {
+    border-radius: 10px !important;
+  }
+}
 
 /* Progressive enhancement: full squircle when supported */
 @supports (corner-shape: squircle) {
+  .photo-card    { border-radius: 48px; corner-shape: superellipse(1); }
   .squircle    { border-radius: 16px; corner-shape: squircle; }
   .squircle-md { border-radius: 48px; corner-shape: squircle; }
   .squircle-lg { border-radius: 24px; corner-shape: squircle; }

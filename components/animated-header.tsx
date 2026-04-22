@@ -344,7 +344,7 @@ export function AnimatedHeader({
               <button
                 onClick={() => { toggleHighContrast(); trackEvent("◑ High contrast toggled", { location: "mobile pill" }) }}
                 className="nav-item"
-                style={{ padding: "4px 6px", color: isHighContrast ? "var(--text)" : "var(--text-2)" }}
+                style={{ padding: "4px 6px" }}
                 aria-label="Toggle high contrast"
               >
                 <Contrast className="w-3 h-3" />
@@ -521,6 +521,7 @@ export function AnimatedHeader({
       {isChatOpen && !isMobile && (
         // Desktop: draggable + resizable floating window (unchanged behaviour)
         <div
+          className="squircle"
           style={{
             position: "fixed",
             left: chatPos.x,
@@ -533,8 +534,6 @@ export function AnimatedHeader({
             backdropFilter: "blur(24px) saturate(180%)",
             WebkitBackdropFilter: "blur(24px) saturate(180%)",
             border: "1px solid var(--border-2)",
-            borderRadius: 40,
-            cornerShape: "squircle",
             boxShadow: "0 24px 60px rgba(0,0,0,0.4)",
             overflow: "hidden",
             // Disable text selection while dragging/resizing to avoid accidental highlights
@@ -616,7 +615,7 @@ export function AnimatedHeader({
               padding: "8px 12px",
               borderRadius: "20px",
               border: isHighContrast ? "2px solid var(--text)" : isScrolled ? "1px solid rgba(255,255,255,0.18)" : "1px solid transparent",
-              background: isHighContrast ? "var(--bg)" : isScrolled ? (theme === "dark" ? "linear-gradient(135deg, rgba(0,0,0,0.32), rgba(0,0,0,0.18))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
+              background: isHighContrast ? "var(--bg)" : isScrolled ? (theme === "dark" ? "linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.38))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
               backdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
               WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
               boxShadow: isHighContrast ? "none" : isScrolled ? "0 2px 20px rgba(0,0,0,0.2)" : "none",
@@ -636,7 +635,7 @@ export function AnimatedHeader({
               padding: "8px 12px",
               borderRadius: "20px",
               border: isHighContrast ? "2px solid var(--text)" : isScrolled ? "1px solid rgba(255,255,255,0.18)" : "1px solid transparent",
-              background: isHighContrast ? "var(--bg)" : isScrolled ? (theme === "dark" ? "linear-gradient(135deg, rgba(0,0,0,0.32), rgba(0,0,0,0.18))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
+              background: isHighContrast ? "var(--bg)" : isScrolled ? (theme === "dark" ? "linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.38))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
               backdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
               WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
               boxShadow: isHighContrast ? "none" : isScrolled ? "0 2px 20px rgba(0,0,0,0.2)" : "none",
@@ -673,7 +672,7 @@ export function AnimatedHeader({
                   </li>
                   <li>
                     <Tip label="High contrast">
-                      <button onClick={() => { toggleHighContrast(); trackEvent("◑ High contrast toggled", { location: "desktop nav" }) }} className="nav-item" style={{ padding: "4px 6px", color: isHighContrast ? "var(--text)" : "var(--text-2)" }} aria-label="Toggle high contrast">
+                      <button onClick={() => { toggleHighContrast(); trackEvent("◑ High contrast toggled", { location: "desktop nav" }) }} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Toggle high contrast">
                         <Contrast className="w-4 h-4" />
                       </button>
                     </Tip>
