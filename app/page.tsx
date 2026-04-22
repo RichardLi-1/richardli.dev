@@ -181,7 +181,8 @@ export default function PersonalWebsite() {
                               position: "absolute", top: 10, right: 10,
                               display: "flex", alignItems: "center", gap: 6,
                               padding: "6px 14px",
-                              background: "none", border: "none", cursor: "pointer",
+                              borderRadius: 10,
+                              cursor: "pointer",
                               whiteSpace: "nowrap",
                               transition: "transform 0.15s ease",
                             }}
