@@ -129,7 +129,7 @@ export default function SaFuturePage() {
               </ul>
 
               <h2 id="sf-experience" className="font-bold mt-8 mb-2 text-2xl">The Experience</h2>
-              <p>This was my first experience working with professional software engineering processes. I integrated into the team's workflow pretty quickly, shipping code from day two. We were given a lot of ownership over our projects and I learned a lot about both software engineering and mapping technologies.</p>
+              <p>This was my first experience working with professional software engineering processes at scale. I integrated into the team's workflow pretty quickly, shipping code from day two. We were given a lot of ownership over our projects and I learned a lot about both software engineering and mapping technologies.</p>
             </div>
           </StaggeredContent>
 
