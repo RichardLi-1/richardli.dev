@@ -106,16 +106,16 @@ export default function SaFuturePage() {
             </CollapsibleDetails>
           </StaggeredContent>
 
-          {/* Mission — uncomment and fill in when ready
+          {/* Mission — uncomment and fill in when ready*/}
           <StaggeredContent delay={350}>
             <div className="py-8">
               <p className="section-label mb-2">The Mission</p>
               <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
-                TODO: What was the goal of SaFuture & Qwhery?
+                Support municipalities in adopting AI and NG911 
               </p>
             </div>
           </StaggeredContent>
-*/}
+
 
           <StaggeredContent delay={400}>
             <div className="mb-8">

@@ -90,16 +90,16 @@ export default function SalesPatriotProjectPage() {
             </CollapsibleDetails>
           </StaggeredContent>
 
-          {/* Mission — uncomment and fill in when ready
+          {/* Mission — uncomment and fill in when ready*/}
           <StaggeredContent delay={350}>
             <div className="py-8">
               <p className="section-label mb-2">The Mission</p>
               <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
-                TODO: What was the goal of Father Figure?
+                Create an endearing virtual father to cheer users up.
               </p>
             </div>
           </StaggeredContent>
-*/}
+
 
           <StaggeredContent delay={300}>
             <p>Watch Dad Sneeze: <a href="https://youtu.be/Pkpd0WDR_sA">https://youtu.be/Pkpd0WDR_sA</a></p>
