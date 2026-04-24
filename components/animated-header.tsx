@@ -328,34 +328,34 @@ export function AnimatedHeader({
             </a>
           ))}
           {/* Social icons — always shown regardless of page */}
-          <a onClick={() => trackEvent("🔗 LinkedIn clicked", { location: "mobile pill" })} href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="LinkedIn"><Linkedin className="w-3 h-3" /></a>
-          <a onClick={() => trackEvent("🐙 GitHub clicked", { location: "mobile pill" })} href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="GitHub"><Github className="w-3 h-3" /></a>
+          <a onClick={() => trackEvent("🔗 LinkedIn clicked", { location: "mobile pill" })} href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "3px 4px" }} aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a>
+          <a onClick={() => trackEvent("🐙 GitHub clicked", { location: "mobile pill" })} href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "3px 4px" }} aria-label="GitHub"><Github className="w-4 h-4" /></a>
           {/* Theme-dependent buttons only render after mount to avoid hydration mismatch */}
           {mounted && (
             <>
               <button
                 onClick={() => { setTheme(theme === "dark" ? "light" : "dark"); trackEvent("🌓 Theme toggled", { from: theme ?? "dark", location: "mobile pill" }) }}
                 className="nav-item"
-                style={{ padding: "4px 6px" }}
+                style={{ padding: "3px 4px" }}
                 aria-label="Toggle theme"
               >
-                {theme === "dark" ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
+                {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
               <button
                 onClick={() => { toggleHighContrast(); trackEvent("◑ High contrast toggled", { location: "mobile pill" }) }}
                 className="nav-item"
-                style={{ padding: "4px 6px" }}
+                style={{ padding: "3px 4px" }}
                 aria-label="Toggle high contrast"
               >
-                <Contrast className="w-3 h-3" />
+                <Contrast className="w-4 h-4" />
               </button>
               <button
                 onClick={() => { setIsChatOpen(true); trackEvent("💬 Chat opened", { location: "mobile pill" }) }}
                 className="nav-item"
-                style={{ padding: "4px 6px" }}
+                style={{ padding: "3px 4px" }}
                 aria-label="Open chat"
               >
-                <MessageCircle className="w-3 h-3" />
+                <MessageCircle className="w-4 h-4" />
               </button>
               {/* Sound panel button — hidden for now
               <div style={{ position: "relative" }}>

@@ -33,7 +33,19 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
   const [loadedIds, setLoadedIds] = useState<Set<string>>(new Set())
   const [featuredLoaded, setFeaturedLoaded] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSelected(null) }
+    document.addEventListener("keydown", handleKey)
+    return () => document.removeEventListener("keydown", handleKey)
+  }, [])
 
   // Use the explicitly featured photo, fallback to first
   const featured = photos.find((p) => p.featured) ?? photos[0] ?? null
@@ -146,10 +158,9 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
                 <div
                   className="photo-thumb"
                   style={{
-                    position: "relative",
                     ...(loadedIds.has(photo.id)
                       ? { backgroundImage: "none", animation: "none" }
-                      : { backgroundColor: SKELETON_COLORS[i % SKELETON_COLORS.length] }),
+                      : { backgroundColor: SKELETON_COLORS[i % SKELETON_COLORS.length], minHeight: "120px" }),
                   }}
                 >
                   <img
@@ -159,11 +170,9 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
                     onLoad={() => setLoadedIds(s => new Set(s).add(photo.id))}
                     onError={() => setLoadedIds(s => new Set(s).add(photo.id))}
                     style={{
-                      position: "absolute",
-                      inset: 0,
+                      display: "block",
                       width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
+                      height: "auto",
                       opacity: loadedIds.has(photo.id) ? 1 : 0,
                       transition: "opacity 0.3s ease",
                     }}
@@ -198,9 +207,8 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
               background: "var(--card-bg)",
               borderRadius: 28,
               overflow: "hidden",
-              // fit-content lets the card shrink to the image's natural rendered width
-              width: "fit-content",
-              maxWidth: "52vw",
+              width: isMobile ? "92vw" : "fit-content",
+              maxWidth: isMobile ? "92vw" : "70vw",
               boxShadow: "0 24px 80px rgba(0,0,0,0.45)",
             }}
           >
@@ -209,10 +217,8 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
               alt={selected.title}
               style={{
                 display: "block",
-                // constrain by height so portrait photos don't overflow the screen,
-                // width:auto lets it scale proportionally — the card then hugs that width
                 maxHeight: "70vh",
-                maxWidth: "52vw",
+                maxWidth: "100%",
                 width: "auto",
                 height: "auto",
               }}
