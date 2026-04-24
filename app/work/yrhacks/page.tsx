@@ -7,6 +7,7 @@ import { RelatedProjects } from "@/components/related-projects"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { X, ArrowUpRight } from "lucide-react"
+import { CollapsibleDetails } from "@/components/collapsible-details"
 
 export default function YRHacksProjectPage() {
   usePageViewTracker()
@@ -79,15 +80,16 @@ export default function YRHacksProjectPage() {
           <StaggeredContent delay={300}>
             {" "}
             {/* Changed from 600 */}
+            <CollapsibleDetails labels={["Timeline", "Team", "Overview"]}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Timeline</h3>
+                  <p className="section-label mb-2">Timeline</p>
                   <p className="text-gray-300">10 months, June 2024-April 2025</p>
                 </div>
 
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Team</h3>
+                  <p className="section-label mb-2">Team</p>
                   <div className="space-y-1 text-gray-300">
                     <a href="https://www.linkedin.com/in/fiona--cai/" className="underline">
                       <p>Fiona Cai</p>
@@ -126,13 +128,25 @@ export default function YRHacksProjectPage() {
               </div>
 
               <div>
-                <h3 className="text-green-400 font-bold mb-2">Overview</h3>
+                <p className="section-label mb-2">Overview</p>
                 <div className="space-y-4 text-gray-300">
                   <p>YRHacks is Canada's largest high school hackathon, and a unique offering from the York Region District School Board. This year, we had 250+ hackers.</p>
                 </div>
               </div>
             </div>
+            </CollapsibleDetails>
           </StaggeredContent>
+
+          {/* Mission — uncomment and fill in when ready
+          <StaggeredContent delay={350}>
+            <div className="py-8">
+              <p className="section-label mb-2">The Mission</p>
+              <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
+                TODO: What was the goal of YRHacks?
+              </p>
+            </div>
+          </StaggeredContent>
+*/}
 
           <StaggeredContent delay={1000}>
             {" "}

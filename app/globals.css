@@ -21,7 +21,7 @@
 
 /* ── Text selection ─────────────────────────────────────────────── */
 ::selection {
-  background-color: #4ade80; /* green-400 — swap hex here to change site-wide */
+  background-color: #4ade80;
   color: #000000;
 }
 
@@ -29,14 +29,13 @@
 .hero-highlight {
   background-color: #4ade80;
   color: #000000;
-  /* <mark> has a default yellow background — this overrides it */
 }
 
 /* ── Design tokens – dark (default) ────────────────────────────── */
 :root,
 .dark {
   --bg: #000000;
-  --text: #e8e4dc;
+  --text: #dedad2;
   --text-2: #b8b4ac;
   --text-3: #888480;
   --text-4: #605c58;
@@ -121,7 +120,7 @@
     transition: background 0.25s ease, color 0.25s ease;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden; /* prevent any element from causing horizontal scroll */
+    overflow-x: hidden;
     overflow-y: hidden;
   }
 }
@@ -181,15 +180,6 @@ h3 {
   flex-direction: column;
 }
 
-.site-main,
-.main {
-  flex: 1;
-  padding: 32px 0 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
 /* ── Page utility ───────────────────────────────────────────────── */
 .page-bg {
   background: var(--bg);
@@ -225,7 +215,7 @@ h3 {
   color: var(--text-3);
 }
 
-/* ── Featured card ──────────────────────────────────────────────── */
+/* ── Featured card (used by FanningGallery) ─────────────────────── */
 .featured-card {
   background: var(--card-bg);
   border-radius: 32px;
@@ -282,7 +272,7 @@ h3 {
   white-space: nowrap;
 }
 
-/* ── Toolbar ────────────────────────────────────────────────────── */
+/* ── Toolbar & search (used by FanningGallery) ──────────────────── */
 .toolbar { display: flex; align-items: center; gap: 10px; }
 
 .search-wrap { position: relative; display: flex; align-items: center; }
@@ -310,7 +300,6 @@ h3 {
 
 .search-input::placeholder { color: var(--text-5); }
 .search-input:focus { border-color: var(--text-4); }
-
 
 /* ── Card ───────────────────────────────────────────────────────── */
 .photo-card {
@@ -348,36 +337,13 @@ h3 {
 }
 
 /* ── Squircles ──────────────────────────────────────────────────── */
-/* Fallback: conservative radii for browsers without corner-shape support */
 @supports not (corner-shape: squircle) {
-  .photo-card {
-    border-radius: 14px;
-  }
-
-  .squircle {
-    border-radius: 3px !important;
-  }
-
-  .squircle-md {
-    border-radius: 14px !important;
-  }
-
-  .squircle-lg {
-    border-radius: 4px !important;
-  }
-
-  /* Some components set a large inline borderRadius alongside corner-shape.
-     Clamp those back down on unsupported browsers, especially mobile Safari. */
-  [style*="corner-shape"] {
-    border-radius: 10px !important;
-  }
+  .squircle    { border-radius: 3px !important; }
+  .squircle-lg { border-radius: 4px !important; }
 }
 
-/* Progressive enhancement: full squircle when supported */
 @supports (corner-shape: squircle) {
-  .photo-card    { border-radius: 48px; corner-shape: superellipse(1); }
   .squircle    { border-radius: 16px; corner-shape: squircle; }
-  .squircle-md { border-radius: 48px; corner-shape: squircle; }
   .squircle-lg { border-radius: 24px; corner-shape: squircle; }
   [class*="rounded-"] { corner-shape: squircle; }
 }
@@ -468,13 +434,7 @@ header {
   box-shadow: 0 2px 20px rgba(0,0,0,0.12);
 }
 
-
 /* ── Animations ─────────────────────────────────────────────────── */
-@keyframes modalEnter {
-  from { opacity: 0; transform: translate(-50%, calc(-50% + 14px)); }
-  to   { opacity: 1; transform: translate(-50%, -50%); }
-}
-
 @keyframes shimmer {
   from { background-position: 150% 0; }
   to   { background-position: -150% 0; }
@@ -493,23 +453,11 @@ header {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@keyframes popIn {
-  from { opacity: 0; transform: scale(0.85) rotate(var(--rot, 0deg)); }
-  to   { opacity: 1; transform: scale(1) rotate(var(--rot, 0deg)); }
-}
-
 @keyframes iconBounce {
   0%   { transform: scale(1); }
   35%  { transform: scale(1.4) rotate(-10deg); }
   65%  { transform: scale(0.88) rotate(6deg); }
   100% { transform: scale(1) rotate(0deg); }
-}
-
-@keyframes buttonBounce {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(0.92); }
-  70%  { transform: scale(1.06); }
-  100% { transform: scale(1); }
 }
 
 @keyframes slideUpSheet {
@@ -526,9 +474,7 @@ header {
   animation: pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* ── Color remaps: neutralize green/gray tailwind classes ───────── */
-/* Applied within .page-bg so project pages that still use old   */
-/* hardcoded classes render correctly with the neutral palette.  */
+/* ── Color remaps: neutralize hardcoded Tailwind classes in older pages ── */
 .page-bg .text-green-400,
 .page-bg .text-green-300,
 .page-bg h1.text-green-400, .page-bg h2.text-green-400,
@@ -557,12 +503,6 @@ header {
 .light .hover\:text-stone-100:hover { color: var(--text); }
 
 /* ── High contrast mode ─────────────────────────────────────────── */
-/* html.hc alone = dark high contrast (black bg, white text).
-   html.hc.light = light high contrast (white bg, black text).
-   next-themes sets a `light` class on <html> in light mode, so we get
-   the right variant purely through CSS — no JS changes needed.
-   📖 Learn: CSS specificity — .hc.light overrides .hc because it has
-   two classes instead of one, so it wins without needing !important. */
 html.hc {
   --bg: #000;
   --text: #fff;
@@ -577,7 +517,6 @@ html.hc {
   --glass-bg: rgba(0, 0, 0, 0.97);
 }
 
-/* Light high contrast — pure white + pure black for maximum contrast ratio */
 html.hc.light {
   --bg: #fff;
   --text: #000;
@@ -592,7 +531,6 @@ html.hc.light {
   --glass-bg: rgba(255, 255, 255, 0.97);
 }
 
-/* Glass pills: drop blur, go solid black/white */
 html.hc .liquid-glass-pill,
 html.hc .header-pill {
   background: #000 !important;
@@ -604,7 +542,6 @@ html.hc .header-pill {
   text-shadow: none !important;
 }
 
-/* Light HC: flip pills to white-on-black border */
 html.hc.light .liquid-glass-pill,
 html.hc.light .header-pill {
   background: #fff !important;
@@ -612,15 +549,12 @@ html.hc.light .header-pill {
   color: #000 !important;
 }
 
-/* Cards: drop shadows, add outline border */
 html.hc .featured-card { box-shadow: none !important; border: 1px solid #fff !important; }
 html.hc.light .featured-card { border-color: #000 !important; }
 
-/* Focus rings: yellow pops on dark, blue pops on white */
 html.hc *:focus-visible { outline: 3px solid #ff0 !important; outline-offset: 2px !important; }
 html.hc.light *:focus-visible { outline: 3px solid #0055ff !important; }
 
-/* Inputs and selects */
 html.hc input:not([type="range"]):not([type="checkbox"]),
 html.hc textarea {
   background-color: #000 !important;
@@ -647,7 +581,6 @@ html.hc.light select {
 
 /* ── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .photo-grid { grid-template-columns: repeat(2, 1fr); columns: 2; }
   .featured-caption-row { flex-direction: column; }
   .featured-meta-grid { gap: 16px; }
   .meta-col { text-align: left; }

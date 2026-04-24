@@ -3,12 +3,13 @@ import Image from "next/image"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
-import { ExternalLink, X, ArrowUpRight } from "lucide-react"
+import { ExternalLink, X, ArrowUpRight, ChevronDown } from "lucide-react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
+import { CollapsibleDetails } from "@/components/collapsible-details"
 
 export default function TransitPlannerProjectPage() {
   usePageViewTracker()
@@ -17,6 +18,7 @@ export default function TransitPlannerProjectPage() {
   const [zoomedImage, setZoomedImage] = useState<string | null>(null)
   const [zoom, setZoom] = useState({ scale: 1, tx: 0, ty: 0 })
   const [dragging, setDragging] = useState<{ startX: number; startY: number; startTx: number; startTy: number } | null>(null)
+  const [showDiagram, setShowDiagram] = useState(false)
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
     check()
@@ -102,9 +104,9 @@ export default function TransitPlannerProjectPage() {
       )}
       {!isPanel && (
         <CaseStudyNav sections={[
-          { id: "project-origins", label: "Project Origins" },
           { id: "inspiration", label: "Inspiration" },
-          { id: "initial-development", label: "Initial Development" },
+          { id: "architecture", label: "Architecture" },
+          { id: "initial-development", label: "Launch" },
           { id: "more-features", label: "More Features" },
         ]} />
       )}
@@ -155,14 +157,15 @@ export default function TransitPlannerProjectPage() {
               </div>
               <a href="https://www.transitplan.xyz/" target="_blank" rel="noopener noreferrer" className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90">Try it out!</a>
             </div>
+            <CollapsibleDetails labels={["Timeline", "Team", "Links", "Overview", "Technologies"]}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-bold mb-2">Timeline</h3>
+                  <p className="section-label mb-2">Timeline</p>
                   <p>2026 - Present</p>
                 </div>
                 <div>
-                  <h3 className="font-bold mb-2">Team</h3>
+                  <p className="section-label mb-2">Team</p>
                   <div className="space-y-1">
                     <a className="hover:underline" href="https://www.linkedin.com/in/fiona-fangg/" target="_blank"><p>Fiona Fang</p></a>
                     <a className="hover:underline" href="https://www.linkedin.com/in/evanzyang/" target="_blank"><p>Evan Yang</p></a>
@@ -170,7 +173,7 @@ export default function TransitPlannerProjectPage() {
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-bold mb-2">Links</h3>
+                  <p className="section-label mb-2">Links</p>
                   <a href="https://www.transitplan.xyz/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
                     <ExternalLink className="w-4 h-4" />
                     Transit Planner App
@@ -182,49 +185,73 @@ export default function TransitPlannerProjectPage() {
                 </div>
               </div>
               <div>
-                <h3 className="font-bold mb-2">Overview</h3>
+                <p className="section-label mb-2">Overview</p>
                 <div className="space-y-4">
-                  <p>Transit Planner is an AI-powered transit optimization system that models and routes public transit networks at scale. An orchestrator-agent architecture ingests real-time and historical data — pricing, population density, ridership patterns, and vehicle traffic speeds — and synthesizes optimal routes and timelines.</p>
+                  <p>Transit Planner is an AI-powered transit planning sandbox.</p>
                 </div>
-                <h3 className="font-bold mb-2 mt-4">Technologies</h3>
+                <p className="section-label mb-2 mt-4">Technologies</p>
                 <div className="space-y-4">
                   <p>Next.js + Mapbox frontend, Python + FastAPI backend</p>
                 </div>
               </div>
             </div>
+            </CollapsibleDetails>
+          </StaggeredContent>
+
+          <StaggeredContent delay={350}>
+            <div className="py-8">
+              <p className="section-label mb-2">The Mission</p>
+              <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
+                Build a feature-rich, easy to use tool to democratize transit planning decision making.
+              </p>
+            </div>
           </StaggeredContent>
 
           <StaggeredContent delay={400}>
             <div className="mb-8">
-              <h2 id="project-origins" className="font-bold mb-4 text-2xl">Project Origins</h2>
-              <div className="photo-card" style={{ padding: 0, overflow: "hidden", borderRadius: 20 }}>
-                <div className="flex items-start gap-6 p-6">
-                  <div className="w-2/3 shrink-0">
-                    <button
-                      onClick={() => setZoomedImage("/images/projects/transitplanner/initial-system-diagram.png")}
-                      className="w-full p-0 border-0 bg-transparent cursor-zoom-in"
-                    >
-                      <Image
-                        src="/images/projects/transitplanner/initial-system-diagram.png"
-                        alt="Transit Planner System Diagram"
-                        width={1678}
-                        height={1760}
-                        className="w-full h-auto"
-                        style={{ display: "block", borderRadius: 12 }}
-                      />
-                    </button>
-                  </div>
-                  <div className="w-1/3">
-                    <p>The initial architecture we drew</p>
-                  </div>
-                </div>
-              </div>
-
-
-              <h2 id="inspiration" className="font-bold mt-8 mb-2 text-2xl">Inspiration</h2>
+              <h2 id="inspiration" className="font-bold mb-2 text-2xl">Inspiration</h2>
               <p>As a kid, I spent countless hours on subway builders like JP Wright's <a href="https://jpwright.github.io/subway/" target="_blank" rel="noopener noreferrer" className="underline inline-block transition-transform duration-150 hover:scale-95">Brand New Subway</a>.</p>
 
-              <h2 id="initial-development" className="font-bold mt-8 mb-2 text-2xl">Initial Development</h2>
+              <h2 id="architecture" className="font-bold mt-8 mb-4 text-2xl">Architecture</h2>
+              <button
+                onClick={() => setShowDiagram(v => !v)}
+                className="flex items-center gap-2 mb-3"
+                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", color: "var(--text)" }}
+              >
+                <ChevronDown
+                  className="w-4 h-4 transition-transform duration-200"
+                  style={{ transform: showDiagram ? "rotate(0deg)" : "rotate(-90deg)" }}
+                />
+                The initial architecture we drew
+              </button>
+              {showDiagram && (
+                <div className="photo-card mb-6" style={{ padding: 0, overflow: "hidden", borderRadius: 20 }}>
+                  <button
+                    onClick={() => setZoomedImage("/images/projects/transitplanner/initial-system-diagram.png")}
+                    className="w-full p-0 border-0 bg-transparent cursor-zoom-in"
+                  >
+                    <Image
+                      src="/images/projects/transitplanner/initial-system-diagram.png"
+                      alt="Transit Planner System Diagram"
+                      width={1678}
+                      height={1760}
+                      className="w-full h-auto"
+                      style={{ display: "block", borderRadius: 20 }}
+                    />
+                  </button>
+                </div>
+              )}
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Database</h3>
+              <p className="mb-2">Transit Planner uses PostgreSQL for its PostGIS extension.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Frontend</h3>
+              <p className="mb-2">Transit Planner uses Next.js, TypeScript, and is styled with Tailwind.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Backend server: LLM Setup</h3>
+              <p className="mb-2">Transit Planner uses Anthropic and Gemini APIs, allowing both as options to users.</p>
+
+              <h2 id="initial-development" className="font-bold mt-8 mb-2 text-2xl">Launch</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
               <div className="w-full overflow-hidden squircle rounded-lg" style={{ aspectRatio: "4 / 3" }}>
                 <img
@@ -233,7 +260,7 @@ export default function TransitPlannerProjectPage() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              
+
               <h2 id="more-features" className="font-bold mt-8 mb-2 text-2xl">More features</h2>
               <p className="mb-2">We're excited to develop this further. Here are some features I've added since: </p>
                 

@@ -8,6 +8,7 @@ import { useState, useEffect } from "react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { RelatedProjects } from "@/components/related-projects"
+import { CollapsibleDetails } from "@/components/collapsible-details"
 
 export default function MarkvilleRFPProjectPage() {
   usePageViewTracker()
@@ -70,15 +71,16 @@ export default function MarkvilleRFPProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={300}>
+            <CollapsibleDetails labels={["Timeline", "Achievement", "Tools", "Overview"]}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Timeline</h3>
+                  <p className="section-label mb-2">Timeline</p>
                   <p className="text-gray-300">Hackathon project, 2024</p>
                 </div>
 
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Achievement</h3>
+                  <p className="section-label mb-2">Achievement</p>
                   <div className="space-y-2 text-gray-300">
                     <div className="flex items-center gap-2">
                       <Award className="w-4 h-4 text-yellow-400" />
@@ -88,7 +90,7 @@ export default function MarkvilleRFPProjectPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Tools</h3>
+                  <p className="section-label mb-2">Tools</p>
                   <div className="space-y-1 text-gray-300">
                     <p>Urban Planning Research</p>
                     <p>Design Strategy</p>
@@ -99,7 +101,7 @@ export default function MarkvilleRFPProjectPage() {
               </div>
 
               <div>
-                <h3 className="text-green-400 font-bold mb-2">Overview</h3>
+                <p className="section-label mb-2">Overview</p>
                 <div className="space-y-4 text-gray-300">
                   <p>
                     A comprehensive rebranding proposal for the Markville Secondary Plan that won the City Design
@@ -117,7 +119,19 @@ export default function MarkvilleRFPProjectPage() {
                 </div>
               </div>
             </div>
+            </CollapsibleDetails>
           </StaggeredContent>
+
+          {/* Mission — uncomment and fill in when ready
+          <StaggeredContent delay={350}>
+            <div className="py-8">
+              <p className="section-label mb-2">The Mission</p>
+              <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
+                TODO: What was the goal of the Markville RFP?
+              </p>
+            </div>
+          </StaggeredContent>
+*/}
 
           <StaggeredContent delay={500}>
             <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 mb-8">

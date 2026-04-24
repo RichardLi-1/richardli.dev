@@ -7,6 +7,7 @@ import { useState, useEffect } from "react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { X, ArrowUpRight } from "lucide-react"
+import { CollapsibleDetails } from "@/components/collapsible-details"
 
 export default function SalesPatriotProjectPage() {
   usePageViewTracker()
@@ -61,27 +62,40 @@ export default function SalesPatriotProjectPage() {
           <StaggeredContent delay={300}>
             {" "}
             {/* Changed from 600 */}
+            <CollapsibleDetails labels={["Timeline", "Team", "Overview"]}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Timeline</h3>
+                  <p className="section-label mb-2">Timeline</p>
                   <p className="text-gray-300">5 months, September 2024-January 2025</p>
                 </div>
 
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Team</h3>
+                  <p className="section-label mb-2">Team</p>
                   <div className="space-y-1 text-gray-300"></div>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-green-400 font-bold mb-2">Overview</h3>
+                <p className="section-label mb-2">Overview</p>
                 <div className="space-y-4 text-gray-300">
                   <p>Page is WIP. Career Education Council is based in Guelph, Ontario.</p>
                 </div>
               </div>
             </div>
+            </CollapsibleDetails>
           </StaggeredContent>
+
+          {/* Mission — uncomment and fill in when ready
+          <StaggeredContent delay={350}>
+            <div className="py-8">
+              <p className="section-label mb-2">The Mission</p>
+              <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
+                TODO: What was the goal of the Career Education Council work?
+              </p>
+            </div>
+          </StaggeredContent>
+*/}
           {!isPanel && (
             <RelatedProjects currentId="cec" />
           )}

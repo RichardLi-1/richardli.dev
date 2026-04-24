@@ -23,7 +23,6 @@ const activities = [
 ]
 
 const currently = [
-  { image: "/logos/safuture.png", text: "Engineering @ SaFuture Inc." },
   { image: "/logos/hack-the-north.png", text: "Transportation @ Hack the North" },
   { image: "/logos/waterloo.png", text: "Systems Design Engineering @ UWaterloo" },
 ]
@@ -34,6 +33,7 @@ const currently_more = [
 ]
 
 const previously = [
+  { image: "/logos/safuture.png", text: "Engineering @ SaFuture Inc." },
   { image: "/logos/formulatech-hacks.jpeg", text: "Full-Stack Developer @ FormulaTech Hacks" },
   { image: "/images/projects/cec/logo.webp", text: "Software Developer @ Career Education Council" },
 ]

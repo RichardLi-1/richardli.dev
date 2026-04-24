@@ -9,6 +9,7 @@ import { RelatedProjects } from "@/components/related-projects"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { ExternalLink, X, ArrowUpRight } from "lucide-react"
+import { CollapsibleDetails } from "@/components/collapsible-details"
 
 
 export default function SalesPatriotProjectPage() {
@@ -66,14 +67,15 @@ export default function SalesPatriotProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={300}>
+            <CollapsibleDetails labels={["Timeline", "Team"]}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-bold mb-2">Timeline</h3>
+                  <p className="section-label mb-2">Timeline</p>
                   <p className="text-gray-300">Hack the North (September 2025)</p>
                 </div>
                 <div>
-                  <h3 className="font-bold mb-2">Team</h3>
+                  <p className="section-label mb-2">Team</p>
                   <a href="https://www.linkedin.com/in/fiona-fangg/" target="_blank"><p>Fiona Fang</p></a>
                   <div className="space-y-1 text-gray-300"></div>
                 </div>
@@ -85,7 +87,19 @@ export default function SalesPatriotProjectPage() {
                 </div>
               </div>
             </div>
+            </CollapsibleDetails>
           </StaggeredContent>
+
+          {/* Mission — uncomment and fill in when ready
+          <StaggeredContent delay={350}>
+            <div className="py-8">
+              <p className="section-label mb-2">The Mission</p>
+              <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
+                TODO: What was the goal of Father Figure?
+              </p>
+            </div>
+          </StaggeredContent>
+*/}
 
           <StaggeredContent delay={300}>
             <p>Watch Dad Sneeze: <a href="https://youtu.be/Pkpd0WDR_sA">https://youtu.be/Pkpd0WDR_sA</a></p>

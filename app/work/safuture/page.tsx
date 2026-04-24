@@ -8,6 +8,7 @@ import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
+import { CollapsibleDetails } from "@/components/collapsible-details"
 
 export default function SaFuturePage() {
   usePageViewTracker()
@@ -64,18 +65,19 @@ export default function SaFuturePage() {
           </StaggeredContent>
 
           <StaggeredContent delay={300}>
+            <CollapsibleDetails labels={["Timeline", "Role", "Links", "Overview", "Tools"]}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-bold mb-2">Timeline</h3>
+                  <p className="section-label mb-2">Timeline</p>
                   <p>Dec 2025 - Apr 2026</p>
                 </div>
                 <div>
-                  <h3 className="font-bold mb-2">Role</h3>
+                  <p className="section-label mb-2">Role</p>
                   <p>Software Engineer</p>
                 </div>
                 <div>
-                  <h3 className="font-bold mb-2">Links</h3>
+                  <p className="section-label mb-2">Links</p>
                   <a href="https://safuture.net/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
                     <ExternalLink className="w-4 h-4" />
                     Website
@@ -83,11 +85,11 @@ export default function SaFuturePage() {
                 </div>
               </div>
               <div>
-                <h3 className="font-bold mb-2">Overview</h3>
+                <p className="section-label mb-2">Overview</p>
                 <div className="space-y-4">
                   <p>AI and GIS</p>
                 </div>
-                <h3 className="font-bold mb-2 mt-4">Tools</h3>
+                <p className="section-label mb-2">Tools</p>
                 <div>
                   <p>Angular</p>
                   <p>PostgreSQL</p>
@@ -101,7 +103,19 @@ export default function SaFuturePage() {
                 </div>
               </div>
             </div>
+            </CollapsibleDetails>
           </StaggeredContent>
+
+          {/* Mission — uncomment and fill in when ready
+          <StaggeredContent delay={350}>
+            <div className="py-8">
+              <p className="section-label mb-2">The Mission</p>
+              <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
+                TODO: What was the goal of SaFuture & Qwhery?
+              </p>
+            </div>
+          </StaggeredContent>
+*/}
 
           <StaggeredContent delay={400}>
             <div className="mb-8">

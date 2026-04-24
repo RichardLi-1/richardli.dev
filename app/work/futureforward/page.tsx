@@ -8,13 +8,13 @@ import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
+import { CollapsibleDetails } from "@/components/collapsible-details"
 
-const GLOW: React.CSSProperties = { position: "absolute", inset: -20, background: "rgba(59,54,156,0.35)", filter: "blur(36px)", borderRadius: 28, zIndex: 0 }
 const LABEL_STYLE: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, letterSpacing: "0.18em", color: "var(--text-3)", textTransform: "uppercase" }
 
 function StatBadge({ label }: { label: string }) {
   return (
-    <span style={{ background: "var(--surface)", border: "1px solid var(--border-2)", borderRadius: 8, padding: "3px 10px", fontSize: 12, color: "var(--text-2)" }}>
+    <span className="rounded-lg" style={{ background: "var(--surface)", border: "1px solid var(--border-2)", padding: "3px 10px", fontSize: 12, color: "var(--text-2)" }}>
       {label}
     </span>
   )
@@ -23,8 +23,7 @@ function StatBadge({ label }: { label: string }) {
 function InitiativeImage({ src, alt }: { src: string; alt: string }) {
   return (
     <div style={{ position: "relative" }}>
-      <div style={GLOW} />
-      <div className="photo-card" style={{ position: "relative", zIndex: 1, overflow: "hidden", borderRadius: 20, padding: 0 }}>
+      <div className="photo-card squircle" style={{ overflow: "hidden", padding: 0 }}>
         <img src={src} alt={alt} className="w-full" style={{ aspectRatio: "16/9", objectFit: "cover", display: "block" }} />
       </div>
     </div>
@@ -59,7 +58,7 @@ export default function FutureForwardProjectPage() {
           { id: "ff-hs-mentorship", label: "High School" },
         ]} />
       )}
-      <div className="mx-auto p-6 space-y-6">
+      <div className="mx-auto">
         <AnimatedHeader
           backHref="/work"
           backText="Back"
@@ -77,12 +76,12 @@ export default function FutureForwardProjectPage() {
                 <img src="/images/projects/future-forward/logo.png" alt="Future Forward Logo" className="w-8 h-8 object-contain" />
                 Future Forward
               </h1>
-              <h1 className="text-m text-gray-400">Non-profit, 2024-2025</h1>
+              <p className="text-m" style={{ color: "var(--text-3)" }}>Non-profit, 2024-2025</p>
             </div>
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
-            <div className="relative aspect-video w-full overflow-hidden squircle" style={{ borderRadius: 16 }}>
+            <div className="relative aspect-video w-full overflow-hidden squircle">
               <img
                 src="/images/projects/future-forward/workshop-hero.jpeg"
                 alt="Future Forward screenshots"
@@ -95,21 +94,22 @@ export default function FutureForwardProjectPage() {
             <div className="mb-4 flex squircle bg-zinc-200 dark:bg-zinc-800 max-width w-full rounded-xl border-2">
               <p className="p-2 py-3 px-3.5 text-zinc-800 dark:text-zinc-300">🥇 This project was awarded Provincial Champion at Ontario DECA Provincials 2025!</p>
             </div>
+            <CollapsibleDetails labels={["Timeline", "Team", "Links", "Overview"]}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-bold mb-2">Timeline</h3>
+                  <p className="section-label mb-2">Timeline</p>
                   <p>Sept 2024-Apr 2025</p>
                 </div>
                 <div>
-                  <h3 className="font-bold mb-2">Team</h3>
+                  <p className="section-label mb-2">Team</p>
                   <div className="space-y-1">
                     <a href="https://www.linkedin.com/in/michelle-matthew-35b6931aa/" target="_blank" className="underline" rel="noreferrer"><p>Michelle Matthew</p></a>
                     <a href="https://www.linkedin.com/in/kirsten-hsiang-bb64b2324/" target="_blank" className="underline" rel="noreferrer"><p>Kirsten Hsiang</p></a>
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-bold mb-2">Links</h3>
+                  <p className="section-label mb-2">Links</p>
                   <a href="https://www.youtube.com/@FutureForward.Initiative" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:transition-colors">
                     <Youtube className="w-4 h-4" />
                     YouTube Channel
@@ -117,12 +117,23 @@ export default function FutureForwardProjectPage() {
                 </div>
               </div>
               <div>
-                <h3 className="font-bold mb-2 rounded-sm">Overview</h3>
+                <p className="section-label mb-2">Overview</p>
                 <div className="space-y-4">
                   <p>Future Forward is a non-profit initiative dedicated to helping students discover their vocations and career paths. We aim to provide resources, mentorship, and opportunities to guide students in their educational and professional journeys.</p>
                   <p>Our mission is to bridge the gap between academic learning and real-world career opportunities, empowering students to make informed decisions about their future.</p>
                 </div>
               </div>
+            </div>
+            </CollapsibleDetails>
+          </StaggeredContent>
+
+          <StaggeredContent delay={350}>
+            <div className="py-8">
+              <p className="text-sm mb-6" style={{ color: "var(--text-3)" }}>Future Forward started with a simple question — what do students actually want?</p>
+              <p className="section-label mb-2">The Mission</p>
+              <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
+                Create a tool that surfaces students' real interests and career goals
+              </p>
             </div>
           </StaggeredContent>
 
@@ -132,7 +143,7 @@ export default function FutureForwardProjectPage() {
                 <Youtube className="w-5 h-5" />
                 Featured Video
               </h3>
-              <div className="aspect-video w-full bg-gray-800 overflow-hidden">
+              <div className="aspect-video w-full overflow-hidden squircle rounded-xl" style={{ background: "var(--surface)" }}>
                 <iframe
                   width="100%"
                   height="100%"
@@ -280,8 +291,6 @@ export default function FutureForwardProjectPage() {
           )}
         </main>
 
-        <StaggeredContent delay={1100}>
-        </StaggeredContent>
       </div>
     </AnimatedPage>
   )

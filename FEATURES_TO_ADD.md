@@ -21,3 +21,6 @@ Chatbot rich media system — semantically tagged media DB
 - Populate with curated images Richard likes / things that relate to topics
 
 Fix the problem that cards don't show the proper preview image like transit fanning shows future forward image
+
+more things to add:
+fav lotion: ones that smell like molly tea

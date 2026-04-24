@@ -8,6 +8,7 @@ import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
+import { CollapsibleDetails } from "@/components/collapsible-details"
 
 const allTeam = [
   { name: "Dorian Chen", role: "Project Lead" },
@@ -92,14 +93,15 @@ export default function BoinkProjectPage() {
           <StaggeredContent delay={300}>
             {" "}
             {/* Changed from 600 */}
+            <CollapsibleDetails labels={["Timeline", "Tools", "Stats", "Team", "Overview"]}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Timeline</h3>
+                  <p className="section-label mb-2">Timeline</p>
                   <p className="text-gray-300">6 months, 2021</p>
                 </div>
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Tools</h3>
+                  <p className="section-label mb-2">Tools</p>
                   <div className="space-y-1 text-gray-300">
                     <p>Unity</p>
                     <p>C#</p>
@@ -109,14 +111,14 @@ export default function BoinkProjectPage() {
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Stats</h3>
+                  <p className="section-label mb-2">Stats</p>
                   <div className="space-y-1 text-gray-300">
                     <p>150+ Downloads</p>
                     <p>4.6 Star Rating</p>
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-green-400 font-bold mb-2">Team</h3>
+                  <p className="section-label mb-2">Team</p>
                   <div className="space-y-1 text-gray-300">
                     {allTeam.slice(0, 3).map((m) => (
                       <p key={m.name}>{m.name}{m.role ? <span className="text-gray-500"> — {m.role}</span> : null}</p>
@@ -134,7 +136,7 @@ export default function BoinkProjectPage() {
                 </div>
               </div>
               <div>
-                <h3 className="text-green-400 font-bold mb-2">Overview</h3>
+                <p className="section-label mb-2">Overview</p>
                 <div className="space-y-4 text-gray-300">
                   <p>
                     Bo!nk is a Windows Vista-inspired inkball game that I conceptualized and designed. As the lead UX
@@ -151,7 +153,19 @@ export default function BoinkProjectPage() {
                 </div>
               </div>
             </div>
+            </CollapsibleDetails>
           </StaggeredContent>
+
+          {/* Mission — uncomment and fill in when ready */}
+          <StaggeredContent delay={350}>
+            <div className="py-8">
+              <p className="section-label mb-2">The Mission</p>
+              <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
+                Create a nostalgic mobile game fun for all ages
+              </p>
+            </div>
+          </StaggeredContent>
+
 
           {/* Wrap all remaining content sections in StaggeredContent with increasing delays */}
           <StaggeredContent delay={500}>
