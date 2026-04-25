@@ -8,9 +8,9 @@ import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
-import { CollapsibleDetails } from "@/components/collapsible-details"
+import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
+import { motion } from "framer-motion"
 
-const LABEL_STYLE: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, letterSpacing: "0.18em", color: "var(--text-3)", textTransform: "uppercase" }
 
 function StatBadge({ label }: { label: string }) {
   return (
@@ -69,7 +69,7 @@ export default function FutureForwardProjectPage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-3xl mx-auto p-6 space-y-6" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
+        <main className="max-w-3xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
@@ -94,42 +94,42 @@ export default function FutureForwardProjectPage() {
             <div className="mb-4 flex squircle bg-zinc-200 dark:bg-zinc-800 max-width w-full rounded-xl border-2">
               <p className="p-2 py-3 px-3.5 text-zinc-800 dark:text-zinc-300">🥇 This project was awarded Provincial Champion at Ontario DECA Provincials 2025!</p>
             </div>
-            <CollapsibleDetails labels={["Timeline", "Team", "Links", "Overview"]}>
+            <CollapsibleDetails labels={["Timeline", "Team", "Links", "Overview"]} animateContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
-                <div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Timeline</p>
                   <p>Sept 2024-Apr 2025</p>
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Team</p>
                   <div className="space-y-1">
                     <a href="https://www.linkedin.com/in/michelle-matthew-35b6931aa/" target="_blank" className="underline" rel="noreferrer"><p>Michelle Matthew</p></a>
                     <a href="https://www.linkedin.com/in/kirsten-hsiang-bb64b2324/" target="_blank" className="underline" rel="noreferrer"><p>Kirsten Hsiang</p></a>
                   </div>
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Links</p>
                   <a href="https://www.youtube.com/@FutureForward.Initiative" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:transition-colors">
                     <Youtube className="w-4 h-4" />
                     YouTube Channel
                   </a>
-                </div>
+                </motion.div>
               </div>
-              <div>
+              <motion.div variants={itemVariants}>
                 <p className="section-label mb-2">Overview</p>
                 <div className="space-y-4">
                   <p>Future Forward is a non-profit initiative dedicated to helping students discover their vocations and career paths. We aim to provide resources, mentorship, and opportunities to guide students in their educational and professional journeys.</p>
                   <p>Our mission is to bridge the gap between academic learning and real-world career opportunities, empowering students to make informed decisions about their future.</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
             </CollapsibleDetails>
           </StaggeredContent>
 
           <StaggeredContent delay={350}>
             <div className="py-8">
-              <p className="text-sm mb-6" style={{ color: "var(--text-3)" }}>Future Forward started with a simple question — what do students actually want?</p>
+              <p className="text-sm mb-6" style={{ color: "var(--text-3)" }}>Career tests tend to test what a user *wants* to like, not what they actually like. Thus:</p>
               <p className="section-label mb-2">The Mission</p>
               <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
                 Create a tool that surfaces students' real interests and career goals
@@ -165,7 +165,7 @@ export default function FutureForwardProjectPage() {
               {/* 01 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3">
-                  <p style={LABEL_STYLE}>Initiative 01</p>
+                  <p className="section-label">Initiative 01</p>
                   <h3 id="ff-marketing" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>📊 Marketing Club</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     A hands-on marketing firm serving six organizations. Members rotated through roles like Account Manager, tried each job, and got personalized career results based on surveys. Grew signups 300% to 59 members.
@@ -180,7 +180,7 @@ export default function FutureForwardProjectPage() {
               {/* 02 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3 md:order-2">
-                  <p style={LABEL_STYLE}>Initiative 02</p>
+                  <p className="section-label">Initiative 02</p>
                   <h3 id="ff-financial" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>💰 Financial Literacy Series</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Partnered with Markville Finance Club to deliver two financial literacy lessons to 15 students and hosted the University of Waterloo Financial Literacy Competition with 11 participants.
@@ -197,7 +197,7 @@ export default function FutureForwardProjectPage() {
               {/* 03 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3">
-                  <p style={LABEL_STYLE}>Initiative 03</p>
+                  <p className="section-label">Initiative 03</p>
                   <h3 id="ff-careerfair" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🎤 Career Fair</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Hosted a virtual career fair with 6 speakers including the CEO of Basel Medical Group, a McKinsey Business Analyst, and a Program Manager at Alstom. Attendees completed surveys tied to the FF Careers AI to receive personalized career reports.
@@ -213,7 +213,7 @@ export default function FutureForwardProjectPage() {
               {/* 04 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3 md:order-2">
-                  <p style={LABEL_STYLE}>Initiative 04</p>
+                  <p className="section-label">Initiative 04</p>
                   <h3 id="ff-app" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>📱 FF Careers App</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Built an AI-powered career matching app at ffcareers.app. Instead of generic career tests, it prompts reflection questions and curates ranked careers with outlook ratings. Mentored by a former Apple Software Engineer and featured at an Apple × CEC App Showcase.
@@ -231,7 +231,7 @@ export default function FutureForwardProjectPage() {
               {/* 05 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3">
-                  <p style={LABEL_STYLE}>Initiative 05</p>
+                  <p className="section-label">Initiative 05</p>
                   <h3 id="ff-branches" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🌐 Branches & Community</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Launched a Discord server and grew a 308-member community. Started FF New York and FF California branches with pre-packaged resources, which spun up their own social media and community servers totalling 200 members.
@@ -246,7 +246,7 @@ export default function FutureForwardProjectPage() {
               {/* 06 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3 md:order-2">
-                  <p style={LABEL_STYLE}>Initiative 06</p>
+                  <p className="section-label">Initiative 06</p>
                   <h3 id="ff-ms-mentorship" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🏫 Middle School Mentorship</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Visited grades 7–8 at three Crowle Public Schools to introduce students to business careers before high school. Each session included a live trading game teaching collaboration, negotiation, and delegation.
@@ -264,7 +264,7 @@ export default function FutureForwardProjectPage() {
               {/* 07 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="space-y-3">
-                  <p style={LABEL_STYLE}>Initiative 07</p>
+                  <p className="section-label">Initiative 07</p>
                   <h3 id="ff-hs-mentorship" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text)" }}>🎓 High School Mentorship</h3>
                   <p style={{ color: "var(--text-3)", lineHeight: 1.75, fontSize: 15 }}>
                     Delivered in-class presentations to grades 9–11 covering the FF Five framework, business case studies, and a LinkedIn Masterclass where students practiced networking with real professionals. Posted all recordings to YouTube for those who couldn't attend.

@@ -1,13 +1,31 @@
 "use client"
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
+import { AnimatePresence, motion, type Variants } from "framer-motion"
 
 interface Props {
   labels: string[]
   children: React.ReactNode
+  // When true, children should be motion.div elements — they'll stagger in on open
+  animateContent?: boolean
 }
 
-export function CollapsibleDetails({ labels, children }: Props) {
+// Variants shared between the container and each child.
+// 📖 Learn: framer-motion staggerChildren — parent schedules children's
+// animations in sequence; each child uses the same variant key names.
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.02 } },
+  exit: {},
+}
+
+export const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] as const } },
+  exit: { opacity: 0, y: 6, transition: { duration: 0.15 } },
+}
+
+export function CollapsibleDetails({ labels, children, animateContent }: Props) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -24,21 +42,42 @@ export function CollapsibleDetails({ labels, children }: Props) {
             transform: open ? "rotate(0deg)" : "rotate(-90deg)",
           }}
         />
-        <span className="section-label">{labels.join(" · ")}</span>
+        <motion.span
+          className="section-label"
+          animate={{ opacity: open ? 0 : 1 }}
+          transition={{ duration: 0.2 }}
+        >{labels.join(" · ")}</motion.span>
       </button>
 
-      {/* CSS grid-template-rows trick: animates from 0fr→1fr with no height-jump */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateRows: open ? "1fr" : "0fr",
-          transition: "grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-      >
-        <div style={{ overflow: "hidden" }}>
-          {children}
+      {animateContent ? (
+        // AnimatePresence lets framer-motion run exit animations before unmounting
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              style={{ overflow: "hidden" }}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      ) : (
+        // Default: CSS grid-template-rows trick for smooth height animation
+        <div
+          style={{
+            display: "grid",
+            gridTemplateRows: open ? "1fr" : "0fr",
+            transition: "grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          }}
+        >
+          <div style={{ overflow: "hidden" }}>
+            {children}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

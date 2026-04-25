@@ -9,7 +9,8 @@ import { RelatedProjects } from "@/components/related-projects"
 import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
-import { CollapsibleDetails } from "@/components/collapsible-details"
+import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
+import { motion } from "framer-motion"
 
 export default function TransitPlannerProjectPage() {
   usePageViewTracker()
@@ -117,12 +118,12 @@ export default function TransitPlannerProjectPage() {
           currentPage="/work/transitplanner"
         />
 
-        <main className="max-w-3xl mx-auto p-6 space-y-6" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
+        <main className="max-w-3xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             <div className="flex">
               <div className="mb-0">
                 <h2 className="text-4xl font-bold mb-2">Transit Planner</h2>
-                <p className="text-m text-gray-400">Web App, 2026</p>
+                <p className="text-m" style={{ color: "var(--text-3)" }}>Web App, 2026</p>
               </div>
               {isPanel && (
                 <span className="right-4 top-0.5 absolute">
@@ -157,22 +158,28 @@ export default function TransitPlannerProjectPage() {
               </div>
               <a href="https://www.transitplan.xyz/" target="_blank" rel="noopener noreferrer" className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90">Try it out!</a>
             </div>
-            <CollapsibleDetails labels={["Timeline", "Team", "Links", "Overview", "Technologies"]}>
+            <CollapsibleDetails labels={["Timeline", "Team", "Stats", "Links", "Overview", "Technologies"]} animateContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
-                <div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Timeline</p>
                   <p>2026 - Present</p>
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Team</p>
                   <div className="space-y-1">
                     <a className="hover:underline" href="https://www.linkedin.com/in/fiona-fangg/" target="_blank"><p>Fiona Fang</p></a>
                     <a className="hover:underline" href="https://www.linkedin.com/in/evanzyang/" target="_blank"><p>Evan Yang</p></a>
                     <a className="hover:underline" href="https://www.linkedin.com/in/christopher-stevers-07b9a5204" target="_blank"><p>Christopher Stevers</p></a>
                   </div>
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
+                  <p className="section-label mb-2">Stats</p>
+                  <div className="space-y-1">
+                    <p>1.8K+ likes</p>
+                  </div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Links</p>
                   <a href="https://www.transitplan.xyz/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
                     <ExternalLink className="w-4 h-4" />
@@ -182,17 +189,21 @@ export default function TransitPlannerProjectPage() {
                     <ExternalLink className="w-4 h-4" />
                     Devpost
                   </a>
-                </div>
+                </motion.div>
               </div>
               <div>
-                <p className="section-label mb-2">Overview</p>
-                <div className="space-y-4">
-                  <p>Transit Planner is an AI-powered transit planning sandbox.</p>
-                </div>
-                <p className="section-label mb-2 mt-4">Technologies</p>
-                <div className="space-y-4">
-                  <p>Next.js + Mapbox frontend, Python + FastAPI backend</p>
-                </div>
+                <motion.div variants={itemVariants}>
+                  <p className="section-label mb-2">Overview</p>
+                  <div className="space-y-4">
+                    <p>Transit Planner is an AI-powered transit planning sandbox.</p>
+                  </div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
+                  <p className="section-label mb-2 mt-4">Technologies</p>
+                  <div className="space-y-4">
+                    <p>Next.js + Mapbox frontend, Python + FastAPI backend</p>
+                  </div>
+                </motion.div>
               </div>
             </div>
             </CollapsibleDetails>

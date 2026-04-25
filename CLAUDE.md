@@ -148,9 +148,15 @@ Split-pane layout: left grid + right iframe detail panel (desktop). On mobile, c
 
 ### POST `/api/chat`
 - Model: `claude-haiku-4-5` via `@anthropic-ai/sdk`
-- Max tokens: 400
+- Max tokens: 300 (includes budget for the `[Q: ...]` follow-up question appended to every response)
 - System prompt: first-person Richard Li persona with background, interests, work history
 - Returns streaming response
+
+#### Chat UI patterns (`components/chat-box.tsx`)
+- **`MessageItem`** is wrapped in `React.memo` — completed messages don't re-render during streaming, keeping Apple Music iframes stable
+- **Follow-up question system**: Claude ends every response with `[Q: short question]`. `Q_PATTERN` regex extracts it after streaming, strips it from the stored message content, and stores it in `followUpQuestion` state. A tappable chip renders between the messages area and the input form.
+- **Link cards**: `PageCard`, `ExternalCard`, `MusicCard`, `EmailCard` render instead of plain `<a>` tags. The system prompt instructs Claude to link eagerly — cards replace prose descriptions.
+- **Sound panel**: `SOUNDS` array + `SoundPanel` component + `soundEnabled`/`showSoundPanel` state are all present in `animated-header.tsx` but the trigger buttons are commented out. Un-comment the `{/* Sound panel button — hidden for now */}` blocks to re-enable.
 
 ### POST `/api/contact`
 - Nodemailer via Outlook SMTP
@@ -214,3 +220,6 @@ EMAIL_PASS=...          # Outlook SMTP password
 - Use `<AnimatedPage>` to wrap page content for consistent fade-in
 - Use `.section-label` class for section headings (not custom Tailwind)
 - Link to changed files in every response (per user preference in claude.local.md)
+
+
+Always link the user to the LINES of all code changes (e.g. [file.tsx:42-51](path/file.tsx#L42-L51))

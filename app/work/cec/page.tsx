@@ -7,7 +7,8 @@ import { useState, useEffect } from "react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { X, ArrowUpRight } from "lucide-react"
-import { CollapsibleDetails } from "@/components/collapsible-details"
+import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
+import { motion } from "framer-motion"
 
 export default function SalesPatriotProjectPage() {
   usePageViewTracker()
@@ -33,12 +34,12 @@ export default function SalesPatriotProjectPage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-3xl mx-auto p-6" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
+        <main className="max-w-3xl mx-auto p-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-center justify-center gap-2">
+              <h1 className="text-3xl font-bold italic mb-2 flex items-center justify-center gap-2">
                 <img
                   src="/images/projects/cec/logo.webp"
                   alt="Career Education Council Logo"
@@ -46,7 +47,7 @@ export default function SalesPatriotProjectPage() {
                 />
                 Career Education Council
               </h1>
-              <p className="text-lg text-gray-300">Work, 2024-2025</p>
+              <p className="text-lg text-[var(--text-2)]">Work, 2024-2025</p>
             </div>
           </StaggeredContent>
 
@@ -54,7 +55,7 @@ export default function SalesPatriotProjectPage() {
             {" "}
             {/* Changed from 400 */}
             {/* Hero Image */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
+            <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden rounded-lg">
               <img src="/placeholder.svg" alt="" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
@@ -62,26 +63,26 @@ export default function SalesPatriotProjectPage() {
           <StaggeredContent delay={300}>
             {" "}
             {/* Changed from 600 */}
-            <CollapsibleDetails labels={["Timeline", "Team", "Overview"]}>
+            <CollapsibleDetails labels={["Timeline", "Team", "Overview"]} animateContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
-                <div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Timeline</p>
-                  <p className="text-gray-300">5 months, September 2024-January 2025</p>
-                </div>
+                  <p className="text-[var(--text-2)]">5 months, September 2024-January 2025</p>
+                </motion.div>
 
-                <div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Team</p>
-                  <div className="space-y-1 text-gray-300"></div>
-                </div>
+                  <div className="space-y-1 text-[var(--text-2)]"></div>
+                </motion.div>
               </div>
 
-              <div>
+              <motion.div variants={itemVariants}>
                 <p className="section-label mb-2">Overview</p>
-                <div className="space-y-4 text-gray-300">
+                <div className="space-y-4 text-[var(--text-2)]">
                   <p>Page is WIP. Career Education Council is based in Guelph, Ontario.</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
             </CollapsibleDetails>
           </StaggeredContent>

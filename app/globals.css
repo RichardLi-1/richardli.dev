@@ -474,33 +474,6 @@ header {
   animation: pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* ── Color remaps: neutralize hardcoded Tailwind classes in older pages ── */
-.page-bg .text-green-400,
-.page-bg .text-green-300,
-.page-bg h1.text-green-400, .page-bg h2.text-green-400,
-.page-bg h3.text-green-400, .page-bg h4.text-green-400 { color: var(--text); }
-
-.page-bg .text-gray-300 { color: var(--text-2); }
-.page-bg .text-gray-400 { color: var(--text-3); }
-.page-bg .text-gray-500, .page-bg .text-gray-600 { color: var(--text-4); }
-.page-bg .text-white    { color: var(--text); }
-
-.page-bg .bg-black    { background: var(--bg); }
-.page-bg .bg-gray-900 { background: var(--card-bg); }
-.page-bg .bg-gray-800 { background: var(--surface); }
-.page-bg .bg-gray-700 { background: var(--surface-hover); }
-
-.page-bg .border-gray-700,
-.page-bg .border-gray-800 { border-color: var(--border-2); }
-
-.page-bg .bg-green-600          { background: var(--text); color: var(--bg); }
-.page-bg .hover\:bg-green-700:hover { background: var(--text-2); color: var(--bg); }
-.page-bg .border-green-600      { border-color: var(--border-2); }
-.page-bg a.text-green-400,
-.page-bg .hover\:text-green-300:hover { color: var(--text); }
-.page-bg .text-yellow-400       { color: #c9a227; }
-
-.light .hover\:text-stone-100:hover { color: var(--text); }
 
 /* ── High contrast mode ─────────────────────────────────────────── */
 html.hc {

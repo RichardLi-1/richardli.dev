@@ -8,7 +8,8 @@ import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
-import { CollapsibleDetails } from "@/components/collapsible-details"
+import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
+import { motion } from "framer-motion"
 
 export default function SaFuturePage() {
   usePageViewTracker()
@@ -48,14 +49,12 @@ export default function SaFuturePage() {
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2">SaFuture Inc & Qwhery</h1>
-              <p className="text-m text-gray-400">Work, 2026</p>
+              <p className="text-m" style={{ color: "var(--text-3)" }}>Work, 2026</p>
             </div>
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
-            {" "}
-            {/* Changed from 400 */}
-            <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-lg">
+            <div className="relative mb-8 aspect-video w-full overflow-hidden squircle rounded-lg">
               <img
                 src="/images/projects/safuture/SaFuture Banner.png"
                 alt="Smart Rutherford screenshots"
@@ -65,42 +64,46 @@ export default function SaFuturePage() {
           </StaggeredContent>
 
           <StaggeredContent delay={300}>
-            <CollapsibleDetails labels={["Timeline", "Role", "Links", "Overview", "Tools"]}>
+            <CollapsibleDetails labels={["Timeline", "Role", "Links", "Overview", "Tools"]} animateContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
-                <div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Timeline</p>
                   <p>Dec 2025 - Apr 2026</p>
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Role</p>
                   <p>Software Engineer</p>
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Links</p>
                   <a href="https://safuture.net/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
                     <ExternalLink className="w-4 h-4" />
                     Website
                   </a>
-                </div>
+                </motion.div>
               </div>
               <div>
-                <p className="section-label mb-2">Overview</p>
-                <div className="space-y-4">
-                  <p>AI and GIS</p>
-                </div>
-                <p className="section-label mb-2">Tools</p>
-                <div>
-                  <p>Angular</p>
-                  <p>PostgreSQL</p>
-                  <p>SQLAlchemy</p>
-                  <p>Python</p>
-                  <p>FastAPI</p>
-                  <p>TypeScript</p>
-                  <p>JavaScript</p>
-                  <p>jQuery</p>
-                  <p>Azure DevOps</p>
-                </div>
+                <motion.div variants={itemVariants}>
+                  <p className="section-label mb-2">Overview</p>
+                  <div className="space-y-4">
+                    <p>AI and GIS</p>
+                  </div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
+                  <p className="section-label mt-4 mb-2">Tools</p>
+                  <div>
+                    <p>Angular</p>
+                    <p>PostgreSQL</p>
+                    <p>SQLAlchemy</p>
+                    <p>Python</p>
+                    <p>FastAPI</p>
+                    <p>TypeScript</p>
+                    <p>JavaScript</p>
+                    <p>jQuery</p>
+                    <p>Azure DevOps</p>
+                  </div>
+                </motion.div>
               </div>
             </div>
             </CollapsibleDetails>
@@ -128,8 +131,16 @@ export default function SaFuturePage() {
               <h2 id="sf-chatbots" className="font-bold mt-8 mb-2 text-2xl">Chatbots for Property Assessment</h2>
               <p>I worked on improving the existing data indexing pipeline and its integration into the web dashboard.</p>
             <p>The backend involved over 60 API routes to manage all of the moving parts involved with the product. I contributed to various parts of this, as well as writing new routes for control over data indexing. This was a unique challenge as changes would require simultaneous modifications in three repositories.</p>
-            {/*<br></br><p>Without revealing too much:</p>
-            <img src="/images/projects/safuture/Frame 44.png" className="w-full squircle rounded-lg" />*/}
+            <div className="relative w-full overflow-hidden squircle rounded-lg mt-4" style={{ aspectRatio: "560/315" }}>
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube-nocookie.com/embed/QwKGDm2bjHQ?si=s41hxfUjoPWg6Xnu"
+                title="AI Chatbots demo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
 
               <h2 id="sf-sales" className="font-bold mt-8 mb-2 text-2xl">Sales Lead Identifier</h2>
               <p>The existing flow for identifying sales prospects was to manually web search government directories for leads. Thus, automation had huge potential benefit here.<br></br><br></br>Automation had been previously tested using web scraping, but yielded low accuracy results. I experimented with web search APIs, Playwright web scraping, and LLMs with web search like <code className="text-xs px-1.5 py-0.5 rounded-md" style={{ background: "var(--surface)", color: "var(--text-2)" }}>gpt-4o-mini-search-preview</code>. LLMs proved to be the most efficient. I integrated the Hunter.io API for email search and LangChain for orchestration. <br></br><br></br>The tool achieved 80% accuracy and saved 30+ hours of manual searching per week. This was my overall favourite project as I got to build it from scratch and pilot it.</p>

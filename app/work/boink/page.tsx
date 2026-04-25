@@ -8,7 +8,8 @@ import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
-import { CollapsibleDetails } from "@/components/collapsible-details"
+import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
+import { motion } from "framer-motion"
 
 const allTeam = [
   { name: "Dorian Chen", role: "Project Lead" },
@@ -59,16 +60,16 @@ export default function BoinkProjectPage() {
           ]}
         />
 
-        <main className="max-w-3xl mx-auto p-6" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
+        <main className="max-w-3xl mx-auto p-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}
             <div className="text-left mb-8">
-              <h1 className="text-4xl font-bold text-green-400 mb-2 flex items-left justify-left gap-2">
+              <h1 className="text-4xl font-bold mb-2 flex items-left justify-left gap-2">
                 <img src="/images/projects/boink/logo.webp" alt="Bo!nk Logo" className="w-8 h-8 object-contain rounded-md" />
                 Bo!nk
               </h1>
-              <p className="text-lg text-gray-300">Game, 2021</p>
+              <p className="text-lg text-[var(--text-2)]">Game, 2021</p>
               {isPanel && (
                 <span className="right-4 top-0.5 absolute">
                   <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")}><ArrowUpRight className="w-6 h-6" /></button>
@@ -81,7 +82,7 @@ export default function BoinkProjectPage() {
           <StaggeredContent delay={100}>
             {" "}
             {/* Changed from 400 */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
+            <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden rounded-lg">
               <img
                 src="/images/projects/boink/hero.png"
                 alt="Bo!nk game screenshots"
@@ -93,51 +94,51 @@ export default function BoinkProjectPage() {
           <StaggeredContent delay={300}>
             {" "}
             {/* Changed from 600 */}
-            <CollapsibleDetails labels={["Timeline", "Tools", "Stats", "Team", "Overview"]}>
+            <CollapsibleDetails labels={["Timeline", "Tools", "Stats", "Team", "Overview"]} animateContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
-                <div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Timeline</p>
-                  <p className="text-gray-300">6 months, 2021</p>
-                </div>
-                <div>
+                  <p className="text-[var(--text-2)]">6 months, 2021</p>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Tools</p>
-                  <div className="space-y-1 text-gray-300">
+                  <div className="space-y-1 text-[var(--text-2)]">
                     <p>Unity</p>
                     <p>C#</p>
                     <p>ShaderLab</p>
                     <p>HLSL</p>
                     <p>App Store Connect</p>
                   </div>
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Stats</p>
-                  <div className="space-y-1 text-gray-300">
+                  <div className="space-y-1 text-[var(--text-2)]">
                     <p>150+ Downloads</p>
                     <p>4.6 Star Rating</p>
                   </div>
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Team</p>
-                  <div className="space-y-1 text-gray-300">
+                  <div className="space-y-1 text-[var(--text-2)]">
                     {allTeam.slice(0, 3).map((m) => (
-                      <p key={m.name}>{m.name}{m.role ? <span className="text-gray-500"> — {m.role}</span> : null}</p>
+                      <p key={m.name}>{m.name}{m.role ? <span className="text-[var(--text-4)]"> — {m.role}</span> : null}</p>
                     ))}
                     {showAllTeam && allTeam.slice(3).map((m) => (
                       <p key={m.name}>{m.name}</p>
                     ))}
                     <p
-                      className="underline cursor-pointer hover:text-gray-100 transition-colors"
+                      className="underline cursor-pointer hover:text-[var(--text)] transition-colors"
                       onClick={() => setShowAllTeam(v => !v)}
                     >
                       {showAllTeam ? "Show less" : `And ${allTeam.length - 3} more...`}
                     </p>
                   </div>
-                </div>
+                </motion.div>
               </div>
-              <div>
+              <motion.div variants={itemVariants}>
                 <p className="section-label mb-2">Overview</p>
-                <div className="space-y-4 text-gray-300">
+                <div className="space-y-4 text-[var(--text-2)]">
                   <p>
                     Bo!nk is a Windows Vista-inspired inkball game that I conceptualized and designed. As the lead UX
                     designer, I worked with Markville App Dev Club to bring this nostalgic game to the App Store.
@@ -151,7 +152,7 @@ export default function BoinkProjectPage() {
                     Store submission process.
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </div>
             </CollapsibleDetails>
           </StaggeredContent>
@@ -174,8 +175,8 @@ export default function BoinkProjectPage() {
             <div className="prose prose-invert prose-green max-w-none">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                 <div>
-                  <h2 id="bk-background" className="text-2xl font-bold text-green-400 mb-4">Background</h2>
-                  <p className="text-gray-300">
+                  <h2 id="bk-background" className="text-2xl font-bold mb-4">Background</h2>
+                  <p className="text-[var(--text-2)]">
                     Growing up, I spent countless hours on virtual machines, experimenting with old Windows versions. In
                     particular, Windows Vista always stood out to me, especially the game InkBall. The simple yet
                     addictive gameplay, nostalgic visuals, combined with the satisfying physics of bouncing balls and
@@ -193,12 +194,12 @@ export default function BoinkProjectPage() {
                     muted
                     playsInline
                     disablePictureInPicture
-                    className="w-full rounded-lg border border-gray-700"
+                    className="w-full rounded-lg border border-[var(--border-2)]"
                   />
                 </div>
               </div>
 
-                <h2 id="bk-design" className="text-2xl font-bold text-green-400 mb-4">Design and Gameplay</h2>
+                <h2 id="bk-design" className="text-2xl font-bold mb-4">Design and Gameplay</h2>
                 <video
                   src="/videos/boink-gameplay.MOV"
                   aria-label="Bo!nk gameplay footage"
@@ -210,54 +211,54 @@ export default function BoinkProjectPage() {
                   className="w-full rounded-lg mb-4"
                 />
 
-              <p className="text-gray-300 mb-4">
+              <p className="text-[var(--text-2)] mb-4">
                 As the UX designer who conceived the idea, I directed the vision of the game and created the map of several levels.
                 We designed Bo!nk to faithfully recreate the core Inkball experience while adapting it for touch
                 interfaces:
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">Touch Controls</h4>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-[var(--card-bg)] p-6 rounded-lg border border-[var(--border-2)]">
+                  <h4 className="font-bold mb-2">Touch Controls</h4>
+                  <p className="text-[var(--text-2)] text-sm">
                     Intuitive touch-based drawing system that lets players draw lines to guide balls into matching
                     colored holes.
                   </p>
                 </div>
 
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">Physics Engine</h4>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-[var(--card-bg)] p-6 rounded-lg border border-[var(--border-2)]">
+                  <h4 className="font-bold mb-2">Physics Engine</h4>
+                  <p className="text-[var(--text-2)] text-sm">
                     Realistic ball physics using SpriteKit's physics engine for authentic bouncing and collision
                     detection.
                   </p>
                 </div>
 
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">Progressive Difficulty</h4>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-[var(--card-bg)] p-6 rounded-lg border border-[var(--border-2)]">
+                  <h4 className="font-bold mb-2">Progressive Difficulty</h4>
+                  <p className="text-[var(--text-2)] text-sm">
                     Multiple levels with increasing complexity, introducing new obstacles and mechanics as players
                     advance.
                   </p>
                 </div>
 
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">Modern Yet Nostalgic Aesthetic</h4>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-[var(--card-bg)] p-6 rounded-lg border border-[var(--border-2)]">
+                  <h4 className="font-bold mb-2">Modern Yet Nostalgic Aesthetic</h4>
+                  <p className="text-[var(--text-2)] text-sm">
                     Created a new visual style respecting Windows Vista's legacy, with authentic colors, fonts, and UI elements.
                   </p>
                 </div>
               </div>
-              <p className="text-gray-300 mb-4">
+              <p className="text-[var(--text-2)] mb-4">
                 We also added a twist: players have a finite amount of ink to draw lines per level. Thus, players must be frugal in their inputs.
               </p>
 
-              <h2 id="bk-technical" className="text-2xl font-bold text-green-400 mb-4">Technical Implementation</h2>
-              <p className="text-gray-300 mb-4">
+              <h2 id="bk-technical" className="text-2xl font-bold mb-4">Technical Implementation</h2>
+              <p className="text-[var(--text-2)] mb-4">
                 The game was built in Unity using C#, ShaderLab, and HLSL. Our team tackled key technical challenges including:
               </p>
 
-              <ul className="text-gray-300 space-y-2 mb-6">
+              <ul className="text-[var(--text-2)] space-y-2 mb-6">
                 <li>• Implementing smooth touch-based line drawing with real-time physics interaction</li>
                 <li>• Creating accurate ball physics that felt authentic to the original game</li>
                 <li>• Optimizing performance for smooth 60fps gameplay on various iOS devices</li>
@@ -265,28 +266,28 @@ export default function BoinkProjectPage() {
                 <li>• Implementing proper game state management and save/load functionality</li>
               </ul>
 
-              <h2 id="bk-reviews" className="text-2xl font-bold text-green-400 mb-4">User Reviews</h2>
-              <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 mb-8">
+              <h2 id="bk-reviews" className="text-2xl font-bold mb-4">User Reviews</h2>
+              <div className="bg-[var(--card-bg)] p-6 rounded-lg border border-[var(--border-2)] mb-8">
                 <div className="flex items-center mb-2">
                   <div className="flex text-yellow-400 mr-2">
                     <span>★★★★★</span>
                   </div>
-                  <span className="text-gray-300 font-bold">小田小田选我不甜</span>
-                  <span className="text-gray-500 ml-2">2021-06-20</span>
+                  <span className="text-[var(--text-2)] font-bold">小田小田选我不甜</span>
+                  <span className="text-[var(--text-4)] ml-2">2021-06-20</span>
                 </div>
-                <h4 className="text-green-400 font-bold mb-2">Awesome game</h4>
-                <p className="text-gray-300 italic">
+                <h4 className="font-bold mb-2">Awesome game</h4>
+                <p className="text-[var(--text-2)] italic">
                   "This game was extremely fun to play and I has lots of fun. Yes, this is definitely one of the best
                   mobile games I ever played in my life! I would love to see more of these games!"
                 </p>
               </div>
 
-              <h2 id="bk-appstore" className="text-2xl font-bold text-green-400 mb-4">App Store Journey</h2>
-              <p className="text-gray-300 mb-4">
+              <h2 id="bk-appstore" className="text-2xl font-bold mb-4">App Store Journey</h2>
+              <p className="text-[var(--text-2)] mb-4">
                 Publishing Bo!nk on the App Store was a significant learning experience. The process involved:
               </p>
 
-              <ul className="text-gray-300 space-y-2 mb-6">
+              <ul className="text-[var(--text-2)] space-y-2 mb-6">
                 <li>• Learning Apple's App Store guidelines and submission requirements</li>
                 <li>• Creating app icons, screenshots, and marketing materials</li>
                 <li>• Writing compelling app descriptions and metadata</li>
@@ -298,50 +299,50 @@ export default function BoinkProjectPage() {
                 </li>
               </ul>
 
-              <h2 id="bk-takeaways" className="text-2xl font-bold text-green-400 mb-4">Results &amp; Takeaways</h2>
-              <p className="text-gray-300 mb-4">
+              <h2 id="bk-takeaways" className="text-2xl font-bold mb-4">Results &amp; Takeaways</h2>
+              <p className="text-[var(--text-2)] mb-4">
                 Bo!nk successfully launched on the App Store and provided valuable insights into mobile game
                 development:
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">Game Development</h4>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-[var(--card-bg)] p-6 rounded-lg border border-[var(--border-2)]">
+                  <h4 className="font-bold mb-2">Game Development</h4>
+                  <p className="text-[var(--text-2)] text-sm">
                     Learned the fundamentals of game design, physics simulation, and creating engaging user experiences
                     that keep players coming back.
                   </p>
                 </div>
 
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">iOS Development</h4>
-                  <p className="text-gray-300 text-sm">Gained deep experience with iOS development patterns.</p>
+                <div className="bg-[var(--card-bg)] p-6 rounded-lg border border-[var(--border-2)]">
+                  <h4 className="font-bold mb-2">iOS Development</h4>
+                  <p className="text-[var(--text-2)] text-sm">Gained deep experience with iOS development patterns.</p>
                 </div>
 
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">Product Launch</h4>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-[var(--card-bg)] p-6 rounded-lg border border-[var(--border-2)]">
+                  <h4 className="font-bold mb-2">Product Launch</h4>
+                  <p className="text-[var(--text-2)] text-sm">
                     Experienced the complete product lifecycle from concept to App Store publication, including
                     marketing, user feedback, and iteration.
                   </p>
                 </div>
 
-                <div className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                  <h4 className="text-green-400 font-bold mb-2">User-Centered Design</h4>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-[var(--card-bg)] p-6 rounded-lg border border-[var(--border-2)]">
+                  <h4 className="font-bold mb-2">User-Centered Design</h4>
+                  <p className="text-[var(--text-2)] text-sm">
                     Learned the importance of intuitive interfaces and how to adapt desktop experiences for mobile touch
                     interactions.
                   </p>
                 </div>
               </div>
 
-              <p className="text-gray-300">
+              <p className="text-[var(--text-2)]">
                 Bo!nk remains available on the{" "}
                 <a
                   href="https://apps.apple.com/ca/app/bo-nk/id1570376501"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-green-400 hover:underline"
+                  className="hover:underline"
                 >
                   App Store
                 </a>{" "}
@@ -349,7 +350,7 @@ export default function BoinkProjectPage() {
                 digital experiences and laid the foundation for my future work in technology and product development.
               </p>
 
-              <p className="text-gray-300 mt-4">
+              <p className="text-[var(--text-2)] mt-4">
                 Try it out <a className="font-bold hover:underline" href="https://apps.apple.com/ca/app/bo-nk/id1570376501" target="_blank" rel="noreferrer">here!
                 </a>{" "}
                 

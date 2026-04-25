@@ -7,7 +7,8 @@ import { RelatedProjects } from "@/components/related-projects"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { X, ArrowUpRight } from "lucide-react"
-import { CollapsibleDetails } from "@/components/collapsible-details"
+import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
+import { motion } from "framer-motion"
 
 export default function YRHacksProjectPage() {
   usePageViewTracker()
@@ -50,12 +51,12 @@ export default function YRHacksProjectPage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-3xl mx-auto p-6 space-y-8" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
+        <main className="max-w-3xl mx-auto p-6 space-y-8 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}
             <div className="text-left mb-8">
-              <h1 className="text-3xl font-bold italic text-green-400 mb-2 flex items-left justify-left gap-2">
+              <h1 className="text-3xl font-bold italic mb-2 flex items-left justify-left gap-2">
                 <img
                   src="/images/projects/yrhacks/logo.png"
                   alt="YRHacks Logo"
@@ -63,7 +64,7 @@ export default function YRHacksProjectPage() {
                 />
                 YRHacks
               </h1>
-              <p className="text-lg text-gray-300">Community, 2025</p>
+              <p className="text-lg text-[var(--text-2)]">Community, 2025</p>
             </div>
           </StaggeredContent>
 
@@ -71,7 +72,7 @@ export default function YRHacksProjectPage() {
             {" "}
             {/* Changed from 400 */}
             {/* Hero Image */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden rounded-lg">
+            <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden rounded-lg">
               <img src="/images/projects/yrhacks/crowd.jpeg" alt="YRHacks event photos" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
@@ -80,17 +81,17 @@ export default function YRHacksProjectPage() {
           <StaggeredContent delay={300}>
             {" "}
             {/* Changed from 600 */}
-            <CollapsibleDetails labels={["Timeline", "Team", "Overview"]}>
+            <CollapsibleDetails labels={["Timeline", "Team", "Overview"]} animateContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
-                <div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Timeline</p>
-                  <p className="text-gray-300">10 months, June 2024-April 2025</p>
-                </div>
+                  <p className="text-[var(--text-2)]">10 months, June 2024-April 2025</p>
+                </motion.div>
 
-                <div>
+                <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Team</p>
-                  <div className="space-y-1 text-gray-300">
+                  <div className="space-y-1 text-[var(--text-2)]">
                     <a href="https://www.linkedin.com/in/fiona--cai/" className="underline">
                       <p>Fiona Cai</p>
                     </a>
@@ -102,7 +103,7 @@ export default function YRHacksProjectPage() {
                     </a>
                     {!showAllTeam && (
                       <p
-                        className="underline cursor-pointer hover:text-green-300 transition-colors"
+                        className="underline cursor-pointer hover: transition-colors"
                         onClick={() => setShowAllTeam(true)}
                       >
                         And many more amazing team members...
@@ -124,15 +125,15 @@ export default function YRHacksProjectPage() {
                       </>
                     )}
                   </div>
-                </div>
+                </motion.div>
               </div>
 
-              <div>
+              <motion.div variants={itemVariants}>
                 <p className="section-label mb-2">Overview</p>
-                <div className="space-y-4 text-gray-300">
+                <div className="space-y-4 text-[var(--text-2)]">
                   <p>YRHacks is Canada's largest high school hackathon, and a unique offering from the York Region District School Board. This year, we had 250+ hackers.</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
             </CollapsibleDetails>
           </StaggeredContent>
@@ -160,8 +161,8 @@ export default function YRHacksProjectPage() {
               </div>
 
               <div>
-                <h3 className="text-green-400 font-bold mb-2">Fiona put it best</h3>
-                <div className="space-y-4 text-gray-300">
+                <h3 className="font-bold mb-2">Fiona put it best</h3>
+                <div className="space-y-4 text-[var(--text-2)]">
                   <p>
                     "What makes YRHacks truly special isn’t just the 71 awesome projects that are created within 24
                     hours—it’s the energy. It feels like a thriving school club, yet it brings together students from
@@ -182,10 +183,10 @@ export default function YRHacksProjectPage() {
             {" "}
             {/* Changed from 1300 */}
             {/* Team Photo */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden">
+            <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden">
               <img src="/placeholder.svg" alt="YRHacks lanyards" className="w-full h-full object-cover" />
             </div>
-            <p className="text-gray-300">
+            <p className="text-[var(--text-2)]">
               I designed lanyards! YRHacks regulars noted that the lanyards improved from last year.
             </p>
           </StaggeredContent>
@@ -194,10 +195,10 @@ export default function YRHacksProjectPage() {
             {" "}
             {/* Changed from 1300 */}
             {/* Team Photo */}
-            <div className="relative aspect-video w-full bg-gray-800 overflow-hidden">
+            <div className="relative aspect-video w-full bg-[var(--surface)] overflow-hidden">
               <img src="/images/projects/yrhacks/photo-2.jpeg" alt="YRHacks image 2" className="w-full h-full object-cover" />
             </div>
-            <p className="text-gray-300">
+            <p className="text-[var(--text-2)]">
               Organizing YRHacks was truly a fun experience. Knowing how transformative YRHacks was for me as my first hackathon, I'm glad to have helped make the same experience happen for everyone who participated this year.
             </p>
           </StaggeredContent>
@@ -206,14 +207,14 @@ export default function YRHacksProjectPage() {
             {" "}
             {/* Changed from 1300 */}
             {/* Team Photo */}
-            <div className="relative mb-8 aspect-video w-full bg-gray-800 overflow-hidden">
+            <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden">
               <img
                 src="/images/projects/yrhacks/station-photo.jpg"
                 alt="YRHacks team photo"
                 className="w-full h-full object-cover"
               />
             </div>
-            <p className="text-gray-300">
+            <p className="text-[var(--text-2)]">
               This was one of the most talent-packed teams I've been apart of. There was a lot to learn from everyone there, and getting to know everyone over these 10 months was amazing. I'm grateful to them for taking a chance on
               me.
             </p>

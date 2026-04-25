@@ -201,7 +201,7 @@ export default function ProjectsPage() {
                 <div style={{ opacity: selectedId ? 0 : 1, transition: "opacity 0.3s ease", pointerEvents: selectedId ? "none" : "auto" }}>
                   <div className="flex justify-center mt-6">
                     {!showAdditional && (
-                      <Button onClick={() => setShowAdditional(true)} className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 squircle-lg">
+                      <Button onClick={() => setShowAdditional(true)} className="bg-[var(--text)] hover:bg-[var(--text-2)] text-[var(--bg)] px-6 py-2 squircle-lg">
                         Load More Projects
                       </Button>
                     )}
