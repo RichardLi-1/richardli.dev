@@ -4,7 +4,8 @@ import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { RelatedProjects } from "@/components/related-projects"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
-import { ExternalLink, X, ArrowUpRight } from "lucide-react"
+import { Github, X, ArrowUpRight } from "lucide-react"
+import { AppStoreIcon } from "@/components/icons/app-store-icon"
 import { useState, useEffect } from "react"
 import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
@@ -50,30 +51,48 @@ export default function BoinkProjectPage() {
         ]} />
       )}
       <div className="min-h-screen page-bg">
-        <AnimatedHeader
-          backHref="/work"
-          backText="Back"
-          currentPage="/work/boink"
-          rightLinks={[
-            { href: "https://apps.apple.com/ca/app/bo-nk/id1570376501", text: "App Store", external: true },
-            { href: "https://github.com/MarkvilleDev/Boink", text: "GITHUB", external: true },
-          ]}
-        />
+        <AnimatedHeader currentPage="/boink" />
 
         <main className="max-w-3xl mx-auto p-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}
-            <div className="text-left mb-8">
-              <h1 className="text-4xl font-bold mb-2 flex items-left justify-left gap-2">
-                <img src="/images/projects/boink/logo.webp" alt="Bo!nk Logo" className="w-8 h-8 object-contain rounded-md" />
-                Bo!nk
-              </h1>
+            <div className={`relative text-left mb-8 ${isPanel ? "pr-20" : ""}`}>
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                <h1 className="text-4xl font-bold flex min-w-0 items-center gap-2">
+                  <img src="/images/projects/boink/logo.webp" alt="Bo!nk Logo" className="w-8 h-8 shrink-0 object-contain rounded-md" />
+                  Bo!nk
+                </h1>
+                <nav className="flex shrink-0 items-center gap-1" aria-label="Boink project links">
+                  <a
+                    href="https://apps.apple.com/ca/app/bo-nk/id1570376501"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Bo!nk on the App Store (opens in a new tab)"
+                    className="inline-flex rounded-md p-2 text-[var(--text-3)] transition-colors hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-3)]"
+                  >
+                    <AppStoreIcon className="h-5 w-5" />
+                  </a>
+                  <a
+                    href="https://github.com/MarkvilleDev/Boink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Bo!nk source code on GitHub (opens in a new tab)"
+                    className="inline-flex rounded-md p-2 text-[var(--text-3)] transition-colors hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-3)]"
+                  >
+                    <Github className="h-5 w-5" aria-hidden />
+                  </a>
+                </nav>
+              </div>
               <p className="text-lg text-[var(--text-2)]">Game, 2021</p>
               {isPanel && (
-                <span className="right-4 top-0.5 absolute">
-                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")}><ArrowUpRight className="w-6 h-6" /></button>
-                  <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")}><X className="w-6 h-6" /></button>
+                <span className="absolute right-0 top-0.5 flex gap-1">
+                  <button type="button" onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")} aria-label="Open in full page">
+                    <ArrowUpRight className="h-6 w-6" />
+                  </button>
+                  <button type="button" onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} aria-label="Close panel">
+                    <X className="h-6 w-6" />
+                  </button>
                 </span>
               )}
             </div>

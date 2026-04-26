@@ -68,11 +68,31 @@ function similarityScore(input: string, candidate: string) {
   return longestLength === 0 ? 0 : 1 - distance / longestLength
 }
 
-export function getSuggestedWorkSlug(pathname: string) {
-  const match = pathname.match(/^\/work\/([^/?#]+)/)
-  if (!match) return null
+/** Top-level routes that are not project pages — avoid suggesting a "project" for these 404 paths. */
+const RESERVED_TOP_LEVEL = new Set([
+  "about",
+  "transit",
+  "chat",
+  "contact",
+  "resume",
+  "api",
+  "more",
+  "functions",
+])
 
-  const rawSlug = decodeURIComponent(match[1])
+export function getSuggestedWorkSlug(pathname: string) {
+  const legacyWork = pathname.match(/^\/work\/([^/?#]+)/)
+  const singleSegment = pathname.match(/^\/([^/?#]+)$/)
+  let rawSlug: string | null = null
+  if (legacyWork) {
+    rawSlug = decodeURIComponent(legacyWork[1])
+  } else if (singleSegment) {
+    const seg = decodeURIComponent(singleSegment[1]).toLowerCase()
+    if (RESERVED_TOP_LEVEL.has(seg)) return null
+    rawSlug = decodeURIComponent(singleSegment[1])
+  }
+  if (!rawSlug) return null
+
   const normalizedInput = normalizeSlugPart(rawSlug)
   if (!normalizedInput) return null
 

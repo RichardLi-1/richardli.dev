@@ -60,7 +60,7 @@ export default function MorePage() {
   return (
     <AnimatedPage>
       <div className="page-bg min-h-screen flex flex-col" style={{ position: "relative" }}>
-        <AnimatedHeader currentPage="/about" backHref="/" backText="About" />
+        <AnimatedHeader currentPage="/about" />
 
         <div
           style={{

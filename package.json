@@ -70,6 +70,7 @@
     "react-resizable-panels": "^0.0.55",
     "recharts": "^2.8.0",
     "remark-gfm": "^4.0.1",
+    "shiki": "^4.0.2",
     "sonner": "^1.4.3",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",

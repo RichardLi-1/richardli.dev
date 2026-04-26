@@ -12,7 +12,7 @@ export default function NotFound() {
   return (
     <AnimatedPage>
       <div className="min-h-screen page-bg flex flex-col">
-        <AnimatedHeader currentPage="/404" backHref="/" backText="Home" />
+        <AnimatedHeader currentPage="/404" />
 
         <main className="flex flex-1 flex-col items-center justify-center gap-8 px-6 text-center">
           {/* Ambient orb */}
@@ -64,7 +64,7 @@ export default function NotFound() {
               >
                 Did you mean{" "}
                 <Link
-                  href={`/work/${suggestedWorkSlug.slug}`}
+                  href={`/${suggestedWorkSlug.slug}`}
                   style={{
                     color: "var(--text)",
                     textDecoration: "underline",
@@ -101,7 +101,7 @@ export default function NotFound() {
                 Go Home
               </Link>
               <Link
-                href="/work"
+                href="/#projects"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -120,7 +120,7 @@ export default function NotFound() {
                 onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.borderColor = "var(--text-4)" }}
                 onMouseLeave={e => { e.currentTarget.style.color = "var(--text-2)"; e.currentTarget.style.borderColor = "var(--border-2)" }}
               >
-                See my work
+                View projects
               </Link>
             </div>
           </div>

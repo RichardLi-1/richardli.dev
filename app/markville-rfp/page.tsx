@@ -25,9 +25,7 @@ export default function MarkvilleRFPProjectPage() {
     <AnimatedPage>
       <div className="min-h-screen page-bg">
         <AnimatedHeader
-          backHref="/work"
-          backText="Back"
-          currentPage="/work/markville-rfp"
+          currentPage="/markville-rfp"
           rightLinks={[
             {
               href: "https://devpost.com/software/rebranding-the-markville-secondary-plan-with-tod",

@@ -12,7 +12,7 @@ export default function ContactPage() {
 
   return (
     <AnimatedPage>
-      <AnimatedHeader backHref="/" backText="Home" currentPage="/contact" />
+      <AnimatedHeader currentPage="/contact" />
 
       <main className="min-h-screen page-bg">
         <div className="container mx-auto px-6 py-20">

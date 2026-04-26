@@ -24,9 +24,7 @@ export default function SightProjectPage() {
     <AnimatedPage>
       <div className="min-h-screen page-bg">
         <AnimatedHeader
-          backHref="/work"
-          backText="Back"
-          currentPage="/work/4sight"
+          currentPage="/4sight"
           rightLinks={[
             { href: "https://eye-tester-app.vercel.app/", text: "Live Demo", external: true },
             { href: "https://github.com/justinwuzijin/eye-tester-app", text: "GITHUB", external: true },

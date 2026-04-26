@@ -48,14 +48,14 @@ export function ProjectsIEContent() {
         <div className="flex items-center mt-2 space-x-2">
           <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Back</button>
           <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Forward</button>
-          <div className="flex-1 bg-white border border-gray-400 px-2 py-1 text-sm">richardli.dev/work</div>
+          <div className="flex-1 bg-white border border-gray-400 px-2 py-1 text-sm">richardli.dev/</div>
           <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Go</button>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-4 overflow-y-auto h-full bg-white">
-        <h1 className="text-2xl font-bold mb-4 text-black">Work</h1>
+        <h1 className="text-2xl font-bold mb-4 text-black">Projects</h1>
         <p className="text-gray-600 mb-6">
           A collection of work I've done and projects I've built, from mobile games to non-profit initiatives.
         </p>
@@ -122,7 +122,7 @@ function ProjectDetailContent({ project }: { project: any }) {
         <div className="flex items-center mt-2 space-x-2">
           <button className="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-sm">Back</button>
           <div className="flex-1 bg-white border border-gray-400 px-2 py-1 text-sm">
-            richardli.dev/work/{project.id}
+            richardli.dev/{project.id}
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { ExternalLink } from "lucide-react"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
@@ -39,6 +40,7 @@ const previously = [
 ]
 
 export default function PersonalWebsite() {
+  const pathname = usePathname()
   const { isPersonalized } = useWindowsXP()
   const [activityIndex, setActivityIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
@@ -62,6 +64,40 @@ export default function PersonalWebsite() {
     const interval = setInterval(() => setActivityIndex(i => (i + 1) % activities.length), 3500)
     return () => clearInterval(interval)
   }, [])
+
+  // `/#projects`: body does not scroll — `.app-scroll-shell` does — so native hash
+  // scrolling does nothing. Next.js `<Link href="/#projects">` from `/` often skips
+  // `hashchange`, so we also listen in capture phase and retry after the URL updates.
+  useEffect(() => {
+    if (pathname !== "/") return
+
+    const scrollProjectsIntoView = () => {
+      if (window.location.hash !== "#projects") return
+      document.getElementById("projects")?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+
+    const onHashChange = () => scrollProjectsIntoView()
+
+    const onDocClickCapture = (e: MouseEvent) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      const a = (e.target as Element | null)?.closest("a")
+      if (!a) return
+      const raw = a.getAttribute("href")
+      if (raw !== "/#projects" && raw !== "#projects") return
+      window.setTimeout(scrollProjectsIntoView, 0)
+      window.setTimeout(scrollProjectsIntoView, 80)
+    }
+
+    scrollProjectsIntoView()
+    const t = window.setTimeout(scrollProjectsIntoView, 0)
+    window.addEventListener("hashchange", onHashChange)
+    document.addEventListener("click", onDocClickCapture, true)
+    return () => {
+      window.clearTimeout(t)
+      window.removeEventListener("hashchange", onHashChange)
+      document.removeEventListener("click", onDocClickCapture, true)
+    }
+  }, [pathname])
 
   // Cast to `any` to access optional fields (image2, image3, hidden) that aren't
   // in the TypeScript type — a pragmatic shortcut while the data model is loose.
@@ -136,7 +172,14 @@ export default function PersonalWebsite() {
 
           {/* ── Projects ── */}
           <StaggeredContent delay={200}>
-            <section style={{ marginBottom: 64 }}>
+            <section
+              id="projects"
+              style={{
+                marginBottom: 64,
+                // Offset for sticky desktop header when scrolling via /#projects
+                scrollMarginTop: isMobile ? 20 : 88,
+              }}
+            >
               <p className="section-label" style={{ marginBottom: 20 }}>Projects</p>
               <div style={{
                 display: "grid",
@@ -144,7 +187,7 @@ export default function PersonalWebsite() {
                 gap: "32px 24px",
               }}>
                 {visibleProjects.map(project => (
-                  <Link key={project.id} href={`/work/${project.id}`} style={{ textDecoration: "none" }}>
+                  <Link key={project.id} href={`/${project.id}`} style={{ textDecoration: "none" }}>
                     <div
                       style={{ cursor: "pointer" }}
                       // Imperatively scale the image wrapper on hover. Using direct DOM
@@ -210,11 +253,11 @@ export default function PersonalWebsite() {
                 ))}
               </div>
               {/*<div style={{ marginTop: 16 }}>
-                <Link href="/work" style={{ fontSize: 12, color: "var(--text-2)", letterSpacing: "0.04em", textTransform: "uppercase", fontFamily: "'Toronto Subway', sans-serif", textDecoration: "none" }}
+                <Link href="/#projects" style={{ fontSize: 12, color: "var(--text-2)", letterSpacing: "0.04em", textTransform: "uppercase", fontFamily: "'Toronto Subway', sans-serif", textDecoration: "none" }}
                   onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "var(--text-1)"}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "var(--text-2)"}
                 >
-                  See all work →
+                  See all projects →
                 </Link>
               </div>*/}
             </section>

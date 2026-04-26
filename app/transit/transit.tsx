@@ -257,14 +257,14 @@ export default function PersonalWebsite() {
                 <h2 className="text-xl">
                   Some{" "}
                   <a
-                    href="/work"
+                    href="/"
                     className="underline hover:text-stone-100 inline-block transform transition-transform duration-200 hover:scale-110"
                   >
                     projects
                   </a>{" "}
                   I made...
                 </h2>
-                <Link href="/work">
+                <Link href="/">
                   <span className="text-xs text-gray-400 hover:text-gray-300 hover:underline cursor-pointer">
                     See More
                   </span>
@@ -274,7 +274,7 @@ export default function PersonalWebsite() {
               {/* Row of 3 project tiles */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-gray-300">
                 {mainProjects.slice(0, 3).map((project) => (
-                  <Link key={project.id} href={`/work/${project.id}`}>
+                  <Link key={project.id} href={`/${project.id}`}>
                     <Card
                       className="transition-all duration-300 cursor-pointer group border-background bg-background h-full hover:scale-[0.98]"
                       style={{ "--glow-color": project.colors || "#22c55e99" } as React.CSSProperties}

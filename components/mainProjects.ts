@@ -1,9 +1,9 @@
 // Single source of truth for all project data.
-// Both the homepage grid and the /work page import from here so they always
-// stay in sync. To hide a project without deleting it, set `hidden: true`.
+// The homepage grid and related components import from here so they stay in sync.
+// To hide a project without deleting it, set `hidden: true`.
 //
 // Fields:
-//   id          — URL slug used in /work/[id] routing
+//   id          — URL slug for `/${id}` project pages under `app/[id]/`
 //   image/image2/image3 — ProjectImageCycler cycles through all three
 //   colors      — hex accent used for hover glow effects
 //   externalLink — if present, a "Try it out" button appears on hover
@@ -35,7 +35,7 @@ export const mainProjects = [
     id: "boink",
     title: "Bo!nk",
     year: "2021",
-    description: "Windows Vista Inkball reloaded, game published on the App Store",
+    description: "Windows Vista Inkball reloaded, physics-based game published on the App Store",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OFGQDkrP2BvNmhLieOxExwEZBsCGcq.png",
     logo: "/images/projects/boink/logo.webp",
     tags: ["iOS", "Swift", "Game Development"],

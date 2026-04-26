@@ -68,7 +68,7 @@ export default async function FanningPage() {
   return (
     <div className="site">
       <AnimatedPage>
-        <AnimatedHeader currentPage="/404" backHref="/" backText="Home" />
+        <AnimatedHeader currentPage="/404" />
 
       <div className="site-inner">
         {false && <Nav /> }

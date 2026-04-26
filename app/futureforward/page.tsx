@@ -59,11 +59,7 @@ export default function FutureForwardProjectPage() {
         ]} />
       )}
       <div className="mx-auto">
-        <AnimatedHeader
-          backHref="/work"
-          backText="Back"
-          currentPage="/work/futureforward"
-        />
+        <AnimatedHeader currentPage="/futureforward" />
         {isPanel && <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 6, zIndex: 50 }}>
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")} className="nav-item" style={{ padding: "6px" }}><ArrowUpRight className="w-4 h-4" /></button>
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>

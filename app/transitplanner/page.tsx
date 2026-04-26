@@ -11,6 +11,34 @@ import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
+import { SyntaxCodeBlock } from "@/components/syntax-code-block"
+
+const PROPOSE_ROUTE_TOOL_SNIPPET = `const PROPOSE_ROUTE_TOOL: ToolDefinition = {
+  name: "propose_route",
+  description: "Submit the proposed subway route after your written analysis.",
+  inputSchema: {
+    type: "object",
+    properties: {
+      name:  { type: "string" },
+      type:  { type: "string", enum: ["subway"] },
+      color: { type: "string", description: "Hex colour, e.g. #2563eb" },
+      stops: {
+        type: "array",
+        minItems: 6,
+        maxItems: 20,
+        items: {
+          type: "object",
+          properties: {
+            name:   { type: "string" },
+            coords: { type: "array", items: { type: "number" }, minItems: 2 },
+          },
+          required: ["name", "coords"],
+        },
+      },
+    },
+    required: ["name", "type", "color", "stops"],
+  },
+};`
 
 export default function TransitPlannerProjectPage() {
   usePageViewTracker()
@@ -112,11 +140,7 @@ export default function TransitPlannerProjectPage() {
         ]} />
       )}
       <div className="mx-auto">
-        <AnimatedHeader
-          backHref="/work"
-          backText="Back"
-          currentPage="/work/transitplanner"
-        />
+        <AnimatedHeader currentPage="/transitplanner" />
 
         <main className="max-w-3xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
@@ -260,7 +284,22 @@ export default function TransitPlannerProjectPage() {
               <p className="mb-2">Transit Planner uses Next.js, TypeScript, and is styled with Tailwind.</p>
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">Backend server: LLM Setup</h3>
-              <p className="mb-2">Transit Planner uses Anthropic and Gemini APIs, allowing both as options to users.</p>
+              <p className="mb-2">
+                Transit Planner uses Anthropic and Gemini APIs, allowing both as options to users. Dialog is streamed via SSE (FastAPI{" "}
+                <code className="text-sm px-1 py-0.5 rounded" style={{ background: "var(--surface)", color: "var(--text)" }}>StreamingResponse</code>
+                ), and the client renders tokens as they arrive.
+              </p>
+
+              <h4 className="font-semibold mt-6 mb-2 text-base" style={{ color: "var(--text)" }}>Structured routes: tool schema</h4>
+              <p className="mb-2">
+                Free-form text is great for reasoning, but the map needs structured data like coordinates and stop order. After a council member's reasoning, it must emit a{" "}
+                <code className="text-sm px-1 py-0.5 rounded" style={{ background: "var(--surface)", color: "var(--text)" }}>propose_route</code> tool call. The vendor's tool-use layer validates it against{" "}
+                <code className="text-sm px-1 py-0.5 rounded" style={{ background: "var(--surface)", color: "var(--text)" }}>inputSchema</code>, as shown below.{" "}
+              </p>
+              <p className="mb-3 text-sm" style={{ color: "var(--text-3)" }}>
+                Constraints like <code className="text-xs">minItems</code>/<code className="text-xs">maxItems</code> on stops and required fields keep generations in a band the renderer expects (e.g. 6–20 stops, hex colour, <code className="text-xs">[lng, lat]</code> pairs per stop).
+              </p>
+              <SyntaxCodeBlock language="typescript" code={PROPOSE_ROUTE_TOOL_SNIPPET} />
 
               <h2 id="initial-development" className="font-bold mt-8 mb-2 text-2xl">Launch</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>

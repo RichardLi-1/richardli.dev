@@ -9,7 +9,7 @@ export default function ChatPage() {
   return (
     <AnimatedPage>
       <div className="page-bg min-h-screen flex flex-col w-full">
-        <AnimatedHeader currentPage="/chat" backHref="/" backText="Chat" />
+        <AnimatedHeader currentPage="/chat" />
 
         <main className="flex flex-col flex-1 max-w-4xl w-full mx-auto px-6 py-8" style={{ minHeight: 0 }}>
           <div className="mb-6">

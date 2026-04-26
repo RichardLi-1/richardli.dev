@@ -22,7 +22,7 @@ function projectThumbnail(p: typeof mainProjects[number]): string | undefined {
 // Work project entries are generated from mainProjects so they stay in sync automatically.
 const PAGE_META: Record<string, { label: string; description: string; image?: string }> = {
   "/":                    { label: "Home",             description: "Hero, current roles, featured projects", image: "/images/website-thumbnail.png" },
-  "/work":                { label: "Work",             description: "All projects",                          image: "/images/projects/transitplanner/banner.png" },
+  "/#projects":           { label: "Projects",         description: "Featured work on the homepage",         image: "/images/projects/transitplanner/banner.png" },
   "/transit/photography": { label: "Transit Photography", description: "Photos from the TTC and beyond",    image: "/images/projects/future-forward/workshop-1.jpeg" },
   "/transit/fanning":     { label: "Fanning Gallery",  description: "Fanning-style photo layout",           image: "/images/projects/future-forward/workshop-1.jpeg" },
   "/transit/hypo-maps":   { label: "Hypo Maps",        description: "Hypothetical transit map designs",     image: "/images/projects/transit/banner.png" },
@@ -33,7 +33,7 @@ const PAGE_META: Record<string, { label: string; description: string; image?: st
   // Spread project entries so adding a project to mainProjects.ts is all that's needed.
   ...Object.fromEntries(
     mainProjects.map(p => [
-      `/work/${p.id}`,
+      `/${p.id}`,
       { label: p.title, description: p.description ?? "", image: projectThumbnail(p) },
     ])
   ),

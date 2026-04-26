@@ -113,15 +113,12 @@ interface NavItem {
 
 // Props passed in by each page to customize the header's nav links and context
 interface AnimatedHeaderProps {
-  backHref?: string   // If set, shows a back arrow on mobile pointing here
-  backText?: string   // Label for the back link (currently unused in PillNav)
-  rightLinks?: Array<{ href: string; text: string; external?: boolean }> // Extra links appended to nav (e.g. live demo, source)
-  isHomepage?: boolean  // Switches nav to homepage-specific items (Work, More)
+  rightLinks?: Array<{ href: string; text: string; external?: boolean }> // Extra links appended to mobile pill nav (e.g. live demo, source)
+  isHomepage?: boolean  // Switches nav to homepage-specific items (e.g. Transit emphasis)
   currentPage?: string  // Current route path — used to decide which nav items to show
 }
 
 export function AnimatedHeader({
-  backHref,
   rightLinks = [],
   isHomepage = false,
   currentPage = "",
@@ -283,7 +280,7 @@ export function AnimatedHeader({
   const getNavItems = (): NavItem[] => {
     return [
       //{ href: "/", label: "Home" },
-      //{ href: "/work", label: "Work" },
+      //{ href: "/#projects", label: "Projects" },
       { href: "/transit/fanning", label: "Transit" },
       ...rightLinks.map(l => ({ href: l.href, label: l.text, external: l.external })),
     ]
@@ -643,7 +640,7 @@ export function AnimatedHeader({
             }}>
               {[
                 { href: "/", label: "Home" },
-                // { href: "/work", label: "Work" },
+                // { href: "/#projects", label: "Projects" },
                 { href: "/transit/fanning", label: "Transit" },
                 // { href: "/about", label: "About" },
               ].map((item, i) => (

@@ -14,7 +14,7 @@ export function RelatedProjects({ currentId }: { currentId: string }) {
       <p className="section-label mb-6">Also check out</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {related.map((project) => (
-          <Link key={project.id} href={`/work/${project.id}`} style={{ textDecoration: "none" }}>
+          <Link key={project.id} href={`/${project.id}`} style={{ textDecoration: "none" }}>
             <div
               style={{ cursor: "pointer" }}
               onMouseEnter={() => { setHoveredId(project.id); (document.querySelector(`#rel-img-${project.id}`) as HTMLElement)?.style.setProperty("transform", "scale(1.02)") }}

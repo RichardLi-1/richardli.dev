@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
 // Detects whether the current page is being rendered inside the split-pane
-// iframe on /projects. The parent page appends `?panel=1` to the iframe src,
+// Split-pane parent embeds the project page with `?panel=1` on the iframe src;
 // which lets child pages hide elements like the footer that look wrong in a panel.
 //
 // Why useState + useEffect instead of reading the URL directly?

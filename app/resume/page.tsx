@@ -21,8 +21,6 @@ export default function ResumePage() {
     <AnimatedPage>
       <div className="min-h-screen bg-black text-green-400">
         <AnimatedHeader
-          backHref="/work"
-          backText="Back to Projects"
           currentPage="/resume"
           rightLinks={[
             { href: "mailto:richardli0@outlook.com?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D", text: "CONTACT" },

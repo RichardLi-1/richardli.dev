@@ -8,7 +8,7 @@ const base: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", 
 export function Footer() {
   const [isPanel, setIsPanel] = useState(false)
   const [showChangelog, setShowChangelog] = useState(false)
-  // Hide the footer when rendered inside the /work split-pane iframe —
+  // Hide the footer when rendered inside a split-pane project iframe (?panel=1) —
   // it looks wrong at the bottom of a narrow side panel.
   // Reads window.location in a useEffect to avoid SSR issues.
   useEffect(() => { if (window.location.search.includes("panel=1")) setIsPanel(true) }, [])

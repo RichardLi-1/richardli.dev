@@ -24,9 +24,7 @@ export default function SalesPatriotProjectPage() {
     <AnimatedPage>
       <div className="min-h-screen page-bg">
         <AnimatedHeader
-          backHref="/work"
-          backText="Back"
-          currentPage="/work/cec"
+          currentPage="/cec"
           rightLinks={[{ href: "https://www.careereducationcouncil.ca/", text: "Website", external: true }]}
         />
         {isPanel && <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 6, zIndex: 50 }}>
