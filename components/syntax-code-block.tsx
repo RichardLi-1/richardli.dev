@@ -65,25 +65,30 @@ export function SyntaxCodeBlock({ language, code, className }: SyntaxCodeBlockPr
     }
   }, [trimmed, lang])
 
+  // iOS Safari: `border-radius` + `overflow-x: auto` on the *same* node often paints a
+  // stuck “corner” layer over the scrollable content. Split: outer clips the radius only,
+  // inner handles horizontal scroll (no radius on the scrollport).
   return (
     <div
-      className={`syntax-shiki-root mb-6 overflow-x-auto rounded-lg border ${className ?? ""}`}
+      className={`syntax-shiki-root mb-6 min-w-0 rounded-lg border overflow-hidden ${className ?? ""}`}
       style={{ borderColor: "var(--border-2)" }}
     >
-      {html === null ? (
-        <pre
-          className="m-0 rounded-lg p-4 font-mono text-[13px] leading-relaxed"
-          style={{ background: "#1e1e1e", color: "#d4d4d4" }}
-        >
-          <code>{trimmed}</code>
-        </pre>
-      ) : (
-        <div
-          className="font-mono [&_pre]:m-0 [&_pre]:rounded-lg [&_pre]:p-4 [&_pre]:text-left [&_pre]:text-[13px] [&_pre]:leading-relaxed"
-          // Shiki output: each token is a <span style="color:…"> — no React tree, so colours survive site CSS better than Prism-in-React in our layout.
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
-      )}
+      <div className="overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]">
+        {html === null ? (
+          <pre
+            className="m-0 p-4 font-mono text-[13px] leading-relaxed"
+            style={{ background: "#1e1e1e", color: "#d4d4d4" }}
+          >
+            <code>{trimmed}</code>
+          </pre>
+        ) : (
+          <div
+            className="font-mono min-w-0 [&_pre]:m-0 [&_pre]:p-4 [&_pre]:text-left [&_pre]:text-[13px] [&_pre]:leading-relaxed [&_pre]:rounded-none"
+            // Shiki output: each token is a <span style="color:…"> — no React tree, so colours survive site CSS better than Prism-in-React in our layout.
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        )}
+      </div>
     </div>
   )
 }
