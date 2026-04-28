@@ -14,6 +14,7 @@ import { motion } from "framer-motion"
 
 
 export default function SalesPatriotProjectPage() {
+  const chromeStoreLink = "https://chromewebstore.google.com/detail/father-figure/dmkminnihibbmkjahphedaldbldpabnl"
   usePageViewTracker()
   const isPanel = useIsPanel()
   const { isPersonalized } = useWindowsXP()
@@ -27,16 +28,42 @@ export default function SalesPatriotProjectPage() {
   return (
     <AnimatedPage>
       <div className="min-h-screen page-bg" style={{ position: "relative" }}>
-        <AnimatedHeader
-          currentPage="/fatherfigure"
-          rightLinks={[{ href: "https://github.com/fiof25/father-figure-htn", text: "GitHub", external: true }]}
-        />
+        <AnimatedHeader currentPage="/fatherfigure" />
 
         <main className="max-w-3xl mx-auto p-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
-            <div className="flex">
+            <div className={`relative ${isPanel ? "pr-20" : ""}`}>
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                <h1 className="text-4xl font-bold mb-0">Father Figure</h1>
+                <nav className="flex shrink-0 items-center gap-1" aria-label="Father Figure project links">
+                  <a
+                    href={chromeStoreLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Father Figure on Chrome Web Store (opens in a new tab)"
+                    className="inline-flex rounded-md p-2 text-[var(--text-3)] transition-colors hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-3)]"
+                  >
+                    <img
+                      src="/images/icons/chrome-web-store.svg"
+                      alt="Chrome Web Store"
+                      className="h-5 w-5"
+                      style={{ filter: "grayscale(1) saturate(0) brightness(0.9)", opacity: 0.78 }}
+                    />
+                  </a>
+                  <a
+                    href="https://github.com/fiof25/father-figure-htn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Father Figure source code on GitHub (opens in a new tab)"
+                    className="inline-flex rounded-md p-2 text-[var(--text-3)] transition-colors hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-3)]"
+                  >
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.7-2.782.605-3.369-1.343-3.369-1.343-.454-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.091-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.748-1.026 2.748-1.026.546 1.378.202 2.398.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.31.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .269.18.58.688.481A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" />
+                    </svg>
+                  </a>
+                </nav>
+              </div>
               <div className="mb-4">
-                <h1 className="text-4xl font-bold mb-2">Father Figure</h1>
                 <p className="text-m" style={{ color: "var(--text-3)" }}>Project, 2025</p>
               </div>
 
@@ -72,7 +99,8 @@ export default function SalesPatriotProjectPage() {
               <motion.div variants={itemVariants}>
                 <h3 className="font-bold mb-2">Inspiration</h3>
                 <div className="space-y-4 text-[var(--text-2)]">
-                  <p>Fatherlessness makes ripples. Father Figure is not just another Chrome extension... It is a friend, a father and a way to make your doomscrolling even just a little less lonely. 😞</p>
+                  <p>We built Father Figure at Hack the North around one idea: browsing can feel lonely, especially during long nights of school, work, or doomscrolling.</p>
+                  <p>Instead of a generic productivity bot, we designed a playful dad companion that checks in, jokes around, and gives practical support directly in the browser where stress actually happens.</p>
                 </div>
               </motion.div>
             </div>
@@ -84,29 +112,69 @@ export default function SalesPatriotProjectPage() {
             <div className="py-8">
               <p className="section-label mb-2">The Mission</p>
               <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
-                Create an endearing virtual father to cheer users up.
+                Build a caring, funny browser-side companion that feels human and supportive, not robotic.
               </p>
             </div>
           </StaggeredContent>
 
 
           <StaggeredContent delay={300}>
-            <p>Watch Dad Sneeze: <a href="https://youtu.be/Pkpd0WDR_sA">https://youtu.be/Pkpd0WDR_sA</a></p>
+            <a
+              href={chromeStoreLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--border-2)] hover:bg-[var(--surface-hover)] transition-colors"
+            >
+              Check it out on the Chrome Web Store
+              <ExternalLink className="w-4 h-4" />
+            </a>
           </StaggeredContent>
 
           <StaggeredContent delay={300}>
-            <div className="space-y-4 text-[var(--text-2)]">
-              <p>Designed different personas that were composed of hand-drawn characters with different emotions Created custom event triggers for Dave to pop up on (e.g. tab overload, late night, emotional check-ins) Used Gemini AI to generate conversation and different personalities + ElevenLabs API to simulate dad voice Challenges we ran into but conquered successfully 🥊 Format... we weren't sure how we would display things to ensure convenience and seamlessness, but thank goodness it all worked out Timing the animation and audio correctly for maximum dad-ness 😅 😞</p>
+            <div className="mt-6 space-y-4 text-[var(--text-2)]">
+              <p className="section-label">Case Study</p>
+              <p>We implemented three distinct father personas (Bill, Dave, and Chang), each with separate system instructions, voice mapping, and conversation history so interactions stay consistent per character.</p>
+              <p>The content script injects a draggable on-page dad avatar that can wake/sleep, chat, and react with animated states. We also built timed behavior loops for dad jokes, encouragement messages, video prompts, and random sneezes to make the companion feel alive over long browsing sessions.</p>
+              <p>For intelligence, we used Gemini to generate short in-character responses and context-aware jokes. When users ask for help, we extract visible page text and append that context to the prompt so advice can reference what is currently on screen.</p>
+              <p>For voice, we integrated ElevenLabs with per-persona voices plus browser speech synthesis fallback when API keys are missing. A speech queue prevents overlapping audio/events so responses feel natural instead of chaotic.</p>
+              <p>One challenge was balancing novelty with usability. We solved that by using lightweight overlays, clear close controls, and activity-aware triggers (for example, only running noisy interactions on visible tabs).</p>
+              <p>Publishing on the Chrome Web Store also taught me a lot about extension permissions and review expectations. We had to be deliberate about what we requested, why we requested it, and how to explain that clearly in our listing and privacy materials.</p>
+              <p>Fiona likes chess, so we built a playful "Chess with Dad" mode directly into the extension as an extra way to interact beyond chat.</p>
+              <div className="mt-6 space-y-4">
+                <p className="section-label">Demo Videos</p>
+                <div className="squircle bg-[var(--surface)] p-2" style={{ borderRadius: 16 }}>
+                  <div className="relative aspect-video w-full overflow-hidden squircle" style={{ borderRadius: 12 }}>
+                    <iframe
+                      className="w-full h-full"
+                      src="https://www.youtube.com/embed/rnDSdft8QbM"
+                      title="Father Figure full demo"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+                <div className="squircle bg-[var(--surface)] p-2" style={{ borderRadius: 16 }}>
+                  <div className="relative aspect-video w-full overflow-hidden squircle" style={{ borderRadius: 12 }}>
+                    <iframe
+                      className="w-full h-full"
+                      src="https://www.youtube.com/embed/Pkpd0WDR_sA"
+                      title="Father Figure sneeze clip"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </StaggeredContent>
           {!isPanel && (
             <RelatedProjects currentId="fatherfigure" />
           )}
         </main>
-
-        <StaggeredContent delay={1100}>
-        </StaggeredContent>
-
         {isPersonalized && (
           <>
             <DraggableSticker src="/images/projects/fatherfigure/sneeze.png"       ix={0.72} iy={0.55} size={150} delay={0} />

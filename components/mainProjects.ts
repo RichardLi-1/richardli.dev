@@ -51,6 +51,7 @@ export const mainProjects = [
     logo: "/images/projects/fatherfigure/logo.png",
     tags: ["Chrome Extension", "JS", "Utilities"],
     colors: "#673435",
+    externalLink: "https://chromewebstore.google.com/detail/father-figure/dmkminnihibbmkjahphedaldbldpabnl",
   },
     {
     id: "futureforward",
@@ -65,6 +66,7 @@ export const mainProjects = [
     logo: "/images/projects/future-forward/logo.png",
     tags: ["Non-profit", "Project Management", "Community"],
     colors: "#3B369C",
+    externalLink: "https://www.ffcareers.app/",
   },
 
   {

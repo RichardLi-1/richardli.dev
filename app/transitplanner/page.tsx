@@ -144,11 +144,33 @@ export default function TransitPlannerProjectPage() {
 
         <main className="max-w-3xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
-            <div className="flex">
-              <div className="mb-0">
-                <h2 className="text-4xl font-bold mb-2">Transit Planner</h2>
-                <p className="text-m" style={{ color: "var(--text-3)" }}>Web App, 2026</p>
+            <div className={`relative mb-1 ${isPanel ? "pr-20" : ""}`}>
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                <h2 className="text-4xl font-bold mb-0">Transit Planner</h2>
+                <nav className="flex shrink-0 items-center gap-1" aria-label="Transit Planner project links">
+                  <a
+                    href="https://www.transitplan.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Transit Planner website (opens in a new tab)"
+                    className="inline-flex rounded-md p-2 text-[var(--text-3)] transition-colors hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-3)]"
+                  >
+                    <ExternalLink className="h-5 w-5" />
+                  </a>
+                  <a
+                    href="https://github.com/evanzyang91/transit-planner"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Transit Planner source code on GitHub (opens in a new tab)"
+                    className="inline-flex rounded-md p-2 text-[var(--text-3)] transition-colors hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-3)]"
+                  >
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.7-2.782.605-3.369-1.343-3.369-1.343-.454-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.091-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.748-1.026 2.748-1.026.546 1.378.202 2.398.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.31.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .269.18.58.688.481A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" />
+                    </svg>
+                  </a>
+                </nav>
               </div>
+              <p className="text-m" style={{ color: "var(--text-3)" }}>Web App, 2026</p>
               {isPanel && (
                 <span className="right-4 top-0.5 absolute">
                   <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")}><ArrowUpRight className="w-6 h-6" /></button>
@@ -208,6 +230,10 @@ export default function TransitPlannerProjectPage() {
                   <a href="https://www.transitplan.xyz/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
                     <ExternalLink className="w-4 h-4" />
                     Transit Planner App
+                  </a>
+                  <a href="https://github.com/evanzyang91/transit-planner" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
+                    <ExternalLink className="w-4 h-4" />
+                    GitHub
                   </a>
                   <a href="https://devpost.com/software/transit-planner" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
                     <ExternalLink className="w-4 h-4" />

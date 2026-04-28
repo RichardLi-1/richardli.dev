@@ -12,6 +12,7 @@ import { ProjectImageCycler } from "@/components/project-image-cycler"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { DraggableSticker } from "@/components/draggable-sticker"
+import { trackEvent } from "@/lib/track"
 
 const activities = [
   "somewhere on the ttc",
@@ -218,7 +219,18 @@ export default function PersonalWebsite() {
                         {hoveredId === project.id && (project as any).externalLink && (
                           <button
                             // stopPropagation prevents the card's Link from also navigating
-                            onClick={e => { e.preventDefault(); e.stopPropagation(); window.open((project as any).externalLink, "_blank", "noopener,noreferrer") }}
+                            onClick={e => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              // Track outbound project intent before opening a new tab.
+                              // 📖 Learn: fire-and-forget telemetry pattern
+                              trackEvent("🚀 Project external link clicked", {
+                                projectId: project.id,
+                                projectTitle: project.title,
+                                location: "homepage project card",
+                              })
+                              window.open((project as any).externalLink, "_blank", "noopener,noreferrer")
+                            }}
                             className="liquid-glass-pill squircle"
                             style={{
                               position: "absolute", top: 10, right: 10,

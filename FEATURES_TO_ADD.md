@@ -24,3 +24,5 @@ Fix the problem that cards don't show the proper preview image like transit fann
 
 more things to add:
 fav lotion: ones that smell like molly tea
+
+Add ability to render my fav transit line
