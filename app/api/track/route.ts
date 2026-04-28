@@ -21,8 +21,33 @@ export async function POST(req: NextRequest) {
   // Parse the event name and any extra metadata the client sent
   const { event, meta = {} } = await req.json()
 
+  // Enrich events with geolocation from edge/proxy headers when available.
+  // Why server-side? It avoids exposing API keys and removes client latency.
+  // 📖 Learn: reverse-proxy geolocation headers (x-vercel-ip-*)
+  const headers = req.headers
+  const forwardedFor = headers.get("x-forwarded-for")
+  const edgeIp = forwardedFor?.split(",")[0]?.trim()
+  const country = headers.get("x-vercel-ip-country") || headers.get("cf-ipcountry")
+  const region = headers.get("x-vercel-ip-country-region") || headers.get("x-vercel-region")
+  const city = headers.get("x-vercel-ip-city")
+  const latitude = headers.get("x-vercel-ip-latitude")
+  const longitude = headers.get("x-vercel-ip-longitude")
+  const postalCode = headers.get("x-vercel-ip-postal-code")
+  const timezone = headers.get("x-vercel-ip-timezone")
+
+  const enrichedMeta: Record<string, string> = {
+    ...(meta as Record<string, string>),
+    ...(edgeIp ? { "🌐 Edge IP": edgeIp } : {}),
+    ...(country ? { "🌍 Country": country } : {}),
+    ...(region ? { "🗺️ Region": region } : {}),
+    ...(city ? { "🏙️ City": city } : {}),
+    ...(latitude && longitude ? { "📍 Coordinates": `${latitude}, ${longitude}` } : {}),
+    ...(postalCode ? { "📮 Postal": postalCode } : {}),
+    ...(timezone ? { "🕒 Timezone": timezone } : {}),
+  }
+
   // Build a human-readable message from the event + metadata fields
-  const metaLines = Object.entries(meta as Record<string, string>)
+  const metaLines = Object.entries(enrichedMeta)
     .map(([k, v]) => `${k}: ${v}`)
     .join("\n")
 

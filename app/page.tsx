@@ -162,7 +162,7 @@ export default function PersonalWebsite() {
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {previously.map(item => (
                     <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-2)", listStyle: "none" }}>
-                      <img src={item.image} style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%" }}></img>
+                      <img src={item.image} alt="" style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%" }} />
                       {item.text}
                     </li>
                   ))}
