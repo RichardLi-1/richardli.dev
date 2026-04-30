@@ -46,6 +46,8 @@
   --border-2: rgba(255, 255, 255, 0.08);
   --glass-bg: rgba(12, 12, 11, 0.85);
   --pure: #000000;
+  --pill-bg-scrolled: linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.38));
+  --pill-backdrop-blur: blur(20px) saturate(180%);
 
   --background: 0 0% 5%;
   --foreground: 30 8% 91%;
@@ -83,6 +85,8 @@
   --border-2: rgba(0, 0, 0, 0.09);
   --glass-bg: rgba(245, 244, 240, 0.85);
   --pure: #ffffff;
+  --pill-bg-scrolled: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45));
+  --pill-backdrop-blur: blur(4px) saturate(180%);
 
   --background: 40 15% 95%;
   --foreground: 25 10% 10%;

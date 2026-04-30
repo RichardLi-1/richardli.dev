@@ -343,7 +343,7 @@ export default function TransitPlannerProjectPage() {
                 <p className="mb-2">We also had the opportunity to demo at AI Tinkerers Toronto in the Shopify office.</p>
                 <img
                   src="/images/projects/transitplanner/ai-tinkerers.JPG"
-                  alt="Transit Planner Presentation at AI Tinkerers Toronto, Shopify"
+                  alt="Transit Planner Presentation at AI Tinkerers Toronto, Shopify. Shoutout to Amanda Xi for the photo."
                   className="w-full h-full object-cover"
                 />
               </div>
