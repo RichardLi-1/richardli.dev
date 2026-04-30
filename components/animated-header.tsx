@@ -189,6 +189,11 @@ export function AnimatedHeader({
 
   const { isHighContrast, toggleHighContrast } = useWindowsXP()
   const { theme, setTheme } = useTheme()
+  // Treat theme as dark until mounted — `theme` is `undefined` on first render
+  // (next-themes reads localStorage asynchronously), and the pill background uses
+  // this to pick dark vs. light gradients. Without the guard, a scrolled page load
+  // would flash a white pill before hydration completes.
+  const isDark = !mounted || theme !== "light"
 
   const handleThemeToggle = () => {
     setTheme(theme === "dark" ? "light" : "dark")
@@ -612,9 +617,9 @@ export function AnimatedHeader({
               padding: "8px 12px",
               borderRadius: "20px",
               border: isHighContrast ? "2px solid var(--text)" : isScrolled ? "1px solid rgba(255,255,255,0.18)" : "1px solid transparent",
-              background: isHighContrast ? "var(--bg)" : isScrolled ? (theme === "dark" ? "linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.38))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
-              backdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
-              WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
+              background: isHighContrast ? "var(--bg)" : isScrolled ? (isDark ? "linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.38))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
+              backdropFilter: isHighContrast ? "none" : isScrolled ? (isDark ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
+              WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? (isDark ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
               boxShadow: isHighContrast ? "none" : isScrolled ? "0 2px 20px rgba(0,0,0,0.2)" : "none",
               transition: "border-color 0.2s, box-shadow 0.2s, background 0.2s",
             }}>
@@ -632,9 +637,9 @@ export function AnimatedHeader({
               padding: "8px 12px",
               borderRadius: "20px",
               border: isHighContrast ? "2px solid var(--text)" : isScrolled ? "1px solid rgba(255,255,255,0.18)" : "1px solid transparent",
-              background: isHighContrast ? "var(--bg)" : isScrolled ? (theme === "dark" ? "linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.38))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
-              backdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
-              WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? (theme === "dark" ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
+              background: isHighContrast ? "var(--bg)" : isScrolled ? (isDark ? "linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.38))" : "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45))") : "transparent",
+              backdropFilter: isHighContrast ? "none" : isScrolled ? (isDark ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
+              WebkitBackdropFilter: isHighContrast ? "none" : isScrolled ? (isDark ? "blur(20px) saturate(180%)" : "blur(4px) saturate(180%)") : "none",
               boxShadow: isHighContrast ? "none" : isScrolled ? "0 2px 20px rgba(0,0,0,0.2)" : "none",
               transition: "border-color 0.2s, box-shadow 0.2s, background 0.2s",
             }}>

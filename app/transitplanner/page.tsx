@@ -137,12 +137,13 @@ export default function TransitPlannerProjectPage() {
           { id: "architecture", label: "Architecture" },
           { id: "initial-development", label: "Launch" },
           { id: "more-features", label: "More Features" },
+          { id: "conclusion", label: "Conclusion" },
         ]} />
       )}
       <div className="mx-auto">
         <AnimatedHeader currentPage="/transitplanner" />
 
-        <main className="max-w-3xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
+        <main className="max-w-3xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text-2)] [&_li]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             <div className={`relative mb-1 ${isPanel ? "pr-20" : ""}`}>
               <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
@@ -337,16 +338,30 @@ export default function TransitPlannerProjectPage() {
                 />
               </div>
 
+              <div className="w-full overflow-hidden squircle rounded-lg">
+                <br></br>
+                <p className="mb-2">We also had the opportunity to demo at AI Tinkerers Toronto in the Shopify office.</p>
+                <img
+                  src="/images/projects/transitplanner/ai-tinkerers.JPG"
+                  alt="Transit Planner Presentation at AI Tinkerers Toronto, Shopify"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
               <h2 id="more-features" className="font-bold mt-8 mb-2 text-2xl">More features</h2>
-              <p className="mb-2">We're excited to develop this further. Here are some features I've added since: </p>
+              <p className="mb-2">We're excited to develop this further. Here are some features we've added since: </p>
                 
                 <h3 className="font-semibold mt-4 mb-2 text-lg">Surface Route Accuracy</h3>
               <p className="mb-2">Initially, bus and streetcar routes floated from one point to another. I added automatic snapping to roads as well as portals to indicate underground sections that don't have to follow road medians.</p>
             <video src="/videos/road-snapping.mov" aria-label="Road snapping feature demo" autoPlay loop muted playsInline className="w-full squircle rounded-lg" />
+            
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Agentic Commuter Simulation</h3>
+              <p className="mb-2">This mode dispatches hundreds of AI agents to act as commuters. Eventually, this will be a tool available to the transit council members.</p>
 
-            <p className="mb-2 mt-4">This project has introduced me to much of the small but active community of transit data and modelling professionals, from whom I have a lot to learn from.</p>
-             <p className="mb-2 mt-4">I hope to make this project either useful professionally or as an educational tool or game for transit enthusiasts. If you have any feedback or suggestions, or would like to collaborate, please reach out!</p>
+              <h3 className="font-semibold mt-4 mb-2 text-lg">More map overlays</h3>
+              <p className="mb-2">Isochrone, Canada-wide population density, transit deserts, custom SHP/KML/KMZ uploads, GTFS live vehicle data, etc.</p>
             </div>
+            
 
             <h3 className="font-semibold mt-4 mb-2 text-lg">Next Steps</h3>
             <p className="mb-2">There are still a lot of features I'd like to explore with Transit Planner. To list a few:</p>
@@ -354,7 +369,15 @@ export default function TransitPlannerProjectPage() {
               <li>Data driven analysis of accessibility</li>
               <li>GTFS Realtime and visualization of moving vehicles</li>
               <li>Transit modelling features</li>
+              <li>Support for more cities</li>
+              <li>Graph-based, non-deterministic council debating</li>
+              <li>Different interaction methods to initiate the AI council, such as chatting or using points of strain from agentic simulation as a jumping off point</li>
             </ul>
+
+            <h2 id="conclusion" className="font-semibold mt-8 mb-2 text-2xl">Conclusion</h2>
+            <p className="mb-2 mt-4">This project has introduced me to much of the small but active community of transit data and modelling professionals, from whom I have a lot to learn from.</p>
+             <p className="mb-2 mt-4">I hope to make this project either useful professionally or as an educational tool or game for transit enthusiasts. If you have any feedback or suggestions, or would like to collaborate, please <a href="mailto:richardli0@outlook.com?subject=Transit%20Planner%20Collaboration&body=Hi%20Richard%2C%0A%0AI%27d%20love%20to%20collaborate%20on%20Transit%20Planner.%0A%0A" style={{ color: "var(--text)", textDecoration: "underline" }}>reach out</a>!</p>
+              <p className="mb-2 mt-4">Also big shoutout to Fiona, Evan, and Chris for building this with me.</p>
 
             <p className="mt-4" style={{ color: "var(--text-3)" }}>
               The project is fully open source on GitHub —{" "}
