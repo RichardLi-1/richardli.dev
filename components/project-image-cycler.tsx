@@ -55,7 +55,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
         position: "absolute",
         inset: 0,
         background: "var(--surface)",
-        opacity: loaded ? 0 : 1,
+        opacity: loaded || isVideo ? 0 : 1,
         transition: "opacity 0.3s ease",
         overflow: "hidden",
         pointerEvents: "none",
@@ -70,6 +70,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
           ref={mediaRef}
           key={current}
           src={current}
+          poster={`/images/thumbnails/${current.split("/").pop()!.replace(/\.[^.]+$/, "")}.jpg`}
           autoPlay
           loop
           muted
@@ -78,7 +79,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
           disableRemotePlayback
           className={className}
           onLoadedData={() => setLoaded(true)}
-          style={{ objectFit: "cover", opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease" }}
+          style={{ objectFit: "cover", opacity: 1, transition: "opacity 0.3s ease" }}
         >
           {/* Required for accessibility (Lighthouse) — muted demo videos have no spoken content,
               so the track is empty. `default` makes it active without user interaction. */}

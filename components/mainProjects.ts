@@ -13,7 +13,7 @@ export const mainProjects = [
     id: "transitplanner",
     title: "Transit Planner",
     year: "2026",
-    description: "Draw your ideal transit system with visualized city data",
+    description: "Draw your ideal transit system and model commuter flow",
     image: "/videos/transitplanfinal.mov",
     logo: "",
     tags: ["iOS", "Swift", "Game Development"],
