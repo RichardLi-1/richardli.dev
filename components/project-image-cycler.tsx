@@ -41,6 +41,17 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
     if (el instanceof HTMLVideoElement && el.readyState >= 2) setLoaded(true)
   }, [current])
 
+  // Safari sometimes ignores the `autoPlay` attribute when a `poster` is present —
+  // it shows the poster and never transitions to playback. Calling .play()
+  // programmatically after the element mounts is more reliable.
+  // key={current} ensures the video remounts on each source change, so this
+  // effect always runs against the fresh element.
+  useEffect(() => {
+    const el = mediaRef.current
+    if (!el || !(el instanceof HTMLVideoElement)) return
+    el.play().catch(() => {}) // suppress AbortError if component unmounts mid-play
+  }, [current])
+
   if (!current) {
     return <Image src="/placeholder.svg" alt={alt} className={className} fill sizes="100vw" />
   }
@@ -86,13 +97,16 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
           <track kind="captions" srcLang="en" label="No captions" default />
         </video>
       ) : (
-        <img
+        <Image
           ref={mediaRef}
           key={current}
           src={current}
           alt={alt}
-          loading="lazy"
-          decoding="async"
+          fill
+          // 📖 Learn: sizes tells Next.js which widths to pre-generate.
+          // Without this, it generates a huge default. Cards are 2-col on
+          // desktop (~50vw each) and full-width on mobile.
+          sizes="(max-width: 768px) 100vw, 50vw"
           className={className}
           onLoad={() => setLoaded(true)}
           style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease" }}
