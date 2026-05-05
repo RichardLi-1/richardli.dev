@@ -351,6 +351,14 @@ export default function TransitPlannerProjectPage() {
               <h3 className="font-semibold mt-4 mb-2 text-lg">Frontend</h3>
               <p className="mb-2">Transit Planner uses Next.js, TypeScript, and is styled with Tailwind.</p>
 
+              <h3 className="font-semibold mt-4 mb-2 text-lg">CI/CD</h3>
+              <p className="mb-2">Test builds are released at <a href="https://test.transitplanner.app/">https://test.transitplanner.app/</a> for testing. Personally love this preview badge.</p>
+              <img
+                src="/images/projects/transitplanner/badge.png"
+                alt="Preview badge"
+                className="w-full h-full object-cover"
+              />
+
               <h3 className="font-semibold mt-4 mb-2 text-lg">Backend server: LLM Setup</h3>
               <p className="mb-2">
                 Transit Planner uses Anthropic and Gemini APIs, allowing both as options to users. Dialog is streamed via SSE (FastAPI{" "}
