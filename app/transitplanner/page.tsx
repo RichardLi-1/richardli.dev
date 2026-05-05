@@ -12,6 +12,7 @@ import { CaseStudyNav } from "@/components/case-study-nav"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
 import { SyntaxCodeBlock } from "@/components/syntax-code-block"
+import { TrackedExternalLink } from "@/components/tracked-external-link"
 
 const PROPOSE_ROUTE_TOOL_SNIPPET = `const PROPOSE_ROUTE_TOOL: ToolDefinition = {
   name: "propose_route",
@@ -149,7 +150,10 @@ export default function TransitPlannerProjectPage() {
               <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
                 <h2 className="text-4xl font-bold mb-0">Transit Planner</h2>
                 <nav className="flex shrink-0 items-center gap-1" aria-label="Transit Planner project links">
-                  <a
+                  <TrackedExternalLink
+                    projectId="transitplanner"
+                    linkLabel="Website icon"
+                    location="header links"
                     href="https://www.transitplan.xyz/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -157,8 +161,11 @@ export default function TransitPlannerProjectPage() {
                     className="inline-flex rounded-md p-2 text-[var(--text-3)] transition-colors hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-3)]"
                   >
                     <ExternalLink className="h-5 w-5" />
-                  </a>
-                  <a
+                  </TrackedExternalLink>
+                  <TrackedExternalLink
+                    projectId="transitplanner"
+                    linkLabel="GitHub icon"
+                    location="header links"
                     href="https://github.com/evanzyang91/transit-planner"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -168,7 +175,7 @@ export default function TransitPlannerProjectPage() {
                     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                       <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.7-2.782.605-3.369-1.343-3.369-1.343-.454-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.091-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.748-1.026 2.748-1.026.546 1.378.202 2.398.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.31.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .269.18.58.688.481A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" />
                     </svg>
-                  </a>
+                  </TrackedExternalLink>
                 </nav>
               </div>
               <p className="text-m" style={{ color: "var(--text-3)" }}>Web App, 2026</p>
@@ -203,7 +210,17 @@ export default function TransitPlannerProjectPage() {
               <div className="flex squircle bg-zinc-200 dark:bg-zinc-800 max-width w-full rounded-xl border-2">
                 <p className="p-2 py-3 px-3.5 text-zinc-800 dark:text-zinc-300">🥇 This project was awarded at Hack Canada 2026</p>
               </div>
-              <a href="https://www.transitplan.xyz/" target="_blank" rel="noopener noreferrer" className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90">Try it out!</a>
+              <TrackedExternalLink
+                projectId="transitplanner"
+                linkLabel="Try it out"
+                location="hero CTA"
+                href="https://www.transitplan.xyz/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90"
+              >
+                Try it out!
+              </TrackedExternalLink>
             </div>
             <CollapsibleDetails labels={["Timeline", "Team", "Stats", "Links", "Overview", "Technologies"]} animateContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -228,18 +245,42 @@ export default function TransitPlannerProjectPage() {
                 </motion.div>
                 <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Links</p>
-                  <a href="https://www.transitplan.xyz/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
+                  <TrackedExternalLink
+                    projectId="transitplanner"
+                    linkLabel="Transit Planner App"
+                    location="links section"
+                    href="https://www.transitplan.xyz/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 hover:underline"
+                  >
                     <ExternalLink className="w-4 h-4" />
                     Transit Planner App
-                  </a>
-                  <a href="https://github.com/evanzyang91/transit-planner" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
+                  </TrackedExternalLink>
+                  <TrackedExternalLink
+                    projectId="transitplanner"
+                    linkLabel="GitHub"
+                    location="links section"
+                    href="https://github.com/evanzyang91/transit-planner"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 hover:underline"
+                  >
                     <ExternalLink className="w-4 h-4" />
                     GitHub
-                  </a>
-                  <a href="https://devpost.com/software/transit-planner" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:underline">
+                  </TrackedExternalLink>
+                  <TrackedExternalLink
+                    projectId="transitplanner"
+                    linkLabel="Devpost"
+                    location="links section"
+                    href="https://devpost.com/software/transit-planner"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 hover:underline"
+                  >
                     <ExternalLink className="w-4 h-4" />
                     Devpost
-                  </a>
+                  </TrackedExternalLink>
                 </motion.div>
               </div>
               <div>

@@ -22,3 +22,28 @@ export function trackEvent(event: string, meta?: Record<string, string>) {
     // silently swallow network errors — tracking should never break the UI
   })
 }
+
+type CaseStudyLinkClickParams = {
+  projectId: string
+  linkLabel: string
+  href: string
+  location?: string
+}
+
+// Tracks outbound CTA clicks from project/case-study pages.
+// Why a dedicated helper? It standardizes metadata so Discord logs stay
+// easy to scan/query instead of each page inventing its own keys.
+// 📖 Learn: telemetry schema consistency
+export function trackCaseStudyLinkClick({
+  projectId,
+  linkLabel,
+  href,
+  location = "case-study",
+}: CaseStudyLinkClickParams) {
+  trackEvent("🔗 Case study link clicked", {
+    projectId,
+    linkLabel,
+    href,
+    location,
+  })
+}

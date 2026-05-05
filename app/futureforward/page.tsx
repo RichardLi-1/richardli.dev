@@ -10,6 +10,7 @@ import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
+import { TrackedExternalLink } from "@/components/tracked-external-link"
 
 
 function StatBadge({ label }: { label: string }) {
@@ -106,10 +107,18 @@ export default function FutureForwardProjectPage() {
                 </motion.div>
                 <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Links</p>
-                  <a href="https://www.youtube.com/@FutureForward.Initiative" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:transition-colors">
+                  <TrackedExternalLink
+                    projectId="futureforward"
+                    linkLabel="YouTube Channel"
+                    location="links section"
+                    href="https://www.youtube.com/@FutureForward.Initiative"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 hover:transition-colors"
+                  >
                     <Youtube className="w-4 h-4" />
                     YouTube Channel
-                  </a>
+                  </TrackedExternalLink>
                 </motion.div>
               </div>
               <motion.div variants={itemVariants}>

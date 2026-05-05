@@ -193,6 +193,10 @@ export default function ResumePage() {
                     <strong style={{ color: "var(--text)" }}>Cloud &amp; Tools:</strong> PostgreSQL, Firebase, Supabase,
                     AWS, Vercel, Docker, Azure DevOps
                   </p>
+                  <p>
+                    <strong style={{ color: "var(--text)" }}>Courses:</strong> Digital Computation (C++), Apple App
+                    Development with Swift Certification
+                  </p>
                 </div>
               </section>
 

@@ -11,6 +11,7 @@ import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
+import { TrackedExternalLink } from "@/components/tracked-external-link"
 
 const allTeam = [
   { name: "Dorian Chen", role: "Project Lead" },
@@ -64,7 +65,10 @@ export default function BoinkProjectPage() {
                   Bo!nk
                 </h1>
                 <nav className="flex shrink-0 items-center gap-1" aria-label="Boink project links">
-                  <a
+                  <TrackedExternalLink
+                    projectId="boink"
+                    linkLabel="App Store icon"
+                    location="header links"
                     href="https://apps.apple.com/ca/app/bo-nk/id1570376501"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -72,7 +76,7 @@ export default function BoinkProjectPage() {
                     className="inline-flex rounded-md p-2 text-[var(--text-3)] transition-colors hover:text-[var(--text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--text-3)]"
                   >
                     <AppStoreIcon className="h-5 w-5" />
-                  </a>
+                  </TrackedExternalLink>
                   <a
                     href="https://github.com/MarkvilleDev/Boink"
                     target="_blank"
@@ -370,8 +374,16 @@ export default function BoinkProjectPage() {
               </p>
 
               <p className="text-[var(--text-2)] mt-4">
-                Try it out <a className="font-bold hover:underline" href="https://apps.apple.com/ca/app/bo-nk/id1570376501" target="_blank" rel="noreferrer">here!
-                </a>{" "}
+                Try it out <TrackedExternalLink
+                  projectId="boink"
+                  linkLabel="Try it out here"
+                  location="body CTA"
+                  className="font-bold hover:underline"
+                  href="https://apps.apple.com/ca/app/bo-nk/id1570376501"
+                  target="_blank"
+                  rel="noreferrer"
+                >here!
+                </TrackedExternalLink>{" "}
                 
               </p>
             </div>
