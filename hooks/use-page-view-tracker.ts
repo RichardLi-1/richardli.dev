@@ -12,6 +12,7 @@ const REFERRAL_SOURCES: Record<string, string> = {
   t: "Twitter/X",
   e: "Email",
   g: "GitHub",
+  z: "Resume",
 }
 // ──────────────────────────────────────────────────────────────────────────────
 
