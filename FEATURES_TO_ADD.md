@@ -26,3 +26,31 @@ more things to add:
 fav lotion: ones that smell like molly tea
 
 Add ability to render my fav transit line
+
+
+Make data structures for the case studies
+typed TS objects, not raw JSON.
+
+Why:
+
+you get autocomplete + type safety
+easier to embed small bits of logic when needed
+no separate JSON parsing/validation overhead
+So conceptually yes, it becomes “freeform structured data,” but with guardrails via TypeScript unions.
+
+Example shape:
+
+const fatherFigureCaseStudy: CaseStudySection[] = [
+  {
+    id: "case-study",
+    label: "Case Study",
+    blocks: [
+      { type: "paragraph", text: "We implemented three distinct father personas..." },
+      { type: "bullets", items: ["Gemini for responses", "ElevenLabs voice", "Speech queue"] },
+      { type: "videoEmbed", title: "Full demo", youtubeId: "rnDSdft8QbM" },
+    ],
+  },
+]
+Not truly “anything goes” freeform — it’s structured freeform.
+
+📖 Learn: This is often called a “block-based content model” (same concept many CMSes use internally).
