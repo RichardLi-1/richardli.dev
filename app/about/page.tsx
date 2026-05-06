@@ -99,7 +99,7 @@ export default function MorePage() {
                   maxWidth: 480,
                 }}
               >
-                Shh... you've discovered a secret page! I care a lot about accessibility, in both software and our cities. There’s no one to distill myself into one paragraph, but here are some things I love:
+                Hi, I'm Richard. I strongly believe in building AI that enhances our work, not replaces it. There’s no one to distill myself into one paragraph, but here are some things I love:
                 
               </p>
             </div>
@@ -128,20 +128,20 @@ export default function MorePage() {
           {/* ── Right column: portrait + experiences ── */}
           {/* No positioning needed — the parent grid places this automatically in column 2 */}
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            {/* Portrait — swap the commented-out img for a real photo
+            {/* Portrait — swap the commented-out img for a real photo*/}
             {!isMobile && (
               <div
               style={{
                 width: "100%",
-                aspectRatio: "3 / 4",
+                aspectRatio: "4 / 5",
                 borderRadius: 24,
                 overflow: "hidden",
                 background: "var(--card-bg)",
                 border: "1px solid var(--border-2)",
               }}>
-              <img src="/images/your-portrait.jpg" alt="Richard Li" style={{ width:"100%", height:"100%", objectFit:"cover" }} /> 
+              <img src="/images/about/me.jpg" alt="Richard Li" style={{ width:"100%", height:"100%", objectFit:"cover" }} /> 
             </div>
-            )} */}
+            )} 
             
               
 
