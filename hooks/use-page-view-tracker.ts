@@ -7,6 +7,7 @@ import { trackEvent } from "@/lib/track"
 // key   = the URL query param (e.g. "l" matches "?l" or "?l=anything")
 // value = display name that gets **bolded** in the Discord message
 const REFERRAL_SOURCES: Record<string, string> = {
+  c: "Cover Letter",
   l: "LinkedIn",
   r: "Resume",
   t: "Twitter/X",
