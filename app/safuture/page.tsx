@@ -136,6 +136,7 @@ export default function SaFuturePage() {
               <h2 id="sf-chatbots" className="font-bold mt-8 mb-2 text-2xl">Chatbots for Property Assessment</h2>
               <p>I worked on improving the existing data indexing pipeline and its integration into the web dashboard.</p>
             <p>The backend involved over 60 API routes to manage all of the moving parts involved with the product. I contributed to various parts of this, as well as writing new routes for control over data indexing. This was a unique challenge as changes would require simultaneous modifications in three repositories.</p>
+            <p>Here is a video of the chatbot in action, deployed for Rutherford County, TN:</p>
             <div className="relative w-full overflow-hidden squircle rounded-lg mt-4" style={{ aspectRatio: "560/315" }}>
               <iframe
                 className="absolute inset-0 w-full h-full"
@@ -159,7 +160,7 @@ export default function SaFuturePage() {
               </ul>
 
               <h2 id="sf-experience" className="font-bold mt-8 mb-2 text-2xl">The Experience</h2>
-              <p>This was my first experience working with professional software engineering processes at scale. I integrated into the team's workflow pretty quickly, shipping code from day two. We were given a lot of ownership over our projects and I learned a lot about both software engineering and mapping technologies.</p>
+              <p>I integrated into the team's workflow pretty quickly, shipping code from day two. We were given a lot of ownership over our projects and I learned a lot about both software engineering and mapping technologies.</p>
             </div>
           </StaggeredContent>
 

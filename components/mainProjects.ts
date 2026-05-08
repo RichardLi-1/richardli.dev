@@ -42,17 +42,6 @@ export const mainProjects = [
     colors: "#417193",
     externalLink: "https://apps.apple.com/ca/app/bo-nk/id1570376501"
   },
-  {
-    id: "fatherfigure",
-    title: "Father Figure",
-    year: "2025",
-    description: "A virtual father Chrome extension you never knew you needed",
-    image: "/images/projects/fatherfigure/banner.png",
-    logo: "/images/projects/fatherfigure/logo.png",
-    tags: ["Chrome Extension", "JS", "Utilities"],
-    colors: "#673435",
-    externalLink: "https://chromewebstore.google.com/detail/father-figure/dmkminnihibbmkjahphedaldbldpabnl",
-  },
     {
     id: "futureforward",
     title: "Future Forward",
@@ -68,7 +57,17 @@ export const mainProjects = [
     colors: "#3B369C",
     externalLink: "https://www.ffcareers.app/",
   },
-
+  {
+    id: "fatherfigure",
+    title: "Father Figure",
+    year: "2025",
+    description: "A virtual father Chrome extension you never knew you needed",
+    image: "/images/projects/fatherfigure/banner.png",
+    logo: "/images/projects/fatherfigure/logo.png",
+    tags: ["Chrome Extension", "JS", "Utilities"],
+    colors: "#673435",
+    externalLink: "https://chromewebstore.google.com/detail/father-figure/dmkminnihibbmkjahphedaldbldpabnl",
+  },
   {
     id: "salespatriot",
     title: "SalesPatriot (YC W25)",
@@ -77,6 +76,7 @@ export const mainProjects = [
     image: "/images/projects/salespatriot/hero.png",
     tags: ["Internship", "UI/UX", "AI"],
     colors: "#352F0C",
+    hidden: true
   },
   // {
   //   id: "classprofile",
