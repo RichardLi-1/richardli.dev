@@ -107,6 +107,7 @@ export const mainProjects = [
     logo: "/images/projects/yrhacks/logo.png",
     tags: ["Community", "Logistics", "Organizations"],
     colors: "#5744AF",
+    hidden: true
   },
   // {
   //   id: "cec",
