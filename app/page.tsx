@@ -37,7 +37,7 @@ const currently_more = [
 const previously = [
   { image: "/logos/safuture.png", text: "Engineering @ SaFuture Inc." },
   { image: "/logos/formulatech-hacks.jpeg", text: "Full-Stack Developer @ FormulaTech Hacks" },
-  { image: "/images/projects/cec/logo.webp", text: "Software Developer @ Career Education Council" },
+  { image: "/images/projects/cec/logo.webp", text: "Software Engineer @ Career Education Council" },
 ]
 
 export default function PersonalWebsite() {
