@@ -53,9 +53,10 @@ export default function SaFuturePage() {
           <StaggeredContent delay={100}>
             <div className="relative mb-8 aspect-video w-full overflow-hidden squircle rounded-lg">
               <img
-                src="/images/projects/safuture/SaFuture Banner.png"
+                src="/images/projects/safuture/safuture-banner.webp"
                 alt="Smart Rutherford screenshots"
                 className="w-full h-full object-cover"
+                loading="eager"
               />
             </div>
           </StaggeredContent>

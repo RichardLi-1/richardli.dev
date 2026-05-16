@@ -10,7 +10,7 @@ Languages: English, Mandarin (professional working proficiency)
 
 Interests: Public transit, AI, design, front-end dev, UI/UX, MS Windows, iOS
 
-Skills: Python, TypeScript, React, Next.js, Angular, Tailwind, Figma, Swift, Xcode, GIS, LLMS(OpenAI, Anthropic API), Voyage AI API, Supabase, Postgres, pgvector, Redis, LangChain, LangGraph, Pinecone, PyTorch, Hugging Face Transformers, RAG, vector databases, LLMs, embeddings, retrieval, systems design
+Skills: Python, TypeScript, React, Next.js, Angular, Tailwind, Figma, Swift, Xcode, GIS, LLMs (OpenAI, Anthropic API), Voyage AI API, Supabase, Postgres, pgvector, Redis, LangChain, LangGraph, Pinecone, PyTorch, Hugging Face Transformers, RAG, vector databases, LLMs, embeddings, retrieval, systems design
 
 Currently working on something secret... shh...
 
