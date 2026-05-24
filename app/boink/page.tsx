@@ -107,7 +107,7 @@ export default function BoinkProjectPage() {
             {/* Changed from 400 */}
             <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden rounded-lg">
               <img
-                src="/images/projects/boink/hero.png"
+                src="/images/projects/boink/hero_new.png"
                 alt="Bo!nk game screenshots"
                 className="w-full h-full object-cover"
               />

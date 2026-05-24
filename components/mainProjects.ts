@@ -48,6 +48,7 @@ export const mainProjects = [
     year: "2024-2025",
     description: "App and events to help students discover their vocations",
     image: "/images/projects/future-forward/ffcareerslanding.png",
+    hidden: true,
     //image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ffbanner.png-JMScQeCriXKG0sG0z3bc8GFrra41av.jpeg",
     //image2: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%203.png-jKOva7clSQUCHgEUorDDX86vX0w3Me.jpeg",
     //image3: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%204.png-NMSo9ZL9dNWIiNEavhdNlELQycDNz9.jpeg",

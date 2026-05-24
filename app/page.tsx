@@ -181,7 +181,7 @@ export default function PersonalWebsite() {
                 scrollMarginTop: isMobile ? 20 : 88,
               }}
             >
-              <p className="section-label" style={{ marginBottom: 20 }}>Projects</p>
+              <p className="section-label" style={{ marginBottom: 20 }}>Work</p>
               <div style={{
                 display: "grid",
                 gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",

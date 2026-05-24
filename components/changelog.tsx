@@ -16,6 +16,27 @@ interface ChangelogEntry {
 
 export const entries: ChangelogEntry[] = [
   {
+    date: "05/24/2026 - v2.5.0",
+    changes: [
+      { text: "About page redesigned — bigger \"Hi, I'm Richard\" intro, polaroid-style community grid (CUTC, Hack the North, SYDE), favourites strip, and one-tap copy-to-clipboard email", badge: "New" },
+      "About link re-added to the main navigation on both desktop and mobile",
+      "/work/ slug dropped from every case-study URL — projects now live at /<id> directly (e.g. /transitplanner instead of /work/transitplanner)",
+      "Transit Planner case study expanded with deeper content, and Shiki added for syntax-highlighted code blocks",
+      "Case-study link rail added to the top-right of project pages, with click analytics on external links",
+      { text: "Next-case-study button on every project page — sequential navigation with a live thumbnail preview of the next project", badge: "New" },
+      "Footer redesigned — © wordmark with auto-updating year, social icons moved to the bottom-left to balance the version pill, dividing rule removed",
+      "Homepage image loading switched to next/Image optimization; project videos now preload with ffmpeg-generated thumbnails for faster first paint",
+      "Safuture case study loading time cut significantly",
+      "Header background no longer flashes the wrong color when the theme mounts after the rest of the page",
+      "Custom referrer / UTM handling improved for inbound link tracking",
+      "Yrhacks case study hidden from the homepage grid",
+      "Accessibility: empty alt tags added to decorative icons, contrast bumped on the \"Try it out\" buttons",
+      "Photo modal polished on mobile; code-block backgrounds fixed on iOS Safari",
+      "AI chat system prompt iterated for better answers",
+      "Major Tailwind / dead-code cleanup pass across the codebase",
+    ],
+  },
+  {
     date: "04/21/2026 - v2.4.0",
     changes: [
       "Case study navigation added on desktop, with active-section tracking tied to the page midpoint for more natural scroll progress",
