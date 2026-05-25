@@ -25,15 +25,17 @@ const SOCIALS = [
 const EMAIL = "richardli0@outlook.com"
 
 // Sticker images for the "Things I love" masonry grid
+// Alt text helps AI crawlers (and screen readers) understand visual content.
+// Even short descriptions are far better than empty strings.
 const LOVE_STICKERS = [
-  { src: "/images/about/functions/photo1sticker.png", alt: "" },
-  { src: "/images/about/functions/photo2sticker.png", alt: "" },
-  { src: "/images/about/functions/photo3sticker.png", alt: "" },
-  { src: "/images/about/functions/photo4sticker.png", alt: "" },
-  { src: "/images/about/functions/photo5sticker.png", alt: "" },
-  { src: "/images/about/functions/photo6sticker.png", alt: "" },
-  { src: "/images/about/functions/photo7sticker.png", alt: "" },
-  { src: "/images/about/functions/photo8sticker.png", alt: "" },
+  { src: "/images/about/functions/photo1sticker.png", alt: "Sticker 1" },
+  { src: "/images/about/functions/photo2sticker.png", alt: "Sticker 2" },
+  { src: "/images/about/functions/photo3sticker.png", alt: "Sticker 3" },
+  { src: "/images/about/functions/photo4sticker.png", alt: "Sticker 4" },
+  { src: "/images/about/functions/photo5sticker.png", alt: "Sticker 5" },
+  { src: "/images/about/functions/photo6sticker.png", alt: "Sticker 6" },
+  { src: "/images/about/functions/photo7sticker.png", alt: "Sticker 7" },
+  { src: "/images/about/functions/photo8sticker.png", alt: "Sticker 8" },
 ]
 
 // Placeholder experience data — fill in real entries

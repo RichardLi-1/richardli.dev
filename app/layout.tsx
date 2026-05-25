@@ -133,44 +133,85 @@ export default function RootLayout({
         {/* JSON-LD structured data helps Google understand who this site is about,
             which can improve rich results (e.g. knowledge panel) in search.
             📖 Learn: JSON-LD / Schema.org — https://schema.org/Person */}
+        {/* JSON-LD: ProfilePage wrapping a Person gives AI crawlers and
+            search engines a single structured blob with everything a recruiter
+            would ask about — skills, education, work history, and projects.
+            📖 Learn: Schema.org ProfilePage — https://schema.org/ProfilePage */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Richard Li",
-              url: "https://richardli.dev",
-              image: "https://richardli.dev/images/website-thumbnail.png",
-              sameAs: ["https://linkedin.com/in/richardli0", "https://github.com/richardli-1"],
-              jobTitle: "Full Stack Developer",
-              worksFor: {
-                "@type": "Organization",
-                name: "SaFuture Inc.",
+              "@type": "ProfilePage",
+              mainEntity: {
+                "@type": "Person",
+                name: "Richard Li",
+                url: "https://richardli.dev",
+                image: "https://richardli.dev/images/about/me.jpg",
+                sameAs: [
+                  "https://linkedin.com/in/richardli0",
+                  "https://github.com/richardli-1",
+                  "https://x.com/transitfanner",
+                ],
+                jobTitle: "Full Stack Developer",
+                description:
+                  "Full Stack Developer and Systems Design Engineering student at the University of Waterloo. Seeking Fall 2026 internships. Experienced in React, Next.js, Swift, TypeScript, Python, and AI integration.",
+                email: "r575li@uwaterloo.ca",
+                // hasOccupation lets AI parse each role as a structured entry
+                // rather than trying to scrape it from HTML
+                hasOccupation: [
+                  {
+                    "@type": "Occupation",
+                    name: "Software Engineer",
+                    occupationLocation: { "@type": "Country", name: "Canada" },
+                    skills: "React, Next.js, TypeScript, Python, GIS, Municipal AI",
+                    description: "Building GIS and municipal AI products at SaFuture Inc. and Qwhery (2025-2026)",
+                  },
+                  {
+                    "@type": "Occupation",
+                    name: "Logistics Organizer",
+                    description: "Transportation and logistics organizer for Hack the North, Canada's largest hackathon (2026)",
+                  },
+                  {
+                    "@type": "Occupation",
+                    name: "Software Engineer",
+                    description: "Built software for Career Education Council (2023)",
+                  },
+                ],
+                alumniOf: {
+                  "@type": "EducationalOrganization",
+                  name: "University of Waterloo",
+                  department: "Systems Design Engineering",
+                },
+                knowsAbout: [
+                  "Full Stack Development",
+                  "React",
+                  "Next.js",
+                  "TypeScript",
+                  "Swift",
+                  "iOS Development",
+                  "Python",
+                  "Java",
+                  "C++",
+                  "AI Integration",
+                  "GIS",
+                  "Geospatial Data",
+                  "UI/UX Design",
+                  "Systems Design Engineering",
+                  "Urban Planning",
+                  "Transit Systems",
+                ],
+                // makesOffer signals availability for work — AI recruiter tools
+                // parse this to match candidates to roles
+                makesOffer: {
+                  "@type": "Offer",
+                  itemOffered: {
+                    "@type": "Service",
+                    name: "Software Engineering Internship",
+                    description: "Seeking Fall 2026 internships in full-stack development, AI integration, or geospatial/transit software",
+                  },
+                },
               },
-              alumniOf: {
-                "@type": "EducationalOrganization",
-                name: "University of Waterloo",
-                department: "Systems Design Engineering",
-              },
-              email: "r575li@uwaterloo.ca",
-              description:
-                "Full Stack Developer and Systems Design Engineering student at the University of Waterloo, specializing in React, Next.js, Swift, TypeScript, and AI integration.",
-              knowsAbout: [
-                "Full Stack Development",
-                "React",
-                "Next.js",
-                "TypeScript",
-                "Swift",
-                "iOS Development",
-                "Python",
-                "Java",
-                "C++",
-                "AI Integration",
-                "OpenAI API",
-                "UI/UX Design",
-                "Systems Design Engineering",
-              ],
             }),
           }}
         />
