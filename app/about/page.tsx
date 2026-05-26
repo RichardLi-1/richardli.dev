@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 // Favourites — placeholder data for "A little bit about me..." section.
 // Fill in image paths, titles, and captions.
 const FAVOURITES = [
-  { image: "images/about/hawker.png", title: "The Toronto Subway,", caption: "click for the Hawker Siddeley H5's propulsion sound" },
+  { image: "images/about/hawker.png", title: "The Toronto Subway.", caption: "click for the Hawker Siddeley H5's propulsion sound" },
   { image: "", title: "Apple products,", caption: "the first of which owned was an iPhone 3GS" },
   { image: "", title: "", caption: "" },
 ]
@@ -375,7 +375,7 @@ export default function MorePage() {
               maxWidth: 900,
             }}
           >
-            My love for technology comes from my obsessions with subway systems, consumer electronics and consuming all sorts of media. Here, you can find some of my favourites that have altered my brain chemistry.
+            My love for technology comes from my obsessions with subway systems, consumer electronics and all sorts of other interests. Here, you can find some of my favourites that inspired the way I think.
           </p>
 
           {/* Three favourites cards — same flex pattern as Communities, but no rotation */}
