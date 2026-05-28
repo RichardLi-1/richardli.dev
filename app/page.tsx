@@ -185,7 +185,7 @@ export default function PersonalWebsite() {
               <div style={{
                 display: "grid",
                 gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-                gap: "32px 24px",
+                gap: "28px 16px",
               }}>
                 {visibleProjects.map(project => {
                   const externalOnly = (project as { externalOnly?: boolean }).externalOnly
@@ -216,7 +216,7 @@ export default function PersonalWebsite() {
                         borderRadius: 16,
                         cornerShape: "squircle",
                         background: "var(--pure)",
-                        marginBottom: 10,
+                        marginBottom: 8,
                       }}>
                         <div style={{ width: "100%", height: "100%", overflow: "hidden", borderRadius: 16, cornerShape: "squircle" } as React.CSSProperties}>
                           <div id={`proj-img-${project.id}`} className="proj-img" style={{ width: "100%", height: "100%", transition: "transform 0.35s ease" }}>
