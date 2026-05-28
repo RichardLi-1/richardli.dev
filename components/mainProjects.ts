@@ -7,6 +7,7 @@
 //   image/image2/image3 — ProjectImageCycler cycles through all three
 //   colors      — hex accent used for hover glow effects
 //   externalLink — if present, a "Try it out" button appears on hover
+//   externalOnly — card click goes to externalLink (no on-site case study page)
 //   hidden      — excludes the project from all grids
 export const mainProjects = [
   {
@@ -27,8 +28,21 @@ export const mainProjects = [
     description: "Building GIS and municipal AI",
     image: "/images/projects/safuture/SaFuture Banner.png",
     logo: "",
-    tags: ["iOS", "Swift", "Game Development"],
+    tags: [],
     colors: "#417193",
+    hidden: false,
+  },
+  {
+    id: "cbtc",
+    title: "Transit Control Simulator",
+    year: "2026",
+    description: "Simulating communications-based train control systems",
+    image: "/images/projects/cbtc/thumbnail1.png",
+    logo: "",
+    tags: [],
+    colors: "#222222",
+    externalLink: "https://transitcontrol.richardli.dev/",
+    externalOnly: true,
     hidden: false,
   },
   {

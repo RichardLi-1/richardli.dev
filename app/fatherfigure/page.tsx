@@ -141,6 +141,27 @@ export default function SalesPatriotProjectPage() {
               <p>Publishing on the Chrome Web Store also taught me a lot about extension permissions and review expectations. We had to be deliberate about what we requested, why we requested it, and how to explain that clearly in our listing and privacy materials.</p>
               <p>Fiona likes chess, so we built a playful "Chess with Dad" mode directly into the extension as an extra way to interact beyond chat.</p>
               <div className="mt-6 space-y-4">
+                <p className="section-label">Screenshots</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="squircle bg-[var(--surface)] p-2" style={{ borderRadius: 16 }}>
+                    <img
+                      src="/images/projects/fatherfigure/popup-persona-picker.png"
+                      alt="Father Figure browser extension popup with Bill, Dave, and Chang persona cards and quick action buttons"
+                      className="w-full h-auto squircle"
+                      style={{ borderRadius: 12 }}
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="squircle bg-[var(--surface)] p-2" style={{ borderRadius: 16 }}>
+                    <img
+                      src="/images/projects/fatherfigure/chat-chang.png"
+                      alt="In-page chat with the Chang persona responding to a sad message with comforting advice"
+                      className="w-full h-auto squircle"
+                      style={{ borderRadius: 12 }}
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
                 <p className="section-label">Demo Videos</p>
                 <div className="squircle bg-[var(--surface)] p-2" style={{ borderRadius: 16 }}>
                   <div className="relative aspect-video w-full overflow-hidden squircle" style={{ borderRadius: 12 }}>

@@ -54,10 +54,16 @@ const EXPERIENCES = [
     link: "https://hackthenorth.com/"
   },
   {
-    logo: "/logos/safuture.png",
+    logo: "/images/projects/cec/logo.webp",
     title: "Software Engineer",
     company: "Career Education Council",
-    year: "2023",
+    year: "2025",
+  },
+  {
+    logo: "/logos/salespatriot.png",
+    title: "Intern (HUVTSP)",
+    company: "SalesPatriot (YC W25)",
+    year: "2025",
   },
 ]
 
@@ -248,7 +254,6 @@ export default function MorePage() {
                           height: 36,
                           borderRadius: 8,
                           overflow: "hidden",
-                          background: "var(--surface)",
                           flexShrink: 0,
                           display: "flex",
                           alignItems: "center",

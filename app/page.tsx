@@ -187,8 +187,20 @@ export default function PersonalWebsite() {
                 gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
                 gap: "32px 24px",
               }}>
-                {visibleProjects.map(project => (
-                  <Link key={project.id} href={`/${project.id}`} style={{ textDecoration: "none" }}>
+                {visibleProjects.map(project => {
+                  const externalOnly = (project as { externalOnly?: boolean }).externalOnly
+                  const externalLink = (project as { externalLink?: string }).externalLink
+                  const cardHref =
+                    externalOnly && externalLink ? externalLink : `/${project.id}`
+                  return (
+                  <Link
+                    key={project.id}
+                    href={cardHref}
+                    {...(externalOnly && externalLink
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    style={{ textDecoration: "none" }}
+                  >
                     <div
                       style={{ cursor: "pointer" }}
                       // Imperatively scale the image wrapper on hover. Using direct DOM
@@ -216,7 +228,7 @@ export default function PersonalWebsite() {
                           </div>
                         </div>
                         {/* "Try it out" button only appears on hover and only if the project has an external link */}
-                        {hoveredId === project.id && (project as any).externalLink && (
+                        {hoveredId === project.id && externalLink && !externalOnly && (
                           <button
                             // stopPropagation prevents the card's Link from also navigating
                             onClick={e => {
@@ -229,7 +241,7 @@ export default function PersonalWebsite() {
                                 projectTitle: project.title,
                                 location: "homepage project card",
                               })
-                              window.open((project as any).externalLink, "_blank", "noopener,noreferrer")
+                              window.open(externalLink, "_blank", "noopener,noreferrer")
                             }}
                             className="liquid-glass-pill squircle"
                             style={{
@@ -262,7 +274,8 @@ export default function PersonalWebsite() {
                       </div>
                     </div>
                   </Link>
-                ))}
+                  )
+                })}
               </div>
               {/*<div style={{ marginTop: 16 }}>
                 <Link href="/#projects" style={{ fontSize: 12, color: "var(--text-2)", letterSpacing: "0.04em", textTransform: "uppercase", fontFamily: "'Toronto Subway', sans-serif", textDecoration: "none" }}
