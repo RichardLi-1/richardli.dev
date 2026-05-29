@@ -43,6 +43,59 @@ export function usePageViewTracker() {
     window.addEventListener("keydown", handleKeyDown)
     window.addEventListener("keyup", handleKeyUp)
 
+    // ─── Bounce detection ─────────────────────────────────────────────────────
+    // A "bounce" = the visitor saw only this one page and left quickly (<10s)
+    // without clicking through anywhere. We check at the moment the page is
+    // unloading. `pagehide` is the reliable "page is going away" signal (covers
+    // tab close + navigation); we keep it to a real exit rather than tab-switching
+    // so we don't over-report. 📖 Learn: Page Lifecycle — https://developer.chrome.com/docs/web-platform/page-lifecycle-api
+    const BOUNCE_THRESHOLD_MS = 10_000 // under 10s on a single page = a quick bounce
+    const pageEnteredAt = Date.now()
+
+    const reportBounceOnExit = () => {
+      // Same skip rules as the page-view tracker.
+      if (slashKeyHeld.current) return
+      if (window.location.hostname === "localhost") return
+      if (localStorage.getItem("skip_tracking")) return
+      if (/bot|crawler|spider/i.test(navigator.userAgent)) return
+
+      // Only a bounce if they never left this first page…
+      const stored = sessionStorage.getItem("nav_path")
+      const pages: string[] = stored ? JSON.parse(stored) : []
+      if (pages.length > 1) return
+      // …and they left quickly.
+      const elapsed = Date.now() - pageEnteredAt
+      if (elapsed > BOUNCE_THRESHOLD_MS) return
+      // Fire at most once per visit.
+      if (sessionStorage.getItem("bounce_sent")) return
+      sessionStorage.setItem("bounce_sent", "1")
+
+      const seconds = Math.round(elapsed / 1000)
+      // Carry the referral source so we still know where the bouncer came from.
+      const referral = localStorage.getItem("referral_source")
+      const payload = {
+        event: referral
+          ? `👋 Quick bounce from **${referral}** on ${window.location.pathname}`
+          : `👋 Quick bounce on ${window.location.pathname}`,
+        meta: {
+          "🛤️ Path": pages.join(" → ") || window.location.pathname,
+          "⏱️ Time on page": `${seconds}s`,
+          "🕒 Time": new Date().toLocaleString(),
+        },
+      }
+
+      // sendBeacon queues the request so it survives the page unload — a normal
+      // fetch() gets cancelled when the page is tearing down. The Blob's JSON type
+      // lets /api/track's req.json() parse it on the server.
+      // 📖 Learn: navigator.sendBeacon — https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon
+      navigator.sendBeacon(
+        "/api/track",
+        new Blob([JSON.stringify(payload)], { type: "application/json" }),
+      )
+    }
+
+    window.addEventListener("pagehide", reportBounceOnExit)
+
     const sendVisit = async () => {
       if (slashKeyHeld.current) {
         return
@@ -150,6 +203,7 @@ export function usePageViewTracker() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
       window.removeEventListener("keyup", handleKeyUp)
+      window.removeEventListener("pagehide", reportBounceOnExit)
     }
   }, [])
 }
