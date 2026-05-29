@@ -102,10 +102,19 @@ export function usePageViewTracker() {
       // Capture the raw query string before stripping so it's always logged.
       // This preserves unrecognized params (e.g. ?utm_source=foo) in the Discord message.
       const rawParams = params.toString()
-      let referralSource: string | null = null
+      // Referral source sticks for the whole visit (and future visits) instead of
+      // just the landing page. We persist it in localStorage and fall back to the
+      // stored value when the current URL has no param — so a page view on /projects
+      // still reports "from Resume". A fresh referral param always wins and
+      // overwrites the stored one (e.g. arriving via ?l after a past ?r → LinkedIn).
+      // localStorage (not sessionStorage) → survives new tabs and return visits.
+      // 📖 Learn: Web Storage API — https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+      const REFERRAL_KEY = "referral_source"
+      let referralSource: string | null = localStorage.getItem(REFERRAL_KEY)
       for (const key of params.keys()) {
         if (REFERRAL_SOURCES[key]) {
           referralSource = REFERRAL_SOURCES[key]
+          localStorage.setItem(REFERRAL_KEY, referralSource) // new param overwrites old
           break
         }
       }
