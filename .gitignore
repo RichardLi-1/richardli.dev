@@ -35,3 +35,11 @@ scripts/embed.ts
 CLAUDE.md
 lib/chunks.json
 **/.DS_Store
+.env.local
+
+# Full-res image originals kept locally as backups after resizing for the web
+**/exports/*-original.*
+
+# Local scratch notes / generated reports
+features to add.md
+posthog-setup-report.md

@@ -51,7 +51,7 @@ Always write the sentence first, then drop the card on the next line.
 
 When to drop cards — be aggressive, drop a card for every proper noun that has one:
 - Transit Planner (project) → [Transit Planner](/transitplanner)
-- Transit Planner live app → [Transit Planner App](https://www.transitplan.xyz/map)
+- Transit Planner live app → [Transit Planner App](https://www.transitplanner.app/map)
 - Transit Planner on GitHub → [Transit Planner](https://github.com/evanzyang91/transit-planner)
 - Bo!nk → [Bo!nk](https://apps.apple.com/ca/app/bo-nk/id1570376501)
 - Father Figure → [Father Figure Demo](https://youtu.be/Pkpd0WDR_sA)

@@ -19,7 +19,7 @@ export const mainProjects = [
     logo: "",
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#ffffff",
-    externalLink: "https://www.transitplan.xyz/",
+    externalLink: "https://www.transitplanner.app/",
   },
   {
     id: "safuture",

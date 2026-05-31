@@ -103,6 +103,7 @@ function SoundPanel({ soundEnabled, onToggle, onClose }: { soundEnabled: boolean
 
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { useTheme } from "next-themes"
+import posthog from "posthog-js"
 
 interface NavItem {
   href: string
@@ -281,6 +282,7 @@ export function AnimatedHeader({
       //{ href: "/", label: "Home" },
       //{ href: "/#projects", label: "Projects" },
       { href: "/transit/fanning", label: "Transit" },
+      { href: "/about", label: "About" },
       ...rightLinks.map(l => ({ href: l.href, label: l.text, external: l.external })),
     ]
   }
@@ -324,8 +326,8 @@ export function AnimatedHeader({
             </a>
           ))}
           {/* Social icons — always shown regardless of page */}
-          <a onClick={() => trackEvent("🔗 LinkedIn clicked", { location: "mobile pill" })} href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "3px 4px" }} aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a>
-          <a onClick={() => trackEvent("🐙 GitHub clicked", { location: "mobile pill" })} href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "3px 4px" }} aria-label="GitHub"><Github className="w-4 h-4" /></a>
+          <a onClick={() => { trackEvent("🔗 LinkedIn clicked", { location: "mobile pill" }); posthog.capture("social_link_clicked", { platform: "linkedin", location: "mobile pill" }) }} href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "3px 4px" }} aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a>
+          <a onClick={() => { trackEvent("🐙 GitHub clicked", { location: "mobile pill" }); posthog.capture("social_link_clicked", { platform: "github", location: "mobile pill" }) }} href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "3px 4px" }} aria-label="GitHub"><Github className="w-4 h-4" /></a>
           {/* Theme-dependent buttons only render after mount to avoid hydration mismatch */}
           {mounted && (
             <>
