@@ -13,6 +13,7 @@ import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { DraggableSticker } from "@/components/draggable-sticker"
 import { trackEvent } from "@/lib/track"
+import posthog from "posthog-js"
 
 const activities = [
   "somewhere on the ttc",
@@ -122,12 +123,12 @@ export default function PersonalWebsite() {
               <h1 style={{ fontSize: "clamp(40px, 7vw, 56px)", lineHeight: 1.2, letterSpacing: -1, marginBottom: 14, fontFamily: "'SFCamera', sans-serif" }}>
                 Richard Li is a software engineer and full-time public transit enthusiast.<mark className="hero-highlight"></mark>
               </h1>
-              <p style={{ fontSize: 16, color: "var(--text-3)", letterSpacing: "0.02em" }}>
+              <p style={{ fontSize: 16, color: "var(--text-2)", letterSpacing: "0.02em" }}>
                 Most days, you'll find him —{" "}
                 <span
                   key={activityIndex}
                   style={{
-                    color: "var(--text-2)",
+                    color: "var(--text)",
                     display: "inline-block",
                     animation: "fadeSlideIn 0.4s ease",
                   }}
@@ -150,7 +151,7 @@ export default function PersonalWebsite() {
                 <p className="section-label" style={{ marginBottom: 14 }}>Currently</p>
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {currently.map(item => (
-                    <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-2)", listStyle: "none" }}>
+                    <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14, color: "var(--text-2)", listStyle: "none" }}>
                       <img src={item.image} alt="" width={18} height={18} style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%", objectFit: "cover" }} />
                       {item.text}
                     </li>
@@ -161,7 +162,7 @@ export default function PersonalWebsite() {
                 <p className="section-label" style={{ marginBottom: 14 }}>Previously</p>
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {previously.map(item => (
-                    <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-2)", listStyle: "none" }}>
+                    <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14, color: "var(--text-2)", listStyle: "none" }}>
                       <img src={item.image} alt="" style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%" }} />
                       {item.text}
                     </li>
@@ -185,7 +186,7 @@ export default function PersonalWebsite() {
               <div style={{
                 display: "grid",
                 gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-                gap: "28px 16px",
+                gap: "32px 16px",
               }}>
                 {visibleProjects.map(project => {
                   const externalOnly = (project as { externalOnly?: boolean }).externalOnly
@@ -203,11 +204,11 @@ export default function PersonalWebsite() {
                   >
                     <div
                       style={{ cursor: "pointer" }}
-                      // Imperatively scale the image wrapper on hover. Using direct DOM
-                      // manipulation (querySelector) here avoids re-rendering the whole
-                      // card just to update a CSS transform.
-                      onMouseEnter={() => { setHoveredId(project.id); (document.querySelector(`#proj-img-${project.id}`) as HTMLElement)!.style.transform = "scale(1.02)" }}
-                      onMouseLeave={() => { setHoveredId(null); (document.querySelector(`#proj-img-${project.id}`) as HTMLElement)!.style.transform = "scale(1)" }}
+                      // Track hover so the title underlines and the "Try it out"
+                      // button can appear; no image scaling on hover.
+                      onMouseEnter={() => setHoveredId(project.id)}
+                      onMouseLeave={() => setHoveredId(null)}
+                      onClick={() => posthog.capture("project_card_clicked", { project_id: project.id, project_title: project.title, destination: cardHref })}
                     >
                       <div style={{
                         position: "relative",
@@ -262,10 +263,15 @@ export default function PersonalWebsite() {
                         )}
                       </div>
                       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
-                        <p style={{ fontSize: 14, color: "var(--text)", lineHeight: 1.5, margin: 0 }}>
-                          {project.title}
+                        <p style={{ fontSize: 16, color: "var(--text)", lineHeight: 1.5, margin: 0 }}>
+                          <span style={{
+                            textDecoration: hoveredId === project.id ? "underline" : "none",
+                            textUnderlineOffset: 3,
+                          }}>
+                            {project.title}
+                          </span>
                           {project.description && (
-                            <span style={{ color: "var(--text-3)" }}> — {project.description}</span>
+                            <span style={{ fontSize: 14, color: "var(--text-3)" }}> — {project.description}</span>
                           )}
                         </p>
                         {/*<span style={{ fontSize: 12, color: "var(--text-4)", flexShrink: 0, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.03em" }}>

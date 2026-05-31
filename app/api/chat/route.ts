@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk"
 import type { NextRequest } from "next/server"
 import { SYSTEM_PROMPT } from "@/lib/system-prompt"
 import { retrieve, rewriteQuery } from "@/lib/retrieve"
+import { getPostHogClient } from "@/lib/posthog-server"
 
 // maxDuration tells Vercel's serverless runtime to allow up to 30 seconds before
 // timing out. Streaming responses can take longer than the default 10 s limit.
@@ -46,8 +47,19 @@ export async function POST(req: NextRequest) {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown"
     const { allowed, message: rateLimitMessage } = checkRateLimit(ip)
     if (!allowed) {
+      getPostHogClient().capture({
+        distinctId: ip,
+        event: "chat_rate_limited",
+        properties: { ip },
+      })
       return new Response(rateLimitMessage, { status: 429, headers: { "Content-Type": "text/plain" } })
     }
+
+    getPostHogClient().capture({
+      distinctId: ip,
+      event: "chat_request_received",
+      properties: { ip },
+    })
 
     const { messages } = await req.json()
 

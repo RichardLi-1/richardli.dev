@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server"
 // It only runs server-side (in an API route), never in the browser.
 // 📖 Learn: nodemailer — https://nodemailer.com/about/
 import nodemailer from "nodemailer"
+import { getPostHogClient } from "@/lib/posthog-server"
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,6 +41,12 @@ export async function POST(request: NextRequest) {
     }
 
     await transporter.sendMail(mailOptions)
+
+    getPostHogClient().capture({
+      distinctId: email,
+      event: "contact_message_delivered",
+      properties: { has_phone: !!phone },
+    })
 
     return NextResponse.json({ success: true })
   } catch (error) {

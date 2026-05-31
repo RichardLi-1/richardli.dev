@@ -1,6 +1,7 @@
 "use client"
 import type React from "react"
 import { createContext, useContext, useState, useCallback, useEffect } from "react"
+import posthog from "posthog-js"
 // 📖 Learn: React Context pattern — https://react.dev/learn/passing-data-deeply-with-context
 
 // Represents one open window on the XP desktop. Each window tracks its own
@@ -86,6 +87,10 @@ export function WindowsXPProvider({ children }: { children: React.ReactNode }) {
             },
           ).catch(console.error)
         }
+
+        posthog.capture("xp_mode_activated", {
+          time_to_activate_seconds: parseFloat(timeTaken),
+        })
 
         const audio = new Audio("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ytmp3free.cc_microsoft-windows-xp-startup-sound-youtubemp3free.org-jm7S6oGjDVJxF19pr1JBJX95evAsxg.mp3")
         audio.play().catch(console.error)

@@ -3,6 +3,7 @@ import { useState } from "react"
 import type React from "react"
 
 import { Send } from "lucide-react"
+import posthog from "posthog-js"
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -43,7 +44,11 @@ export function ContactForm() {
       }
 
       setSubmitted(true)
+      posthog.capture("contact_form_submitted", {
+        has_phone: !!formData.phone,
+      })
     } catch (error) {
+      posthog.captureException(error)
       console.error("Error sending message:", error)
       // You could add error state handling here
     } finally {

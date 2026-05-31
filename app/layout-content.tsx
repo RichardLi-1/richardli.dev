@@ -1,6 +1,8 @@
 "use client"
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+// Lenis smooth/slow scroll disabled for now — re-enable the import + effect below to restore.
+// import Lenis from "lenis"
 import { WindowsXPProvider } from "@/contexts/windows-xp-context"
 import { WindowsXPDesktop } from "@/components/windows-xp/desktop"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
@@ -24,6 +26,34 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   }, [isPersonalized])
   // Loading screen temporarily disabled
   const [showLoading, setShowLoading] = useState(false)
+
+  // ── Lenis smooth/slow scroll (disabled) ────────────────────────────
+  // Refs to the custom scroller (.app-scroll-shell) and its inner content.
+  // body has overflow:hidden, so this element — not window — is the real scroller.
+  // const scrollShellRef = useRef<HTMLDivElement>(null)
+  // const scrollContentRef = useRef<HTMLDivElement>(null)
+
+  // Smooth + slowed scrolling via Lenis, wired to the custom scroller.
+  // 📖 Learn: Lenis smooth scroll — https://github.com/darkroomengineering/lenis
+  // useEffect(() => {
+  //   const wrapper = scrollShellRef.current
+  //   const content = scrollContentRef.current
+  //   // In XP mode the shell isn't mounted, so the refs are null — skip.
+  //   if (!wrapper || !content) return
+  //
+  //   const lenis = new Lenis({
+  //     wrapper, // the scroll container (default would be window)
+  //     content, // the element whose height drives the scrollable range
+  //     // ── Feel: these three knobs control "how slow" scrolling feels ──
+  //     lerp: 0.08, // catch-up speed; lower = smoother & slower to settle (default 0.1)
+  //     wheelMultiplier: 0.8, // <1 shortens each wheel step, so the page moves less per scroll
+  //     smoothWheel: true, // animate wheel/trackpad scrolling instead of jumping
+  //     syncTouch: false, // leave touch devices on native scroll (Lenis touch usually feels worse)
+  //     autoRaf: true, // let Lenis run its own requestAnimationFrame loop
+  //   })
+  //
+  //   return () => lenis.destroy()
+  // }, [isXPMode, showLoading]) // re-init if the shell remounts (e.g. leaving XP mode)
 
   // Skip the loading animation on subsequent visits within the same browser session.
   // sessionStorage persists for the tab's lifetime but clears when the tab closes.

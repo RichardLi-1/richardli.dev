@@ -8,6 +8,7 @@ import { Send, Info, ArrowUpRight, Mail } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { mainProjects } from "@/components/mainProjects"
+import posthog from "posthog-js"
 
 // Videos can't be used as <img> thumbnails — fall back to logo, then nothing.
 function projectThumbnail(p: typeof mainProjects[number]): string | undefined {
@@ -430,6 +431,11 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
     setIsLoading(true)
     setFollowUpQuestion(null) // clear the previous chip when a new message is sent
 
+    posthog.capture("chat_message_sent", {
+      message_length: text.length,
+      conversation_turn: messages.length / 2 + 1,
+    })
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -493,7 +499,10 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   // handleSuggestion lets suggestion chips submit without a real form event.
   // We pass a fake event object with a no-op preventDefault to satisfy the
   // function signature without needing a separate code path.
-  const handleSuggestion = (q: string) => {
+  const handleSuggestion = (q: string, isFollowUp = false) => {
+    if (isFollowUp) {
+      posthog.capture("chat_followup_clicked", { question: q })
+    }
     setInput(q)
     handleSubmit({ preventDefault: () => {} } as React.FormEvent, q)
   }
@@ -555,7 +564,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
       {!isLoading && followUpQuestion && (
         <div style={{ paddingBottom: 8 }}>
           <button
-            onClick={() => handleSuggestion(followUpQuestion)}
+            onClick={() => handleSuggestion(followUpQuestion, true)}
             style={{
               fontSize: 12,
               color: "var(--text-3)",

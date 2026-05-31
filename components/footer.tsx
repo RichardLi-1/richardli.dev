@@ -42,7 +42,7 @@ export function Footer() {
   if (isPanel) return null
   return (
     <>
-      <footer className="w-full border-t px-10 py-10 md:py-14" style={{ borderColor: "var(--border-2)", background: "var(--bg)" }}>
+      <footer className="w-full border-t px-10 py-6 md:py-8" style={{ borderColor: "var(--border-2)", background: "var(--bg)" }}>
         {/* Top row: wordmark on left, socials on right (icons sit higher than the credits line) */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 md:gap-8">
           <div className="flex flex-col gap-2 max-w-2xl">
@@ -51,10 +51,10 @@ export function Footer() {
                 📖 Learn: this runs at both SSR and hydration; safe except for the few-hour
                 window around midnight Dec 31 when server (UTC) and client (local TZ) might
                 disagree on the year. Acceptable trade-off for a portfolio site. */}
-            <span style={{ ...base, fontSize: "13px", color: "var(--text-2)", letterSpacing: "0.08em" }}>
+            <span style={{ ...base, fontSize: "14px", color: "var(--text-2)", letterSpacing: "0.08em" }}>
               © RICHARD LI {new Date().getFullYear()}
             </span>
-            <span style={{ ...base, fontSize: "13px", lineHeight: 1.6 }}>
+            <span style={{ ...base, fontSize: "14px", lineHeight: 1.4 }}>
               Written in TypeScript using Next.js. Animations using Framer Motion. Set in SFCamera and Toronto Subway. Made with ❤️.
             </span>
           </div>
@@ -92,13 +92,13 @@ export function Footer() {
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="size-2 rounded-full animate-pulse-custom" style={{ background: "var(--text-3)" }} />
+            <div className="size-2 rounded-full bg-green-400 animate-pulse-custom" />
             {/* Show the latest changelog date as the clickable version label.
                 `entries[0]` is always the most recent entry. */}
             <button
               onClick={() => setShowChangelog(true)}
               style={{
-                ...base, fontSize: "13px",
+                ...base, fontSize: "14px",
                 background: "none", border: "none", cursor: "pointer", padding: 0,
                 textDecoration: "underline", textUnderlineOffset: 3,
                 transition: "color 0.15s",
@@ -106,7 +106,7 @@ export function Footer() {
               onMouseEnter={e => (e.currentTarget.style.color = "var(--text-2)")}
               onMouseLeave={e => (e.currentTarget.style.color = "var(--text-3)")}
             >
-              {entries[0].date}
+              Last updated {entries[0].date}
             </button>
           </div>
         </div>
