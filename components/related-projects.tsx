@@ -12,7 +12,9 @@ export function RelatedProjects({ currentId }: { currentId: string }) {
     // wrapping back to index 0 after the last project.
     // 📖 Learn: the `%` (modulo) operator gives the remainder — pairing it with
     // `length` is the standard JS idiom for wrap-around indexing.
-    const visible = mainProjects.filter(p => !(p as any).hidden)
+    // externalOnly projects (e.g. cbtc) have no on-site /[id] case study page —
+    // they live at externalLink — so exclude them or this button would 404.
+    const visible = mainProjects.filter(p => !(p as any).hidden && !(p as any).externalOnly)
     const currentIdx = visible.findIndex(p => p.id === currentId)
     // If currentId isn't in the visible list (e.g. it's hidden), fall back to the
     // first project so the button never disappears unexpectedly.
