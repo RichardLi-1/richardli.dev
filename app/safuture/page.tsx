@@ -132,11 +132,11 @@ export default function SaFuturePage() {
               <p>SaFuture Inc and Qwhery are two startups focused on developing IT and GIS solutions for counties and municipalities.</p>
 
               <h2 className="font-bold mt-8 mb-2 text-2xl">What I Did</h2>
-              <p>The internship was split in three parts with the intent goal of <br></br>1.  creating an improved data indexing pipeline<br></br>2.  improving sales prospecting<br></br>3.  on knocking out a long list of feature requests for a client.</p>
+              <p>The internship was split in three parts with the intent goal of <br></br>1.  creating an improved data indexing pipeline<br></br>2.  automating sales prospecting<br></br>3.  on knocking out a long list of feature requests for a client.</p>
 
               <h2 id="sf-chatbots" className="font-bold mt-8 mb-2 text-2xl">Chatbots for Property Assessment</h2>
-              <p>I worked on improving the existing data indexing pipeline and its integration into the web dashboard.</p>
-            <p>The backend involved over 60 API routes to manage all of the moving parts involved with the product. I contributed to various parts of this, as well as writing new routes for control over data indexing. This was a unique challenge as changes would require simultaneous modifications across three microservices.</p>
+              <p>I worked on improving the existing data indexing pipeline by integrating batch processing and adding better integration into the web dashboard.</p>
+            <p>The backend involved <span className="hl">over 160 API routes</span> to manage all of the moving parts involved with the product. I contributed to various parts of this, as well as writing new routes for control over data indexing. This was a unique challenge as changes would require simultaneous modifications across three microservices.</p>
             <p>Here is a video of the chatbot in action, deployed for Rutherford County, TN:</p>
             <div className="relative w-full overflow-hidden squircle rounded-lg mt-4" style={{ aspectRatio: "560/315" }}>
               <iframe

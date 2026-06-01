@@ -219,6 +219,13 @@ h3 {
   color: var(--text-3);
 }
 
+/* .hl — inline highlight: brighter text + slightly bolder, for emphasizing
+   a phrase inside dimmed body copy (var(--text-2)). Adapts to light/dark. */
+.hl {
+  color: var(--text);
+  font-weight: 600;
+}
+
 /* ── Featured card (used by FanningGallery) ─────────────────────── */
 .featured-card {
   background: var(--card-bg);
