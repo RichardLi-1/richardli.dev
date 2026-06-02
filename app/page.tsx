@@ -11,7 +11,7 @@ import { mainProjects } from "@/components/mainProjects"
 import { ProjectImageCycler } from "@/components/project-image-cycler"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
-import { DraggableSticker } from "@/components/draggable-sticker"
+// import { DraggableSticker } from "@/components/draggable-sticker"
 import { trackEvent } from "@/lib/track"
 import posthog from "posthog-js"
 
@@ -294,9 +294,9 @@ export default function PersonalWebsite() {
             </section>
           </StaggeredContent>
 
-          {isPersonalized && (
+          {/* {isPersonalized && (
             <DraggableSticker src="/images/decorative/stickers/molly-tea.png" ix={0.90} iy={0.55} size={80} />
-          )}
+          )} */}
 
           
         </main>

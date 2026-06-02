@@ -2,7 +2,7 @@
 import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
-import { DraggableSticker } from "@/components/draggable-sticker"
+// import { DraggableSticker } from "@/components/draggable-sticker"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useEffect, useState } from "react"
 
@@ -568,11 +568,11 @@ export default function MorePage() {
         </section>
 
         {/* Personalized mode draggable sticker */}
-        {isPersonalized && (
+        {/* {isPersonalized && (
           <a href="/about/functions">
             <DraggableSticker src="/images/about/functions/photo1sticker.png" ix={0.85} iy={0.6} size={120} />
           </a>
-        )}
+        )} */}
       </div>
     </AnimatedPage>
   )

@@ -4,7 +4,7 @@ import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
-import { DraggableSticker } from "@/components/draggable-sticker"
+// import { DraggableSticker } from "@/components/draggable-sticker"
 import { RelatedProjects } from "@/components/related-projects"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { useIsPanel } from "@/hooks/use-is-panel"
@@ -196,13 +196,13 @@ export default function SalesPatriotProjectPage() {
             <RelatedProjects currentId="fatherfigure" />
           )}
         </main>
-        {isPersonalized && (
+        {/* {isPersonalized && (
           <>
             <DraggableSticker src="/images/projects/fatherfigure/sneeze.png"       ix={0.72} iy={0.55} size={150} delay={0} />
             <DraggableSticker src="/images/projects/fatherfigure/sneeze-chang.png" ix={0.80} iy={0.25} size={130} delay={200} />
             <DraggableSticker src="/images/projects/fatherfigure/sneeze-dave.png"  ix={0.06} iy={0.45} size={140} delay={400} />
           </>
-        )}
+        )} */}
       </div>
     </AnimatedPage>
   )
