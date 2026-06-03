@@ -134,7 +134,7 @@ export default function TransitPlannerProjectPage() {
       )}
       {!isPanel && (
         <CaseStudyNav sections={[
-          { id: "inspiration", label: "Inspiration" },
+          { id: "origins", label: "Origins" },
           { id: "architecture", label: "Architecture" },
           { id: "initial-development", label: "Launch" },
           { id: "more-features", label: "More Features" },
@@ -312,14 +312,33 @@ export default function TransitPlannerProjectPage() {
 
           <StaggeredContent delay={400}>
             <div className="mb-8">
-              <h2 id="inspiration" className="font-bold mb-2 text-2xl">Inspiration</h2>
-              <p>As a kid, I spent countless hours on subway builders like JP Wright's <a href="https://jpwright.github.io/subway/" target="_blank" rel="noopener noreferrer" className="underline inline-block transition-transform duration-150 hover:scale-95">Brand New Subway</a>.</p>
+              <h2 id="origins" className="font-bold mb-3 text-2xl">Origins</h2>
+              <p className="mb-4">Transit Planner started at Hack Canada 2026, where it won. The idea goes back further; as a kid I spent countless hours on subway builders like JP Wright's <a href="https://jpwright.github.io/subway/" target="_blank" rel="noopener noreferrer" className="underline inline-block transition-transform duration-150 hover:scale-95">Brand New Subway</a>. I wanted to build my own version of this, with more advanced analysis and AI features.</p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-5">
+                <button
+                  onClick={() => setZoomedImage("/images/projects/transitplanner/banner.png")}
+                  className="overflow-hidden squircle rounded-lg cursor-zoom-in p-0 border-0 bg-[var(--surface)]"
+                  style={{ aspectRatio: "4/3" }}
+                >
+                  <img src="/images/projects/transitplanner/banner.png" alt="Transit Planner map" className="w-full h-full object-cover" />
+                </button>
+                <button
+                  onClick={() => setZoomedImage("/images/projects/transitplanner/launch-tweet.png")}
+                  className="overflow-hidden squircle rounded-lg cursor-zoom-in p-0 border-0 bg-[var(--surface)]"
+                  style={{ aspectRatio: "4/3" }}
+                >
+                  <img src="/images/projects/transitplanner/launch-tweet.png" alt="Transit Planner launch on X" className="w-full h-full object-cover" />
+                </button>
+              </div>
+
+              <p className="mb-4">It's now live at <a href="https://www.transitplanner.app/" target="_blank" rel="noopener noreferrer" className="underline">transitplanner.app</a> and still in active development, where we keep adding map overlays, agent-based commuter simulation, and planning tools.</p>
 
               <h2 id="architecture" className="font-bold mt-8 mb-4 text-2xl">Architecture</h2>
               <button
                 onClick={() => setShowDiagram(v => !v)}
                 className="flex items-center gap-2 mb-3"
-                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", color: "var(--text)" }}
+                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", color: "var(--text-3)" }}
               >
                 <ChevronDown
                   className="w-4 h-4 transition-transform duration-200"
@@ -352,7 +371,7 @@ export default function TransitPlannerProjectPage() {
               <p className="mb-2">Transit Planner uses Next.js, TypeScript, and is styled with Tailwind.</p>
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">CI/CD</h3>
-              <p className="mb-2">Test builds are released at <a href="https://test.transitplanner.app/">https://test.transitplanner.app/</a> for testing. Personally love this preview badge.</p>
+              <p className="mb-2">Test builds are released at <a className="hover:underline" href="https://test.transitplanner.app/">https://test.transitplanner.app/</a> for testing. Personally love this preview badge.</p>
               <img
                 src="/images/projects/transitplanner/badge.png"
                 alt="Preview badge"
@@ -429,7 +448,7 @@ export default function TransitPlannerProjectPage() {
               <p className="mb-2 mt-4">Also big shoutout to Fiona, Evan, and Chris for building this with me.</p>
 
             <p className="mt-4" style={{ color: "var(--text-3)" }}>
-              The project is fully open source on GitHub —{" "}
+              The project is fully open source on GitHub.{" "}
               <a href="https://github.com/evanzyang91/transit-planner" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text)", textDecoration: "underline" }}>
                 give it a star 🙏
               </a>
