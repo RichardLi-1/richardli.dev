@@ -144,5 +144,20 @@ export const mainProjects = [
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#417193",
     hidden: true
+  },
+  {
+    id: "formulatechhacks",
+    title: "FormulaTech Hacks",
+    year: "2026",
+    description: "Dev for Waterloo's Formula One hackathon.",
+    image: "/images/projects/formulatechhacks/formulatech-hacks banner.png",
+    logo: "",
+    tags: ["Web Development"],
+    colors: "#000000",
+    externalLink: "https://d8e94772.formulatech-hacks.pages.dev/",
+    externalOnly: true,
+    hidden: false
   }
+
+  
 ]
