@@ -150,7 +150,7 @@ export const mainProjects = [
     title: "FormulaTech Hacks",
     year: "2026",
     description: "Dev for Waterloo's Formula One hackathon.",
-    image: "/images/projects/formulatechhacks/formulatech-hacks banner.png",
+    image: "/images/projects/formulatechhacks/formulatech-hacks-banner.webp",
     logo: "",
     tags: ["Web Development"],
     colors: "#000000",
