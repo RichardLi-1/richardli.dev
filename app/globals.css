@@ -347,6 +347,12 @@ h3 {
   corner-shape: superellipse(1.01);
 }
 
+/* Invert a logo's colors only in light mode (e.g. a white-on-transparent
+   logo that would vanish on a light background). Dark mode leaves it as-is. */
+.light .invert-on-light {
+  filter: invert(1);
+}
+
 /* ── Squircles ──────────────────────────────────────────────────── */
 @supports not (corner-shape: squircle) {
   .squircle    { border-radius: 3px !important; }

@@ -26,6 +26,7 @@ const activities = [
 ]
 
 const currently = [
+  { image: "/logos/AMD_BIG.D.png", text: "Incoming @ AMD" },
   { image: "/logos/hack-the-north.png", text: "Transportation @ Hack the North" },
   { image: "/logos/waterloo.png", text: "Systems Design Engineering @ UWaterloo" },
 ]
@@ -152,7 +153,7 @@ export default function PersonalWebsite() {
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {currently.map(item => (
                     <li key={item.text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14, color: "var(--text-2)", listStyle: "none" }}>
-                      <img src={item.image} alt="" width={18} height={18} style={{ maxHeight: 18, maxWidth: 18, borderRadius: "50%", objectFit: "cover" }} />
+                      <img src={item.image} alt="" width={18} height={18} className={item.image.includes("AMD") ? "invert-on-light" : undefined} style={{ maxHeight: 18, maxWidth: 18, borderRadius: "0%", objectFit: "cover" }} />
                       {item.text}
                     </li>
                   ))}
