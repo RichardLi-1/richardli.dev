@@ -11,6 +11,7 @@ import { CaseStudyNav } from "@/components/case-study-nav"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
 import { TrackedExternalLink } from "@/components/tracked-external-link"
+import Image from "next/image"
 
 export default function SaFuturePage() {
   usePageViewTracker()
@@ -51,12 +52,24 @@ export default function SaFuturePage() {
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
+            {/* Parent must be `relative` for `fill` to anchor to it; `aspect-video` reserves
+                the box so there's no layout shift while the optimized image streams in. */}
             <div className="relative mb-8 aspect-video w-full overflow-hidden squircle rounded-lg">
-              <img
+              <Image
                 src="/images/projects/safuture/safuture-banner.webp"
                 alt="Smart Rutherford screenshots"
-                className="w-full h-full object-cover"
-                loading="eager"
+                fill
+                // 📖 Learn: next/image `sizes` + `fill`
+                // `fill` makes the image absolutely fill the parent instead of taking
+                // explicit width/height. `sizes` tells Next which widths to pre-generate
+                // and tells the browser which srcset entry to pick BEFORE layout is known.
+                // Source is 3840px wide but `main` is max-w-3xl (768px) minus p-6 (48px),
+                // so the widest this ever renders is ~720px; full-viewport on mobile.
+                sizes="(max-width: 768px) 100vw, 720px"
+                className="object-cover"
+                // `priority` replaces loading="eager" and additionally emits a
+                // <link rel="preload">, so the hero starts downloading during head parse.
+                priority
               />
             </div>
           </StaggeredContent>

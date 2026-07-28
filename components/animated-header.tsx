@@ -383,8 +383,11 @@ export function AnimatedHeader({
 
   return (
     <>
-      {/* Hidden audio element — src swapped at runtime for the nav click sound */}
-      <audio ref={audioRef} src="/sounds/windows-navigation-start.mp3" preload="auto" style={{ display: "none" }} />
+      {/* Hidden audio element — src swapped at runtime for the nav click sound.
+          preload="none" so the browser does NOT initialize the audio output route on load
+          (that route activation is what makes macOS take over connected AirPods). The file
+          is fetched lazily on the first .play() call during navigation instead. */}
+      <audio ref={audioRef} src="/sounds/windows-navigation-start.mp3" preload="none" style={{ display: "none" }} />
 
       {/* ── Mobile: fixed bottom pill ── */}
       {/* h-5 spacer pushes page content up so it isn't hidden behind the fixed pill */}
@@ -643,7 +646,7 @@ export function AnimatedHeader({
                 { href: "/", label: "Home" },
                 // { href: "/#projects", label: "Projects" },
                 { href: "/transit/fanning", label: "Transit" },
-                // { href: "/about", label: "About" },
+                { href: "/about", label: "About" },
               ].map((item, i) => (
                 <li key={i}>
                   <a href={item.href} className="nav-item">
@@ -652,9 +655,9 @@ export function AnimatedHeader({
                 </li>
               ))}
               <li style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-                <Tip label="Email"><a onClick={() => trackEvent("✉️ Email clicked", { location: "desktop nav" })} href="mailto:richardli0@outlook.com?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D" className="nav-item" style={{ padding: "4px 8px" }} aria-label="Email"><Mail className="w-4 h-4" /></a></Tip>
-                <Tip label="GitHub"><a onClick={() => trackEvent("🐙 GitHub clicked", { location: "desktop nav" })} href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="GitHub"><Github className="w-4 h-4" /></a></Tip>
-                <Tip label="LinkedIn"><a onClick={() => trackEvent("🔗 LinkedIn clicked", { location: "desktop nav" })} href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a></Tip>
+                <Tip label="Email"><a onClick={() => { trackEvent("✉️ Email clicked", { location: "desktop nav" }); posthog.capture("social_link_clicked", { platform: "email", location: "desktop nav" }) }} href="mailto:richardli0@outlook.com?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D" className="nav-item" style={{ padding: "4px 8px" }} aria-label="Email"><Mail className="w-4 h-4" /></a></Tip>
+                <Tip label="GitHub"><a onClick={() => { trackEvent("🐙 GitHub clicked", { location: "desktop nav" }); posthog.capture("social_link_clicked", { platform: "github", location: "desktop nav" }) }} href="https://github.com/RichardLi-1" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="GitHub"><Github className="w-4 h-4" /></a></Tip>
+                <Tip label="LinkedIn"><a onClick={() => { trackEvent("🔗 LinkedIn clicked", { location: "desktop nav" }); posthog.capture("social_link_clicked", { platform: "linkedin", location: "desktop nav" }) }} href="https://www.linkedin.com/in/richardli0/" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a></Tip>
               </li>
               {/* Theme-dependent buttons only render after mount */}
               {mounted && (

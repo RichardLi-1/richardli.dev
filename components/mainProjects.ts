@@ -26,7 +26,12 @@ export const mainProjects = [
     title: "SaFuture Inc and Qwhery",
     year: "2026",
     description: "Building GIS and municipal AI",
-    image: "/images/projects/safuture/SaFuture Banner.png",
+    // 900px-wide WebP, not the 2000px "SaFuture Banner.png" original. Next never
+    // upscales past the source, so capping the source caps every srcset entry:
+    // large screens request w=1200 but receive 900px / ~65KB instead of ~128KB.
+    // The oversized original was the largest image request on the homepage and
+    // was the one Chromium dropped first under concurrent-request pressure.
+    image: "/images/projects/safuture/card.webp",
     logo: "",
     tags: [],
     colors: "#417193",
