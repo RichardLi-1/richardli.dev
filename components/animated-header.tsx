@@ -282,7 +282,7 @@ export function AnimatedHeader({
       //{ href: "/", label: "Home" },
       //{ href: "/#projects", label: "Projects" },
       { href: "/transit/fanning", label: "Transit" },
-      { href: "/about", label: "About" },
+      //{ href: "/about", label: "About" },
       ...rightLinks.map(l => ({ href: l.href, label: l.text, external: l.external })),
     ]
   }
@@ -646,7 +646,7 @@ export function AnimatedHeader({
                 { href: "/", label: "Home" },
                 // { href: "/#projects", label: "Projects" },
                 { href: "/transit/fanning", label: "Transit" },
-                { href: "/about", label: "About" },
+                // { href: "/about", label: "About" },
               ].map((item, i) => (
                 <li key={i}>
                   <a href={item.href} className="nav-item">
