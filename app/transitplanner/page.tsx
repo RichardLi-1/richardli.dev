@@ -135,8 +135,8 @@ export default function TransitPlannerProjectPage() {
       {!isPanel && (
         <CaseStudyNav sections={[
           { id: "origins", label: "Origins" },
-          { id: "architecture", label: "Architecture" },
           { id: "features", label: "Features" },
+          { id: "architecture", label: "Architecture" },
           { id: "launch", label: "Launch" },
           { id: "more-features", label: "More Features" },
           { id: "conclusion", label: "Conclusion" },
@@ -335,6 +335,23 @@ export default function TransitPlannerProjectPage() {
 
               <p className="mb-4">It's now live at <a href="https://www.transitplanner.app/" target="_blank" rel="noopener noreferrer" className="underline">transitplanner.app</a> and still in active development, where we keep adding map overlays, agent-based commuter simulation, and planning tools.</p>
 
+              <h2 id="features" className="font-bold mt-8 mb-4 text-2xl">Features</h2>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Interactive transit network editor</h3>
+              <p className="mb-2">Draw and edit lines.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Six-agent AI council</h3>
+              <p className="mb-2">An 11-node StateGraph. Two planners, one NIMBY.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Agentic map assistant</h3>
+              <p className="mb-2">Wanted to create more than a chatbot. Capable of flying to and circling areas on the map, reading census data, and dropping pins. Useful for identifying service gaps and other queries.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Census-grounded analysis and simulation</h3>
+              <p className="mb-2">Layers accessible to both users and the agent include transit desert, isochrone, gravity-model ridership simulation, and equity/travel-time scoring. This was built on Statistics Canada dissemination-block population data in Supabase/PostGIS.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Live network data</h3>
+              <p className="mb-2">GTFS-RT for vehicle positions.</p>
+
               <h2 id="architecture" className="font-bold mt-8 mb-4 text-2xl">Architecture</h2>
               <button
                 onClick={() => setShowDiagram(v => !v)}
@@ -372,7 +389,7 @@ export default function TransitPlannerProjectPage() {
               <p className="mb-2">Transit Planner uses Next.js, TypeScript, and is styled with Tailwind.</p>
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">CI/CD</h3>
-              <p className="mb-2">Test builds are released at <a className="hover:underline" href="https://test.transitplanner.app/">https://test.transitplanner.app/</a> for testing. Personally love this preview badge.</p>
+              <p className="mb-2">CI runs the test suite and a route-data validator on every PR; deploys go through Vercel on push. Test builds are released at <a className="hover:underline" href="https://test.transitplanner.app/">https://test.transitplanner.app/</a> for testing. Personally love this preview badge.</p>
               <img
                 src="/images/projects/transitplanner/badge.png"
                 alt="Preview badge"
@@ -396,23 +413,6 @@ export default function TransitPlannerProjectPage() {
                 Constraints like <code className="text-xs">minItems</code>/<code className="text-xs">maxItems</code> on stops and required fields keep generations in a band the renderer expects (e.g. 6–20 stops, hex colour, <code className="text-xs">[lng, lat]</code> pairs per stop).
               </p>
               <SyntaxCodeBlock language="typescript" code={PROPOSE_ROUTE_TOOL_SNIPPET} />
-
-              <h2 id="features" className="font-bold mt-8 mb-4 text-2xl">Features</h2>
-
-              <h3 className="font-semibold mt-4 mb-2 text-lg">Interactive transit network editor</h3>
-              <p className="mb-2">Draw and edit lines.</p>
-
-              <h3 className="font-semibold mt-4 mb-2 text-lg">Six-agent AI council</h3>
-              <p className="mb-2">An 11-node StateGraph. Two planners, one NIMBY.</p>
-
-              <h3 className="font-semibold mt-4 mb-2 text-lg">Agentic map assistant</h3>
-              <p className="mb-2">Wanted to create more than a chatbot. Capable of flying to and circling areas on the map, reading census data, and dropping pins. Useful for identifying service gaps and other queries.</p>
-
-              <h3 className="font-semibold mt-4 mb-2 text-lg">Census-grounded analysis and simulation</h3>
-              <p className="mb-2">Layers accessible to both users and the agent include transit desert, isochrone, gravity-model ridership simulation, and equity/travel-time scoring. This was built on Statistics Canada dissemination-block population data in Supabase/PostGIS.</p>
-
-              <h3 className="font-semibold mt-4 mb-2 text-lg">Live network data</h3>
-              <p className="mb-2">GTFS-RT for vehicle positions.</p>
 
               <h2 id="launch" className="font-bold mt-8 mb-2 text-2xl">Launch</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
