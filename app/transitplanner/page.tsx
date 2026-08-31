@@ -136,7 +136,8 @@ export default function TransitPlannerProjectPage() {
         <CaseStudyNav sections={[
           { id: "origins", label: "Origins" },
           { id: "architecture", label: "Architecture" },
-          { id: "initial-development", label: "Launch" },
+          { id: "features", label: "Features" },
+          { id: "launch", label: "Launch" },
           { id: "more-features", label: "More Features" },
           { id: "conclusion", label: "Conclusion" },
         ]} />
@@ -396,7 +397,24 @@ export default function TransitPlannerProjectPage() {
               </p>
               <SyntaxCodeBlock language="typescript" code={PROPOSE_ROUTE_TOOL_SNIPPET} />
 
-              <h2 id="initial-development" className="font-bold mt-8 mb-2 text-2xl">Launch</h2>
+              <h2 id="features" className="font-bold mt-8 mb-4 text-2xl">Features</h2>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Interactive transit network editor</h3>
+              <p className="mb-2">Draw and edit lines.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Six-agent AI council</h3>
+              <p className="mb-2">An 11-node StateGraph. Two planners, one NIMBY.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Agentic map assistant</h3>
+              <p className="mb-2">Wanted to create more than a chatbot. Capable of flying to and circling areas on the map, reading census data, and dropping pins. Useful for identifying service gaps and other queries.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Census-grounded analysis and simulation</h3>
+              <p className="mb-2">Layers accessible to both users and the agent include transit desert, isochrone, gravity-model ridership simulation, and equity/travel-time scoring. This was built on Statistics Canada dissemination-block population data in Supabase/PostGIS.</p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Live network data</h3>
+              <p className="mb-2">GTFS-RT for vehicle positions.</p>
+
+              <h2 id="launch" className="font-bold mt-8 mb-2 text-2xl">Launch</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
               <div className="w-full overflow-hidden squircle rounded-lg" style={{ aspectRatio: "4 / 3" }}>
                 <img
