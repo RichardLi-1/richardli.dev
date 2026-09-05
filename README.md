@@ -82,6 +82,10 @@ hi-sg/
 
 ---
 
+## Fonts
+Toronto Subway
+SFCamera
+
 ## Getting Started
 
 ```bash
