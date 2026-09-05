@@ -6,11 +6,12 @@ Design inspired by Toronto Subway signage, the Apple Camera app, and iOS tab bar
 
 ---
 
-## Features
+## "Cool" Features
 
-- **AI Chatbot** — Ask anything about Richard's background, experience, and projects. Powered by Claude Haiku with real-time streaming responses and suggested question prompts.
-- **Windows XP Mode** — A toggleable nostalgia mode that transforms the site into a Windows XP desktop experience.
-- **Light / Dark Theme** — Warm dark and cream light modes with a sun/moon toggle, built with custom CSS variables.
+- **AI Chatbot** — Ask anything about Richard's background, experience, and projects. Powered by Claude Haiku with real-time streaming responses and suggested question prompts. Features embeds, custom info cards, etc. Try asking it for my favourite song
+- <img width="552" height="351" alt="Image of chatbot" src="https://github.com/user-attachments/assets/3533cabb-59cf-40cc-b79e-15485c747249" />
+~~- **Windows XP Mode** — A toggleable nostalgia mode that transforms the site into a Windows XP desktop experience.~~
+- **Light / Dark Theme and High Contrast** — Warm dark and cream light modes with a sun/moon toggle, and high contrast for accessibility of COURSE. As per my commitment to accessibility.
 ---
 
 ## Tech Stack
