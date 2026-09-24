@@ -155,7 +155,7 @@ export default function RootLayout({
                 ],
                 jobTitle: "Full Stack Developer",
                 description:
-                  "Full Stack Developer and Systems Design Engineering student at the University of Waterloo. Seeking Fall 2026 internships. Experienced in React, Next.js, Swift, TypeScript, Python, and AI integration.",
+                  "Full Stack Developer and Systems Design Engineering student at the University of Waterloo. Seeking Summer 2027 internships. Experienced in React, Next.js, Swift, TypeScript, Python, and AI integration.",
                 email: "r575li@uwaterloo.ca",
                 // hasOccupation lets AI parse each role as a structured entry
                 // rather than trying to scrape it from HTML
@@ -208,7 +208,7 @@ export default function RootLayout({
                   itemOffered: {
                     "@type": "Service",
                     name: "Software Engineering Internship",
-                    description: "Seeking Fall 2026 internships in full-stack development, AI integration, or geospatial/transit software",
+                    description: "Seeking Summer 2027 internships in full-stack development, AI integration, or geospatial/transit software",
                   },
                 },
               },

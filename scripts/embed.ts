@@ -17,7 +17,7 @@ const supabase = createClient(
 )
 
 // Calls the Voyage AI REST API directly — avoids the broken ESM build in the voyageai package.
-// All 15 chunks are sent in one request (well under the 3 RPM free-tier limit).
+// All chunks are sent in one request (well under the 3 RPM free-tier limit).
 // 📖 Learn: Voyage AI embeddings API — https://docs.voyageai.com/reference/embeddings-api
 async function getEmbeddings(texts: string[]): Promise<number[][]> {
   const res = await fetch("https://api.voyageai.com/v1/embeddings", {

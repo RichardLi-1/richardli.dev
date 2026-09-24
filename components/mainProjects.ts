@@ -11,6 +11,21 @@
 //   hidden      — excludes the project from all grids
 export const mainProjects = [
   {
+    id: "amd",
+    title: "AMD",
+    year: "2026",
+    description: "Building a universal data context layer for internal agents",
+    // Generated 16:9 card from public/logos/AMD_BIG.D.png on the --card-bg tone.
+    // Source capped at 1200px wide on purpose: Next never upscales past the
+    // source, so capping it caps every srcset entry (same reasoning as safuture).
+    // Swap this for a real banner if one ever clears review.
+    image: "/images/projects/amd/card.webp",
+    logo: "",
+    tags: ["AI Infrastructure", "RAG", "Kubernetes"],
+    colors: "#181715",
+    hidden: false,
+  },
+  {
     id: "transitplanner",
     title: "Transit Planner",
     year: "2026",

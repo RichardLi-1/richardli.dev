@@ -26,7 +26,7 @@ const activities = [
 ]
 
 const currently = [
-  { image: "/logos/AMD_BIG.D.png", text: "Incoming @ AMD" },
+  { image: "/logos/AMD_BIG.D.png", text: "Software Engineering @ AMD" },
   { image: "/logos/hack-the-north.png", text: "Transportation @ Hack the North" },
   { image: "/logos/waterloo.png", text: "Systems Design Engineering @ UWaterloo" },
 ]
@@ -104,7 +104,7 @@ export default function PersonalWebsite() {
 
   // Cast to `any` to access optional fields (image2, image3, hidden) that aren't
   // in the TypeScript type — a pragmatic shortcut while the data model is loose.
-  const visibleProjects = mainProjects.filter(p => !(p as any).hidden).slice(0, 7)
+  const visibleProjects = mainProjects.filter(p => !(p as any).hidden).slice(0, 8)
 
   return (
     <AnimatedPage>

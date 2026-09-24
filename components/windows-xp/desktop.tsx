@@ -155,7 +155,7 @@ function AboutMeContent() {
           <li>studying systems design engineering at the University of Waterloo</li>
           <li>developing for formulatech hacks</li>
           <li>creating a class profile for the syde class of 2030</li>
-          <li>open to chatting about fall 2026 internship opportunities</li>
+          <li>open to chatting about Summer 2027 internship opportunities</li>
         </ul>
 
         <h3 className="font-bold mt-4">Previously:</h3>

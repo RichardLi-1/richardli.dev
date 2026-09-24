@@ -161,7 +161,7 @@ export default function MorePage() {
                   margin: 0,
                 }}
               >
-                I'm currently studying <strong style={{ color: "var(--text)", fontWeight: 600 }}>Systems Design Engineering</strong> at the University of Waterloo and <strong style={{ color: "var(--text)", fontWeight: 600 }}>seeking Fall 2026 internships!</strong>
+                I'm currently studying <strong style={{ color: "var(--text)", fontWeight: 600 }}>Systems Design Engineering</strong> at the University of Waterloo and <strong style={{ color: "var(--text)", fontWeight: 600 }}>seeking Summer 2027 internships!</strong>
               </p>
 
               <p

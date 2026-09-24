@@ -150,6 +150,21 @@ export default function SaFuturePage() {
               <h2 id="sf-chatbots" className="font-bold mt-8 mb-2 text-2xl">Chatbots for Property Assessment</h2>
               <p>I worked on improving the existing data indexing pipeline by integrating batch processing and adding better integration into the web dashboard.</p>
             <p>The backend involved <span className="hl">over 160 API routes</span> to manage all of the moving parts involved with the product. I contributed to various parts of this, as well as writing new routes for control over data indexing. This was a unique challenge as changes would require simultaneous modifications across three microservices.</p>
+            <p>Without revealing too much:</p>
+            {/* 📖 Learn: next/image `width`/`height` vs `fill`
+                Passing the intrinsic 2000x877 makes Next reserve an aspect-ratio box
+                before the file loads, so the text below doesn't jump when it arrives.
+                The hero banner above uses `fill` instead because it's deliberately
+                cropped to a fixed aspect-video frame; here we want the diagram's own
+                proportions, so `w-full h-auto` lets it scale with the column. */}
+            <Image
+              src="/images/projects/safuture/safuture-system-diagram.webp"
+              alt="System diagram: an Angular admin dashboard talks to a Python queue manager over FastAPI, which drives web scrapers into a custom indexing pipeline that produces FAISS indexes for a vector DB and ArcGIS Online"
+              width={2000}
+              height={877}
+              sizes="(max-width: 768px) 100vw, 720px"
+              className="w-full h-auto squircle rounded-lg mt-4 mb-4"
+            />
             <p>Here is a video of the chatbot in action, deployed for Rutherford County, TN:</p>
             <div className="relative w-full overflow-hidden squircle rounded-lg mt-4" style={{ aspectRatio: "560/315" }}>
               <iframe
