@@ -258,7 +258,7 @@ export default function PersonalWebsite() {
                             onMouseEnter={e => (e.currentTarget.style.transform = "scale(0.96)")}
                             onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
                           >
-                            <span style={{ fontSize: 16, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", color: "inherit" }}>Try it out</span>
+                            <span style={{ fontSize: 16, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", color: "inherit" }}>Click here to use!</span>
                             <ExternalLink style={{ width: 12, height: 12, opacity: 0.65 }} />
                           </button>
                         )}

@@ -55,7 +55,7 @@ export function Footer() {
               © RICHARD LI {new Date().getFullYear()}
             </span>
             <span style={{ ...base, fontSize: "14px", lineHeight: 1.4 }}>
-              Written in TypeScript using Next.js. Animations using Framer Motion. Set in SFCamera and Toronto Subway. Made with ❤️.
+              Written in TypeScript. Animations using Framer Motion. Set in SFCamera and Toronto Subway. Made with ❤️.
             </span>
           </div>
         </div>

@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Richard Li for full-stack development opportunities, collaborations, or inquiries. Available for internships starting Fall 2026. Email: r575li@uwaterloo.ca",
+    "Get in touch with Richard Li for full-stack development opportunities, collaborations, or inquiries. Available for internships starting Summer 2027. Email: r575li@uwaterloo.ca",
   keywords: [
     "contact Richard Li",
     "Richard Li email",
