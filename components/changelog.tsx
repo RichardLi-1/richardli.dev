@@ -16,6 +16,28 @@ interface ChangelogEntry {
 
 export const entries: ChangelogEntry[] = [
   {
+    date: "09/23/2026 - v2.6.0",
+    changes: [
+      { text: "AMD case study added, with its own page, card art and full write-up", badge: "New" },
+      { text: "CBTC added to the work grid", badge: "New" },
+      { text: "FormulaTech Hacks added to the work grid", badge: "New" },
+      { text: "PostHog wired up for product analytics and session tracking, alongside the existing Discord webhook", badge: "New" },
+      "Referral source now persists for the whole visit instead of only the landing page, so inbound attribution survives navigation",
+      "Transit Planner case study reworked again: features pulled higher up the page, plus new detail sections",
+      "Future Forward case study rewritten end to end",
+      "SaFuture case study expanded with a system architecture diagram",
+      "Father Figure case study expanded with persona picker and chat screens",
+      "Structured data and sitemap rebuilt so AI crawlers can parse roles, skills and projects as structured entries rather than scraping HTML",
+      "Oversized project images resized to 2000px wide, cutting several multi-megabyte files (the largest went from 17MB to 2.8MB) to fix slow and broken loads",
+      "Fixed 404s when clicking through to the next case study",
+      "Fixed the SaFuture banner failing to load on larger screens",
+      "Homepage styling pass, tighter project grid gaps, and a new Boink card image",
+      "About link removed from the site header",
+      "Draggable sticker logic disabled across all pages",
+      "README rewritten: features section revised, Fonts section added, Windows XP Mode section dropped",
+    ],
+  },
+  {
     date: "05/24/2026 - v2.5.0",
     changes: [
       { text: "About page redesigned — bigger \"Hi, I'm Richard\" intro, polaroid-style community grid (CUTC, Hack the North, SYDE), favourites strip, and one-tap copy-to-clipboard email", badge: "New" },
