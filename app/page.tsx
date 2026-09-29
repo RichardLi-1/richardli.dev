@@ -17,12 +17,11 @@ import posthog from "posthog-js"
 
 const activities = [
   "somewhere on the ttc",
+  "reading context engineering research",
   "listening to bollywood music",
-  "reading about urban planning",
-  "tinkering with geospatial data",
-  "photographing line 1",
   "cooking new steak recipes",
   "drinking molly tea",
+  "flibbertigibbeting with claude",
 ]
 
 const currently = [
