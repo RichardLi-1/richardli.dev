@@ -11,6 +11,7 @@ import { CaseStudyNav } from "@/components/case-study-nav"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
 import { TrackedExternalLink } from "@/components/tracked-external-link"
+import { AmdAtmosphere } from "@/components/amd-atmosphere"
 
 // Prefilled mailto for the confidential card. encodeURIComponent-style escaping is
 // written out literally here (%20, %0A) to match how the other case studies do it.
@@ -42,7 +43,7 @@ export default function AMDPage() {
       <div className="mx-auto">
         <AnimatedHeader currentPage="/amd" />
 
-        <main className="max-w-3xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text-2)] [&_li]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
+        <main className="max-w-3xl mx-auto py-6 px-[var(--page-gutter)] space-y-6 [&_p]:text-[var(--text-2)] [&_li]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             <div className={`relative mb-1 ${isPanel ? "pr-20" : ""}`}>
               <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
@@ -62,17 +63,17 @@ export default function AMDPage() {
               surface panel rather than an <img> that would 404. Drop a banner at
               /images/projects/amd/banner.webp and swap this block when one exists. */}
           <StaggeredContent delay={100}>
-            <div
-              className="relative w-full overflow-hidden squircle rounded-lg flex items-center justify-center"
-              style={{ aspectRatio: "960/420", borderRadius: 16, background: "var(--surface)" }}
+            <AmdAtmosphere
+              className="w-full squircle rounded-lg flex items-center justify-center"
+              style={{ aspectRatio: "960/420", borderRadius: 16 }}
             >
               <img
                 src="/logos/AMD_BIG.D.png"
                 alt="AMD"
                 className="invert-on-light"
-                style={{ width: isMobile ? 96 : 140, height: "auto", opacity: 0.9 }}
+                style={{ width: isMobile ? 100 : 136, height: "auto", opacity: 0.9 }}
               />
-            </div>
+            </AmdAtmosphere>
           </StaggeredContent>
 
           {/* ── Confidential notice ──

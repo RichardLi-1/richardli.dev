@@ -145,7 +145,7 @@ export default function TransitPlannerProjectPage() {
       <div className="mx-auto">
         <AnimatedHeader currentPage="/transitplanner" />
 
-        <main className="max-w-3xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text-2)] [&_li]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
+        <main className="max-w-3xl mx-auto py-6 px-[var(--page-gutter)] space-y-6 [&_p]:text-[var(--text-2)] [&_li]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             <div className={`relative mb-1 ${isPanel ? "pr-20" : ""}`}>
               <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">

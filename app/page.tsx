@@ -14,6 +14,7 @@ import { useWindowsXP } from "@/contexts/windows-xp-context"
 // import { DraggableSticker } from "@/components/draggable-sticker"
 import { trackEvent } from "@/lib/track"
 import posthog from "posthog-js"
+import { AmdAtmosphere } from "@/components/amd-atmosphere"
 
 const activities = [
   "somewhere on the ttc",
@@ -112,7 +113,7 @@ export default function PersonalWebsite() {
 
         <main style={{
           margin: "0 auto",
-          padding: isMobile ? "32px 24px 0" : "80px 40px 0",
+          padding: isMobile ? "32px var(--page-gutter) 0" : "80px 40px 0",
         }}>
 
           {/* ────────────────────── Hero ────────────────────── */}
@@ -210,7 +211,8 @@ export default function PersonalWebsite() {
                       onMouseLeave={() => setHoveredId(null)}
                       onClick={() => posthog.capture("project_card_clicked", { project_id: project.id, project_title: project.title, destination: cardHref })}
                     >
-                      <div style={{
+                      {/* data-cursor-surface: the iPad pointer lifts just the image, not the caption */}
+                      <div data-cursor-surface style={{
                         position: "relative",
                         width: "100%",
                         aspectRatio: "16/9",
@@ -221,11 +223,22 @@ export default function PersonalWebsite() {
                       }}>
                         <div style={{ width: "100%", height: "100%", overflow: "hidden", borderRadius: 16, cornerShape: "squircle" } as React.CSSProperties}>
                           <div id={`proj-img-${project.id}`} className="proj-img" style={{ width: "100%", height: "100%", transition: "transform 0.35s ease" }}>
-                            <ProjectImageCycler
-                              images={[project.image, (project as any).image2, (project as any).image3]}
-                              alt={project.title}
-                              className="w-full h-full object-cover"
-                            />
+                            {project.id === "amd" ? (
+                              <AmdAtmosphere className="w-full h-full flex items-center justify-center">
+                                <img
+                                  src="/logos/AMD_BIG.D.png"
+                                  alt="AMD"
+                                  className="invert-on-light"
+                                  style={{ width: isMobile ? 84 : 120, height: "auto", opacity: 0.9 }}
+                                />
+                              </AmdAtmosphere>
+                            ) : (
+                              <ProjectImageCycler
+                                images={[project.image, (project as any).image2, (project as any).image3]}
+                                alt={project.title}
+                                className="w-full h-full object-cover"
+                              />
+                            )}
                           </div>
                         </div>
                         {/* "Try it out" button only appears on hover and only if the project has an external link */}
@@ -252,10 +265,8 @@ export default function PersonalWebsite() {
                               borderRadius: 10,
                               cursor: "pointer",
                               whiteSpace: "nowrap",
-                              transition: "transform 0.15s ease",
                             }}
-                            onMouseEnter={e => (e.currentTarget.style.transform = "scale(0.96)")}
-                            onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                            // Hover feedback comes from the iPad pointer's highlight effect (components/ipad-cursor.tsx)
                           >
                             <span style={{ fontSize: 16, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", color: "inherit" }}>Click here to use!</span>
                             <ExternalLink style={{ width: 12, height: 12, opacity: 0.65 }} />

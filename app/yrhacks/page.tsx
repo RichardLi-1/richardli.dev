@@ -49,7 +49,7 @@ export default function YRHacksProjectPage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-3xl mx-auto p-6 space-y-8 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
+        <main className="max-w-3xl mx-auto py-6 px-[var(--page-gutter)] space-y-8 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}

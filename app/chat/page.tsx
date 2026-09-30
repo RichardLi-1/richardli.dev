@@ -11,7 +11,7 @@ export default function ChatPage() {
       <div className="page-bg min-h-screen flex flex-col w-full">
         <AnimatedHeader currentPage="/chat" />
 
-        <main className="flex flex-col flex-1 max-w-4xl w-full mx-auto px-6 py-8" style={{ minHeight: 0 }}>
+        <main className="flex flex-col flex-1 max-w-4xl w-full mx-auto px-[var(--page-gutter)] py-8" style={{ minHeight: 0 }}>
           <div className="mb-6">
             <h1 style={{ fontSize: "clamp(24px, 4vw, 36px)", marginBottom: "6px" }}>Ask me anything</h1>
           </div>

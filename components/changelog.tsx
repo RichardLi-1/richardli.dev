@@ -259,8 +259,9 @@ export function Changelog({ onClose }: { onClose: () => void }) {
                       transition: "background 0.12s, color 0.12s",
                       borderBottom: i < entries.length - 1 ? "1px solid var(--border-2)" : "none",
                     }}
-                    onMouseEnter={ev => { ev.currentTarget.style.background = "var(--surface-hover)"; ev.currentTarget.style.color = "var(--text)" }}
-                    onMouseLeave={ev => { ev.currentTarget.style.background = i === index ? "var(--surface)" : "transparent"; ev.currentTarget.style.color = i === index ? "var(--text)" : "var(--text-3)" }}
+                    // Hover background comes from the iPad cursor's platter; only the text colour changes here
+                    onMouseEnter={ev => { ev.currentTarget.style.color = "var(--text)" }}
+                    onMouseLeave={ev => { ev.currentTarget.style.color = i === index ? "var(--text)" : "var(--text-3)" }}
                   >
                     {e.date}
                   </button>

@@ -111,11 +111,11 @@ export default function MorePage() {
         {/* Centered content wrapper — caps width and centers everything below the header.
             All sections live inside this so they share the same 1200px column.
             📖 Learn: margin: "0 auto" + maxWidth centers a block horizontally. */}
-        <div style={{ maxWidth: 1000, width: "100%", margin: "0 auto", padding: "0 17px" }}>
+        <div className="md:px-[17px]" style={{ maxWidth: 1000, width: "100%", margin: "0 auto" }}>
 
         <div
           style={{
-            padding: "80px 24px 0",
+            padding: "80px var(--page-gutter) 0",
             // Two-column layout matching the screenshot's 50/50 split
             display: "grid",
             gridTemplateColumns: isMobile ? "1fr" : "1fr 41.05%",
@@ -355,7 +355,7 @@ export default function MorePage() {
         <section
           style={{
             margin: "80px 17px 0",
-            padding: "0 24px",
+            padding: "0 var(--page-gutter)",
           }}
         >
           <h2
@@ -442,7 +442,7 @@ export default function MorePage() {
         <section
           style={{
             margin: "80px 17px 0",
-            padding: "0 24px",
+            padding: "0 var(--page-gutter)",
           }}
         >
           <h2
@@ -519,7 +519,7 @@ export default function MorePage() {
         <section
           style={{
             margin: "80px 17px 80px",
-            padding: "0 24px",
+            padding: "0 var(--page-gutter)",
           }}
         >
           <h2
@@ -540,7 +540,7 @@ export default function MorePage() {
         <section
           style={{
             margin: "0 17px 80px",
-            padding: "0 24px",
+            padding: "0 var(--page-gutter)",
           }}
         >
           <h2

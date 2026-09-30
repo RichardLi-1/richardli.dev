@@ -53,6 +53,17 @@ export const mainProjects = [
     hidden: false,
   },
   {
+    id: "boink",
+    title: "Bo!nk",
+    year: "2021",
+    description: "Windows Vista Inkball reloaded, physics-based game published on the App Store",
+    image: "/images/projects/boink/hero_new.png",//"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OFGQDkrP2BvNmhLieOxExwEZBsCGcq.png",
+    logo: "/images/projects/boink/logo.webp",
+    tags: ["iOS", "Swift", "Game Development"],
+    colors: "#417193",
+    externalLink: "https://apps.apple.com/ca/app/bo-nk/id1570376501"
+  },
+    {
     id: "cbtc",
     title: "Transit Control Simulator",
     year: "2026",
@@ -65,17 +76,7 @@ export const mainProjects = [
     externalOnly: true,
     hidden: false,
   },
-  {
-    id: "boink",
-    title: "Bo!nk",
-    year: "2021",
-    description: "Windows Vista Inkball reloaded, physics-based game published on the App Store",
-    image: "/images/projects/boink/hero_new.png",//"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OFGQDkrP2BvNmhLieOxExwEZBsCGcq.png",
-    logo: "/images/projects/boink/logo.webp",
-    tags: ["iOS", "Swift", "Game Development"],
-    colors: "#417193",
-    externalLink: "https://apps.apple.com/ca/app/bo-nk/id1570376501"
-  },
+
     {
     id: "futureforward",
     title: "Future Forward",

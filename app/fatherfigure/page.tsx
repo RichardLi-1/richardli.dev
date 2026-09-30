@@ -30,7 +30,7 @@ export default function SalesPatriotProjectPage() {
       <div className="min-h-screen page-bg" style={{ position: "relative" }}>
         <AnimatedHeader currentPage="/fatherfigure" />
 
-        <main className="max-w-3xl mx-auto p-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
+        <main className="max-w-3xl mx-auto py-6 px-[var(--page-gutter)] [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "60px" }}>
           <StaggeredContent delay={0}>
             <div className={`relative ${isPanel ? "pr-20" : ""}`}>
               <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
@@ -123,7 +123,7 @@ export default function SalesPatriotProjectPage() {
               href={chromeStoreLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--border-2)] hover:bg-[var(--surface-hover)] transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--border-2)] transition-colors"
             >
               Check it out on the Chrome Web Store
               <ExternalLink className="w-4 h-4" />

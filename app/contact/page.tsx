@@ -15,7 +15,7 @@ export default function ContactPage() {
       <AnimatedHeader currentPage="/contact" />
 
       <main className="min-h-screen page-bg">
-        <div className="container mx-auto px-6 py-20">
+        <div className="container mx-auto px-[var(--page-gutter)] py-20">
           <StaggeredContent delay={0}>
             <div className="max-w-2xl mx-auto">
               <h1 className="text-4xl md:text-6xl mb-6 text-center">

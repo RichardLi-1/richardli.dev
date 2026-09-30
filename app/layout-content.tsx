@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { usePreserveM } from "@/hooks/use-preserve-m"
 import { SwissGrid } from "@/components/swiss-grid"
 import { Footer } from "@/components/footer"
+import { IPadCursor } from "@/components/ipad-cursor"
 
 // LayoutContent is a *separate* inner component so it can call useWindowsXP().
 // That hook requires being inside <WindowsXPProvider>, so this can't be merged
@@ -73,6 +74,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     <>
       {/* SwissGrid is always mounted; it renders nothing until Cmd+G is pressed */}
       <SwissGrid />
+      {/* iPadOS-style pointer; off in XP mode so the XP desktop keeps its own cursors */}
+      {!isXPMode && <IPadCursor />}
       {/* {showLoading && <GifLoadingScreen onComplete={handleLoadingComplete} />} */}
       {!showLoading && (
         <>

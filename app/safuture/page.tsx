@@ -43,7 +43,7 @@ export default function SaFuturePage() {
           <button onClick={() => window.parent.postMessage({ type: "panel-action", action: "close" }, "*")} className="nav-item" style={{ padding: "6px" }}><X className="w-4 h-4" /></button>
         </div>}
 
-        <main className="max-w-3xl mx-auto p-6 space-y-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
+        <main className="max-w-3xl mx-auto py-6 px-[var(--page-gutter)] space-y-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2">SaFuture Inc & Qwhery</h1>

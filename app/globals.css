@@ -48,6 +48,11 @@
   --pure: #000000;
   --pill-bg-scrolled: linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.38));
   --pill-backdrop-blur: blur(20px) saturate(180%);
+  /* iPad pointer (components/ipad-cursor.tsx). RGB triplet so alpha can vary per state */
+  --cursor-rgb: 185 185 185;
+  --cursor-alpha: 0.5;
+  --cursor-beam-alpha: 0.9;
+  --cursor-platter-alpha: 0.16;
 
   --background: 0 0% 5%;
   --foreground: 30 8% 91%;
@@ -87,6 +92,10 @@
   --pure: #ffffff;
   --pill-bg-scrolled: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45));
   --pill-backdrop-blur: blur(4px) saturate(180%);
+  --cursor-rgb: 95 95 95;
+  --cursor-alpha: 0.42;
+  --cursor-beam-alpha: 0.85;
+  --cursor-platter-alpha: 0.1;
 
   --background: 40 15% 95%;
   --foreground: 25 10% 10%;
@@ -166,6 +175,19 @@ h3 {
 ::-webkit-scrollbar-thumb:hover { background: var(--text-4); }
 
 /* ── Site layout ────────────────────────────────────────────────── */
+/* Left/right page margin. One value, reused by every page wrapper, so the
+   mobile gutter can be tuned here instead of in ~20 files.
+   767px matches Tailwind's `md:` breakpoint (768px), so "mobile" means the
+   same thing in CSS and in className strings.
+   📖 Learn: CSS custom properties + media queries (a var can change per breakpoint) */
+:root {
+  --page-gutter: 24px;
+}
+
+@media (max-width: 767px) {
+  :root { --page-gutter: 16px; }
+}
+
 .site {
   min-height: 100vh;
   display: flex;
@@ -178,7 +200,7 @@ h3 {
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
-  padding: 0 24px;
+  padding: 0 var(--page-gutter);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -402,6 +424,8 @@ header {
 }
 
 .nav-item:hover { color: var(--text); background: var(--surface); }
+/* With the iPad pointer on, its grey platter *is* the hover background */
+html.ipad-cursor-on .nav-item:hover { background: transparent; }
 .nav-item.active { color: var(--text); background: transparent; }
 
 .header-pill {
@@ -491,6 +515,90 @@ header {
   animation: pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* ── AMD atmosphere (components/amd-atmosphere.tsx) ────────────── */
+/* Backdrop for the AMD homepage card + /amd hero. Two looks on trial:
+     .amd-horizon: a planet's edge at sunrise, rendered by a WebGL shader
+                   (see the component); only the fallback lives here
+     .amd-aurora:  big blurred colour fields drifting slowly under a dark
+                   centre, so colours bleed into each other
+   Colours are banner-specific art, kept as local vars so .light can just
+   swap them. Only opacity/translate/scale animate (GPU-composited, no
+   per-frame repaint).
+   📖 Learn: individual transform properties, compositor-only animations */
+.amd-atmosphere {
+  position: relative;
+  isolation: isolate; /* own stacking context so layer z-indexes stay inside */
+  overflow: hidden;
+  /* White fractal-noise grain; hides banding (8-bit "rings") in dark gradients */
+  --amd-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.light .amd-atmosphere {
+  --amd-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.amd-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.amd-grain { z-index: 4; background: var(--amd-grain); }
+/* Anything passed as children (the logo) sits above every layer */
+.amd-atmosphere > :not(.amd-layer) { position: relative; z-index: 5; }
+
+/* ── A: Horizon ── */
+/* Drawn by a WebGL shader in components/amd-atmosphere.tsx. The gradient
+   here is only the fallback if WebGL isn't available. */
+.amd-horizon { background: linear-gradient(180deg, #010102 0%, #04050a 55%, #0b1024 80%, #030406 80.5%); }
+.light .amd-horizon { background: linear-gradient(180deg, #fbfbfa 0%, #eef1f6 55%, #d9e1f0 80%, #eceef2 80.5%); }
+/* <canvas> is a replaced element: without an explicit size it falls back to
+   300x150 even when absolutely positioned with inset: 0 */
+.amd-h-canvas { width: 100%; height: 100%; display: block; }
+/* Lift the logo a little so it floats clear of the horizon */
+.amd-horizon > :not(.amd-layer) { translate: 0 -12%; }
+
+/* ── B: Aurora ── */
+.amd-aurora {
+  --a-f1: rgba(62, 70, 160, 0.60);
+  --a-f2: rgba(24, 98, 110, 0.50);
+  --a-f3: rgba(150, 34, 52, 0.50);
+  --a-f4: rgba(40, 48, 80, 0.50);
+  --a-shade: rgba(5, 5, 7, 0.55);
+  --a-blend: screen; /* colours add up like light where they overlap */
+  background: #050507;
+}
+.light .amd-aurora {
+  --a-f1: rgba(140, 150, 235, 0.50);
+  --a-f2: rgba(110, 195, 200, 0.45);
+  --a-f3: rgba(240, 140, 160, 0.45);
+  --a-f4: rgba(200, 205, 230, 0.55);
+  --a-shade: rgba(244, 244, 246, 0.50);
+  --a-blend: multiply; /* on a pale base, overlaps should deepen instead */
+  background: #f4f4f6;
+}
+.amd-a-fields { inset: -25%; } /* oversized so drifting fields never expose an edge */
+.amd-a-field {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: var(--a-blend);
+  /* Blur each field on its own (not the container) so the browser can
+     cache the blurred result and just move it, instead of re-blurring
+     everything every frame. */
+  filter: blur(60px);
+}
+.amd-a-f1 { width: 70%; height: 60%; left: 0;   top: 30%; background: var(--a-f1); animation: amd-roam1 31s ease-in-out infinite alternate; }
+.amd-a-f2 { width: 60%; height: 55%; right: 0;  top: 38%; background: var(--a-f2); animation: amd-roam2 37s ease-in-out infinite alternate; }
+.amd-a-f3 { width: 50%; height: 40%; left: 28%; top: 62%; background: var(--a-f3); animation: amd-roam3 23s ease-in-out infinite alternate; }
+.amd-a-f4 { width: 80%; height: 40%; left: 10%; top: 5%;  background: var(--a-f4); animation: amd-roam2 43s ease-in-out infinite alternate-reverse; }
+/* Darker centre keeps the logo readable over the colour */
+.amd-a-shade { z-index: 3; background: radial-gradient(ellipse 45% 45% at 50% 50%, var(--a-shade), transparent 80%); }
+
+@keyframes amd-roam1 { from { translate: 0 0;   scale: 1;   } to { translate: 12% -8%;  scale: 1.15; } }
+@keyframes amd-roam2 { from { translate: 0 0;   scale: 1.1; } to { translate: -10% 6%;  scale: 0.92; } }
+@keyframes amd-roam3 { from { translate: -8% 0; scale: 0.9; } to { translate: 10% -10%; scale: 1.2;  } }
+
+@media (prefers-reduced-motion: reduce) {
+  .amd-atmosphere * { animation: none !important; }
+}
+
 
 /* ── High contrast mode ─────────────────────────────────────────── */
 html.hc {
@@ -574,4 +682,57 @@ html.hc.light select {
   .featured-caption-row { flex-direction: column; }
   .featured-meta-grid { gap: 16px; }
   .meta-col { text-align: left; }
+}
+
+/* ── iPadOS pointer (components/ipad-cursor.tsx) ────────────────── */
+/* Hide the system cursor everywhere, except while hovering an element that
+   asked for a special cursor (the JS adds .ipad-cursor-native then).
+   !important is needed to beat inline `style={{ cursor: "pointer" }}`. */
+html.ipad-cursor-on:not(.ipad-cursor-native),
+html.ipad-cursor-on:not(.ipad-cursor-native) * {
+  cursor: none !important;
+}
+
+.ipad-cursor,
+.ipad-cursor-glare {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none; /* never block clicks or elementFromPoint */
+  opacity: 0;
+  will-change: transform, width, height, opacity;
+}
+
+.ipad-cursor {
+  z-index: 2147483647; /* above everything, including modals */
+  background-color: rgb(var(--cursor-rgb) / var(--cursor-alpha));
+  /* Only colour is transitioned in CSS; size/position are springs in JS */
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.ipad-cursor[data-pressed="true"] {
+  background-color: rgb(var(--cursor-rgb) / calc(var(--cursor-alpha) * 1.4));
+}
+.ipad-cursor[data-mode="text"] {
+  background-color: rgb(var(--cursor-rgb) / var(--cursor-beam-alpha));
+}
+.ipad-cursor[data-mode="highlight"] {
+  background-color: rgb(var(--cursor-rgb) / var(--cursor-platter-alpha));
+}
+.ipad-cursor[data-mode="highlight"][data-pressed="true"] {
+  background-color: rgb(var(--cursor-rgb) / calc(var(--cursor-platter-alpha) * 1.8));
+}
+
+/* Over lifted thumbnails the page-tuned grey can vanish into the image, so
+   use translucent white with a faint outline that reads on light and dark photos */
+.ipad-cursor[data-mode="lift"] {
+  background-color: rgb(255 255 255 / 0.55);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.18), 0 1px 4px rgb(0 0 0 / 0.25);
+}
+.ipad-cursor[data-mode="lift"][data-pressed="true"] {
+  background-color: rgb(255 255 255 / 0.75);
+}
+
+.ipad-cursor-glare {
+  z-index: 2147483646;
+  mix-blend-mode: soft-light;
 }

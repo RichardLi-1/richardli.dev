@@ -54,7 +54,7 @@ export default function BoinkProjectPage() {
       <div className="min-h-screen page-bg">
         <AnimatedHeader currentPage="/boink" />
 
-        <main className="max-w-3xl mx-auto p-6 [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
+        <main className="max-w-3xl mx-auto py-6 px-[var(--page-gutter)] [&_p]:text-[var(--text-2)]" style={{ paddingTop: isMobile ? "0px" : "40px" }}>
           <StaggeredContent delay={0}>
             {" "}
             {/* Changed from 200 */}

@@ -223,7 +223,7 @@ function ClosingQuote() {
         transform: inView ? "translateY(0)" : "translateY(28px)",
         transition: "opacity 1s ease-out, transform 1s ease-out",
         textAlign: "center",
-        padding: "100px 24px 80px",
+        padding: "100px var(--page-gutter) 80px",
       }}
     >
       <p
@@ -267,7 +267,7 @@ export default function FunctionsPage() {
         <AnimatedHeader currentPage="/about/functions" />
 
         {/* ── Hero ── */}
-        <section style={{ padding: "80px 40px 120px" }}>
+        <section className="px-[var(--page-gutter)] md:px-10" style={{ paddingTop: 80, paddingBottom: 120 }}>
           <h1 style={{ fontSize: "clamp(3rem, 8vw, 7rem)", lineHeight: 1, marginBottom: 12 }}>
             Functions
           </h1>
@@ -280,7 +280,7 @@ export default function FunctionsPage() {
         <StickyScene />
 
         {/* ── Collage ── */}
-        <section style={{ padding: "60px 40px 160px" }}>
+        <section className="px-[var(--page-gutter)] md:px-10" style={{ paddingTop: 60, paddingBottom: 160 }}>
           {/* Desktop */}
           <div className="hidden md:block" style={{ position: "relative", minHeight: 1200 }}>
             {collageItems.map((item, i) => (

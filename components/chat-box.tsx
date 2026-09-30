@@ -536,7 +536,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
             fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em",
             animation: "dropdownEnter 0.15s ease",
           }}>
-            Powered by <strong style={{ color: "var(--text-2)" }}>Claude, Voyage AI, and Supabase</strong> using <code style={{ background: "var(--surface)", padding: "1px 5px", borderRadius: 4, fontSize: 11 }}>claude-haiku-4-5</code> and retrieval-augmented generation (RAG).
+            Powered by <strong style={{ color: "var(--text-2)" }}>Claude, Voyage AI, and Supabase</strong> using <code style={{ background: "var(--surface)", padding: "1px 5px", borderRadius: 4, fontSize: 11 }}>claude-haiku-4-5</code> and RAG.
           </div>
         )}
       </div>

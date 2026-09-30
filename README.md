@@ -12,6 +12,7 @@ Design inspired by Toronto Subway signage, the Apple Camera app, and iOS tab bar
 - <img width="552" height="351" alt="Image of chatbot" src="https://github.com/user-attachments/assets/3533cabb-59cf-40cc-b79e-15485c747249" />
 ~~- **Windows XP Mode** — A toggleable nostalgia mode that transforms the site into a Windows XP desktop experience.~~
 - **Light / Dark Theme and High Contrast** — Warm dark and cream light modes with a sun/moon toggle, and high contrast for accessibility of COURSE. As per my commitment to accessibility.
+- **iPadOS Cursor** - Remember the iPad cursor from 2020? The little grey circle that turned into a text line over words and melted into buttons? I brought it back. Hover a button and the cursor wraps around it, hover a project and the whole thumbnail lifts up toward you.
 - - **Case Studies** — Learn about the rest of my projects
 ---
 

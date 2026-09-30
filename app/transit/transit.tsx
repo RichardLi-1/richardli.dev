@@ -144,7 +144,7 @@ export default function PersonalWebsite() {
         {/* Header */}
         <AnimatedHeader isHomepage={true} currentPage="/" />
 
-        <main className="max-w-4xl mx-auto p-6 space-y-8" style={{ paddingTop: isMobile ? "0px" : "120px" }}>
+        <main className="max-w-4xl mx-auto py-6 px-[var(--page-gutter)] space-y-8" style={{ paddingTop: isMobile ? "0px" : "120px" }}>
           {/* Introduction */}
           <StaggeredContent delay={0}>
             {" "}

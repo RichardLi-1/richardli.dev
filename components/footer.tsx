@@ -22,10 +22,11 @@ function SocialIcon({
       style={{
         display: "inline-flex", alignItems: "center", justifyContent: "center",
         width: 28, height: 28, borderRadius: 8,
-        color: "var(--text-3)", transition: "color 0.15s, background 0.15s",
+        color: "var(--text-3)", transition: "color 0.15s",
       }}
-      onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "var(--surface-hover)" }}
-      onMouseLeave={e => { e.currentTarget.style.color = "var(--text-3)"; e.currentTarget.style.background = "transparent" }}
+      // Hover background comes from the iPad cursor's platter (components/ipad-cursor.tsx)
+      onMouseEnter={e => { e.currentTarget.style.color = "var(--text)" }}
+      onMouseLeave={e => { e.currentTarget.style.color = "var(--text-3)" }}
     >
       {children}
     </a>
@@ -42,7 +43,7 @@ export function Footer() {
   if (isPanel) return null
   return (
     <>
-      <footer className="w-full border-t px-10 py-6 md:py-8" style={{ borderColor: "var(--border-2)", background: "var(--bg)" }}>
+      <footer className="w-full border-t px-[var(--page-gutter)] md:px-10 py-6 md:py-8" style={{ borderColor: "var(--border-2)", background: "var(--bg)" }}>
         {/* Top row: wordmark on left, socials on right (icons sit higher than the credits line) */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 md:gap-8">
           <div className="flex flex-col gap-2 max-w-2xl">
@@ -55,7 +56,7 @@ export function Footer() {
               © RICHARD LI {new Date().getFullYear()}
             </span>
             <span style={{ ...base, fontSize: "14px", lineHeight: 1.4 }}>
-              Written in TypeScript. Animations using Framer Motion. Set in SFCamera and Toronto Subway. Made with ❤️.
+              Inspired by iOS, iPadOS, and the Toronto Subway. Set in SFCamera and Toronto Subway.
             </span>
           </div>
         </div>

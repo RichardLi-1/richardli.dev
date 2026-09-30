@@ -89,7 +89,7 @@ export default function ResumePage() {
         <ResponsiveHeader currentPage="/resume" />
 
         <main
-          className="mx-auto max-w-4xl px-6 pb-16"
+          className="mx-auto max-w-4xl px-[var(--page-gutter)] pb-16"
           style={{ paddingTop: isMobile ? 24 : 120 }}
         >
           <StaggeredContent delay={0}>
@@ -182,7 +182,7 @@ export default function ResumePage() {
                     C++, SQL, Swift, HTML, CSS
                   </p>
                   <p>
-                    <strong style={{ color: "var(--text)" }}>Frameworks:</strong> React, Next.js, Angular, FastAPI,
+                    <strong style={{ color: "var(--text)" }}>Frameworks:</strong> React, Angular, FastAPI,
                     Express, Tailwind, SwiftUI
                   </p>
                   <p>
@@ -341,7 +341,7 @@ export default function ResumePage() {
                   <ResumeProjectBlock
                     href="/transitplanner"
                     title="Transit Planning Sandbox"
-                    tech="LangGraph, Next.js, Mapbox GL, PostGIS, Supabase"
+                    tech="LangGraph, Mapbox GL, PostGIS, Supabase"
                     date="Mar 2026 – Present"
                   >
                     <li>
@@ -410,7 +410,7 @@ export default function ResumePage() {
 
                   <ResumeProjectBlock
                     title="4Sight"
-                    tech="React, Next.js (App Router), TypeScript, TouchDesigner, face-api.js"
+                    tech="React, TypeScript, TouchDesigner, face-api.js"
                     date="May 2025 – May 2025"
                   >
                     <li>

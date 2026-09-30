@@ -88,10 +88,8 @@ function SoundPanel({ soundEnabled, onToggle, onClose }: { soundEnabled: boolean
             color: "var(--text-2)", fontSize: 12,
             fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em",
             cursor: "pointer", textAlign: "left",
-            transition: "background 0.1s",
           }}
-          onMouseEnter={e => (e.currentTarget.style.background = "var(--surface-hover)")}
-          onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+          // Hover background comes from the iPad cursor's platter (components/ipad-cursor.tsx)
         >
           <Play style={{ width: 11, height: 11, color: "var(--text-4)", flexShrink: 0 }} />
           {label}
