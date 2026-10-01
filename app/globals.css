@@ -146,6 +146,26 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* ── Mobile project feed (experimental, app/page.tsx) ──
+   Snapping has to be switched on by the *scroll container*, which is this shell
+   in the layout. :has() turns it on only while the page contains .snap-feed
+   (the homepage adds that class on mobile), so every other page scrolls normally.
+   Snap stops: the top of the page, each project card, and the footer.
+   📖 Learn: CSS :has() selector, scroll-snap-type mandatory vs proximity */
+.app-scroll-shell:has(.snap-feed) {
+  scroll-snap-type: y mandatory;
+  /* Cards snap to the centre of the area *above* the fixed bottom nav pill */
+  --feed-pill-clearance: 88px;
+  /* How much space is left above and below a centred card, so the previous
+     and next cards peek in. Card height is calculated from these in app/page.tsx. */
+  --feed-peek: 48px;
+  scroll-padding-bottom: var(--feed-pill-clearance);
+}
+/* Without a stop at the end, mandatory snapping could make the footer unreachable */
+.app-scroll-shell:has(.snap-feed) footer {
+  scroll-snap-align: end;
+}
+
 h1 {
   font-family: 'SFCamera', 'Toronto Subway', 'Helvetica Neue', Helvetica, sans-serif;
   font-weight: normal;

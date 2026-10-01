@@ -6,9 +6,13 @@ interface ProjectImageCyclerProps {
   images: (string | undefined)[]
   alt: string
   className?: string
+  // "cover": crop to fill the box (default).
+  // "blur-backdrop": show the whole media uncropped, with a blurred copy of the
+  // image filling the leftover space (for tall boxes, like the mobile feed).
+  fit?: "cover" | "blur-backdrop"
 }
 
-export function ProjectImageCycler({ images, alt, className = "" }: ProjectImageCyclerProps) {
+export function ProjectImageCycler({ images, alt, className = "", fit = "cover" }: ProjectImageCyclerProps) {
   // Filter out undefined/null entries. The type predicate `img is string` narrows
   // the array type from (string | undefined)[] to string[] after this call.
   const validImages = images.filter((img): img is string => !!img)
@@ -57,6 +61,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
   }
 
   const isVideo = current.endsWith(".mp4") || current.endsWith(".mov")
+  const objectFit = fit === "blur-backdrop" ? "contain" : "cover"
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", borderRadius: "inherit", cornerShape: "squircle" } as React.CSSProperties}>
@@ -74,6 +79,30 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
         <div className="skeleton-shimmer" />
       </div>
 
+      {/* Blurred backdrop: a zoomed, blurred copy of the same image fills the
+          space the uncropped image leaves empty. Images only; for videos it would
+          mean decoding the video twice, so they sit on the plain card background.
+          scale(1.15) hides the soft see-through edges that blur() creates.
+          Same src as the sharp image, so the browser downloads it only once.
+          📖 Learn: CSS filter: blur() */}
+      {fit === "blur-backdrop" && !isVideo && (
+        <Image
+          key={`backdrop-${current}`}
+          src={current}
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+            filter: "blur(28px) saturate(1.3)",
+            transform: "scale(1.15)",
+            opacity: loaded ? 0.75 : 0,
+            transition: "opacity 0.3s ease",
+          }}
+        />
+      )}
+
       {/* `key={current}` forces React to unmount and remount the element when the
           source changes, which resets the video playback to the beginning. */}
       {isVideo ? (
@@ -90,7 +119,7 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
           disableRemotePlayback
           className={className}
           onLoadedData={() => setLoaded(true)}
-          style={{ objectFit: "cover", opacity: 1, transition: "opacity 0.3s ease" }}
+          style={{ objectFit, opacity: 1, transition: "opacity 0.3s ease" }}
         >
           {/* Required for accessibility (Lighthouse) — muted demo videos have no spoken content,
               so the track is empty. `default` makes it active without user interaction. */}
@@ -109,7 +138,8 @@ export function ProjectImageCycler({ images, alt, className = "" }: ProjectImage
           sizes="(max-width: 768px) 100vw, 50vw"
           className={className}
           onLoad={() => setLoaded(true)}
-          style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease" }}
+          // Inline objectFit wins over the `object-cover` class the homepage passes in
+          style={{ objectFit, opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease" }}
         />
       )}
 

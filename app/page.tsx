@@ -60,6 +60,26 @@ export default function PersonalWebsite() {
     return () => window.removeEventListener("resize", check)
   }, [])
 
+  // Experimental TikTok-style project feed on mobile, behind the PostHog flag
+  // "mobile-project-feed" (off until projects have videos). `?feed=1` in the URL
+  // forces it on for testing on a phone. Flags arrive from the network after
+  // mount, so this starts false and flips once PostHog answers.
+  // onFeatureFlags returns an unsubscribe function, used as the effect cleanup.
+  // 📖 Learn: PostHog feature flags (onFeatureFlags, isFeatureEnabled)
+  const [feedFlagOn, setFeedFlagOn] = useState(false)
+  useEffect(() => {
+    const forcedByUrl = new URLSearchParams(window.location.search).get("feed") === "1"
+    if (forcedByUrl) {
+      setFeedFlagOn(true)
+      return
+    }
+    return posthog.onFeatureFlags(() => {
+      setFeedFlagOn(posthog.isFeatureEnabled("mobile-project-feed") === true)
+    })
+  }, [])
+  // Not named `useFeed`: names starting with "use" are reserved for React hooks
+  const showFeed = isMobile && feedFlagOn
+
   // Cycle through activities every 3.5 s using setInterval.
   // The cleanup clears the interval so it doesn't keep firing after unmount.
   // 📖 Learn: useEffect cleanup — https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
@@ -118,9 +138,14 @@ export default function PersonalWebsite() {
 
           {/* ────────────────────── Hero ────────────────────── */}
           <StaggeredContent delay={0}>
-            <section style={{ 
+            <section style={{
               marginBottom: isMobile? 48 : 64,
-               maxWidth: 700 }}>
+               maxWidth: 700,
+              // Mobile feed: the hero is the first snap stop. The huge scroll margin
+              // asks to snap *above* the page top, which the browser clamps to 0,
+              // so this stop always means "the very top of the page".
+              ...(showFeed && { scrollSnapAlign: "start", scrollMarginTop: "100dvh" }),
+            }}>
               <h1 style={{ fontSize: "clamp(40px, 7vw, 56px)", lineHeight: 1.2, letterSpacing: -1, marginBottom: 14, fontFamily: "'SFCamera', sans-serif" }}>
                 Richard Li is a software engineer and full-time public transit enthusiast.<mark className="hero-highlight"></mark>
               </h1>
@@ -184,10 +209,13 @@ export default function PersonalWebsite() {
               }}
             >
               <p className="section-label" style={{ marginBottom: 20 }}>Work</p>
-              <div style={{
+              {/* `snap-feed` (mobile + flag only) switches on TikTok-style snapping for the
+                  page scroller. See the "Mobile project feed" rules in globals.css. */}
+              <div className={showFeed ? "snap-feed" : undefined} style={{
                 display: "grid",
                 gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-                gap: "32px 16px",
+                // Feed: a small gap so peeking neighbours read as separate cards
+                gap: showFeed ? 12 : "32px 16px",
               }}>
                 {visibleProjects.map(project => {
                   const externalOnly = (project as { externalOnly?: boolean }).externalOnly
@@ -201,10 +229,28 @@ export default function PersonalWebsite() {
                     {...(externalOnly && externalLink
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    style={{ textDecoration: "none" }}
+                    style={{
+                      textDecoration: "none",
+                      // Mobile feed: each card is one snap stop, a bit shorter than the
+                      // visible area and snapped to its centre, so the previous and next
+                      // cards peek in by --feed-peek (vars set in globals.css).
+                      // scroll-snap-stop: always = one swipe moves exactly one card.
+                      // 📖 Learn: CSS Scroll Snap (scroll-snap-align, scroll-snap-stop), dvh units, calc()
+                      ...(showFeed && {
+                        display: "flex",
+                        flexDirection: "column",
+                        height: "calc(100dvh - var(--feed-pill-clearance, 88px) - 2 * var(--feed-peek, 48px))",
+                        scrollSnapAlign: "center",
+                        scrollSnapStop: "always",
+                      }),
+                    }}
                   >
                     <div
-                      style={{ cursor: "pointer" }}
+                      style={{
+                        cursor: "pointer",
+                        // Feed: fill the frame so the image can stretch tall
+                        ...(showFeed && { flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }),
+                      }}
                       // Track hover so the title underlines and the "Try it out"
                       // button can appear; no image scaling on hover.
                       onMouseEnter={() => setHoveredId(project.id)}
@@ -215,7 +261,9 @@ export default function PersonalWebsite() {
                       <div data-cursor-surface style={{
                         position: "relative",
                         width: "100%",
-                        aspectRatio: "16/9",
+                        // Feed: take all the frame's height left over after the caption.
+                        // minHeight: 0 lets a flex child shrink below its content size.
+                        ...(showFeed ? { flex: 1, minHeight: 0 } : { aspectRatio: "16/9" }),
                         borderRadius: 16,
                         cornerShape: "squircle",
                         background: "var(--pure)",
@@ -237,6 +285,7 @@ export default function PersonalWebsite() {
                                 images={[project.image, (project as any).image2, (project as any).image3]}
                                 alt={project.title}
                                 className="w-full h-full object-cover"
+                                fit={showFeed ? "blur-backdrop" : "cover"}
                               />
                             )}
                           </div>

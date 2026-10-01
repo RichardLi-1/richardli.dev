@@ -322,14 +322,18 @@ export default function TransitPlannerProjectPage() {
                   className="overflow-hidden squircle rounded-lg cursor-zoom-in p-0 border-0 bg-[var(--surface)]"
                   style={{ aspectRatio: "4/3" }}
                 >
-                  <img src="/images/projects/transitplanner/banner.png" alt="Transit Planner map" className="w-full h-full object-cover" />
+                  {/* Inline thumbnail uses a 1600px JPEG (165 KB vs the 3.8 MB PNG); the zoom
+                      modal still opens the full-size original, so it only downloads on tap.
+                      images.unoptimized is on, so Next.js won't resize these for us. */}
+                  <img src="/images/projects/transitplanner/banner-web.jpg" alt="Transit Planner map" decoding="async" className="w-full h-full object-cover" />
                 </button>
                 <button
                   onClick={() => setZoomedImage("/images/projects/transitplanner/launch-tweet.png")}
                   className="overflow-hidden squircle rounded-lg cursor-zoom-in p-0 border-0 bg-[var(--surface)]"
                   style={{ aspectRatio: "4/3" }}
                 >
-                  <img src="/images/projects/transitplanner/launch-tweet.png" alt="Transit Planner launch on X" className="w-full h-full object-cover" />
+                  {/* 1600px JPEG (225 KB vs the 4.2 MB PNG); zoom still opens the original */}
+                  <img src="/images/projects/transitplanner/launch-tweet-web.jpg" alt="Transit Planner launch on X" decoding="async" className="w-full h-full object-cover" />
                 </button>
               </div>
 
@@ -390,9 +394,14 @@ export default function TransitPlannerProjectPage() {
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">CI/CD</h3>
               <p className="mb-2">CI runs the test suite and a route-data validator on every PR; deploys go through Vercel on push. Test builds are released at <a className="hover:underline" href="https://test.transitplanner.app/">https://test.transitplanner.app/</a> for testing. Personally love this preview badge.</p>
+              {/* loading="lazy": below-the-fold images wait until you scroll near them,
+                  so they don't compete with the videos and top images on first load.
+                  📖 Learn: native lazy loading (loading="lazy"), decoding="async" */}
               <img
                 src="/images/projects/transitplanner/badge.png"
                 alt="Preview badge"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
 
@@ -418,8 +427,10 @@ export default function TransitPlannerProjectPage() {
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
               <div className="w-full overflow-hidden squircle rounded-lg" style={{ aspectRatio: "4 / 3" }}>
                 <img
-                  src="/images/projects/transitplanner/launch-tweet.png"
+                  src="/images/projects/transitplanner/launch-tweet-web.jpg"
                   alt="Transit Planner Launch Tweet by Fiona Fang"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -430,6 +441,8 @@ export default function TransitPlannerProjectPage() {
                 <img
                   src="/images/projects/transitplanner/ai-tinkerers.JPG"
                   alt="Transit Planner Presentation at AI Tinkerers Toronto, Shopify. Shoutout to Amanda Xi for the photo."
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
