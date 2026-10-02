@@ -29,7 +29,7 @@ export const mainProjects = [
     id: "transitplanner",
     title: "Transit Planner",
     year: "2026",
-    description: "Draw your ideal transit system and model commuter flow",
+    description: "Transit planning agents and transit modelling",
     image: "/videos/transitplanfinal.mov",
     logo: "",
     tags: ["iOS", "Swift", "Game Development"],
@@ -40,7 +40,7 @@ export const mainProjects = [
     id: "safuture",
     title: "SaFuture Inc and Qwhery",
     year: "2026",
-    description: "Building GIS and municipal AI",
+    description: "GIS, municipal AI, and FDE",
     // 900px-wide WebP, not the 2000px "SaFuture Banner.png" original. Next never
     // upscales past the source, so capping the source caps every srcset entry:
     // large screens request w=1200 but receive 900px / ~65KB instead of ~128KB.
