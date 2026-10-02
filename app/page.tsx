@@ -257,8 +257,11 @@ export default function PersonalWebsite() {
                       onMouseLeave={() => setHoveredId(null)}
                       onClick={() => posthog.capture("project_card_clicked", { project_id: project.id, project_title: project.title, destination: cardHref })}
                     >
-                      {/* data-cursor-surface: the iPad pointer lifts just the image, not the caption */}
-                      <div data-cursor-surface style={{
+                      {/* data-cursor-surface: the iPad pointer lifts just the image, not the caption.
+                          data-cursor-growth: these cards are already special, so they lift
+                          a bit less than the sitewide default (16px).
+                          data-cursor-glare: a softer white glare spot than the default (0.5). */}
+                      <div data-cursor-surface data-cursor-growth="13" data-cursor-glare="0.35" style={{
                         position: "relative",
                         width: "100%",
                         // Feed: take all the frame's height left over after the caption.
