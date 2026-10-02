@@ -105,7 +105,8 @@ export default function BoinkProjectPage() {
           <StaggeredContent delay={100}>
             {" "}
             {/* Changed from 400 */}
-            <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden rounded-lg">
+            {/* data-launch-target: the homepage card morphs into this banner (components/app-launch.tsx) */}
+            <div data-launch-target className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden rounded-lg">
               <img
                 src="/images/projects/boink/hero_new.png"
                 alt="Bo!nk game screenshots"
@@ -185,7 +186,17 @@ export default function BoinkProjectPage() {
             <div className="py-8">
               <p className="section-label mb-2">The Mission</p>
               <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
-                Create a nostalgic mobile game fun for all ages
+                Revive the nostalgia of Windows Vista's{" "}
+                {/* Inline InkBall icon, sized to the text (1em) and nudged onto the baseline.
+                    `title` shows the fair-use attribution as a native tooltip on hover. */}
+                <img
+                  src="/images/projects/boink/inkball.png"
+                  alt="InkBall icon"
+                  title="By Windows Vista, Fair use, https://en.wikipedia.org/w/index.php?curid=36028519"
+                  className="inline-block"
+                  style={{ height: "1em", width: "auto", verticalAlign: "-0.12em", marginRight: "0.2em" }}
+                />
+                Inkball
               </p>
             </div>
           </StaggeredContent>

@@ -706,6 +706,53 @@ html.hc.light select {
   .meta-col { text-align: left; }
 }
 
+/* ── App launch (components/app-launch.tsx) ──────────────────────── */
+/* iOS-style "open app" overlay. Lives on <body>, outside .app-scroll-shell,
+   so the homepage can zoom behind it without moving it. Positions and sizes
+   are animated from JS; only the static parts live here. */
+.app-launch {
+  position: fixed;
+  inset: 0;
+  z-index: 1000; /* above the site header and nav pill, below the iPad pointer */
+  /* blocks taps on the page underneath while it plays (~0.6s) */
+}
+.app-launch-dim {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  opacity: 0;
+  will-change: opacity;
+}
+/* The "window" (launch screen): a screen-sized box in the page colour, scaled
+   down to the card and grown back up. transform-origin top-left keeps the
+   translate/scale maths simple. */
+.app-launch-window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  background: var(--bg);
+  will-change: transform, opacity;
+}
+/* The "icon": a card-sized box that flies to the project page's banner.
+   It clips its content to its (animated) rounded corners. */
+.app-launch-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+/* The card copy inside the icon, counter-scaled so it's never squashed */
+.app-launch-icon-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
 /* ── iPadOS pointer (components/ipad-cursor.tsx) ────────────────── */
 /* Hide the system cursor everywhere, except while hovering an element that
    asked for a special cursor (the JS adds .ipad-cursor-native then).

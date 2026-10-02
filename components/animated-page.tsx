@@ -1,13 +1,16 @@
 "use client"
 import { useEffect, useState } from "react"
 import type React from "react"
+import { isAppLaunching } from "@/components/app-launch"
 
 interface AnimatedPageProps {
   children: React.ReactNode
 }
 
 export function AnimatedPage({ children }: AnimatedPageProps) {
-  const [isLoaded, setIsLoaded] = useState(false)
+  // Opened via the iOS-style launch animation? Skip the fade-in: the launch
+  // overlay is already revealing the page.
+  const [isLoaded, setIsLoaded] = useState(() => isAppLaunching())
 
   useEffect(() => {
     // body uses overflow:hidden; the real scroller is .app-scroll-shell. Default

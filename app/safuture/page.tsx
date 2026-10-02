@@ -31,7 +31,7 @@ export default function SaFuturePage() {
           { id: "sf-background", label: "Background" },
           { id: "sf-chatbots", label: "Chatbots" },
           { id: "sf-sales", label: "Sales Lead Identifier" },
-          { id: "sf-clients", label: "Work for Clients" },
+          { id: "sf-clients", label: "Forward-Deployed Work" },
           { id: "sf-experience", label: "The Experience" },
           { id: "sf-takeaways", label: "Takeaways" },
         ]} />
@@ -54,7 +54,8 @@ export default function SaFuturePage() {
           <StaggeredContent delay={100}>
             {/* Parent must be `relative` for `fill` to anchor to it; `aspect-video` reserves
                 the box so there's no layout shift while the optimized image streams in. */}
-            <div className="relative mb-8 aspect-video w-full overflow-hidden squircle rounded-lg">
+            {/* data-launch-target: the homepage card morphs into this banner (components/app-launch.tsx) */}
+            <div data-launch-target className="relative mb-8 aspect-video w-full overflow-hidden squircle rounded-lg">
               <Image
                 src="/images/projects/safuture/safuture-banner.webp"
                 alt="Smart Rutherford screenshots"
@@ -180,8 +181,8 @@ export default function SaFuturePage() {
               <h2 id="sf-sales" className="font-bold mt-8 mb-2 text-2xl">Sales Lead Identifier</h2>
               <p>The existing flow for identifying sales prospects was to manually web search government directories for leads. Thus, automation had huge potential benefit here.<br></br><br></br>Automation had been previously tested using web scraping, but yielded low accuracy results. I experimented with web search APIs, Playwright web scraping, and LLMs with web search like <code className="text-xs px-1.5 py-0.5 rounded-md" style={{ background: "var(--surface)", color: "var(--text-2)" }}>gpt-4o-mini-search-preview</code>. LLMs proved to be the most efficient. I integrated the Hunter.io API for email search and LangChain for orchestration. <br></br><br></br>The platform achieved 80% accuracy and saved 30+ hours of manual searching per week. This was my overall favourite project as I got to build it from scratch and pilot it.</p>
 
-              <h2 id="sf-clients" className="font-bold mt-8 mb-2 text-2xl">Work for Clients</h2>
-              <p>I can't disclose as much for this one, but I shipped 25+ feature requests. This project was interesting, and I learned how to manage stakeholders who are in charge of different parts of the tech stack.</p>
+              <h2 id="sf-clients" className="font-bold mt-8 mb-2 text-2xl">Forward-Deployed Work</h2>
+              <p>I can't disclose as much for this one, but I shipped 25+ feature requests across multiple projects. This work was interesting, and I learned how to manage stakeholders who are in charge of different parts of the tech stack.</p>
               <ul className="list-disc list-inside mt-2 mb-2 space-y-1" style={{ color: "var(--text-2)" }}>
                 <li>UI improvements and bug fixes across map dashboards</li>
                 <li>New API endpoints and database queries for client-specific data and features such as notes</li>

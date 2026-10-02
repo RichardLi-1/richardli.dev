@@ -77,7 +77,8 @@ export default function SalesPatriotProjectPage() {
           </StaggeredContent>
 
           <StaggeredContent delay={100}>
-            <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden squircle" style={{ borderRadius: 16 }}>
+            {/* data-launch-target: the homepage card morphs into this banner (components/app-launch.tsx) */}
+            <div data-launch-target className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden squircle" style={{ borderRadius: 16 }}>
               <img src="/images/projects/fatherfigure/banner.png" alt="Father Figure app banner" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>

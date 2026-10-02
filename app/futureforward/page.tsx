@@ -77,7 +77,8 @@ export default function FutureForwardProjectPage() {
 
           {/* Hero */}
           <StaggeredContent delay={100}>
-            <div className="relative mb-8 aspect-video w-full overflow-hidden squircle rounded-lg">
+            {/* data-launch-target: the homepage card morphs into this banner (components/app-launch.tsx) */}
+            <div data-launch-target className="relative mb-8 aspect-video w-full overflow-hidden squircle rounded-lg">
               <img
                 src="/images/projects/future-forward/workshop-hero.jpeg"
                 alt="Future Forward workshop"

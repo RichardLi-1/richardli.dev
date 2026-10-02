@@ -63,6 +63,9 @@ export default function AMDPage() {
               surface panel rather than an <img> that would 404. Drop a banner at
               /images/projects/amd/banner.webp and swap this block when one exists. */}
           <StaggeredContent delay={100}>
+            {/* data-launch-target: the homepage card morphs into this banner (components/app-launch.tsx).
+                On a wrapper because AmdAtmosphere doesn't pass extra attributes through. */}
+            <div data-launch-target style={{ borderRadius: 16 }}>
             <AmdAtmosphere
               className="w-full squircle rounded-lg flex items-center justify-center"
               style={{ aspectRatio: "960/420", borderRadius: 16 }}
@@ -74,6 +77,7 @@ export default function AMDPage() {
                 style={{ width: isMobile ? 100 : 136, height: "auto", opacity: 0.9 }}
               />
             </AmdAtmosphere>
+            </div>
           </StaggeredContent>
 
           {/* ── Confidential notice ──

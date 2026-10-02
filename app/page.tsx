@@ -1,8 +1,9 @@
 "use client"
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { launchApp } from "@/components/app-launch"
 import { ExternalLink } from "lucide-react"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
@@ -44,6 +45,9 @@ const previously = [
 
 export default function PersonalWebsite() {
   const pathname = usePathname()
+  const router = useRouter()
+  // The homepage zooms in behind a project as it opens (see components/app-launch.tsx)
+  const mainRef = useRef<HTMLElement>(null)
   const { isPersonalized } = useWindowsXP()
   const [activityIndex, setActivityIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
@@ -131,7 +135,7 @@ export default function PersonalWebsite() {
       <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--text)" }}>
         <ResponsiveHeader isHomepage={true} currentPage="/" />
 
-        <main style={{
+        <main ref={mainRef} style={{
           margin: "0 auto",
           padding: isMobile ? "32px var(--page-gutter) 0" : "80px 40px 0",
         }}>
@@ -229,6 +233,25 @@ export default function PersonalWebsite() {
                     {...(externalOnly && externalLink
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
+                    // iOS-style "open app" animation for internal project pages.
+                    // Only a plain left click is taken over; cmd/ctrl/shift/middle
+                    // clicks keep their normal "open in new tab/window" behaviour.
+                    // If launchApp returns false (reduced motion, slow device or
+                    // network), we don't preventDefault, so the Link navigates as usual.
+                    onClick={e => {
+                      if (externalOnly) return
+                      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+                      const source = e.currentTarget.querySelector<HTMLElement>("[data-launch-source]")
+                      if (!source) return
+                      const tookOver = launchApp({
+                        href: cardHref,
+                        source,
+                        backdrop: mainRef.current,
+                        push: href => router.push(href),
+                        prefetch: href => router.prefetch(href),
+                      })
+                      if (tookOver) e.preventDefault()
+                    }}
                     style={{
                       textDecoration: "none",
                       // Mobile feed: each card is one snap stop, a bit shorter than the
@@ -261,7 +284,8 @@ export default function PersonalWebsite() {
                           data-cursor-growth: these cards are already special, so they lift
                           a bit less than the sitewide default (16px).
                           data-cursor-glare: a softer white glare spot than the default (0.5). */}
-                      <div data-cursor-surface data-cursor-growth="13" data-cursor-glare="0.35" style={{
+                      {/* data-launch-source: the box that grows into the page when opened */}
+                      <div data-cursor-surface data-launch-source data-cursor-growth="13" data-cursor-glare="0.35" style={{
                         position: "relative",
                         width: "100%",
                         // Feed: take all the frame's height left over after the caption.
