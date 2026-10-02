@@ -607,7 +607,10 @@ export function AnimatedHeader({
           <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%", padding: "0 32px" }}>
             {/* ── Left pill: wordmark ── */}
             {/* Gains a glass background + border when the user scrolls */}
-            <div style={{
+            {/* The Link *is* the pill (not just the text), so the iPad pointer's
+                platter takes the pill's shape and the whole pill is clickable */}
+            <Link href="/" style={{
+              textDecoration: "none",
               display: "flex",
               alignItems: "center",
               gap: "10px",
@@ -620,8 +623,8 @@ export function AnimatedHeader({
               boxShadow: isHighContrast ? "none" : isScrolled ? "0 2px 20px rgba(0,0,0,0.2)" : "none",
               transition: "border-color 0.2s, box-shadow 0.2s, background 0.2s",
             }}>
-              <Link href="/" className="nav-logo">Richard Li</Link>
-            </div>
+              <span className="nav-logo">Richard Li</span>
+            </Link>
 
             {/* ── Right pill: nav links + icon buttons + toggles ── */}
             {/* Desktop nav is hardcoded (Home, Work, Transit) — it doesn't use getNavItems() */}

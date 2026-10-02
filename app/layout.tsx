@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Richard Li - Full Stack Developer",
     description:
-      "Full Stack Developer & Systems Design Engineering student at UWaterloo. Specializing in React, Next.js, Swift, and AI integration.",
+      "Full Stack Developer & Systems Design Engineering student at UWaterloo. Specializing in AI and ML.",
     images: ["/images/website-thumbnail.png"],
     creator: "@richardli",
   },
