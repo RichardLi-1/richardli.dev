@@ -422,7 +422,9 @@ header {
   transition: opacity 0.15s;
 }
 
-.nav-logo:hover { opacity: 0.6; }
+/* `a:hover > .nav-logo`: the header pill is the link, so hovering anywhere on it dims just the text */
+.nav-logo:hover,
+a:hover > .nav-logo { opacity: 0.6; }
 
 .nav-item {
   font-family: 'Toronto Subway', 'Helvetica Neue', Helvetica, sans-serif;
