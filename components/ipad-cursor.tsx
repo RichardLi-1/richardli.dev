@@ -23,6 +23,10 @@ import { usePathname } from "next/navigation"
  *   data-cursor="highlight" | "lift" | "text" | "none" | "native"
  *   data-cursor-surface     → on a descendant of a lift target: the part that
  *                             actually lifts (e.g. the image, not the caption)
+ *   data-cursor-growth="8"  → on the lifted element: grow by this many px
+ *                             instead of LIFT_GROWTH_PX (for subtler cards)
+ *   data-cursor-glare="0.3" → on the lifted element: glare strength (0–1)
+ *                             instead of GLARE_ALPHA
  *
  * Everything here runs in a requestAnimationFrame loop that writes styles
  * directly to the DOM instead of going through React state.
@@ -40,6 +44,7 @@ const HIGHLIGHT_PAD_Y = 4
 const HIGHLIGHT_PARALLAX = 4 // max px a highlighted button drifts toward the pointer
 const LIFT_PARALLAX = 6 // max px a lifted card drifts toward the pointer
 const LIFT_GROWTH_PX = 16 // a lifted card grows by ~this many px on its long side
+const GLARE_ALPHA = 0.5 // brightness of the white spot on a lifted card
 const LIFT_MIN_WIDTH = 160 // clickable things at least this big get "lift" instead of "highlight"
 const LIFT_MIN_HEIGHT = 100
 const PRESS_SCALE = 0.97 // buttons dip slightly while pressed
@@ -145,6 +150,8 @@ interface ElementEffect {
   ty: Spring // parallax offset y (px)
   scale: Spring
   lift: Spring // 0 → 1, drives the shadow and glare strength
+  growthPx: number // how many px the long side grows when lifted
+  glareAlpha: number // brightness of the glare spot when lifted
   // Inline styles the element had before we touched it, restored on release.
   saved: { translate: string; scale: string; boxShadow: string; transition: string }
   baseShadow: string
@@ -382,6 +389,11 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
       ty: makeSpring(0),
       scale: makeSpring(1),
       lift: makeSpring(0),
+      // Read once here rather than every frame. `dataset.cursorGrowth` is the
+      // camelCase form of the `data-cursor-growth` attribute.
+      // 📖 Learn: HTMLElement.dataset
+      growthPx: Number(el.dataset.cursorGrowth) || LIFT_GROWTH_PX,
+      glareAlpha: Number(el.dataset.cursorGlare) || GLARE_ALPHA,
       saved,
       baseShadow: computed.boxShadow,
     }
@@ -460,7 +472,12 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
   // ── Target switching ──
   function applyTarget(next: Target) {
     // While drag-selecting text, stay an I-beam even if the pointer slides over whitespace.
-    if (pressed && target.mode === "text" && next.mode !== "text") return
+    // Drop the line snap though: keeping the old lineCenterY would pin the beam to
+    // the last line it touched while the mouse drags far below it.
+    if (pressed && target.mode === "text" && next.mode !== "text") {
+      if (target.lineCenterY !== null) target = { ...target, lineCenterY: null }
+      return
+    }
     target = next
 
     const nextFxEl = next.mode === "highlight" || next.mode === "lift" ? next.fxEl : null
@@ -557,7 +574,7 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
         const nx = clamp((mouseX - base.cx) / (base.w / 2), -1, 1)
         const ny = clamp((mouseY - base.cy) / (base.h / 2), -1, 1)
         const parallax = reducedMotion ? 0 : LIFT_PARALLAX
-        const grow = reducedMotion ? 1 : 1 + LIFT_GROWTH_PX / Math.max(base.w, base.h)
+        const grow = reducedMotion ? 1 : 1 + fx.growthPx / Math.max(base.w, base.h)
         // Pressing pushes the card most of the way back down, like tapping it.
         const scale = pressed ? 1 + (grow - 1) * 0.25 : grow
         fx.tx.target = nx * parallax
@@ -623,7 +640,7 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
       // Specular highlight: a soft white spot under the pointer, like light
       // reflecting off a raised surface.
       // 📖 Learn: CSS radial-gradient, mix-blend-mode: soft-light
-      glare.style.background = `radial-gradient(circle at ${mouseX - left}px ${mouseY - top}px, rgba(255,255,255,0.5), rgba(255,255,255,0) 55%)`
+      glare.style.background = `radial-gradient(circle at ${mouseX - left}px ${mouseY - top}px, rgba(255,255,255,${glareFx.glareAlpha}), rgba(255,255,255,0) 55%)`
       glare.style.opacity = `${clamp(glareFx.lift.value, 0, 1)}`
     } else {
       glare.style.opacity = "0"
