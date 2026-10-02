@@ -14,7 +14,7 @@ export const mainProjects = [
     id: "amd",
     title: "AMD",
     year: "2026",
-    description: "Building a universal data context layer for internal agents",
+    description: "Building a universal data context layer for agents",
     // Generated 16:9 card from public/logos/AMD_BIG.D.png on the --card-bg tone.
     // Source capped at 1200px wide on purpose: Next never upscales past the
     // source, so capping it caps every srcset entry (same reasoning as safuture).
