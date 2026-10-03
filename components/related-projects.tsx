@@ -88,7 +88,9 @@ export function RelatedProjects({ currentId }: { currentId: string }) {
           style={{
             width: 48,
             height: 48,
-            borderRadius: 12,
+            // Concentric with the pill: inner radius = outer radius (16) − padding (6),
+            // so the gap between the two curves is even all the way round the corner
+            borderRadius: 10,
             cornerShape: "squircle",
             overflow: "hidden",
             background: "var(--surface-hover)",

@@ -117,6 +117,7 @@ interface Target {
   padX: number
   padY: number
   lineCenterY: number | null // text mode: vertical centre of the line, so the beam snaps to it
+  cornerShape: string // highlight mode: the element's CSS corner-shape (e.g. "squircle"); "" = round
   beamHeight: number
 }
 
@@ -130,6 +131,7 @@ const baseTarget: Target = {
   padY: 0,
   lineCenterY: null,
   beamHeight: 0,
+  cornerShape: "",
 }
 const DEFAULT_TARGET: Target = baseTarget
 const HIDDEN_TARGET: Target = { ...baseTarget, mode: "hidden" }
@@ -190,6 +192,12 @@ function snap(s: Spring, value: number) {
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n))
 
 // ── DOM helpers ──────────────────────────────────────────────────────────────
+/** The element's corner-shape, or "" when it's the default round (or unsupported). */
+function readCornerShape(style: CSSStyleDeclaration) {
+  const value = style.getPropertyValue("corner-shape").trim()
+  return value === "round" ? "" : value
+}
+
 function parseRadius(style: CSSStyleDeclaration, width: number, height: number, fallback: number) {
   const raw = style.borderTopLeftRadius
   const n = parseFloat(raw)
@@ -317,6 +325,11 @@ function resolveTarget(x: number, y: number): Target {
       fxEl: isInline ? null : interactive, // translate has no effect on inline boxes
       isInline,
       radius: parseRadius(style, rect.width, rect.height, 8),
+      // Copy squircle corners too: a round platter behind a squircle button
+      // has rounder corners that poke out past the button's flatter ones.
+      // Browsers without corner-shape return "" here, and both stay round.
+      // 📖 Learn: CSS corner-shape
+      cornerShape: readCornerShape(style),
       padX: needsPadding ? HIGHLIGHT_PAD_X : 0,
       padY: needsPadding ? HIGHLIGHT_PAD_Y : 0,
     }
@@ -357,6 +370,7 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
   let glareBase: { cx: number; cy: number; w: number; h: number } | null = null
 
   let shownMode = ""
+  let shownCornerShape = ""
   let shownPressed = false
   let nativeClassOn = false
   let rafId = 0
@@ -622,6 +636,11 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
     if (shownPressed !== pressed) {
       cursor.dataset.pressed = String(pressed)
       shownPressed = pressed
+    }
+    if (shownCornerShape !== target.cornerShape) {
+      // setProperty with "" removes it, so the dot goes back to round
+      cursor.style.setProperty("corner-shape", target.cornerShape)
+      shownCornerShape = target.cornerShape
     }
 
     if (activeFx) renderFx(activeFx)
