@@ -1,14 +1,14 @@
 "use client"
 import { useEffect, useState } from "react"
 import type React from "react"
-import { isAppLaunching } from "@/components/app-launch"
+import { isAppClosing, isAppLaunching } from "@/components/app-launch"
 
 interface AnimatedPageProps {
   children: React.ReactNode
 }
 
 export function AnimatedPage({ children }: AnimatedPageProps) {
-  // Opened via the iOS-style launch animation? Skip the fade-in: the launch
+  // Arriving via the iOS-style open/close animation? Skip the fade-in: its
   // overlay is already revealing the page.
   const [isLoaded, setIsLoaded] = useState(() => isAppLaunching())
 
@@ -16,7 +16,9 @@ export function AnimatedPage({ children }: AnimatedPageProps) {
     // body uses overflow:hidden; the real scroller is .app-scroll-shell. Default
     // hash scrolling targets the document, so /#projects is handled on the homepage.
     // Skip resetting scroll when deep-linking to #projects so we do not wipe that jump.
-    if (typeof window !== "undefined" && window.location.hash === "#projects") {
+    // Closing a project back into its homepage card restores the scroll
+    // position itself (components/app-launch.tsx), so don't reset it here.
+    if (isAppClosing() || (typeof window !== "undefined" && window.location.hash === "#projects")) {
       setIsLoaded(true)
       return
     }

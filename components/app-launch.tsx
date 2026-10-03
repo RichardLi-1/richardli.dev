@@ -27,11 +27,12 @@
  * keeping velocity is the same talk's "interruptible animation" principle.
  *
  * Performance: springs are simulated in JS once per phase and "baked" into
- * keyframes for the Web Animations API (one sample per 1/120 s). Almost
- * everything animates transform/opacity, which browsers run on the GPU
+ * keyframes for the Web Animations API (one sample per 1/120 s). Everything
+ * animates only transform/opacity, which browsers run on the GPU
  * compositor. So the motion stays smooth even while the main thread is busy
- * rendering the next page. Corner radii are the only main-thread properties,
- * on two small elements.
+ * rendering the next page. Corner radii are deliberately *not* animated
+ * (border-radius can't run on the compositor; animating it made every frame
+ * wait on the main thread), so the whole animation is compositor-only.
  * 📖 Learn: Web Animations API (element.animate), compositor-only properties
  *
  * Skipped (plain navigation) for Reduce Motion, Save-Data / slow connections,
@@ -42,7 +43,7 @@
  * Destination pages mark their banner box with `data-launch-target`.
  * ────────────────────────────────────────────────────────────────────────── */
 
-import { useLayoutEffect } from "react"
+import { useEffect, useLayoutEffect } from "react"
 import { usePathname } from "next/navigation"
 
 // ── Tuning ───────────────────────────────────────────────────────────────────
@@ -66,10 +67,10 @@ const COVER_AT = 0.6 // the dim fully hides the old page at this progress → sa
 const REVEAL_MS = 300 // launch screen fade-out once the new page is there
 const DISSOLVE_MS = 140 // icon → real banner crossfade after landing
 const TRACK_MS = 1200 // keep following the banner if the new page's layout shifts, up to this long
+const STABLE_FRAMES = 2 // the banner must hold a new position this many frames before the icon re-aims
 const PAGE_TIMEOUT_MS = 4000 // give up waiting for a slow page and get out of the way
 const JANK_WATCH_MS = 200 // watch this long for a struggling device...
 const JANK_FRAME_MS = 34 //   ...and bail if frames average slower than this (~30fps)
-const DECODE_WAIT_MS = 50 // max wait for the copied images to decode before starting
 
 interface Rect {
   x: number
@@ -155,23 +156,17 @@ const framesToMs = (frames: number) => (frames / SAMPLE_RATE) * 1000
 /**
  * Turns a path of visible boxes into keyframes for the icon's three layers:
  *   box     → a card-sized element scaled to each box (transform, GPU)
- *   corners → the box's corner radius (main thread, cheap)
  *   content → the card copy inside, counter-scaled so it stays aspect-filled
  *             and is never squashed when the box changes shape (GPU)
  */
-function iconKeyframes(path: Rect[], card: { w: number; h: number }, radii: number[]) {
+function iconKeyframes(path: Rect[], card: { w: number; h: number }) {
   const box: Keyframe[] = []
-  const corners: Keyframe[] = []
   const content: Keyframe[] = []
   path.forEach((rect, i) => {
     const offset = path.length === 1 ? 1 : i / (path.length - 1)
     const sx = rect.w / card.w
     const sy = rect.h / card.h
     box.push({ offset, transform: `translate(${rect.x}px, ${rect.y}px) scale(${sx}, ${sy})` })
-    // The box is scaled differently in x and y, so give it an elliptical
-    // radius in its own (pre-scale) pixels. After scaling it looks circular.
-    const radius = radii[i]
-    corners.push({ offset, borderRadius: `${radius / sx}px / ${radius / sy}px` })
     // `fill` = the uniform scale that covers the box; dividing by the box's
     // own scale cancels it out (counter-scaling).
     const fill = Math.max(rect.w / card.w, rect.h / card.h)
@@ -179,27 +174,67 @@ function iconKeyframes(path: Rect[], card: { w: number; h: number }, radii: numb
     const offY = (rect.h - card.h * fill) / 2
     content.push({ offset, transform: `translate(${offX / sx}px, ${offY / sy}px) scale(${fill / sx}, ${fill / sy})` })
   })
-  return { box, corners, content }
+  return { box, content }
 }
 
 // ── Predicting the banner ────────────────────────────────────────────────────
-// Real banner positions measured on previous launches, keyed by page + width.
-// Module-level, so it lasts for the whole visit (client navigation keeps it).
-const measuredTargets = new Map<string, Rect>()
+// The project page doesn't exist until navigation finishes (partway through
+// the animation), but the icon has to start flying *now*. If it flies to a
+// guess and the real banner turns out elsewhere, it visibly re-aims. So we
+// predict as exactly as we can, in this order:
+//   1. A real measurement from a previous launch (same page + window width),
+//      remembered in localStorage across visits.
+//   2. The project's `banner` hint from mainProjects.ts (aspect ratio and top
+//      offset per layout); x and width come from the shared page column.
+//   3. A generic guess (16:9, typical offsets).
+// If the prediction is still off, phase 2 redirects smoothly (see reveal).
+
+/** Where a project page's banner sits. Measured values; see mainProjects.ts. */
+export interface BannerHint {
+  aspect: number // width / height
+  top: { mobile: number; desktop: number } // px from the top of the window (layout switches at 768px)
+}
+
+const STORAGE_KEY = "app-launch-targets-v1"
+const MAX_REMEMBERED = 40 // window widths vary on desktop; keep the list small
 const targetKey = (href: string, vw: number) => `${href}@${vw}`
 
-/**
- * Where the project page's banner will probably be. Project pages share a
- * layout (max-w-3xl column, title block, then a 16:9-ish banner), so this
- * lands close. Phase 2 corrects any difference.
- */
-function predictTarget(href: string, vw: number): Rect {
-  const measured = measuredTargets.get(targetKey(href, vw))
+/** Measured banner positions, keyed by page + window width. */
+function readMeasured(): Record<string, Rect> {
+  // localStorage can throw (private mode, blocked storage), so treat any
+  // failure as "nothing remembered".
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}") as Record<string, Rect>
+  } catch {
+    return {}
+  }
+}
+
+function rememberMeasured(href: string, vw: number, rect: Rect) {
+  try {
+    let all = readMeasured()
+    if (Object.keys(all).length >= MAX_REMEMBERED) all = {} // simplest cap: start over
+    all[targetKey(href, vw)] = rect
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(all))
+  } catch {
+    // Not remembering is fine; the hint still gets close
+  }
+}
+
+function predictTarget(href: string, vw: number, hint?: BannerHint): Rect {
+  const measured = readMeasured()[targetKey(href, vw)]
   if (measured) return measured
+
+  // Every project page centres the banner in the same column:
+  // max-w-3xl (768px) with --page-gutter padding on each side
   const gutter = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--page-gutter")) || 24
   const isMobile = vw < 768
-  const width = Math.min(vw, 768) - 2 * gutter // max-w-3xl (768px) minus side padding
-  return { x: (vw - width) / 2, y: isMobile ? 150 : 250, w: width, h: (width * 9) / 16 }
+  const width = Math.min(vw, 768) - 2 * gutter
+  const x = (vw - width) / 2
+  if (hint) {
+    return { x, y: isMobile ? hint.top.mobile : hint.top.desktop, w: width, h: width / hint.aspect }
+  }
+  return { x, y: isMobile ? 150 : 250, w: width, h: (width * 9) / 16 }
 }
 
 // ── Copying the card ─────────────────────────────────────────────────────────
@@ -216,8 +251,14 @@ function cloneCard(source: HTMLElement): HTMLElement {
   // Duplicate ids would clash with the real card that's still in the page
   clone.removeAttribute("id")
   clone.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"))
-  // Lazy images in an off-flow overlay may never start; they're cached anyway
-  clone.querySelectorAll("img").forEach((img) => (img.loading = "eager"))
+  // The copies are already in the browser's memory cache. "eager" + "sync"
+  // makes the browser draw them in the very first frame instead of showing
+  // an empty box while it decodes them in the background.
+  // 📖 Learn: <img loading> and <img decoding> attributes
+  clone.querySelectorAll("img").forEach((img) => {
+    img.loading = "eager"
+    img.decoding = "sync"
+  })
 
   // Fill the icon box exactly, and drop styles the iPad cursor / page layout
   // put on the original (lift translate/scale/shadow, flex sizing, rounding).
@@ -249,6 +290,10 @@ function cloneCard(source: HTMLElement): HTMLElement {
     frame.className = copy.getAttribute("class") ?? ""
     frame.style.cssText = (copy as HTMLElement).style.cssText
     try {
+      // WebGL canvases clear their pixels once a frame is shown. Ask the
+      // canvas to draw again right now (AmdAtmosphere listens for this),
+      // then copy it within the same task, while the pixels still exist.
+      if (original instanceof HTMLCanvasElement) original.dispatchEvent(new Event("app-launch:snapshot"))
       drawFrame(frame, original)
     } catch {
       // A WebGL canvas may already have cleared its buffer; the card's own
@@ -279,17 +324,22 @@ function drawFrame(target: HTMLCanvasElement, source: HTMLCanvasElement | HTMLVi
 
 // ── The running launch ───────────────────────────────────────────────────────
 // Module-level, not React state: nothing here should cause a re-render.
-interface Launch {
+
+/** The flying icon, shared by opening (card → banner) and closing (banner → card). */
+interface Flight {
+  iconBox: HTMLDivElement
+  iconContent: HTMLDivElement
+  card: { w: number; h: number } // the icon's natural (unscaled) size
+  iconPath: Rect[] // the current flight's path, one box per baked frame (for reading velocity)
+  iconAnimations: Animation[] // box, content
+  iconGoal: Rect // where the icon is currently flying to
+}
+
+interface Launch extends Flight {
   href: string
   overlay: HTMLDivElement
   dim: HTMLDivElement
   win: HTMLDivElement
-  iconBox: HTMLDivElement
-  iconContent: HTMLDivElement
-  card: { w: number; h: number }
-  iconPath: Rect[] // the current flight's path, one box per baked frame (for reading velocity)
-  iconRadii: number[] // the current flight's corner radius per baked frame
-  iconAnimations: Animation[] // box, corners, content
   sceneAnimations: Animation[] // window, dim, backdrop
   source: HTMLElement
   target: HTMLElement | null // the destination banner, once found
@@ -301,17 +351,36 @@ interface Launch {
   degraded: boolean // jank bail-out happened: skip the fancy landing
   revealing: boolean
   timers: number[]
+  stopInteraction: (() => void) | null // removes the "user took over" listeners
 }
 let active: Launch | null = null
 
 /**
- * True while a launch is running. The destination page's entrance
- * animations (AnimatedPage, StaggeredContent) check this on mount and skip
- * themselves: the launch *is* the entrance, and a banner that's still
- * sliding in would move under the landing icon.
+ * True while an open (card → page) or close (page → card) transition runs.
+ * The page being arrived at checks this on mount:
+ * - AnimatedPage skips its whole-page fade (the overlay's fade replaces it,
+ *   and a half-transparent destination would flash when the icon dissolves).
+ * - StaggeredContent skips only the block holding the destination (see
+ *   instantBlockSelector); every other block still staggers in around it.
  */
 export function isAppLaunching() {
-  return active !== null
+  return active !== null || closing !== null
+}
+
+/** True while closing back to the homepage (AnimatedPage must not reset its scroll). */
+export function isAppClosing() {
+  return closing !== null
+}
+
+/**
+ * Which element the icon is landing on right now, so the StaggeredContent
+ * block containing it can appear instantly instead of sliding under it:
+ * the banner when opening a project, the cards when closing back home.
+ */
+export function instantBlockSelector(): string | null {
+  if (active) return "[data-launch-target]"
+  if (closing) return "[data-launch-source]"
+  return null
 }
 
 interface LaunchOptions {
@@ -322,6 +391,8 @@ interface LaunchOptions {
   backdrop?: HTMLElement | null
   push: (href: string) => void
   prefetch?: (href: string) => void
+  /** Where the destination page's banner sits, so the icon can fly straight there */
+  bannerHint?: BannerHint
 }
 
 /**
@@ -329,7 +400,7 @@ interface LaunchOptions {
  * Returns false when it decided not to animate: the caller should then let
  * the link navigate normally.
  */
-export function launchApp({ href, source, backdrop = null, push, prefetch }: LaunchOptions): boolean {
+export function launchApp({ href, source, backdrop = null, push, prefetch, bannerHint }: LaunchOptions): boolean {
   if (active) return true // a launch is already running: swallow the extra tap
   if (!shouldAnimate()) return false
 
@@ -344,12 +415,15 @@ export function launchApp({ href, source, backdrop = null, push, prefetch }: Lau
   const card = { w: cardRect.width, h: cardRect.height }
   const cardRadius = parseFloat(getComputedStyle(source).borderTopLeftRadius) || 16
   const start: Rect = { x: cardRect.left, y: cardRect.top, w: cardRect.width, h: cardRect.height }
-  const predicted = predictTarget(href, vw)
+  const predicted = predictTarget(href, vw, bannerHint)
+
+  // Remember where the card was, so closing the project can fly back into it
+  const shell = document.querySelector<HTMLElement>(".app-scroll-shell")
+  homeReturn = { href, scrollTop: shell?.scrollTop ?? 0, card: start, cardRadius, vw }
 
   // ── Build the overlay: dim → window (launch screen) → icon ──
   const overlay = document.createElement("div")
   overlay.className = "app-launch"
-  overlay.style.visibility = "hidden" // until the copied images have decoded
   const dim = document.createElement("div")
   dim.className = "app-launch-dim"
   const win = document.createElement("div")
@@ -376,7 +450,6 @@ export function launchApp({ href, source, backdrop = null, push, prefetch }: Lau
   const duration = framesToMs(count - 1)
 
   const winFrames: Keyframe[] = []
-  const winCornerFrames: Keyframe[] = []
   const dimFrames: Keyframe[] = []
   const backdropFrames: Keyframe[] = []
   const iconPath: Rect[] = []
@@ -394,10 +467,6 @@ export function launchApp({ href, source, backdrop = null, push, prefetch }: Lau
     const sx = lerp(start.w, vw, px) / vw
     const sy = lerp(start.h, vh, py) / vh
     winFrames.push({ offset, transform: `translate(${left}px, ${top}px) scale(${sx}, ${sy})` })
-    // Corners shrink from the card's radius to square; elliptical in the
-    // element's own pixels so they look circular after the uneven scale
-    const radius = lerp(cardRadius, 0, px)
-    winCornerFrames.push({ offset, borderRadius: `${radius / sx}px / ${radius / sy}px` })
 
     // Icon: from the card toward the predicted banner, on the same springs
     iconPath.push({
@@ -412,8 +481,18 @@ export function launchApp({ href, source, backdrop = null, push, prefetch }: Lau
 
     if (px >= COVER_AT && coverFrame === count - 1) coverFrame = i
   }
-  const iconRadii = iconPath.map(() => cardRadius) // keeps the card's corners while flying
-  const iconFrames = iconKeyframes(iconPath, card, iconRadii)
+  const iconFrames = iconKeyframes(iconPath, card)
+
+  // Corners are static (see header): set once, never animated.
+  // Icon: the card's radius. It scales almost uniformly (card → banner), so
+  // its corners stay round; the final dissolve hides any difference from the
+  // banner's own radius.
+  iconBox.style.borderRadius = `${cardRadius}px`
+  // Window: a screen-sized box scaled down to the card, so give it an
+  // elliptical radius in its own pixels that comes out exactly round at the
+  // starting size. It stretches as the window grows, but the dim covers
+  // everything around it within ~90ms.
+  win.style.borderRadius = `${cardRadius / (start.w / vw)}px / ${cardRadius / (start.h / vh)}px`
 
   const launch: Launch = {
     href,
@@ -424,7 +503,7 @@ export function launchApp({ href, source, backdrop = null, push, prefetch }: Lau
     iconContent,
     card,
     iconPath,
-    iconRadii,
+    iconGoal: predicted,
     iconAnimations: [],
     sceneAnimations: [],
     source,
@@ -436,6 +515,7 @@ export function launchApp({ href, source, backdrop = null, push, prefetch }: Lau
     degraded: false,
     revealing: false,
     timers: [],
+    stopInteraction: null,
     navigate: () => {
       if (launch.navigated) return
       launch.navigated = true
@@ -446,12 +526,12 @@ export function launchApp({ href, source, backdrop = null, push, prefetch }: Lau
   }
   active = launch
 
-  // ── Start once the copied images are decoded (avoids a blank first frame) ──
-  const decodes = Array.from(iconContent.querySelectorAll("img")).map((img) => img.decode().catch(() => {}))
-  const decodeTimeout = new Promise((resolve) => setTimeout(resolve, DECODE_WAIT_MS))
-  Promise.race([Promise.all(decodes), decodeTimeout]).then(() => {
-    if (active !== launch) return
-
+  // ── Start right now, in the same frame as the tap ──
+  // (No waiting on img.decode(): its promise always resolves a few frames
+  // later, which showed up as ~45ms of dropped frames before any motion.
+  // cloneCard marks the copies decoding="sync" instead; they're already in
+  // memory, so the browser just draws them in the first frame.)
+  {
     source.style.visibility = "hidden" // like iOS, the tapped icon leaves its spot
     overlay.style.visibility = "visible"
     if (backdrop) {
@@ -464,13 +544,11 @@ export function launchApp({ href, source, backdrop = null, push, prefetch }: Lau
     const timing: KeyframeAnimationOptions = { duration, easing: "linear", fill: "forwards" }
     launch.sceneAnimations.push(
       win.animate(winFrames, timing),
-      win.animate(winCornerFrames, timing),
       dim.animate(dimFrames, timing),
     )
     if (backdrop) launch.sceneAnimations.push(backdrop.animate(backdropFrames, timing))
     launch.iconAnimations = [
       iconBox.animate(iconFrames.box, timing),
-      iconBox.animate(iconFrames.corners, timing),
       iconContent.animate(iconFrames.content, timing),
     ]
 
@@ -478,7 +556,7 @@ export function launchApp({ href, source, backdrop = null, push, prefetch }: Lau
     launch.timers.push(window.setTimeout(launch.navigate, framesToMs(coverFrame)))
 
     watchForJank(launch)
-  })
+  }
 
   return true
 }
@@ -513,21 +591,19 @@ function watchForJank(launch: Launch) {
   requestAnimationFrame(tick)
 }
 
-/** Where the icon is right now, how fast each edge is moving (px/s), and its corner radius. */
-function iconStateNow(launch: Launch): { rect: Rect; velocity: Rect; radius: number } {
+/** Where the icon is right now, and how fast each edge is moving (px/s). */
+function iconStateNow(launch: Flight): { rect: Rect; velocity: Rect } {
   const path = launch.iconPath
-  const radii = launch.iconRadii
   const last = path.length - 1
   const elapsed = Number(launch.iconAnimations[0]?.currentTime ?? 0) // ms
   const frame = (elapsed / 1000) * SAMPLE_RATE
-  if (frame >= last) return { rect: path[last], velocity: { x: 0, y: 0, w: 0, h: 0 }, radius: radii[last] }
+  if (frame >= last) return { rect: path[last], velocity: { x: 0, y: 0, w: 0, h: 0 } }
   const i = Math.floor(frame)
   const t = frame - i
   const a = path[i]
   const b = path[i + 1]
   return {
     rect: { x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), w: lerp(a.w, b.w, t), h: lerp(a.h, b.h, t) },
-    radius: lerp(radii[i], radii[i + 1], t),
     // change per frame × frames per second = px per second
     velocity: {
       x: (b.x - a.x) * SAMPLE_RATE,
@@ -543,8 +619,8 @@ function iconStateNow(launch: Launch): { rect: Rect; velocity: Rect; radius: num
  * carrying its current velocity into the new springs (no kink in the motion).
  * Also used again if the banner moves while the icon is still flying.
  */
-function flyIconTo(launch: Launch, target: Rect, targetRadius: number): Animation {
-  const { rect, velocity, radius } = iconStateNow(launch)
+function flyIconTo(launch: Flight, target: Rect): Animation {
+  const { rect, velocity } = iconStateNow(launch)
   const settle = LANDING_SETTLE_PX
   const xs = simulateSpring(LANDING_HORIZONTAL_SPRING, rect.x, target.x, velocity.x, settle)
   const ws = simulateSpring(LANDING_HORIZONTAL_SPRING, rect.w, target.w, velocity.w, settle)
@@ -553,16 +629,12 @@ function flyIconTo(launch: Launch, target: Rect, targetRadius: number): Animatio
   const count = Math.max(xs.length, ws.length, ys.length, hs.length)
 
   const path: Rect[] = []
-  const radii: number[] = []
   for (let i = 0; i < count; i++) {
     path.push({ x: sampleAt(xs, i), y: sampleAt(ys, i), w: sampleAt(ws, i), h: sampleAt(hs, i) })
-    // Start from the current radius (not the card's) so a redirect never makes the corners jump
-    radii.push(lerp(radius, targetRadius, count === 1 ? 1 : i / (count - 1)))
   }
-  const frames = iconKeyframes(path, launch.card, radii)
-  // So the *next* redirect can read position, velocity and radius from this flight
-  launch.iconPath = path
-  launch.iconRadii = radii
+  const frames = iconKeyframes(path, launch.card)
+  launch.iconPath = path // so the *next* redirect can read position and velocity from this flight
+  launch.iconGoal = target
 
   // Replace the current flight. cancel() and the new animate() happen in the
   // same task, so no frame is ever drawn in between.
@@ -570,7 +642,6 @@ function flyIconTo(launch: Launch, target: Rect, targetRadius: number): Animatio
   const timing: KeyframeAnimationOptions = { duration: framesToMs(count - 1), easing: "linear", fill: "forwards" }
   launch.iconAnimations = [
     launch.iconBox.animate(frames.box, timing),
-    launch.iconBox.animate(frames.corners, timing),
     launch.iconContent.animate(frames.content, timing),
   ]
   return launch.iconAnimations[0]
@@ -590,6 +661,10 @@ function reveal(launch: Launch) {
     // The page is being uncovered: let taps and scrolls reach it right away
     // instead of waiting for the icon to finish landing
     launch.overlay.style.pointerEvents = "none"
+    // ...but if the user then scrolls/taps, the page moves under the icon, which
+    // lives in a fixed overlay and would look stuck in place. They've taken
+    // over, so end the landing right away (like interrupting an iOS animation).
+    launch.stopInteraction = onUserInteraction(() => cleanup(launch))
     // If we're giving up on a slow page, put the homepage back to normal first
     cancelBackdrop(launch)
 
@@ -604,36 +679,62 @@ function reveal(launch: Launch) {
     }
 
     launch.target = targetEl
-    targetEl.style.visibility = "hidden" // the icon stands in for it until it lands
-    const targetRadius = parseFloat(getComputedStyle(targetEl).borderTopLeftRadius) || 0
-    let goal = toRect(targetRect)
-    measuredTargets.set(targetKey(launch.href, window.innerWidth), goal)
-    flyIconTo(launch, goal, targetRadius)
+    // The icon stands in for the banner until it lands. Hidden with opacity,
+    // not visibility: an invisible-but-transparent element is still drawn, so
+    // its image gets decoded and uploaded to the GPU in the background.
+    // With visibility: hidden that work happened all at once when it was
+    // shown again, freezing one frame for ~230ms (seen in a trace).
+    targetEl.style.opacity = "0"
+    warmMedia(targetEl)
     fadeOut(launch.dim, REVEAL_MS)
     fadeOut(launch.win, REVEAL_MS)
 
-    // Track the banner every frame until the icon lands. A fresh page often
-    // shifts right after mounting (e.g. it renders its desktop layout first,
-    // then switches to mobile a frame later), so if the banner moves we
-    // redirect the icon again, carrying its velocity. Stop chasing after
-    // TRACK_MS in case something on the page never stops moving.
+    // Track the banner every frame until the icon lands.
+    // - If the prediction was right, the icon just finishes its first flight:
+    //   no redirect, so the motion is one continuous spring.
+    // - If the banner is somewhere else, redirect the icon there, carrying
+    //   its velocity. But only once the banner has *stayed* in its new spot
+    //   for STABLE_FRAMES frames: a fresh page often flickers for a frame
+    //   (e.g. it renders its desktop layout once before switching to mobile),
+    //   and chasing that would make the icon swerve and come back.
+    // - Stop chasing after TRACK_MS in case something never stops moving.
+    let candidate: Rect | null = null
+    let stableFrames = 0
     const trackUntil = performance.now() + TRACK_MS
     const track = (now: number) => {
       if (active !== launch) return
       const latest = toRect(targetEl.getBoundingClientRect())
-      if (now < trackUntil && distance(latest, goal) > 0.5) {
-        goal = latest
-        measuredTargets.set(targetKey(launch.href, window.innerWidth), goal)
-        flyIconTo(launch, goal, targetRadius)
+      const goal = launch.iconGoal
+      if (distance(latest, goal) <= 0.5) {
+        candidate = null // the banner is where the icon is already heading
+      } else if (now < trackUntil) {
+        if (candidate && distance(latest, candidate) <= 0.5) {
+          stableFrames++
+        } else {
+          candidate = latest
+          stableFrames = 1
+        }
+        if (stableFrames >= STABLE_FRAMES) {
+          flyIconTo(launch, latest)
+          candidate = null
+        }
       }
-      // Close enough? Show the real banner underneath and dissolve the icon
-      // into it while it finishes its last (invisible) fraction of a pixel.
+      // Close enough (and the banner isn't mid-move)? Show the real banner
+      // underneath and dissolve the icon into it while it finishes its last
+      // (invisible) fraction of a pixel.
       const landed = launch.iconAnimations[0]?.playState === "finished"
-      if (!landed && distance(iconStateNow(launch).rect, goal) > DISSOLVE_WITHIN_PX) {
+      const iconClose = distance(iconStateNow(launch).rect, launch.iconGoal) <= DISSOLVE_WITHIN_PX
+      const bannerSettled = distance(latest, launch.iconGoal) <= DISSOLVE_WITHIN_PX
+      // Also wait until the banner's picture can be drawn (see mediaReady)
+      const ready = (landed || iconClose) && bannerSettled && mediaReady(targetEl)
+      if (!ready && now < trackUntil) {
         requestAnimationFrame(track)
         return
       }
-      targetEl.style.visibility = ""
+      // Remember where the banner really was, so next time the very first
+      // flight goes straight there
+      rememberMeasured(launch.href, window.innerWidth, latest)
+      targetEl.style.opacity = ""
       fadeOut(launch.iconBox, DISSOLVE_MS).then(() => cleanup(launch))
     }
     requestAnimationFrame(track)
@@ -641,6 +742,60 @@ function reveal(launch: Launch) {
 }
 
 const toRect = (r: DOMRect): Rect => ({ x: r.left, y: r.top, w: r.width, h: r.height })
+
+/**
+ * True once every image and video inside `el` can actually be drawn.
+ * The icon only dissolves into the real banner/card once this is true:
+ * otherwise it would fade over an empty or still-fading box for a frame or
+ * two (the picture "darkens then lightens"). E.g. the homepage cards fade
+ * their image in over 0.3s after it loads, behind a dark loading shimmer.
+ */
+function mediaReady(el: HTMLElement): boolean {
+  for (const img of Array.from(el.querySelectorAll("img"))) {
+    if (!img.complete) return false // still loading
+    if (img.naturalWidth === 0) continue // broken or empty src: it will never change, so don't wait
+    if (isFading(img)) return false
+  }
+  for (const video of Array.from(el.querySelectorAll("video"))) {
+    if (video.readyState < 2) return false // HAVE_CURRENT_DATA: a frame exists to show
+    if (isFading(video)) return false
+  }
+  return true
+}
+
+/**
+ * Not shown yet (opacity 0, e.g. waiting for its onLoad) or mid fade-in.
+ * Deliberately not "opacity < 1": some images are styled semi-transparent
+ * on purpose (the AMD logo sits at 0.9).
+ * getAnimations() includes running CSS transitions, not just Web Animations.
+ * 📖 Learn: Element.getAnimations()
+ */
+function isFading(el: HTMLElement): boolean {
+  if (parseFloat(getComputedStyle(el).opacity) === 0) return true
+  return el.getAnimations().some((animation) => animation.playState === "running")
+}
+
+/**
+ * Calls `onInteract` the first time the user scrolls, swipes, clicks or uses
+ * the keyboard, and returns a function that removes the listeners.
+ * Capture phase + passive: we only observe, never block or delay the input.
+ * 📖 Learn: passive event listeners
+ */
+function onUserInteraction(onInteract: () => void): () => void {
+  const events = ["wheel", "touchstart", "pointerdown", "keydown"] as const
+  const stop = () => events.forEach((type) => window.removeEventListener(type, handler, true))
+  const handler = () => {
+    stop()
+    onInteract()
+  }
+  events.forEach((type) => window.addEventListener(type, handler, { capture: true, passive: true }))
+  return stop
+}
+
+/** Starts decoding `el`'s images now, so they're ready by the time the icon lands. */
+function warmMedia(el: HTMLElement) {
+  el.querySelectorAll("img").forEach((img) => img.decode().catch(() => {}))
+}
 
 /** The largest difference between two boxes' edges, in px. */
 const distance = (a: Rect, b: Rect) =>
@@ -666,15 +821,17 @@ function cancelBackdrop(launch: Launch) {
 function cleanup(launch: Launch) {
   if (active !== launch) return
   launch.timers.forEach((timer) => clearTimeout(timer))
+  launch.stopInteraction?.()
   cancelBackdrop(launch)
   launch.source.style.visibility = ""
-  if (launch.target) launch.target.style.visibility = ""
+  if (launch.target) launch.target.style.opacity = ""
   launch.overlay.remove()
   active = null
 }
 
 /** Called by AppLaunchRouteWatcher whenever the route changes. */
 function notifyRouteChange(pathname: string) {
+  if (closing && pathname === "/") arriveHome(closing)
   const launch = active
   if (!launch || pathname === launch.startPath) return
   // The old page is gone; its zoom animation went with it
@@ -682,16 +839,275 @@ function notifyRouteChange(pathname: string) {
   reveal(launch)
 }
 
+// ── Closing: case study → back into its homepage card ───────────────────────
+// The reverse of opening, like closing an iOS app: the banner flies back and
+// shrinks into the card it came from while the homepage zooms back out.
+
+/** Recorded when a project opens, so it can close back into the same card. */
+interface HomeReturn {
+  href: string // the project page, e.g. "/boink"
+  scrollTop: number // homepage scroll position at the moment of the tap
+  card: Rect // where the card was on screen (same again once scroll is restored)
+  cardRadius: number
+  vw: number // window width at the time (if it changed, the layout did too)
+}
+let homeReturn: HomeReturn | null = null
+
+interface Close extends Flight {
+  record: HomeReturn
+  overlay: HTMLDivElement
+  dim: HTMLDivElement
+  win: HTMLDivElement
+  cardEl: HTMLElement | null // the real card on the homepage, once it exists
+  backdrop: HTMLElement | null
+  arrived: boolean
+  timers: number[]
+  stopInteraction: (() => void) | null
+}
+let closing: Close | null = null
+
+/** The route React last rendered (lags behind location during a popstate). */
+let renderedPath = ""
+
 /**
- * Mount once in the layout (outside the scroll shell). Tells a running launch
- * when the new page has rendered so it can land and get out of the way.
- * useLayoutEffect runs right after React commits the new page, before paint.
- * 📖 Learn: useEffect vs useLayoutEffect
+ * Starts the close animation if we're leaving the project page that was
+ * opened from a homepage card. Never blocks navigation: the link (or the
+ * browser's Back) navigates as usual while this plays over the top.
+ */
+function startClose(fromPath: string) {
+  const record = homeReturn
+  if (active || closing || !record || fromPath !== record.href) return
+  if (window.innerWidth !== record.vw || !shouldAnimate()) return
+  const banner = document.querySelector<HTMLElement>("[data-launch-target]")
+  const bannerRect = banner?.getBoundingClientRect()
+  if (!banner || !bannerRect || bannerRect.width === 0) return
+
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+  const start: Rect = toRect(bannerRect)
+  const card = { w: start.w, h: start.h } // the icon starts as the banner
+  const goal = record.card
+
+  // Overlay: an opaque dim hides the case study at once (the homepage isn't
+  // there yet), the page-coloured window shrinks toward the card, and a copy
+  // of the banner flies home on top.
+  const overlay = document.createElement("div")
+  overlay.className = "app-launch"
+  const dim = document.createElement("div")
+  dim.className = "app-launch-dim"
+  dim.style.opacity = "1"
+  const win = document.createElement("div")
+  win.className = "app-launch-window"
+  win.style.width = `${vw}px`
+  win.style.height = `${vh}px`
+  // Elliptical radius in the window's own pixels that comes out exactly
+  // round at its *final* size (the card), where it's most visible
+  win.style.borderRadius = `${record.cardRadius / (goal.w / vw)}px / ${record.cardRadius / (goal.h / vh)}px`
+  const iconBox = document.createElement("div")
+  iconBox.className = "app-launch-icon"
+  iconBox.style.width = `${card.w}px`
+  iconBox.style.height = `${card.h}px`
+  iconBox.style.borderRadius = `${record.cardRadius}px`
+  const iconContent = document.createElement("div")
+  iconContent.className = "app-launch-icon-content"
+  iconContent.style.width = `${card.w}px`
+  iconContent.style.height = `${card.h}px`
+  iconContent.appendChild(cloneCard(banner))
+  iconBox.appendChild(iconContent)
+  overlay.append(dim, win, iconBox)
+  document.body.appendChild(overlay)
+
+  // Bake: same flick springs as opening, run in reverse (screen → card)
+  const horizontal = simulateSpring(HORIZONTAL_SPRING, 0, 1, HORIZONTAL_SPRING.initialVelocity)
+  const vertical = simulateSpring(VERTICAL_SPRING, 0, 1, VERTICAL_SPRING.initialVelocity)
+  const count = Math.max(horizontal.length, vertical.length)
+  const winFrames: Keyframe[] = []
+  const iconPath: Rect[] = []
+  for (let i = 0; i < count; i++) {
+    const offset = i / (count - 1)
+    const px = sampleAt(horizontal, i)
+    const py = sampleAt(vertical, i)
+    const sx = lerp(vw, goal.w, px) / vw
+    const sy = lerp(vh, goal.h, py) / vh
+    winFrames.push({
+      offset,
+      transform: `translate(${lerp(0, goal.x, px)}px, ${lerp(0, goal.y, py)}px) scale(${sx}, ${sy})`,
+      // Fade out over the last stretch so no page-coloured box is left over the card
+      opacity: 1 - smoothstep(0.55, 1, px),
+    })
+    iconPath.push({
+      x: lerp(start.x, goal.x, px),
+      y: lerp(start.y, goal.y, py),
+      w: lerp(start.w, goal.w, px),
+      h: lerp(start.h, goal.h, py),
+    })
+  }
+  const iconFrames = iconKeyframes(iconPath, card)
+  const timing: KeyframeAnimationOptions = { duration: framesToMs(count - 1), easing: "linear", fill: "forwards" }
+  win.animate(winFrames, timing)
+
+  const close: Close = {
+    record,
+    overlay,
+    dim,
+    win,
+    iconBox,
+    iconContent,
+    card,
+    iconPath,
+    iconGoal: goal,
+    iconAnimations: [iconBox.animate(iconFrames.box, timing), iconContent.animate(iconFrames.content, timing)],
+    cardEl: null,
+    backdrop: null,
+    arrived: false,
+    timers: [],
+    stopInteraction: null,
+  }
+  closing = close
+  // If the homepage never shows up (offline, error), get out of the way
+  close.timers.push(window.setTimeout(() => finishClose(close), PAGE_TIMEOUT_MS))
+}
+
+/**
+ * The homepage has just been committed (this runs before it's painted):
+ * restore the scroll position, hide the real card, and start revealing.
+ */
+function arriveHome(close: Close) {
+  if (close.arrived) return
+  close.arrived = true
+  const { record } = close
+  const shell = document.querySelector<HTMLElement>(".app-scroll-shell")
+  const restoreScroll = () => shell?.scrollTo(0, record.scrollTop)
+  restoreScroll()
+  // The homepage switches to its mobile layout a frame after mounting, which
+  // changes its height; restore again once that has happened
+  requestAnimationFrame(() => requestAnimationFrame(restoreScroll))
+
+  close.cardEl = document.querySelector<HTMLElement>(`a[href="${record.href}"] [data-launch-source]`)
+  // The icon stands in for the card until it lands (opacity, not visibility,
+  // so the card's image is decoded in the background; see reveal)
+  if (close.cardEl) {
+    close.cardEl.style.opacity = "0"
+    warmMedia(close.cardEl)
+  }
+
+  // Reveal the homepage: dim fades away while the page zooms back out from
+  // slightly enlarged, centred on the card (the reverse of the opening zoom)
+  close.backdrop = document.querySelector<HTMLElement>(".app-scroll-shell main")
+  if (close.backdrop) {
+    const b = close.backdrop.getBoundingClientRect()
+    const c = record.card
+    close.backdrop.style.transformOrigin = `${c.x + c.w / 2 - b.left}px ${c.y + c.h / 2 - b.top}px`
+    close.backdrop.animate([{ transform: `scale(${BACKDROP_ZOOM})` }, { transform: "scale(1)" }], {
+      duration: 450,
+      easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", // fast start, soft landing
+    })
+  }
+  fadeOut(close.dim, REVEAL_MS)
+  close.overlay.style.pointerEvents = "none" // the homepage is usable right away
+  // If the user scrolls/taps before the icon has landed, end it right away
+  // (see the same rule in reveal) instead of leaving it stuck over the page
+  close.stopInteraction = onUserInteraction(() => endClose(close))
+
+  // Track the card until the icon lands, re-aiming if it isn't where we
+  // remembered (same stable-frames rule as opening)
+  let candidate: Rect | null = null
+  let stableFrames = 0
+  const trackUntil = performance.now() + TRACK_MS
+  const track = (now: number) => {
+    if (closing !== close) return
+    const cardEl = close.cardEl
+    if (!cardEl) {
+      finishClose(close) // no card to land on (e.g. project now hidden): just fade away
+      return
+    }
+    const latest = toRect(cardEl.getBoundingClientRect())
+    if (distance(latest, close.iconGoal) > 0.5 && now < trackUntil) {
+      if (candidate && distance(latest, candidate) <= 0.5) {
+        stableFrames++
+      } else {
+        candidate = latest
+        stableFrames = 1
+      }
+      if (stableFrames >= STABLE_FRAMES) {
+        flyIconTo(close, latest)
+        candidate = null
+      }
+    }
+    const landed = close.iconAnimations[0]?.playState === "finished"
+    const iconClose = distance(iconStateNow(close).rect, close.iconGoal) <= DISSOLVE_WITHIN_PX
+    const cardSettled = distance(latest, close.iconGoal) <= DISSOLVE_WITHIN_PX
+    // Also wait until the card's picture can be drawn (see mediaReady)
+    const ready = (landed || iconClose) && cardSettled && mediaReady(cardEl)
+    if (!ready && now < trackUntil) {
+      requestAnimationFrame(track)
+      return
+    }
+    finishClose(close)
+  }
+  requestAnimationFrame(track)
+}
+
+/** Show the real card again, dissolve the icon into it, and clean up. */
+function finishClose(close: Close) {
+  if (closing !== close) return
+  close.timers.forEach((timer) => clearTimeout(timer))
+  if (close.cardEl) close.cardEl.style.opacity = ""
+  fadeOut(close.win, DISSOLVE_MS)
+  fadeOut(close.iconBox, DISSOLVE_MS).then(() => endClose(close))
+}
+
+/** Removes the overlay immediately and restores the homepage. */
+function endClose(close: Close) {
+  if (closing !== close) return
+  close.timers.forEach((timer) => clearTimeout(timer))
+  close.stopInteraction?.()
+  if (close.cardEl) close.cardEl.style.opacity = ""
+  close.overlay.remove()
+  if (close.backdrop) close.backdrop.style.transformOrigin = ""
+  closing = null
+  homeReturn = null // a fresh launch records a fresh return
+}
+
+/**
+ * Mount once in the layout (outside the scroll shell).
+ * - Tells a running open/close when the new page has rendered.
+ *   (useLayoutEffect runs right after React commits, before paint.)
+ * - Starts the close animation when leaving a project for the homepage:
+ *   any plain click on a link to "/" (back arrow, wordmark, Home), and the
+ *   browser's Back button on mouse/trackpad devices. On touch devices the
+ *   swipe-back gesture already plays the browser's own transition, so ours
+ *   would double up.
+ * 📖 Learn: useEffect vs useLayoutEffect, event capturing, popstate
  */
 export function AppLaunchRouteWatcher() {
   const pathname = usePathname()
   useLayoutEffect(() => {
     notifyRouteChange(pathname)
+    renderedPath = pathname
   }, [pathname])
+
+  useEffect(() => {
+    // Capture phase: runs before the Link's own click handler navigates,
+    // while the case study (and its banner) is still on screen
+    const onClick = (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      const link = (e.target as Element | null)?.closest("a")
+      if (!link || link.getAttribute("href") !== "/" || link.target === "_blank") return
+      startClose(window.location.pathname)
+    }
+    // popstate fires after the URL has changed but before React re-renders,
+    // so the banner is still there to copy. renderedPath is the page we're leaving.
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)")
+    const onPopState = () => {
+      if (window.location.pathname === "/" && finePointer.matches) startClose(renderedPath)
+    }
+    document.addEventListener("click", onClick, true)
+    window.addEventListener("popstate", onPopState)
+    return () => {
+      document.removeEventListener("click", onClick, true)
+      window.removeEventListener("popstate", onPopState)
+    }
+  }, [])
   return null
 }

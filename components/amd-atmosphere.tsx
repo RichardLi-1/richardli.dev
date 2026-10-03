@@ -168,53 +168,98 @@ function compileShader(gl: WebGLRenderingContext, type: number, source: string) 
   return shader
 }
 
+// ── One shared WebGL renderer ────────────────────────────────────────────────
+// Why share: on Apple GPUs, Chrome only builds the real GPU pipeline for a
+// shader the first time it's *drawn*, and for this shader that took ~300ms
+// (measured in a performance trace), during which no frame could be shown.
+// When the AMD page threw away the homepage card's context and made a fresh
+// one, it paid that cost again mid-way through the project-launch animation,
+// freezing it. So the canvas + context are created once and *moved* between
+// whichever banner is on screen (homepage card → /amd hero). The compiled
+// pipeline stays alive, and it's literally the same banner travelling across.
+// 📖 Learn: WebGL contexts, shader compilation cost, "warming" GPU pipelines
+interface HorizonRenderer {
+  canvas: HTMLCanvasElement
+  gl: WebGLRenderingContext
+  draw: (seconds: number, light: number) => void
+}
+
+let sharedRenderer: HorizonRenderer | null = null
+let sharedInUse = false // only one banner can hold the shared canvas at a time
+
+function createRenderer(): HorizonRenderer | null {
+  const canvas = document.createElement("canvas")
+  canvas.className = "amd-h-canvas"
+  canvas.setAttribute("aria-hidden", "true")
+  const gl = canvas.getContext("webgl", { alpha: false, antialias: false })
+  if (!gl) return null
+
+  const vertex = compileShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER)
+  const fragment = compileShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER)
+  if (!vertex || !fragment) return null
+  const program = gl.createProgram()!
+  gl.attachShader(program, vertex)
+  gl.attachShader(program, fragment)
+  gl.linkProgram(program)
+  gl.useProgram(program)
+
+  // One triangle big enough to cover the whole canvas; the fragment shader
+  // then runs once per pixel inside it.
+  const buffer = gl.createBuffer()
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW)
+  const positionLoc = gl.getAttribLocation(program, "a_pos")
+  gl.enableVertexAttribArray(positionLoc)
+  gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0)
+
+  const uRes = gl.getUniformLocation(program, "u_res")
+  const uTime = gl.getUniformLocation(program, "u_time")
+  const uDpr = gl.getUniformLocation(program, "u_dpr")
+  const uLight = gl.getUniformLocation(program, "u_light")
+  const dpr = Math.min(window.devicePixelRatio || 1, 2) // cap: 3x screens don't need 9x the pixels
+
+  const draw = (seconds: number, light: number) => {
+    gl.uniform2f(uRes, canvas.width, canvas.height)
+    gl.uniform1f(uTime, seconds)
+    gl.uniform1f(uDpr, dpr)
+    gl.uniform1f(uLight, light)
+    gl.drawArrays(gl.TRIANGLES, 0, 3)
+  }
+  return { canvas, gl, draw }
+}
+
+// Shared clock, so the sky doesn't jump back to t=0 when the canvas moves pages
+const clockStart = typeof performance !== "undefined" ? performance.now() : 0
+
 function HorizonCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  // The canvas itself is appended into this host by the effect below
+  const hostRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    // If WebGL isn't available we just return: the CSS sky gradient on
-    // .amd-horizon stays visible underneath as a fallback.
-    const gl = canvas.getContext("webgl", { alpha: false, antialias: false })
-    if (!gl) return
+    const host = hostRef.current
+    if (!host) return
 
-    const vertex = compileShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER)
-    const fragment = compileShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER)
-    if (!vertex || !fragment) return
-    const program = gl.createProgram()!
-    gl.attachShader(program, vertex)
-    gl.attachShader(program, fragment)
-    gl.linkProgram(program)
-    gl.useProgram(program)
+    // Borrow the shared renderer if it's free (creating it the first time),
+    // otherwise make a private one. If WebGL isn't available we just return:
+    // the CSS sky gradient on .amd-horizon stays visible as a fallback.
+    let renderer: HorizonRenderer | null
+    const usesShared = !sharedInUse
+    if (usesShared) {
+      if (!sharedRenderer || sharedRenderer.gl.isContextLost()) sharedRenderer = createRenderer()
+      renderer = sharedRenderer
+      if (renderer) sharedInUse = true
+    } else {
+      renderer = createRenderer()
+    }
+    if (!renderer) return
+    const { canvas, gl, draw } = renderer
+    host.appendChild(canvas)
 
-    // One triangle big enough to cover the whole canvas; the fragment shader
-    // then runs once per pixel inside it.
-    const buffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW)
-    const positionLoc = gl.getAttribLocation(program, "a_pos")
-    gl.enableVertexAttribArray(positionLoc)
-    gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0)
-
-    const uRes = gl.getUniformLocation(program, "u_res")
-    const uTime = gl.getUniformLocation(program, "u_time")
-    const uDpr = gl.getUniformLocation(program, "u_dpr")
-    const uLight = gl.getUniformLocation(program, "u_light")
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2) // cap: 3x screens don't need 9x the pixels
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const readTheme = () => (document.documentElement.classList.contains("light") ? 1 : 0)
     let light = readTheme()
-    let seconds = 0
-
-    const draw = () => {
-      gl.uniform2f(uRes, canvas.width, canvas.height)
-      gl.uniform1f(uTime, seconds)
-      gl.uniform1f(uDpr, dpr)
-      gl.uniform1f(uLight, light)
-      gl.drawArrays(gl.TRIANGLES, 0, 3)
-    }
+    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    const drawNow = () => draw((performance.now() - clockStart) / 1000, light)
 
     // Match the canvas's pixel buffer to its on-screen size (x DPR for sharpness)
     const resize = () => {
@@ -225,7 +270,7 @@ function HorizonCanvas() {
         canvas.height = height
         gl.viewport(0, 0, width, height)
       }
-      draw()
+      drawNow()
     }
     const resizeObserver = new ResizeObserver(resize)
     resizeObserver.observe(canvas)
@@ -233,21 +278,25 @@ function HorizonCanvas() {
     // Redraw when the site's theme toggle flips the class on <html>
     const themeObserver = new MutationObserver(() => {
       light = readTheme()
-      draw()
+      drawNow()
     })
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
 
+    // The project-launch animation copies this canvas into its overlay.
+    // WebGL clears its pixels after each frame is shown, so it asks for a
+    // fresh draw first; drawing and copying in the same task works.
+    // (Event name shared with components/app-launch.tsx)
+    canvas.addEventListener("app-launch:snapshot", drawNow)
+
     // Animate at ~30fps, and only while the banner is on screen. The motion
     // is slow, so 60fps would just burn battery.
-    const start = performance.now()
     let rafId = 0
     let lastFrame = 0
     const loop = (now: number) => {
       rafId = requestAnimationFrame(loop)
       if (now - lastFrame < 33) return
       lastFrame = now
-      seconds = (now - start) / 1000
-      draw()
+      drawNow()
     }
     const visibilityObserver = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !reducedMotion) {
@@ -266,10 +315,17 @@ function HorizonCanvas() {
       resizeObserver.disconnect()
       themeObserver.disconnect()
       visibilityObserver.disconnect()
-      // Browsers cap how many WebGL contexts can exist; free ours on unmount
-      gl.getExtension("WEBGL_lose_context")?.loseContext()
+      canvas.removeEventListener("app-launch:snapshot", drawNow)
+      canvas.remove()
+      if (usesShared) {
+        // Keep the context alive for the next banner (e.g. the /amd page)
+        sharedInUse = false
+      } else {
+        // Browsers cap how many WebGL contexts can exist; free private ones
+        gl.getExtension("WEBGL_lose_context")?.loseContext()
+      }
     }
   }, [])
 
-  return <canvas ref={canvasRef} aria-hidden className="amd-layer amd-h-canvas" />
+  return <div ref={hostRef} aria-hidden className="amd-layer" />
 }

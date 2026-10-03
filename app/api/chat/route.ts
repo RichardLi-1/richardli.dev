@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server"
 import { SYSTEM_PROMPT } from "@/lib/system-prompt"
 import { retrieve, rewriteQuery } from "@/lib/retrieve"
 import { getPostHogClient } from "@/lib/posthog-server"
+import { mainProjects } from "@/components/mainProjects"
 
 // maxDuration tells Vercel's serverless runtime to allow up to 30 seconds before
 // timing out. Streaming responses can take longer than the default 10 s limit.
@@ -42,6 +43,57 @@ function checkRateLimit(ip: string): { allowed: boolean; message?: string } {
   return { allowed: true }
 }
 
+// Server-side alert webhook. Set DISCORD_ALERT_WEBHOOK_URL to send alerts to a separate
+// channel; otherwise it falls back to the existing chatbot-activity webhook.
+const DISCORD_ALERT_WEBHOOK_URL =
+  process.env.DISCORD_ALERT_WEBHOOK_URL ??
+  "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX"
+
+// Cooldown so one outage (e.g. credits running out) sends one ping, not one per visitor.
+// Key = error message, value = last time we alerted for it.
+const lastAlertAt = new Map<string, number>()
+const ALERT_COOLDOWN_MS = 10 * 60_000
+
+async function alertDiscord(error: unknown, where: string) {
+  const message = String(error)
+  const now = Date.now()
+  const last = lastAlertAt.get(message)
+  if (last && now - last < ALERT_COOLDOWN_MS) return
+  lastAlertAt.set(message, now)
+
+  try {
+    await fetch(DISCORD_ALERT_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        // @everyone in `content` (not the embed) is what triggers a push notification.
+        // 📖 Learn: Discord allowed_mentions — https://discord.com/developers/docs/resources/message#allowed-mentions-object
+        content: "@everyone 🚨 **Chatbot is down**",
+        allowed_mentions: { parse: ["everyone"] },
+        embeds: [
+          {
+            title: `/api/chat error (${where})`,
+            color: 0xed4245, // Discord red
+            // Embed descriptions cap at 4096 chars
+            description: "```" + message.slice(0, 4000) + "```",
+            footer: { text: new Date().toLocaleString() },
+          },
+        ],
+      }),
+    })
+  } catch (err) {
+    console.error("Failed to send Discord alert:", err)
+  }
+}
+
+// Instruction used in place of a visitor message when the chat first opens.
+// A random project is injected so openers vary instead of Haiku picking the same topic every time.
+function buildGreetingPrompt() {
+  const visible = mainProjects.filter((p) => !p.hidden)
+  const project = visible[Math.floor(Math.random() * visible.length)]
+  return `(A visitor just opened the chat on your site. They haven't said anything yet. Text them a casual one-line opener, under 20 words, that invites them to ask you stuff. Work in a light nod to "${project.title}" or something about you. No link cards, no greeting like "Hi there!". Then append your [Q: ...] follow-up as usual.)`
+}
+
 export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown"
@@ -61,16 +113,34 @@ export async function POST(req: NextRequest) {
       properties: { ip },
     })
 
-    const { messages } = await req.json()
+    const { messages, greeting } = await req.json()
 
-    // Rewrite the full conversation into a standalone query before retrieval.
-    // This fixes vague follow-ups like "tell me more about that" — the rewriter
-    // resolves the pronoun/reference using prior turns before we embed anything.
-    const searchQuery = await rewriteQuery(messages)
-    const chunks = await retrieve(searchQuery)
-    const context = chunks.length
-      ? `\n\nRELEVANT CONTEXT:\n${chunks.map((c, i) => `${i + 1}. ${c}`).join("\n\n")}`
-      : ""
+    // Strip any extra fields the client might have attached (e.g. `id`) before
+    // sending to the API — Anthropic only accepts `role` and `content`.
+    let apiMessages: { role: "user" | "assistant"; content: string }[] = messages.map(
+      ({ role, content }: { role: "user" | "assistant"; content: string }) => ({ role, content }),
+    )
+    let context = ""
+
+    if (greeting) {
+      // Opening line: no visitor question exists yet, so skip RAG (nothing to search for).
+      apiMessages = [{ role: "user", content: buildGreetingPrompt() }]
+    } else {
+      // Rewrite the full conversation into a standalone query before retrieval.
+      // This fixes vague follow-ups like "tell me more about that" — the rewriter
+      // resolves the pronoun/reference using prior turns before we embed anything.
+      const searchQuery = await rewriteQuery(messages)
+      const chunks = await retrieve(searchQuery)
+      context = chunks.length
+        ? `\n\nRELEVANT CONTEXT:\n${chunks.map((c, i) => `${i + 1}. ${c}`).join("\n\n")}`
+        : ""
+
+      // The AI greeting makes the conversation start with an assistant turn. Prepend a
+      // placeholder user turn so the history always alternates starting with "user".
+      if (apiMessages[0]?.role === "assistant") {
+        apiMessages.unshift({ role: "user", content: "(visitor opened the chat)" })
+      }
+    }
 
     // `client.messages.stream` returns an async iterable of Server-Sent Events.
     // We forward only the text delta events so the client receives a plain text stream.
@@ -78,9 +148,7 @@ export async function POST(req: NextRequest) {
     const stream = client.messages.stream({
       model: "claude-haiku-4-5",
       system: SYSTEM_PROMPT + context,
-      // Strip any extra fields the client might have attached (e.g. `id`) before
-      // sending to the API — Anthropic only accepts `role` and `content`.
-      messages: messages.map(({ role, content }: { role: string; content: string }) => ({ role, content })),
+      messages: apiMessages,
       max_tokens: 300, // +50 to budget for the [Q: ...] follow-up question appended to every response
     })
 
@@ -97,9 +165,13 @@ export async function POST(req: NextRequest) {
               controller.enqueue(encoder.encode(event.delta.text))
             }
           }
-        } finally {
-          // Always close the stream, even if an error is thrown mid-stream.
           controller.close()
+        } catch (err) {
+          // API errors (e.g. low credit balance) surface here once streaming starts,
+          // not in the outer catch, because the request is only sent when we iterate.
+          console.error("Chat stream error:", err)
+          await alertDiscord(err, greeting ? "greeting stream" : "chat stream")
+          controller.error(err)
         }
       },
     })
@@ -110,6 +182,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (error) {
     console.error("Chat API error:", error)
+    await alertDiscord(error, "request")
     return new Response(JSON.stringify({ error: String(error) }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

@@ -68,13 +68,17 @@ export default function AMDPage() {
             <div data-launch-target style={{ borderRadius: 16 }}>
             <AmdAtmosphere
               className="w-full squircle rounded-lg flex items-center justify-center"
-              style={{ aspectRatio: "960/420", borderRadius: 16 }}
+              // 16:9, same as the homepage card, so the launch animation morphs
+              // the card into this banner without any reshaping
+              style={{ aspectRatio: "16/9", borderRadius: 16 }}
             >
               <img
                 src="/logos/AMD_BIG.D.png"
                 alt="AMD"
-                className="invert-on-light"
-                style={{ width: isMobile ? 100 : 136, height: "auto", opacity: 0.9 }}
+                // amd-logo: sized as a % of the banner width, the same on the homepage card
+                // and the /amd hero, so the launch animation lands it exactly (globals.css)
+                className="invert-on-light amd-logo"
+                style={{ height: "auto", opacity: 0.9 }}
               />
             </AmdAtmosphere>
             </div>

@@ -155,7 +155,7 @@ export default function RootLayout({
                 ],
                 jobTitle: "Full Stack Developer",
                 description:
-                  "Full Stack Developer and Systems Design Engineering student at the University of Waterloo. Seeking Summer 2027 internships. Experienced in React, Next.js, Swift, TypeScript, Python, and AI integration.",
+                  "Full Stack Developer and Systems Design Engineering student at the University of Waterloo. Seeking Summer 2027 internships. Experienced in React, Swift, TypeScript, Python, and AI integration.",
                 email: "r575li@uwaterloo.ca",
                 // hasOccupation lets AI parse each role as a structured entry
                 // rather than trying to scrape it from HTML
@@ -164,7 +164,7 @@ export default function RootLayout({
                     "@type": "Occupation",
                     name: "Software Engineer",
                     occupationLocation: { "@type": "Country", name: "Canada" },
-                    skills: "React, Next.js, TypeScript, Python, GIS, Municipal AI",
+                    skills: "React, TypeScript, Python, GIS, Municipal AI",
                     description: "Building GIS and municipal AI products at SaFuture Inc. and Qwhery (2025-2026)",
                   },
                   {
@@ -186,7 +186,6 @@ export default function RootLayout({
                 knowsAbout: [
                   "Full Stack Development",
                   "React",
-                  "Next.js",
                   "TypeScript",
                   "Swift",
                   "iOS Development",

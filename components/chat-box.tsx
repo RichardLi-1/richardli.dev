@@ -318,6 +318,10 @@ const placeholders = [
   "Ask me about Transit Planner",
 ]
 
+// sessionStorage key for the AI opening line. Reusing it across refreshes and page
+// changes means one Haiku call per visitor session instead of one per page load.
+const GREETING_CACHE_KEY = "chat_greeting"
+
 export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
@@ -327,6 +331,11 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   // Stores the [Q: ...] follow-up question Claude appends to each response.
   // Shown as a tappable chip after the last assistant message.
   const [followUpQuestion, setFollowUpQuestion] = useState<string | null>(null)
+  // True while the AI opening line streams in. Kept separate from isLoading so the
+  // input stays enabled (and focused) — visitors can type, they just can't send yet.
+  const [isGreeting, setIsGreeting] = useState(false)
+  // Same Strict Mode double-fire guard as firedInitial, but for the greeting.
+  const firedGreeting = useRef(false)
   // bottomRef marks an invisible div at the end of the message list.
   // Scrolling it into view keeps the latest message visible as the chat grows.
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -374,6 +383,75 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   // handleSuggestion is intentionally excluded from deps to avoid re-firing —
   // we only want this to run once when the component first mounts.
   }, [initialMessage])
+
+  // Load the AI opening line once on mount. Skipped when the page passed in an
+  // initialMessage, since the visitor has already asked something.
+  useEffect(() => {
+    if (initialMessage || firedGreeting.current) return
+    firedGreeting.current = true
+    loadGreeting()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const loadGreeting = async () => {
+    // 1. Reuse this session's greeting if we already generated one.
+    // sessionStorage can throw (private mode, blocked storage), so wrap it.
+    // 📖 Learn: sessionStorage vs localStorage — https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
+    try {
+      const cached = sessionStorage.getItem(GREETING_CACHE_KEY)
+      if (cached) {
+        const { content, followUp } = JSON.parse(cached) as { content: string; followUp: string | null }
+        setMessages([{ id: "greeting", role: "assistant", content }])
+        setFollowUpQuestion(followUp)
+        return
+      }
+    } catch {
+      // Fall through and fetch a fresh one.
+    }
+
+    // 2. Otherwise stream a new one. Same reader loop as handleSubmit, minus the
+    // Discord/PostHog logging, since the visitor didn't actually send anything.
+    setIsGreeting(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: [], greeting: true }),
+      })
+      // On rate limit / API errors, keep the static fallback line rather than showing error text.
+      if (!response.ok || !response.body) return
+
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder()
+      let content = ""
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        content += decoder.decode(value, { stream: true })
+        setMessages([{ id: "greeting", role: "assistant", content }])
+      }
+
+      const qMatch = content.match(Q_PATTERN)
+      const followUp = qMatch ? qMatch[1].trim() : null
+      const cleanContent = content.replace(Q_PATTERN, "").trimEnd()
+      if (!cleanContent) {
+        setMessages([])
+        return
+      }
+      setMessages([{ id: "greeting", role: "assistant", content: cleanContent }])
+      setFollowUpQuestion(followUp)
+      try {
+        sessionStorage.setItem(GREETING_CACHE_KEY, JSON.stringify({ content: cleanContent, followUp }))
+      } catch {
+        // Not cached; we'll just generate another next load.
+      }
+    } catch {
+      // Stream died mid-way (e.g. API error after streaming started): drop the partial text.
+      setMessages([])
+    } finally {
+      setIsGreeting(false)
+    }
+  }
 
   // Close the info dropdown when the user clicks anywhere outside it.
   // mousedown fires before blur/focus so the dropdown closes before any other
@@ -423,7 +501,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   const handleSubmit = async (e: React.FormEvent, overrideInput?: string) => {
     e.preventDefault()
     const text = overrideInput ?? input
-    if (!text.trim() || isLoading) return
+    if (!text.trim() || isLoading || isGreeting) return
 
     const userMessage: Message = { id: Date.now().toString(), role: "user", content: text }
     setMessages((prev) => [...prev, userMessage])
@@ -544,7 +622,8 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
         className="overflow-y-auto flex-1 pr-1"
         style={{ minHeight: 0, maxHeight: fullHeight ? undefined : "24rem" }}
       >
-        {messages.length === 0 && (
+        {/* Static fallback: only shown if the AI greeting failed or was skipped */}
+        {messages.length === 0 && !isGreeting && (
           <p className="text-sm" style={{ color: "var(--text-4)", marginRight: 8 }}>
             Ask me detailed questions about Richard's projects and experiences:
           </p>
@@ -554,7 +633,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
           <MessageItem key={message.id} message={message} />
         ))}
 
-        {isLoading && (
+        {(isLoading || (isGreeting && messages.length === 0)) && (
           <div className="text-sm" style={{ color: "var(--text-4)" }}>Richard is thinking...</div>
         )}
         <div ref={bottomRef} />
@@ -641,7 +720,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
             </div>
           )}
         </div>
-        <Button type="submit" size="icon" style={{ background: "var(--text)", color: "var(--bg)", cornerShape: "squircle", borderRadius: 16 }} disabled={isLoading}>
+        <Button type="submit" size="icon" style={{ background: "var(--text)", color: "var(--bg)", cornerShape: "squircle", borderRadius: 16 }} disabled={isLoading || isGreeting}>
           <Send className="w-4 h-4" />
         </Button>
       </form>

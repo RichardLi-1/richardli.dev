@@ -17,6 +17,15 @@ const ACTIVE_WIDTHS  = [20, 28, 34] as const
 const HOVERED_WIDTHS = [18, 24, 30] as const
 const LABEL_OFFSETS  = [28, 38, 48] as const
 
+// Opening animation: every label flashes open as a full list, holds, then the
+// list collapses back to the usual ticks (only the current section labelled).
+const ROW_HEIGHT       = 8   // a normal tick row (h-2)
+const INTRO_ROW_HEIGHT = 20  // rows grow to this while every label is showing
+const INTRO_START_MS   = 200 // let the page settle in first
+const INTRO_STAGGER_MS = 30  // each row opens this long after the one above
+const INTRO_HOLD_MS    = 700 // how long the full list stays open
+const INTRO_EASE       = "cubic-bezier(0.2, 0.8, 0.2, 1)" // fast start, soft landing
+
 function collectAllIds(sections: NavSection[]): string[] {
   return sections.flatMap(s => [s.id, ...collectAllIds(s.children ?? [])])
 }
@@ -24,6 +33,24 @@ function collectAllIds(sections: NavSection[]): string[] {
 export function CaseStudyNav({ sections }: CaseStudyNavProps) {
   const [activeId, setActiveId]   = useState<string>(sections[0]?.id ?? "")
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  // "before" → "open" (all labels showing) → "closing" → "done" (normal nav)
+  const [intro, setIntro] = useState<"before" | "open" | "closing" | "done">("before")
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIntro("done")
+      return
+    }
+    const rowCount = collectAllIds(sections).length
+    const openFor = rowCount * INTRO_STAGGER_MS + INTRO_HOLD_MS
+    const closeFor = rowCount * INTRO_STAGGER_MS + 450
+    const timers = [
+      setTimeout(() => setIntro("open"), INTRO_START_MS),
+      setTimeout(() => setIntro("closing"), INTRO_START_MS + openFor),
+      setTimeout(() => setIntro("done"), INTRO_START_MS + openFor + closeFor),
+    ]
+    return () => timers.forEach(clearTimeout)
+  }, [sections])
 
   useEffect(() => {
     const allIds = collectAllIds(sections)
@@ -84,29 +111,55 @@ export function CaseStudyNav({ sections }: CaseStudyNavProps) {
     }
   }, [sections])
 
+  // Rows are numbered top to bottom across all depths, for the intro's cascade
+  const rowCount = collectAllIds(sections).length
+  let rowIndex = 0
+
   function renderSections(items: NavSection[], depth = 0): React.ReactNode {
     return items.map((section, i) => {
       const isActive  = activeId === section.id
       const isHovered = hoveredId === section.id
+      const isOpen    = intro === "open" // the intro's "every label showing" moment
+      const inIntro   = intro !== "done"
 
       let lineW: number
-      if (isActive)        lineW = ACTIVE_WIDTHS[depth]
-      else if (isHovered)  lineW = HOVERED_WIDTHS[depth]
-      else                 lineW = LINE_WIDTHS[depth]
+      if (isActive)              lineW = ACTIVE_WIDTHS[depth]
+      else if (isHovered || isOpen) lineW = HOVERED_WIDTHS[depth]
+      else                       lineW = LINE_WIDTHS[depth]
 
       const labelX    = LABEL_OFFSETS[depth]
-      const showLabel = isActive || isHovered
+      const showLabel = isActive || isHovered || isOpen
+
+      // Intro timing: open top → bottom, close bottom → top
+      const row = rowIndex++
+      const delay = intro === "open" ? row * INTRO_STAGGER_MS : (rowCount - 1 - row) * INTRO_STAGGER_MS
+      const introTransition = (props: string[], ms: number) =>
+        props.map((prop) => `${prop} ${ms}ms ${INTRO_EASE} ${delay}ms`).join(", ")
 
       return (
         <div key={section.id}>
           {i > 0 && (
-            <div className="h-2 flex items-center" style={{ paddingLeft: depth * 8 }}>
+            // Spacer dash between rows; folds away while the full list is open
+            <div
+              className="flex items-center overflow-hidden"
+              style={{
+                paddingLeft: depth * 8,
+                height: isOpen ? 0 : ROW_HEIGHT,
+                opacity: isOpen ? 0 : 1,
+                transition: inIntro ? introTransition(["height", "opacity"], 380) : undefined,
+              }}
+            >
               <div className="h-px w-3" style={{ background: "var(--text-5)" }} />
             </div>
           )}
           <div
-            className="relative flex h-2 items-center cursor-pointer"
-            style={{ paddingLeft: depth * 8, paddingRight: 120 }}
+            className="relative flex items-center cursor-pointer"
+            style={{
+              paddingLeft: depth * 8,
+              paddingRight: 120,
+              height: isOpen ? INTRO_ROW_HEIGHT : ROW_HEIGHT,
+              transition: inIntro ? introTransition(["height"], 380) : undefined,
+            }}
             onMouseEnter={() => setHoveredId(section.id)}
             onMouseLeave={() => setHoveredId(null)}
             onClick={() => document.getElementById(section.id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
@@ -115,7 +168,8 @@ export function CaseStudyNav({ sections }: CaseStudyNavProps) {
               className="h-px transition-all duration-100"
               style={{
                 width: lineW,
-                background: isActive ? "var(--text)" : isHovered ? "var(--text-2)" : "var(--text-4)",
+                background: isActive ? "var(--text)" : isHovered || isOpen ? "var(--text-2)" : "var(--text-4)",
+                transition: inIntro ? introTransition(["width", "background-color"], 380) : undefined,
               }}
             />
             <span
@@ -127,6 +181,11 @@ export function CaseStudyNav({ sections }: CaseStudyNavProps) {
                 opacity: showLabel ? 1 : 0,
                 transform: showLabel ? "translateX(0)" : "translateX(-4px)",
                 pointerEvents: "none",
+                // During the intro labels slide in further and slower, one after another
+                ...(inIntro && {
+                  transform: showLabel ? "translateX(0)" : "translateX(-10px)",
+                  transition: introTransition(["opacity", "transform", "color"], 320),
+                }),
               }}
             >
               {section.label}

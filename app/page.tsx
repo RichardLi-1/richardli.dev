@@ -3,7 +3,7 @@ import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { launchApp } from "@/components/app-launch"
+import { launchApp, type BannerHint } from "@/components/app-launch"
 import { ExternalLink } from "lucide-react"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
@@ -249,6 +249,8 @@ export default function PersonalWebsite() {
                         backdrop: mainRef.current,
                         push: href => router.push(href),
                         prefetch: href => router.prefetch(href),
+                        // Lets the card fly straight to the project page's banner
+                        bannerHint: (project as { banner?: BannerHint }).banner,
                       })
                       if (tookOver) e.preventDefault()
                     }}
@@ -303,8 +305,10 @@ export default function PersonalWebsite() {
                                 <img
                                   src="/logos/AMD_BIG.D.png"
                                   alt="AMD"
-                                  className="invert-on-light"
-                                  style={{ width: isMobile ? 84 : 120, height: "auto", opacity: 0.9 }}
+                                  // amd-logo: sized as a % of the banner width, the same on the homepage card
+                                  // and the /amd hero, so the launch animation lands it exactly (globals.css)
+                                  className="invert-on-light amd-logo"
+                                  style={{ height: "auto", opacity: 0.9 }}
                                 />
                               </AmdAtmosphere>
                             ) : (

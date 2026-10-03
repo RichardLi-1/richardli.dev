@@ -9,9 +9,17 @@
 //   externalLink — if present, a "Try it out" button appears on hover
 //   externalOnly — card click goes to externalLink (no on-site case study page)
 //   hidden      — excludes the project from all grids
+//   banner      — where the banner sits on the project's own page, so the
+//                 iOS-style launch animation (components/app-launch.tsx) can fly
+//                 the card straight there: aspect = width / height, top = px
+//                 from the top of the window on phones (<768px) and desktop.
+//                 Measured with the page scrolled to the top. If a page header
+//                 changes, a stale number only causes a small mid-air re-aim,
+//                 and the real position is then remembered on that device.
 export const mainProjects = [
   {
     id: "amd",
+    banner: { aspect: 16 / 9, top: { mobile: 116, desktop: 200 } },
     title: "AMD",
     year: "2026",
     description: "Building a universal data context layer for agents",
@@ -27,6 +35,7 @@ export const mainProjects = [
   },
   {
     id: "transitplanner",
+    banner: { aspect: 960 / 594, top: { mobile: 116, desktop: 200 } },
     title: "Transit Planner",
     year: "2026",
     description: "Transit planning agents and transit modelling",
@@ -38,6 +47,7 @@ export const mainProjects = [
   },
   {
     id: "safuture",
+    banner: { aspect: 16 / 9, top: { mobile: 124, desktop: 208 } },
     title: "SaFuture Inc and Qwhery",
     year: "2026",
     description: "GIS, municipal AI, and FDE",
@@ -54,6 +64,7 @@ export const mainProjects = [
   },
   {
     id: "boink",
+    banner: { aspect: 16 / 9, top: { mobile: 128, desktop: 212 } },
     title: "Bo!nk",
     year: "2021",
     description: "Windows Vista Inkball reloaded, physics-based game published on the App Store",
@@ -79,6 +90,7 @@ export const mainProjects = [
 
     {
     id: "futureforward",
+    banner: { aspect: 16 / 9, top: { mobile: 124, desktop: 208 } },
     title: "Future Forward",
     year: "2024-2025",
     description: "App and events to help students discover their vocations",
@@ -94,6 +106,7 @@ export const mainProjects = [
   },
   {
     id: "fatherfigure",
+    banner: { aspect: 16 / 9, top: { mobile: 108, desktop: 212 } },
     title: "Father Figure",
     year: "2025",
     description: "A virtual father Chrome extension you never knew you needed",
@@ -125,6 +138,7 @@ export const mainProjects = [
   // },
   /*{
     id: "4sight",
+    banner: { aspect: 16 / 9, top: { mobile: 124, desktop: 228 } },
     title: "4sight",
     year: "2025",
     description: "Eye Tester App",

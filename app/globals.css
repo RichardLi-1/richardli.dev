@@ -565,6 +565,13 @@ html.ipad-cursor-on .nav-item:hover { background: transparent; }
 .amd-grain { z-index: 4; background: var(--amd-grain); }
 /* Anything passed as children (the logo) sits above every layer */
 .amd-atmosphere > :not(.amd-layer) { position: relative; z-index: 5; }
+/* The AMD logo is sized as a fraction of its banner's *width*, identical on the
+   homepage card and the /amd hero. The launch animation scales the card by
+   width to cover the (wider) hero banner, so equal fractions mean the flying
+   logo lands exactly on the real one, with no resize when they swap.
+   (A % width on a flex item resolves against the flex container's width.) */
+.amd-logo { width: 25%; }
+@media (min-width: 768px) { .amd-logo { width: 20%; } }
 
 /* ── A: Horizon ── */
 /* Drawn by a WebGL shader in components/amd-atmosphere.tsx. The gradient
@@ -735,7 +742,7 @@ html.hc.light select {
   will-change: transform, opacity;
 }
 /* The "icon": a card-sized box that flies to the project page's banner.
-   It clips its content to its (animated) rounded corners. */
+   It clips its content to rounded corners (radius set once from JS). */
 .app-launch-icon {
   position: absolute;
   top: 0;
