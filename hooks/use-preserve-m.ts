@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import { withNoTrackParam } from "@/lib/no-track"
 
 // Cleans tracking/referral params out of the URL on every page.
 //
@@ -38,6 +39,28 @@ export function usePreserveM() {
       const newSearch = params.toString()
       const newUrl = window.location.pathname + (newSearch ? `?${newSearch}` : "") + window.location.hash
       window.history.replaceState(null, "", newUrl)
+    }
+  }, [])
+
+  // Carry ?m over to Richard's other sites (see lib/no-track.ts). Instead of
+  // editing every <a>, one listener rewrites a link's href just before it's
+  // followed. pointerdown fires before click, middle-click (auxclick) and the
+  // right-click menu's "Open in new tab"; click also covers pressing Enter.
+  // Capture phase so it runs before any other handler. It only changes links
+  // for visitors who have the flag, so normal visitors see clean URLs.
+  // 📖 Learn: event capturing, pointerdown vs click vs auxclick
+  useEffect(() => {
+    const addParam = (e: Event) => {
+      const link = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null
+      if (!link) return
+      const next = withNoTrackParam(link.href)
+      if (next !== link.href) link.href = next
+    }
+    document.addEventListener("pointerdown", addParam, true)
+    document.addEventListener("click", addParam, true)
+    return () => {
+      document.removeEventListener("pointerdown", addParam, true)
+      document.removeEventListener("click", addParam, true)
     }
   }, [])
 }

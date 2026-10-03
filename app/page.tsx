@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { launchApp, type BannerHint } from "@/components/app-launch"
+import { withNoTrackParam } from "@/lib/no-track"
 import { ExternalLink } from "lucide-react"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
@@ -335,7 +336,8 @@ export default function PersonalWebsite() {
                                 projectTitle: project.title,
                                 location: "homepage project card",
                               })
-                              window.open(externalLink, "_blank", "noopener,noreferrer")
+                              // withNoTrackParam: adds ?m for visitors who opted out of tracking (lib/no-track.ts)
+                              window.open(withNoTrackParam(externalLink), "_blank", "noopener,noreferrer")
                             }}
                             className="liquid-glass-pill squircle"
                             style={{
