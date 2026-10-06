@@ -96,6 +96,15 @@ export function usePageViewTracker() {
 
     window.addEventListener("pagehide", reportBounceOnExit)
 
+    // Read the URL's query params NOW, synchronously, before anything is awaited.
+    // usePreserveM (in the root layout) strips every param from the URL as soon
+    // as the page mounts. This page's effect runs first (React runs child effects
+    // before parent ones), but sendVisit() below awaits the IP lookup before it
+    // used to read the params, and by then ?z / ?r / … were already gone, so
+    // referrals were never recorded.
+    // 📖 Learn: effect ordering (children before parents), async race conditions
+    const landingParams = new URLSearchParams(window.location.search)
+
     const sendVisit = async () => {
       if (slashKeyHeld.current) {
         return
@@ -151,7 +160,7 @@ export function usePageViewTracker() {
       // replaceState rewrites the URL bar without a page reload or a history entry —
       // so the param disappears immediately and the back button isn't affected.
       // 📖 Learn: history.replaceState — https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState
-      const params = new URLSearchParams(window.location.search)
+      const params = landingParams // captured before the IP lookup; see above
       // Capture the raw query string before stripping so it's always logged.
       // This preserves unrecognized params (e.g. ?utm_source=foo) in the Discord message.
       const rawParams = params.toString()

@@ -720,7 +720,12 @@ html.hc.light select {
 .app-launch {
   position: fixed;
   inset: 0;
-  z-index: 1000; /* above the site header and nav pill, below the iPad pointer */
+  /* Below the site header (z-50) and mobile nav pill (z-70), like iOS keeps the
+     status bar on top while an app opens. The real cards and banners scroll
+     *under* the header, so the flying copy must too, or it draws over
+     "Richard Li" whenever it passes near the top. Above page decorations
+     like the draggable stickers (z-40). */
+  z-index: 45;
   /* blocks taps on the page underneath while it plays (~0.6s) */
 }
 .app-launch-dim {
