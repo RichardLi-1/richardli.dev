@@ -2,20 +2,9 @@
 
 import { useEffect, useRef } from "react"
 import { trackEvent } from "@/lib/track"
-
-// ─── Edit this to add/rename referral sources ─────────────────────────────────
-// key   = the URL query param (e.g. "l" matches "?l" or "?l=anything")
-// value = display name that gets **bolded** in the Discord message
-const REFERRAL_SOURCES: Record<string, string> = {
-  c: "Cover Letter",
-  l: "LinkedIn",
-  r: "Resume",
-  t: "Twitter/X",
-  e: "Email",
-  g: "GitHub",
-  z: "Resume",
-}
-// ──────────────────────────────────────────────────────────────────────────────
+// The ?z / ?r / … → "Resume" table now lives in its own file, because
+// lib/outbound-links.ts uses it too. Edit referral sources there.
+import { REFERRAL_SOURCES } from "@/lib/referral-sources"
 
 // Fires a Discord webhook once per page load to log visitor info.
 // Using a ref (not state) for `hasTracked` avoids triggering a re-render —

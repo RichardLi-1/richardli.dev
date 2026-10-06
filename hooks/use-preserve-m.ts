@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { withNoTrackParam } from "@/lib/no-track"
+import { recordLandingSource, withOutboundParams } from "@/lib/outbound-links"
 
 // Cleans tracking/referral params out of the URL on every page.
 //
@@ -20,6 +20,11 @@ const KEEP = new Set(["panel"]) // ?panel=1 tells child pages they're in the ifr
 export function usePreserveM() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
+
+    // Remember how this visit arrived (utm_source / ?z / referrer) before the
+    // params are stripped below, so links to Richard's other sites can say so
+    // (lib/outbound-links.ts)
+    recordLandingSource(params)
 
     // ?m = "don't track me". Persist the flag so future visits stay silent too.
     if (params.has("m")) {
@@ -42,18 +47,19 @@ export function usePreserveM() {
     }
   }, [])
 
-  // Carry ?m over to Richard's other sites (see lib/no-track.ts). Instead of
-  // editing every <a>, one listener rewrites a link's href just before it's
+  // Tag links to Richard's other sites with where the visitor came from
+  // (UTM params) and ?m if they opted out (see lib/outbound-links.ts). Instead
+  // of editing every <a>, one listener rewrites a link's href just before it's
   // followed. pointerdown fires before click, middle-click (auxclick) and the
   // right-click menu's "Open in new tab"; click also covers pressing Enter.
-  // Capture phase so it runs before any other handler. It only changes links
-  // for visitors who have the flag, so normal visitors see clean URLs.
+  // Capture phase so it runs before any other handler. Links to other sites
+  // (GitHub, LinkedIn, …) and internal links are left untouched.
   // 📖 Learn: event capturing, pointerdown vs click vs auxclick
   useEffect(() => {
     const addParam = (e: Event) => {
       const link = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null
       if (!link) return
-      const next = withNoTrackParam(link.href)
+      const next = withOutboundParams(link.href)
       if (next !== link.href) link.href = next
     }
     document.addEventListener("pointerdown", addParam, true)
