@@ -12,6 +12,7 @@ import { CollapsibleDetails, itemVariants } from "@/components/collapsible-detai
 import { motion } from "framer-motion"
 import { TrackedExternalLink } from "@/components/tracked-external-link"
 import { AmdAtmosphere } from "@/components/amd-atmosphere"
+import { CaseStudyImage } from "@/components/case-study-image"
 
 // Prefilled mailto for the confidential card. encodeURIComponent-style escaping is
 // written out literally here (%20, %0A) to match how the other case studies do it.
@@ -243,6 +244,22 @@ export default function AMDPage() {
                 </a>.
               </p>
             </div>
+          </StaggeredContent>
+
+          <StaggeredContent delay={450}>
+            <CaseStudyImage
+              src="/images/projects/amd/team-lunch.webp"
+              alt="Lunch with team"
+              // width/height reserve the 4:3 space before the file loads, so the
+              // text above doesn't jump. CSS (w-full h-auto) still sets the real size.
+              // 📖 Learn: Cumulative Layout Shift — https://web.dev/articles/cls
+              width={1600}
+              height={1200}
+              // Bottom of the page, so only download it when it's about to scroll into view
+              loading="lazy"
+              className="w-full h-auto squircle rounded-lg"
+              style={{ borderRadius: 16 }}
+            />
           </StaggeredContent>
 
           {!isPanel && <RelatedProjects currentId="amd" />}
