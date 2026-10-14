@@ -53,6 +53,14 @@
   --cursor-alpha: 0.5;
   --cursor-beam-alpha: 0.9;
   --cursor-platter-alpha: 0.16;
+  /* Agent orb (components/agent-orb.tsx): monochrome, after iOS 27's Siri, which
+     is a dark capsule lit by bright white light. Dark in both themes (iOS 27's
+     Siri has no light mode), so these aren't redefined under .light. */
+  --orb-light: #ffffff;
+  --orb-mid: #8a8a8e;
+  --orb-dark: #1c1c1e;
+  --orb-core: #0a0a0b;
+  --orb-text: #f5f5f7;
 
   --background: 0 0% 5%;
   --foreground: 30 8% 91%;
@@ -879,4 +887,172 @@ html.ipad-cursor-on:not(.ipad-cursor-native) * {
 .ipad-cursor-glare {
   z-index: 2147483646;
   mix-blend-mode: soft-light;
+}
+
+/* ── Agent orb (components/agent-orb.tsx) ─────────────────────────── */
+/* The chatbot's compact form in "Let Richard drive" mode: an orb that is both
+   the input and the pointer. Above the page and header (z-50) and the chat
+   window (z-61), below the iPad cursor. */
+.agent-orb-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  pointer-events: none; /* only the orb and bubble take clicks */
+}
+/* A zero-size point at the orb's centre; JS moves it with transform. The
+   overshooting curve makes the flight land like a spring. */
+.agent-orb-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 700ms cubic-bezier(0.2, 0.9, 0.3, 1.12);
+  will-change: transform;
+}
+/* The angle the glow's gradient starts from, animated below. @property makes
+   it a real <angle>, so the browser can animate it smoothly.
+   📖 Learn: CSS @property */
+@property --orb-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes agent-orb-spin {
+  to { --orb-angle: 360deg; }
+}
+@keyframes agent-orb-appear {
+  from { opacity: 0; scale: 0.4; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes agent-orb-caret-blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.75; }
+}
+@keyframes agent-orb-think {
+  0%, 100% { opacity: 0.75; scale: 1; }
+  50% { opacity: 1; scale: 1.12; }
+}
+.agent-orb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 52px;
+  transform: translate(-50%, -50%); /* centre on the anchor */
+  border-radius: 999px;
+  pointer-events: auto;
+  cursor: text;
+  /* Stretching into a capsule overshoots a little, like a spring */
+  transition: width 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: agent-orb-appear 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+/* The glow: a blurred ring of light just outside the orb, slowly turning */
+.agent-orb-glow {
+  position: absolute;
+  inset: -5px;
+  border-radius: inherit;
+  /* One bright white highlight sweeping around, fading through grey to dark */
+  background: conic-gradient(from var(--orb-angle), var(--orb-light), var(--orb-mid) 22%, var(--orb-dark) 45%, var(--orb-mid) 75%, var(--orb-light));
+  filter: blur(9px);
+  opacity: 0.9;
+  animation: agent-orb-spin 6s linear infinite;
+}
+/* Thinking: the glow spins faster and breathes */
+.agent-orb[data-thinking="true"] .agent-orb-glow {
+  animation: agent-orb-spin 1.4s linear infinite, agent-orb-think 1.4s ease-in-out infinite;
+}
+/* The dark centre the text sits on, with a hairline of light on its rim */
+.agent-orb-core {
+  position: absolute;
+  inset: 2px;
+  border-radius: inherit;
+  background: var(--orb-core);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--orb-light) 14%, transparent);
+}
+.agent-orb-input {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0 22px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--orb-text);
+  caret-color: var(--orb-text);
+  font-family: 'Toronto Subway', sans-serif;
+  font-size: 15px;
+}
+/* The soft blinking caret shown while the orb is empty */
+.agent-orb-caret {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 20px;
+  margin: -10px 0 0 -1px;
+  border-radius: 1px;
+  background: var(--orb-light);
+  box-shadow: 0 0 6px var(--orb-light), 0 0 14px color-mix(in srgb, var(--orb-light) 60%, transparent); /* the caret glows */
+  pointer-events: none;
+  animation: agent-orb-caret-blink 1.4s ease-in-out infinite;
+}
+/* Speech bubble: above the orb, or below when the orb is near the top */
+.agent-orb-bubble {
+  position: absolute;
+  left: 0;
+  bottom: 38px;
+  padding: 10px 40px 10px 14px;
+  border-radius: 18px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--border-2);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.25);
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.45;
+  pointer-events: auto;
+  animation: agent-orb-appear 260ms ease-out;
+}
+.agent-orb-bubble[data-below="true"] {
+  bottom: auto;
+  top: 38px;
+}
+.agent-orb-bubble-text {
+  max-height: 9.5em;
+  overflow-y: auto;
+}
+.agent-orb-bubble-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 2px;
+}
+.agent-orb-bubble-actions button {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  color: var(--text-4);
+}
+.agent-orb-bubble-actions button:hover {
+  color: var(--text-2);
+}
+/* The ring around whatever the orb points at (fades in, holds, fades out) */
+@keyframes agent-highlight {
+  0% { opacity: 0; scale: 1.06; }
+  15%, 75% { opacity: 1; scale: 1; }
+  100% { opacity: 0; scale: 1; }
+}
+.agent-highlight {
+  position: fixed;
+  z-index: 64;
+  pointer-events: none;
+  /* --text, so the ring shows in both themes (a white ring would vanish in light mode) */
+  border: 2px solid var(--text);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--text) 18%, transparent), 0 0 24px color-mix(in srgb, var(--text) 30%, transparent);
+  animation: agent-highlight 1500ms ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-orb-anchor { transition: none; }
+  .agent-orb-glow,
+  .agent-orb[data-thinking="true"] .agent-orb-glow { animation: none; }
 }

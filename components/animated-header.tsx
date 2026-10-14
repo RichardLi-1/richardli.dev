@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ArrowLeft, Home, X, Sun, Moon, Linkedin, Github, Mail, Contrast, MessageCircle, Volume2, VolumeX, Play } from "lucide-react"
 import { ChatBox } from "@/components/chat-box"
+import { COLLAPSE_CHAT_EVENT, EXPAND_CHAT_EVENT } from "@/components/agent-orb"
 import { trackEvent } from "@/lib/track"
 
 // Tooltip that appears below any element on hover (desktop only — no touch support needed)
@@ -226,6 +227,19 @@ export function AnimatedHeader({
     return () => document.removeEventListener("mousedown", close)
   }, [showSoundPanel])
 
+  // The agent orb (components/agent-orb.tsx) shrinks the chat away when the bot
+  // starts acting on the page, and brings it back when the orb is expanded.
+  useEffect(() => {
+    const collapse = () => setIsChatOpen(false)
+    const expand = () => setIsChatOpen(true)
+    window.addEventListener(COLLAPSE_CHAT_EVENT, collapse)
+    window.addEventListener(EXPAND_CHAT_EVENT, expand)
+    return () => {
+      window.removeEventListener(COLLAPSE_CHAT_EVENT, collapse)
+      window.removeEventListener(EXPAND_CHAT_EVENT, expand)
+    }
+  }, [])
+
   // Center the chat window on first open; skip re-centering on subsequent opens
   useEffect(() => {
     if (isChatOpen && !chatInitialized.current) {
@@ -411,6 +425,7 @@ export function AnimatedHeader({
         // borderRadius only on top corners — it's flush with the bottom edge.
         <div
           ref={mobileSheetRef}
+          data-agent-ignore // the agent never points at the chat itself (lib/agent-page-map.ts)
           style={{
             position: "fixed",
             bottom: 0, left: 0,
@@ -520,6 +535,7 @@ export function AnimatedHeader({
       {isChatOpen && !isMobile && (
         // Desktop: draggable + resizable floating window (unchanged behaviour)
         <div
+          data-agent-ignore // the agent never points at the chat itself (lib/agent-page-map.ts)
           className="squircle"
           style={{
             position: "fixed",

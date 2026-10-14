@@ -13,6 +13,7 @@ import { SwissGrid } from "@/components/swiss-grid"
 import { Footer } from "@/components/footer"
 import { IPadCursor } from "@/components/ipad-cursor"
 import { AppLaunchRouteWatcher } from "@/components/app-launch"
+import { AgentOrb } from "@/components/agent-orb"
 
 // LayoutContent is a *separate* inner component so it can call useWindowsXP().
 // That hook requires being inside <WindowsXPProvider>, so this can't be merged
@@ -79,6 +80,9 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       {!isXPMode && <IPadCursor />}
       {/* Tells the iOS-style project launch animation when the new page has mounted */}
       <AppLaunchRouteWatcher />
+      {/* The chatbot's orb form when it acts on the site ("Let Richard drive").
+          Here in the layout so it survives page changes, e.g. during a tour. */}
+      {!isXPMode && <AgentOrb />}
       {/* {showLoading && <GifLoadingScreen onComplete={handleLoadingComplete} />} */}
       {!showLoading && (
         <>

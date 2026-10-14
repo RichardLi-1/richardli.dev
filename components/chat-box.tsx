@@ -4,11 +4,14 @@ import type React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Send, Info, ArrowUpRight, Mail } from "lucide-react"
+import { Send, Info, ArrowUpRight, Mail, MousePointer2 } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { mainProjects } from "@/components/mainProjects"
 import posthog from "posthog-js"
+import { getMessages, useAgentMode, useChatMessages, type ChatMessage } from "@/lib/chat-store"
+import { Q_PATTERN, runChatTurn } from "@/lib/chat-client"
+import { startAgentRun } from "@/components/agent-orb"
 
 // Videos can't be used as <img> thumbnails — fall back to logo, then nothing.
 function projectThumbnail(p: typeof mainProjects[number]): string | undefined {
@@ -231,15 +234,10 @@ function PhoneCard({ href }: { href: string }) {
   )
 }
 
-interface Message {
-  id: string
-  role: "user" | "assistant"
-  content: string
-}
-
-// Regex to match the [Q: ...] follow-up question Claude appends to every response.
-// We strip it from the rendered content so it doesn't show as raw text in the chat.
-const Q_PATTERN = /\[Q:\s*(.+?)\][\s\n]*$/
+// Messages live in a shared store (lib/chat-store.ts) so the agent orb sees the
+// same conversation, and it survives page changes. Q_PATTERN (the [Q: ...]
+// follow-up question Claude appends to every reply) moved to lib/chat-client.ts.
+type Message = ChatMessage
 
 // memo prevents re-renders when message content hasn't changed.
 // This is critical for MusicCard: the Apple Music iframe reloads whenever
@@ -323,7 +321,10 @@ const placeholders = [
 const GREETING_CACHE_KEY = "chat_greeting"
 
 export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
-  const [messages, setMessages] = useState<Message[]>([])
+  // Shared + saved for this tab (see lib/chat-store.ts); same [value, setter] shape as useState
+  const [messages, setMessages] = useChatMessages()
+  // "Let Richard drive": experimental agent mode, off by default
+  const [agentMode, setAgentMode] = useAgentMode()
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [showInfo, setShowInfo] = useState(false)
@@ -387,7 +388,8 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   // Load the AI opening line once on mount. Skipped when the page passed in an
   // initialMessage, since the visitor has already asked something.
   useEffect(() => {
-    if (initialMessage || firedGreeting.current) return
+    // Also skipped when this tab already has a conversation (e.g. after a page change)
+    if (initialMessage || firedGreeting.current || getMessages().length > 0) return
     firedGreeting.current = true
     loadGreeting()
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -503,66 +505,26 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
     const text = overrideInput ?? input
     if (!text.trim() || isLoading || isGreeting) return
 
-    const userMessage: Message = { id: Date.now().toString(), role: "user", content: text }
-    setMessages((prev) => [...prev, userMessage])
     setInput("")
     setIsLoading(true)
     setFollowUpQuestion(null) // clear the previous chip when a new message is sent
 
     posthog.capture("chat_message_sent", {
       message_length: text.length,
-      conversation_turn: messages.length / 2 + 1,
+      conversation_turn: messages.filter((m) => !m.hidden).length / 2 + 1,
+      agent_mode: agentMode,
     })
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [...messages, userMessage] }),
-      })
-
-      if (!response.ok) {
-        const errText = await response.text()
-        setMessages(prev => [...prev, { id: Date.now().toString(), role: "assistant", content: errText || "something went wrong" }])
-        return
-      }
-
-      // `response.body` is a ReadableStream. getReader() gives us a pull-based
-      // reader to consume chunks one at a time as they arrive from the server.
-      // 📖 Learn: ReadableStream — https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream
-      const reader = response.body?.getReader()
-      const decoder = new TextDecoder()
-      let assistantContent = ""
-
-      // Add an empty assistant message immediately so the UI shows it streaming in.
-      const assistantMessage: Message = { id: (Date.now() + 1).toString(), role: "assistant", content: "" }
-      setMessages((prev) => [...prev, assistantMessage])
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-          // { stream: true } keeps the decoder's internal state between chunks so
-          // multi-byte UTF-8 characters that span chunk boundaries are handled correctly.
-          assistantContent += decoder.decode(value, { stream: true })
-          // Update only the assistant message by ID, leaving all other messages untouched.
-          setMessages((prev) =>
-            prev.map((msg) => (msg.id === assistantMessage.id ? { ...msg, content: assistantContent } : msg)),
-          )
-        }
-        // After streaming, extract the [Q: ...] follow-up question and strip it
-        // from the stored message so it doesn't appear as raw text in the chat.
-        const qMatch = assistantContent.match(Q_PATTERN)
-        if (qMatch) {
-          setFollowUpQuestion(qMatch[1].trim())
-          const cleanContent = assistantContent.replace(Q_PATTERN, "").trimEnd()
-          setMessages((prev) =>
-            prev.map((msg) => (msg.id === assistantMessage.id ? { ...msg, content: cleanContent } : msg))
-          )
-          sendChatbotActivity(text, cleanContent)
-        } else {
-          sendChatbotActivity(text, assistantContent)
-        }
+      // Streams the reply into the shared store as it arrives, and strips the
+      // [Q: ...] follow-up (see lib/chat-client.ts). In agent mode it also sends
+      // what's on screen, and the reply may come back with actions.
+      const result = await runChatTurn({ text, agent: agentMode })
+      if (result) {
+        setFollowUpQuestion(result.followUp)
+        sendChatbotActivity(text, result.content)
+        // The bot wants to act on the page: shrink into the orb and let it
+        if (result.actions.length) startAgentRun(result.actions)
       }
     } catch {
       setMessages((prev) => [
@@ -586,7 +548,33 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   }
 
   return (
-    <div className="flex flex-col h-full" style={{ position: "relative" }}>
+    // data-agent-ignore: the agent never points at the chat itself (lib/agent-page-map.ts)
+    <div data-agent-ignore className="flex flex-col h-full" style={{ position: "relative" }}>
+      {/* "Let Richard drive" (experimental): lets the bot open pages, scroll,
+          point and click for you, as a flying orb (components/agent-orb.tsx) */}
+      <button
+        onClick={() => {
+          setAgentMode(!agentMode)
+          posthog.capture("chat_agent_mode_toggled", { enabled: !agentMode })
+        }}
+        aria-pressed={agentMode}
+        title="Let Richard drive: he can open pages and point things out for you (experimental)"
+        style={{
+          position: "absolute", top: -2, right: 36, zIndex: 10,
+          display: "inline-flex", alignItems: "center", gap: 4,
+          height: 20, padding: "0 8px", borderRadius: 999,
+          background: agentMode ? "var(--text)" : "var(--surface)",
+          color: agentMode ? "var(--bg)" : "var(--text-4)",
+          border: "1px solid var(--border-2)",
+          fontSize: 10, letterSpacing: "0.04em",
+          fontFamily: "'Toronto Subway', sans-serif",
+          cursor: "pointer",
+          transition: "background 0.15s, color 0.15s",
+        }}
+      >
+        <MousePointer2 style={{ width: 10, height: 10 }} />
+        Drive
+      </button>
       <div ref={infoRef} style={{ position: "absolute", top: -2, right: 10, zIndex: 10 }}>
         <button
           onClick={() => setShowInfo(v => !v)}
@@ -629,7 +617,8 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
           </p>
         )}
 
-        {messages.map((message) => (
+        {/* hidden = sent by the site (e.g. "carry on the tour"), not the visitor */}
+        {messages.filter((message) => !message.hidden).map((message) => (
           <MessageItem key={message.id} message={message} />
         ))}
 
