@@ -43,6 +43,10 @@ const PAGE_META: Record<string, { label: string; description: string; image?: st
   ),
 }
 
+// The iPad cursor (components/ipad-cursor.tsx) sizes its hover highlight from
+// the <a>/<Link> itself. A plain inline <a> is only one line of text tall, so
+// around these cards it drew a grey bar across their bottom edge. Giving each
+// link the card's display + corner radius makes the link's box the card's box.
 function PageCard({ href, children }: { href: string; children: React.ReactNode }) {
   const meta = PAGE_META[href]
   // If we don't recognise the path, fall back to a normal external link
@@ -53,7 +57,7 @@ function PageCard({ href, children }: { href: string; children: React.ReactNode 
     // Block-level so it breaks out of the surrounding sentence onto its own line.
     // Using a div wrapper because Next.js Link can't be a block inside a <p>.
     <div style={{ margin: "8px 0" }}>
-      <Link href={href} style={{ textDecoration: "none" }}>
+      <Link href={href} style={{ textDecoration: "none", display: "flex", borderRadius: 12 }}>
         <span style={{
           display: "inline-flex", alignItems: "center", gap: 0,
           borderRadius: 12, overflow: "hidden",
@@ -141,7 +145,7 @@ function ExternalCard({ href, children }: { href: string; children: React.ReactN
 
   return (
     <div style={{ margin: "8px 0" }}>
-      <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+      <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "inline-flex", borderRadius: 12 }}>
         <span style={{
           display: "inline-flex", alignItems: "center", gap: 10,
           padding: "8px 12px", borderRadius: 12,
@@ -182,7 +186,7 @@ function EmailCard({ href }: { href: string }) {
   const email = href.replace("mailto:", "")
   return (
     <div style={{ margin: "8px 0" }}>
-      <a href={href} style={{ textDecoration: "none" }}>
+      <a href={href} style={{ textDecoration: "none", display: "inline-flex", borderRadius: 12 }}>
         <span style={{
           display: "inline-flex", alignItems: "center", gap: 10,
           padding: "8px 12px", borderRadius: 12,
@@ -209,7 +213,7 @@ function PhoneCard({ href }: { href: string }) {
   const number = href.replace("tel:", "")
   return (
     <div style={{ margin: "8px 0" }}>
-      <a href={href} style={{ textDecoration: "none" }}>
+      <a href={href} style={{ textDecoration: "none", display: "inline-flex", borderRadius: 12 }}>
         <span style={{
           display: "inline-flex", alignItems: "center", gap: 10,
           padding: "8px 12px", borderRadius: 12,
