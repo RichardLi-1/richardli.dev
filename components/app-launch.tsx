@@ -63,13 +63,20 @@ const LANDING_SETTLE_PX = 0.5 // stop the landing springs within half a pixel (t
 const DISSOLVE_WITHIN_PX = 1 // start dissolving into the real banner once the icon is this close
 const SAMPLE_RATE = 120 // baked keyframes per second (matches 120Hz ProMotion screens)
 const BACKDROP_ZOOM = 1.12 // how far the homepage zooms in behind the opening card
-const COVER_AT = 0.6 // the dim fully hides the old page at this progress → safe to navigate (≈90ms in with the flick springs)
+const COVER_AT = 0.6 // the dim fully hides the old page at this progress (≈90ms in with the flick springs)
+// When to actually change pages: once the card is this far along on both axes.
+// Rendering the new page keeps the browser busy, and doing it mid-flight made
+// the morph stutter; the page's code is already downloading in the background
+// (prefetch on tap), so waiting only delays rendering. If the page then needs
+// longer, the skeleton covers the wait. 1 = always finish the flight first;
+// COVER_AT (0.6) = start as early as is safe.
+const NAVIGATE_AT = 0.92
 const REVEAL_MS = 300 // launch screen fade-out once the new page is there
 const DISSOLVE_MS = 140 // icon → real banner crossfade after landing
 const TRACK_MS = 1200 // keep following the banner if the new page's layout shifts, up to this long
 const STABLE_FRAMES = 2 // the banner must hold a new position this many frames before the icon re-aims
 const PAGE_TIMEOUT_MS = 4000 // give up waiting for a slow page and get out of the way
-const SKELETON_FADE_MS = 200 // skeleton fade-in
+const SKELETON_FADE_MS = 150 // skeleton fade-in
 const JANK_WATCH_MS = 200 // watch this long for a struggling device...
 const JANK_FRAME_MS = 34 //   ...and bail if frames average slower than this (~30fps)
 
@@ -455,7 +462,7 @@ export function launchApp({ href, source, backdrop = null, push, prefetch, banne
   const dimFrames: Keyframe[] = []
   const backdropFrames: Keyframe[] = []
   const iconPath: Rect[] = []
-  let coverFrame = count - 1
+  let navigateFrame = count - 1
 
   for (let i = 0; i < count; i++) {
     const offset = i / (count - 1)
@@ -481,7 +488,8 @@ export function launchApp({ href, source, backdrop = null, push, prefetch, banne
     dimFrames.push({ offset, opacity: smoothstep(0, COVER_AT, px) })
     backdropFrames.push({ offset, transform: `scale(${lerp(1, BACKDROP_ZOOM, px)})` })
 
-    if (px >= COVER_AT && coverFrame === count - 1) coverFrame = i
+    // Both axes, since they move on slightly different springs
+    if (Math.min(px, py) >= Math.max(NAVIGATE_AT, COVER_AT) && navigateFrame === count - 1) navigateFrame = i
   }
   const iconFrames = iconKeyframes(iconPath, card)
 
@@ -555,11 +563,13 @@ export function launchApp({ href, source, backdrop = null, push, prefetch, banne
       iconContent.animate(iconFrames.content, timing),
     ]
 
-    // Navigate as soon as the old page is fully covered
-    launch.timers.push(window.setTimeout(launch.navigate, framesToMs(coverFrame)))
-    // If the page is slow, sketch it in the moment the opening motion ends
-    // (showSkeleton does nothing if the page has already arrived)
-    launch.timers.push(window.setTimeout(() => showSkeleton(launch, predicted), duration))
+    // Change pages once the card is nearly there (NAVIGATE_AT), not mid-flight
+    launch.timers.push(window.setTimeout(launch.navigate, framesToMs(navigateFrame)))
+    // Sketch the page in as soon as it starts loading (the same moment as the
+    // page change), not after the flight ends: the bars fade in around where the
+    // card is heading. If the page turns up quickly they just fade out with the
+    // launch screen. (showSkeleton does nothing if the page is already here.)
+    launch.timers.push(window.setTimeout(() => showSkeleton(launch, predicted), framesToMs(navigateFrame)))
 
     watchForJank(launch)
   }
@@ -631,9 +641,9 @@ const SKELETON_BELOW: SkeletonBar[] = [
 ]
 
 /**
- * Grey placeholder bars on the launch screen, shown if the page still
- * hasn't arrived when the opening animation ends.
- * The icon is already parked where the banner will be, so the bars sketch
+ * Grey placeholder bars on the launch screen, shown as soon as the page
+ * starts loading (if it isn't already there).
+ * The icon is heading for where the banner will be, so the bars sketch
  * the rest of a case study around it: title + year above; the details row
  * and "The Mission" below.
  * They live in the overlay (under the icon) and fade out with the launch

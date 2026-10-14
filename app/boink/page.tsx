@@ -89,7 +89,7 @@ export default function BoinkProjectPage() {
                   </a>
                 </nav>
               </div>
-              <p className="text-lg text-[var(--text-2)]">Game, 2021</p>
+              <p className="text-lg text-[var(--text-2)]">Game</p>
               {isPanel && (
                 <span className="absolute right-0 top-0.5 flex gap-1">
                   <button type="button" onClick={() => window.parent.postMessage({ type: "panel-action", action: "open" }, "*")} aria-label="Open in full page">
