@@ -45,15 +45,27 @@ export function ProjectImageCycler({ images, alt, className = "", fit = "cover" 
     if (el instanceof HTMLVideoElement && el.readyState >= 2) setLoaded(true)
   }, [current])
 
-  // Safari sometimes ignores the `autoPlay` attribute when a `poster` is present —
-  // it shows the poster and never transitions to playback. Calling .play()
-  // programmatically after the element mounts is more reliable.
-  // key={current} ensures the video remounts on each source change, so this
-  // effect always runs against the fresh element.
+  // Videos only download and play while they're on screen. They used to
+  // autoplay on load, so a homepage visit fetched a 19 MB video straight away,
+  // competing with the page itself. With preload="none" (below) nothing is
+  // fetched until the first play(); the poster shows until then.
+  // Calling .play() from code is also more reliable than the autoPlay attribute:
+  // Safari sometimes ignores autoPlay when a poster is present.
+  // key={current} remounts the video on each source change, so this effect
+  // always runs against the fresh element.
+  // 📖 Learn: IntersectionObserver, <video preload>
   useEffect(() => {
     const el = mediaRef.current
     if (!el || !(el instanceof HTMLVideoElement)) return
-    el.play().catch(() => {}) // suppress AbortError if component unmounts mid-play
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.play().catch(() => {}) // AbortError if it unmounts mid-play
+        else el.pause()
+      },
+      { threshold: 0.25 }, // a quarter of it visible
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [current])
 
   if (!current) {
@@ -111,7 +123,7 @@ export function ProjectImageCycler({ images, alt, className = "", fit = "cover" 
           key={current}
           src={current}
           poster={`/images/thumbnails/${current.split("/").pop()!.replace(/\.[^.]+$/, "")}.jpg`}
-          autoPlay
+          preload="none"
           loop
           muted
           playsInline
