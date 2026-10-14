@@ -400,9 +400,9 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
     try {
       const cached = sessionStorage.getItem(GREETING_CACHE_KEY)
       if (cached) {
-        const { content, followUp } = JSON.parse(cached) as { content: string; followUp: string | null }
+        // Older cached greetings may still carry a followUp; it's ignored (see below)
+        const { content } = JSON.parse(cached) as { content: string }
         setMessages([{ id: "greeting", role: "assistant", content }])
-        setFollowUpQuestion(followUp)
         return
       }
     } catch {
@@ -431,17 +431,17 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
         setMessages([{ id: "greeting", role: "assistant", content }])
       }
 
-      const qMatch = content.match(Q_PATTERN)
-      const followUp = qMatch ? qMatch[1].trim() : null
+      // The greeting gets no follow-up chip, so the input's rotating placeholder
+      // suggestions show instead. The prompt asks for no [Q: ...], but strip one
+      // anyway in case the model adds it.
       const cleanContent = content.replace(Q_PATTERN, "").trimEnd()
       if (!cleanContent) {
         setMessages([])
         return
       }
       setMessages([{ id: "greeting", role: "assistant", content: cleanContent }])
-      setFollowUpQuestion(followUp)
       try {
-        sessionStorage.setItem(GREETING_CACHE_KEY, JSON.stringify({ content: cleanContent, followUp }))
+        sessionStorage.setItem(GREETING_CACHE_KEY, JSON.stringify({ content: cleanContent }))
       } catch {
         // Not cached; we'll just generate another next load.
       }

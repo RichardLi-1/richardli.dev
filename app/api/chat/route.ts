@@ -91,7 +91,10 @@ async function alertDiscord(error: unknown, where: string) {
 function buildGreetingPrompt() {
   const visible = mainProjects.filter((p) => !p.hidden)
   const project = visible[Math.floor(Math.random() * visible.length)]
-  return `(A visitor just opened the chat on your site. They haven't said anything yet. Text them a casual one-line opener, under 20 words, that invites them to ask you stuff. Work in a light nod to "${project.title}" or something about you. No link cards, no greeting like "Hi there!". Then append your [Q: ...] follow-up as usual.)`
+  // No [Q: ...] on the opener: the chip is meant to be a question the *visitor*
+  // would ask, but on an opener Haiku writes one *to* them ("What brings you
+  // here?"). An empty chat shows the rotating placeholder suggestions instead.
+  return `(A visitor just opened the chat on your site. They haven't said anything yet. Text them a casual one-line opener, under 20 words, that invites them to ask you stuff. Work in a light nod to "${project.title}" or something about you. No link cards, no greeting like "Hi there!". Do NOT append a [Q: ...] follow-up this time.)`
 }
 
 export async function POST(req: NextRequest) {
