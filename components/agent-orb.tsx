@@ -48,11 +48,18 @@ const GAP = 14 // px between the orb and what it points at
 export const COLLAPSE_CHAT_EVENT = "agent:collapse-chat"
 export const EXPAND_CHAT_EVENT = "agent:expand-chat"
 
-let orbHandle: { start: (actions: AgentAction[]) => void } | null = null
+let orbHandle: { start: (actions: AgentAction[]) => Promise<void> } | null = null
 
-/** Called by the chat window when a reply came with actions: shrink into the orb and do them. */
-export function startAgentRun(actions: AgentAction[]) {
-  orbHandle?.start(actions)
+/**
+ * Shrinks into the orb and performs `actions`. Resolves once they're done (a
+ * tour keeps going after that). Used by the chat window, and by WebMCP tools
+ * (components/webmcp-tools.tsx) so an outside AI's actions are visible too.
+ * Returns false if the orb isn't mounted (e.g. XP mode).
+ */
+export async function startAgentRun(actions: AgentAction[]): Promise<boolean> {
+  if (!orbHandle) return false
+  await orbHandle.start(actions)
+  return true
 }
 
 interface Point {
@@ -341,13 +348,13 @@ export function AgentOrb() {
 
   // Let the chat window hand over actions (see startAgentRun). The handle goes
   // through a ref so it always calls this render's functions.
-  const startRef = useRef<(actions: AgentAction[]) => void>(() => {})
+  const startRef = useRef<(actions: AgentAction[]) => Promise<void>>(async () => {})
   startRef.current = (actions) => {
     setVisible(true)
     setSpot(null)
     window.dispatchEvent(new Event(COLLAPSE_CHAT_EVENT))
     interrupt()
-    act(actions, begin())
+    return act(actions, begin())
   }
   useEffect(() => {
     orbHandle = { start: (actions) => startRef.current(actions) }

@@ -111,7 +111,7 @@ export default function MorePage() {
         {/* Centered content wrapper — caps width and centers everything below the header.
             All sections live inside this so they share the same 1200px column.
             📖 Learn: margin: "0 auto" + maxWidth centers a block horizontally. */}
-        <div className="md:px-[17px]" style={{ maxWidth: 1000, width: "100%", margin: "0 auto" }}>
+        <main className="md:px-[17px]" style={{ maxWidth: 1000, width: "100%", margin: "0 auto" }}>
 
         <div
           style={{
@@ -348,7 +348,7 @@ export default function MorePage() {
           </div>
         </div>
 
-        </div>
+        </main>
         {/* /centered content wrapper — sections below are full width */}
 
         {/* ── A little bit about me... ── */}

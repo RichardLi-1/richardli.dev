@@ -278,7 +278,7 @@ export default function SideQuestsPage() {
         <AnimatedHeader currentPage="/side-quests" />
 
         {/* Same centered column pattern as the about page */}
-        <div className="md:px-[17px]" style={{ maxWidth: 1000, width: "100%", margin: "0 auto" }}>
+        <main className="md:px-[17px]" style={{ maxWidth: 1000, width: "100%", margin: "0 auto" }}>
 
           {/* ── Hero ── */}
           <section style={{ padding: "80px var(--page-gutter) 0" }}>
@@ -447,7 +447,7 @@ export default function SideQuestsPage() {
               <PopupPhysicsCanvas items={SIDE_QUESTS} onOpen={setOpenPopup} />
             </section>
           )}
-        </div>
+        </main>
 
         {/* ── Popup card ── clicking (not dragging) a Popup view label opens this */}
         {openItem && (

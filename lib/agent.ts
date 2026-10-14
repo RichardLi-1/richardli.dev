@@ -22,10 +22,12 @@ export interface PageMap {
   targets: { id: string; label: string; kind: "link" | "button"; clickable: boolean }[]
 }
 
-// Case studies that have their own page (app/<id>/page.tsx)
+// Case studies that have their own page (app/<id>/page.tsx). Not /classprofile
+// or /transitto: those just redirect to other sites, so "opening" them would
+// silently take the visitor off richardli.dev.
 const CASE_STUDY_IDS = [
-  "4sight", "amd", "boink", "cec", "classprofile", "fatherfigure", "futureforward",
-  "safuture", "salespatriot", "transitplanner", "transitto", "yrhacks",
+  "4sight", "amd", "boink", "cec", "fatherfigure", "futureforward",
+  "safuture", "salespatriot", "transitplanner", "yrhacks",
 ]
 
 /** Every page the bot may open, with a short description for the model. */
@@ -37,7 +39,7 @@ export const SITE_PAGES: { path: string; label: string }[] = [
   { path: "/chat", label: "Full-page chat with Richard" },
   { path: "/side-quests", label: "Side quests: smaller projects and experiments" },
   { path: "/transit/fanning", label: "Transit photography gallery" },
-  { path: "/transit/hypo-maps", label: "Hypothetical transit maps" },
+  // (/transit/hypo-maps is left out: the page is empty for now)
   ...CASE_STUDY_IDS.map((id) => {
     const project = mainProjects.find((p) => p.id === id)
     return { path: `/${id}`, label: `Case study: ${project?.title ?? id}` }

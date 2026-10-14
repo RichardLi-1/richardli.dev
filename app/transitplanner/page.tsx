@@ -105,6 +105,7 @@ export default function TransitPlannerProjectPage() {
           </button>
           <img
             src={zoomedImage}
+            alt="Enlarged view of the image you clicked" // was missing: screen readers and AI agents skip images with no alt
             onClick={(e) => {
               e.stopPropagation()
               if (zoom.scale > 1) {

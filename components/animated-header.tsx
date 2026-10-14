@@ -308,7 +308,7 @@ export function AnimatedHeader({
   // This is a fixed pill pinned to the bottom of the viewport on mobile.
   // It's a separate component defined inline so it can close over all the state above.
   const PillNav = () => (
-    <div className="header-pill max-w-xl mx-auto rounded-full backdrop-blur-xl border shadow-2xl h-[54px]">
+    <nav aria-label="Site" className="header-pill max-w-xl mx-auto rounded-full backdrop-blur-xl border shadow-2xl h-[54px]">
       <div className="flex items-center justify-between gap-2 p-3">
         {/* Left side: "RL" logo on homepage, back arrow on detail pages, nothing otherwise */}
         {isHomepage ? (
@@ -390,7 +390,7 @@ export function AnimatedHeader({
           )}
         </div>
       </div>
-    </div>
+    </nav>
   )
 
   return (
@@ -644,6 +644,8 @@ export function AnimatedHeader({
 
             {/* ── Right pill: nav links + icon buttons + toggles ── */}
             {/* Desktop nav is hardcoded (Home, Work, Transit) — it doesn't use getNavItems() */}
+            {/* <nav>: marks these as the site navigation for screen readers and AI agents */}
+            <nav aria-label="Site">
             <ul style={{
               display: "flex",
               alignItems: "center",
@@ -726,6 +728,7 @@ export function AnimatedHeader({
                 </>
               )}
             </ul>
+            </nav>
           </div>
         </header>
       )}

@@ -118,6 +118,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* WebMCP origin trial (Chrome 149–156): without this token, ordinary
+            visitors' Chrome has no document.modelContext, so the site's AI-agent
+            tools (components/webmcp-tools.tsx) never register. Get a token for
+            richardli.dev at developer.chrome.com/origintrials and set
+            WEBMCP_ORIGIN_TRIAL_TOKEN in Vercel. Not needed locally: turn on
+            chrome://flags/#enable-webmcp-testing instead.
+            📖 Learn: Chrome origin trials */}
+        {process.env.WEBMCP_ORIGIN_TRIAL_TOKEN && (
+          <meta httpEquiv="origin-trial" content={process.env.WEBMCP_ORIGIN_TRIAL_TOKEN} />
+        )}
         {/* Preloading custom fonts prevents a flash of unstyled text (FOUT).
             crossOrigin="anonymous" is required for preloading cross-origin fonts. */}
         <link rel="preload" href="/fonts/Toronto-Subway-W01-Regular.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />

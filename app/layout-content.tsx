@@ -14,6 +14,7 @@ import { Footer } from "@/components/footer"
 import { IPadCursor } from "@/components/ipad-cursor"
 import { AppLaunchRouteWatcher } from "@/components/app-launch"
 import { AgentOrb } from "@/components/agent-orb"
+import { WebMcpTools } from "@/components/webmcp-tools"
 
 // LayoutContent is a *separate* inner component so it can call useWindowsXP().
 // That hook requires being inside <WindowsXPProvider>, so this can't be merged
@@ -83,6 +84,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       {/* The chatbot's orb form when it acts on the site ("Let Richard drive").
           Here in the layout so it survives page changes, e.g. during a tour. */}
       {!isXPMode && <AgentOrb />}
+      {/* Tools AI agents in the browser can call (WebMCP); does nothing where unsupported */}
+      {!isXPMode && <WebMcpTools />}
       {/* {showLoading && <GifLoadingScreen onComplete={handleLoadingComplete} />} */}
       {!showLoading && (
         <>
