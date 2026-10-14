@@ -851,6 +851,22 @@ html.ipad-cursor-on:not(.ipad-cursor-native) * {
   background-color: rgb(255 255 255 / 0.75);
 }
 
+/* Over something bright (photo, video frame, white background) the dot turns
+   dark grey so it doesn't vanish (checkContrast in ipad-cursor.tsx).
+   Swapping --cursor-rgb on the element itself recolours every mode that uses
+   it (dot, I-beam, platter) at once; lift mode hardcodes white above, so it
+   gets its own rules. Light mode's cursor is already a dark grey, so there it
+   barely changes. */
+.ipad-cursor[data-bright="true"] {
+  --cursor-rgb: 70 70 70;
+}
+.ipad-cursor[data-mode="lift"][data-bright="true"] {
+  background-color: rgb(var(--cursor-rgb) / 0.55);
+}
+.ipad-cursor[data-mode="lift"][data-bright="true"][data-pressed="true"] {
+  background-color: rgb(var(--cursor-rgb) / 0.75);
+}
+
 .ipad-cursor-glare {
   z-index: 2147483646;
   mix-blend-mode: soft-light;

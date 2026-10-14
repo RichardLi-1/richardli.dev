@@ -341,6 +341,140 @@ function resolveTarget(x: number, y: number): Target {
   return DEFAULT_TARGET
 }
 
+// ── Contrast: how bright is whatever is under the dot? ───────────────────────
+// The dot is translucent, so over a bright photo or video frame it can vanish.
+// When what's under it is bright, it switches to a dark grey (data-bright in
+// globals.css). Brightness is 0 (black) to 1 (white).
+const BRIGHT_ON = 0.68 // switch to dark grey above this...
+const BRIGHT_OFF = 0.58 // ...and back below this. The gap (hysteresis) stops flicker on mid-tones.
+const CONTRAST_CHECK_MS = 100 // re-check at most this often while the mouse moves
+const VIDEO_CHECK_MS = 200 // re-check this often while resting over a playing video (its frames change)
+const SAMPLE_SIZE = 4 // the patch under the dot is averaged down to 4×4 pixels
+
+/**
+ * Perceived brightness of an sRGB colour (Rec. 709 weights: green looks
+ * brightest, blue darkest). Applied straight to the 0–255 values, which is an
+ * approximation, but plenty for "is this bright?".
+ * 📖 Learn: relative luminance
+ */
+function brightness(r: number, g: number, b: number) {
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+}
+
+/**
+ * Reads brightness under a screen point. One tiny canvas is reused for
+ * everything: drawing a patch of an image/video into it, and parsing CSS
+ * colours (fillStyle accepts any colour syntax, rgb(), oklch(), …).
+ * willReadFrequently keeps the canvas in CPU memory, so getImageData doesn't
+ * have to copy back from the GPU each time.
+ * 📖 Learn: CanvasRenderingContext2D.getImageData, willReadFrequently
+ */
+function createBrightnessSampler() {
+  const canvas = document.createElement("canvas")
+  canvas.width = SAMPLE_SIZE
+  canvas.height = SAMPLE_SIZE
+  const ctx = canvas.getContext("2d", { willReadFrequently: true })
+
+  /** Average brightness of the pixels drawn into the canvas, or null if mostly transparent. */
+  function readAverage(size: number): number | null {
+    if (!ctx) return null
+    const data = ctx.getImageData(0, 0, size, size).data
+    let total = 0
+    let weight = 0
+    for (let i = 0; i < data.length; i += 4) {
+      const alpha = data[i + 3] / 255 // transparent pixels (PNG cut-outs) count less
+      total += brightness(data[i], data[i + 1], data[i + 2]) * alpha
+      weight += alpha
+    }
+    return weight / (size * size) < 0.5 ? null : total / weight
+  }
+
+  /** The patch of an image/video frame under (x, y), honouring object-fit. Null if unreadable. */
+  function sampleMedia(el: HTMLImageElement | HTMLVideoElement, x: number, y: number): number | null {
+    if (!ctx) return null
+    const isVideo = el instanceof HTMLVideoElement
+    if (isVideo && el.readyState < 2) return null // HAVE_CURRENT_DATA: no frame to read yet
+    if (!isVideo && !el.complete) return null
+    const srcW = isVideo ? el.videoWidth : el.naturalWidth
+    const srcH = isVideo ? el.videoHeight : el.naturalHeight
+    if (!srcW || !srcH) return null
+
+    // Screen px per source px, the way object-fit lays the picture out
+    // (object-position assumed centred, which is the default).
+    // <video> defaults to "contain" in the browser's own stylesheet.
+    // 📖 Learn: CSS object-fit
+    const rect = el.getBoundingClientRect()
+    const style = getComputedStyle(el)
+    const fitX = rect.width / srcW
+    const fitY = rect.height / srcH
+    let scaleX = fitX
+    let scaleY = fitY // "fill": stretched to the box
+    if (style.objectFit === "cover") scaleX = scaleY = Math.max(fitX, fitY)
+    else if (style.objectFit === "contain") scaleX = scaleY = Math.min(fitX, fitY)
+    else if (style.objectFit === "none") scaleX = scaleY = 1
+    else if (style.objectFit === "scale-down") scaleX = scaleY = Math.min(1, fitX, fitY)
+    const offsetX = (rect.width - srcW * scaleX) / 2
+    const offsetY = (rect.height - srcH * scaleY) / 2
+
+    // The dot's footprint, converted to source pixels
+    const srcX = (x - rect.left - offsetX) / scaleX
+    const srcY = (y - rect.top - offsetY) / scaleY
+    if (srcX < 0 || srcY < 0 || srcX > srcW || srcY > srcH) return null // e.g. a letterbox bar
+    const radiusX = DOT_SIZE / 2 / scaleX
+    const radiusY = DOT_SIZE / 2 / scaleY
+    const left = clamp(srcX - radiusX, 0, srcW - 1)
+    const top = clamp(srcY - radiusY, 0, srcH - 1)
+    const width = Math.max(1, Math.min(radiusX * 2, srcW - left))
+    const height = Math.max(1, Math.min(radiusY * 2, srcH - top))
+
+    try {
+      ctx.clearRect(0, 0, SAMPLE_SIZE, SAMPLE_SIZE)
+      ctx.drawImage(el, left, top, width, height, 0, 0, SAMPLE_SIZE, SAMPLE_SIZE)
+      return readAverage(SAMPLE_SIZE)
+    } catch {
+      // SecurityError: a file from another domain "taints" the canvas, and the
+      // browser won't let us read its pixels. Treat as unknown.
+      return null
+    }
+  }
+
+  /** Brightness of a CSS colour string, or null if it's mostly transparent. */
+  function sampleColor(color: string): number | null {
+    if (!ctx) return null
+    ctx.clearRect(0, 0, 1, 1)
+    ctx.fillStyle = color
+    ctx.fillRect(0, 0, 1, 1)
+    return readAverage(1)
+  }
+
+  /**
+   * Walks the stack of elements under (x, y), topmost first, and returns the
+   * brightness of the first thing that's actually visible there: an image or
+   * video frame, or a solid background colour. elementsFromPoint (plural)
+   * looks *through* transparent overlays like captions to the video below.
+   * Our own cursor is pointer-events: none, so it's never in the list.
+   * `video` is set when the answer came from a video, so it can be re-checked.
+   */
+  function sampleAt(x: number, y: number): { value: number | null; video: HTMLVideoElement | null } {
+    for (const el of document.elementsFromPoint(x, y)) {
+      if (el instanceof HTMLImageElement || el instanceof HTMLVideoElement) {
+        if (parseFloat(getComputedStyle(el).opacity) < 0.5) continue // fading out (e.g. image cycler)
+        const value = sampleMedia(el, x, y)
+        if (value !== null) return { value, video: el instanceof HTMLVideoElement ? el : null }
+        continue // unreadable: look at what's behind it
+      }
+      // Can't reliably read a WebGL canvas (e.g. the AMD banner): its pixels
+      // are cleared after each frame. Keep the default colour there.
+      if (el instanceof HTMLCanvasElement) return { value: null, video: null }
+      const value = sampleColor(getComputedStyle(el).backgroundColor)
+      if (value !== null) return { value, video: null }
+    }
+    return { value: null, video: null }
+  }
+
+  return { sampleAt }
+}
+
 // ── The engine ───────────────────────────────────────────────────────────────
 // Plain closure (not a React component) that owns all per-frame state.
 function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
@@ -376,6 +510,13 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
   let rafId = 0
   let running = false
   let lastTime = 0
+
+  // Contrast (see createBrightnessSampler). Runs on its own timer, outside the
+  // animation loop, so it's throttled and doesn't keep the loop awake.
+  const sampler = createBrightnessSampler()
+  let bright = false
+  let lastContrastCheck = 0
+  let contrastTimer = 0
 
   root.classList.add("ipad-cursor-on")
 
@@ -727,6 +868,36 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
   function markDirty() {
     dirty = true
     ensureRunning()
+    scheduleContrastCheck()
+  }
+
+  // ── Contrast ──
+  /**
+   * Throttle with a trailing check: at most one check per CONTRAST_CHECK_MS
+   * while the mouse moves, and always one after it stops, so the final
+   * position is never skipped.
+   * 📖 Learn: throttling (leading vs trailing edge)
+   */
+  function scheduleContrastCheck(delay?: number) {
+    if (contrastTimer) return // one is already coming
+    const wait = delay ?? Math.max(0, CONTRAST_CHECK_MS - (performance.now() - lastContrastCheck))
+    contrastTimer = window.setTimeout(checkContrast, wait)
+  }
+
+  function checkContrast() {
+    contrastTimer = 0
+    lastContrastCheck = performance.now()
+    const { value, video } = hasPointer ? sampler.sampleAt(mouseX, mouseY) : { value: null, video: null }
+    let next = bright
+    if (value === null) next = false // unknown: keep the normal colour
+    else if (!bright && value > BRIGHT_ON) next = true
+    else if (bright && value < BRIGHT_OFF) next = false
+    if (next !== bright) {
+      bright = next
+      cursor.dataset.bright = String(bright) // the colour change itself is a CSS transition
+    }
+    // A playing video changes under a still mouse, so keep re-checking it
+    if (video && !video.paused) scheduleContrastCheck(VIDEO_CHECK_MS)
   }
 
   // ── Event listeners ──
@@ -784,6 +955,7 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
     markDirty,
     destroy() {
       cancelAnimationFrame(rafId)
+      clearTimeout(contrastTimer)
       window.removeEventListener("pointermove", onPointerMove)
       window.removeEventListener("pointerdown", onPointerDown)
       window.removeEventListener("pointerup", onPointerUp)
