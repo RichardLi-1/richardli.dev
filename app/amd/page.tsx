@@ -129,14 +129,14 @@ export default function AMDPage() {
                 </motion.div>
                 <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Team</p>
-                  <p>Internal platform / firmware engineering</p>
+                  <p>Internal platform / GPU driver and firmware engineering</p>
                 </motion.div>
                 <motion.div variants={itemVariants}>
                   <p className="section-label mb-2">Stats</p>
                   <div className="space-y-1">
                     <p>1,000,000+ rows and documents indexed</p>
-                    <p>4 teams onboarded</p>
-                    <p>60M tokens served daily</p>
+                    {/* <p>4 teams onboarded</p>
+                    <p>60M tokens served daily</p>*/}
                   </div>
                 </motion.div>
               </div>
