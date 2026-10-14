@@ -193,8 +193,12 @@ export default function TransitPlannerProjectPage() {
           <StaggeredContent delay={100}>
             {/* data-launch-target: the homepage card morphs into this banner (components/app-launch.tsx) */}
             <div data-launch-target className="relative w-full overflow-hidden squircle rounded-lg bg-[var(--surface)]" style={{ aspectRatio: "960/594", borderRadius: 16 }}>
+              {/* poster: shown instantly while the 19 MB video downloads; without it
+                  the box stays empty until the first frame decodes. Same JPEG the
+                  homepage card uses (public/images/thumbnails/). */}
               <video
                 src="/videos/transitplanfinal.mov"
+                poster="/images/thumbnails/transitplanfinal.jpg"
                 aria-label="Transit Planner app demo"
                 className="w-full h-full object-cover squircle"
                 autoPlay
@@ -453,7 +457,20 @@ export default function TransitPlannerProjectPage() {
                 
                 <h3 className="font-semibold mt-4 mb-2 text-lg">Surface Route Accuracy</h3>
               <p className="mb-2">Initially, bus and streetcar routes floated from one point to another. I added automatic snapping to roads as well as portals to indicate underground sections that don't have to follow road medians.</p>
-            <video src="/videos/road-snapping.mov" aria-label="Road snapping feature demo" autoPlay loop muted playsInline className="w-full squircle rounded-lg" />
+            {/* poster: shown while the 37 MB video downloads. aspectRatio reserves the
+                box up front, so the page doesn't jump when the video loads
+                (2372×1544 = the video's real size). */}
+            <video
+              src="/videos/road-snapping.mov"
+              poster="/images/thumbnails/road-snapping.jpg"
+              aria-label="Road snapping feature demo"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full squircle rounded-lg"
+              style={{ aspectRatio: "2372 / 1544" }}
+            />
             
               <h3 className="font-semibold mt-4 mb-2 text-lg">Agentic Commuter Simulation</h3>
               <p className="mb-2">This mode dispatches hundreds of AI agents to act as commuters. Eventually, this will be a tool available to the transit council members.</p>
