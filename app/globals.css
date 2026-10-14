@@ -764,6 +764,44 @@ html.hc.light select {
   transform-origin: 0 0;
   will-change: transform;
 }
+/* Skeleton: placeholder bars on the launch screen while a slow page loads
+   (showSkeleton in app-launch.tsx). Starts transparent; JS fades it in.
+   Bars are --text mixed at low strength, so they're faint light bars in dark
+   mode and faint dark bars in light mode from the same rule.
+   📖 Learn: CSS color-mix() */
+.app-launch-skeleton {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.app-launch-skeleton-bar {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+}
+/* The sweep, like the homepage cards' loading shimmer. It moves with
+   transform, so it runs on the GPU even while the page is busy loading.
+   Own keyframe name: two different "shimmer" keyframes already exist. */
+.app-launch-skeleton-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 10%, transparent), transparent);
+  transform: translateX(-100%);
+  animation: app-launch-skeleton-sweep 1.4s ease-in-out infinite;
+}
+/* The details row's collapse chevron, pointing right like the real one when
+   collapsed. clip-path cuts the bar (and its shimmer) to a triangle: the three
+   points are top-left, middle-right, bottom-left.
+   📖 Learn: CSS clip-path: polygon() */
+.app-launch-skeleton-triangle {
+  border-radius: 0;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+@keyframes app-launch-skeleton-sweep {
+  to { transform: translateX(100%); }
+}
 
 /* ── iPadOS pointer (components/ipad-cursor.tsx) ────────────────── */
 /* Hide the system cursor everywhere, except while hovering an element that

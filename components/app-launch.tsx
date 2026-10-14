@@ -69,6 +69,7 @@ const DISSOLVE_MS = 140 // icon → real banner crossfade after landing
 const TRACK_MS = 1200 // keep following the banner if the new page's layout shifts, up to this long
 const STABLE_FRAMES = 2 // the banner must hold a new position this many frames before the icon re-aims
 const PAGE_TIMEOUT_MS = 4000 // give up waiting for a slow page and get out of the way
+const SKELETON_FADE_MS = 200 // skeleton fade-in
 const JANK_WATCH_MS = 200 // watch this long for a struggling device...
 const JANK_FRAME_MS = 34 //   ...and bail if frames average slower than this (~30fps)
 
@@ -340,6 +341,7 @@ interface Launch extends Flight {
   overlay: HTMLDivElement
   dim: HTMLDivElement
   win: HTMLDivElement
+  skeleton: HTMLDivElement | null // placeholder bars, only created if the page is slow
   sceneAnimations: Animation[] // window, dim, backdrop
   source: HTMLElement
   target: HTMLElement | null // the destination banner, once found
@@ -499,6 +501,7 @@ export function launchApp({ href, source, backdrop = null, push, prefetch, banne
     overlay,
     dim,
     win,
+    skeleton: null,
     iconBox,
     iconContent,
     card,
@@ -554,6 +557,9 @@ export function launchApp({ href, source, backdrop = null, push, prefetch, banne
 
     // Navigate as soon as the old page is fully covered
     launch.timers.push(window.setTimeout(launch.navigate, framesToMs(coverFrame)))
+    // If the page is slow, sketch it in the moment the opening motion ends
+    // (showSkeleton does nothing if the page has already arrived)
+    launch.timers.push(window.setTimeout(() => showSkeleton(launch, predicted), duration))
 
     watchForJank(launch)
   }
@@ -589,6 +595,94 @@ function watchForJank(launch: Launch) {
     }
   }
   requestAnimationFrame(tick)
+}
+
+// ── Skeleton (slow pages) ────────────────────────────────────────────────────
+// Above the banner: the title and year, in px above its top edge, measured
+// from the shared layout (e.g. app/amd/page.tsx).
+const SKELETON_TITLE = { above: 94, height: 28, maxWidth: 160 } // text-4xl heading
+const SKELETON_YEAR = { above: 47, height: 14, maxWidth: 96 } // "Work, 2026"
+
+// Under the banner, case studies all open the same way (e.g. app/boink/page.tsx):
+//   1. the collapsed details row: a chevron + "TIMELINE · TEAM · STATS…" (11px caps)
+//   2. "The Mission": a small label, then a big text-3xl statement
+// Positions are px below the banner's bottom edge, from the page's spacing:
+// 24px between blocks (space-y-6), 16.5px label lines, 41px statement lines
+// (30px text × leading-snug), and the Mission block's 32px top padding (py-8).
+// Each bar is the text's cap height, centred on its line.
+// Width = the smaller of maxWidth px and that fraction of the column.
+interface SkeletonBar {
+  dx: number // px in from the column's left edge
+  below: number
+  height: number
+  maxWidth: number
+  fraction: number
+  triangle?: boolean // drawn as a right-pointing triangle (.app-launch-skeleton-triangle)
+}
+const SKELETON_BELOW: SkeletonBar[] = [
+  // The collapsed chevron points right; the glyph sits roughly 7×10 inside its 14px icon box
+  { dx: 4, below: 27, height: 10, maxWidth: 7, fraction: 1, triangle: true },
+  { dx: 22, below: 28, height: 8, maxWidth: 260, fraction: 0.6 }, // "TIMELINE · TEAM · STATS · OVERVIEW"
+  { dx: 0, below: 113, height: 8, maxWidth: 84, fraction: 1 }, // "THE MISSION"
+  // The statement: two full lines and a short last one, so it reads as a sentence
+  { dx: 0, below: 143, height: 22, maxWidth: Infinity, fraction: 1 },
+  { dx: 0, below: 184, height: 22, maxWidth: Infinity, fraction: 0.95 },
+  { dx: 0, below: 225, height: 22, maxWidth: Infinity, fraction: 0.55 },
+]
+
+/**
+ * Grey placeholder bars on the launch screen, shown if the page still
+ * hasn't arrived when the opening animation ends.
+ * The icon is already parked where the banner will be, so the bars sketch
+ * the rest of a case study around it: title + year above; the details row
+ * and "The Mission" below.
+ * They live in the overlay (under the icon) and fade out with the launch
+ * screen in reveal().
+ */
+function showSkeleton(launch: Launch, banner: Rect) {
+  if (active !== launch || launch.revealing || launch.skeleton) return
+
+  const bars: (Rect & { triangle?: boolean })[] = []
+  // Title and year only if there's room above the banner (not on short layouts)
+  if (banner.y - SKELETON_TITLE.above > 0) {
+    bars.push({
+      x: banner.x,
+      y: banner.y - SKELETON_TITLE.above,
+      w: Math.min(SKELETON_TITLE.maxWidth, banner.w * 0.5),
+      h: SKELETON_TITLE.height,
+    })
+    bars.push({
+      x: banner.x,
+      y: banner.y - SKELETON_YEAR.above,
+      w: Math.min(SKELETON_YEAR.maxWidth, banner.w * 0.3),
+      h: SKELETON_YEAR.height,
+    })
+  }
+  const bannerBottom = banner.y + banner.h
+  for (const bar of SKELETON_BELOW) {
+    const top = bannerBottom + bar.below
+    if (top + bar.height > window.innerHeight) break // the rest is off screen too
+    bars.push({
+      x: banner.x + bar.dx,
+      y: top,
+      w: Math.min(bar.maxWidth, (banner.w - bar.dx) * bar.fraction),
+      h: bar.height,
+      triangle: bar.triangle,
+    })
+  }
+
+  const skeleton = document.createElement("div")
+  skeleton.className = "app-launch-skeleton"
+  for (const bar of bars) {
+    const el = document.createElement("div")
+    el.className = bar.triangle ? "app-launch-skeleton-bar app-launch-skeleton-triangle" : "app-launch-skeleton-bar"
+    Object.assign(el.style, { left: `${bar.x}px`, top: `${bar.y}px`, width: `${bar.w}px`, height: `${bar.h}px` })
+    skeleton.appendChild(el)
+  }
+  // Under the icon (DOM order = stacking order inside the overlay)
+  launch.overlay.insertBefore(skeleton, launch.iconBox)
+  launch.skeleton = skeleton
+  skeleton.animate([{ opacity: 0 }, { opacity: 1 }], { duration: SKELETON_FADE_MS, easing: "ease-out", fill: "forwards" })
 }
 
 /** Where the icon is right now, and how fast each edge is moving (px/s). */
@@ -688,6 +782,7 @@ function reveal(launch: Launch) {
     warmMedia(targetEl)
     fadeOut(launch.dim, REVEAL_MS)
     fadeOut(launch.win, REVEAL_MS)
+    if (launch.skeleton) fadeOut(launch.skeleton, REVEAL_MS)
 
     // Track the banner every frame until the icon lands.
     // - If the prediction was right, the icon just finishes its first flight:
