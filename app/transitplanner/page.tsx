@@ -13,6 +13,7 @@ import { CollapsibleDetails, itemVariants } from "@/components/collapsible-detai
 import { motion } from "framer-motion"
 import { SyntaxCodeBlock } from "@/components/syntax-code-block"
 import { TrackedExternalLink } from "@/components/tracked-external-link"
+import { CaseStudyImage } from "@/components/case-study-image"
 
 const PROPOSE_ROUTE_TOOL_SNIPPET = `const PROPOSE_ROUTE_TOOL: ToolDefinition = {
   name: "propose_route",
@@ -330,7 +331,7 @@ export default function TransitPlannerProjectPage() {
                   {/* Inline thumbnail uses a 1600px JPEG (165 KB vs the 3.8 MB PNG); the zoom
                       modal still opens the full-size original, so it only downloads on tap.
                       images.unoptimized is on, so Next.js won't resize these for us. */}
-                  <img src="/images/projects/transitplanner/banner-web.jpg" alt="Transit Planner map" decoding="async" className="w-full h-full object-cover" />
+                  <CaseStudyImage src="/images/projects/transitplanner/banner-web.jpg" alt="Transit Planner map" decoding="async" className="w-full h-full object-cover" />
                 </button>
                 <button
                   onClick={() => setZoomedImage("/images/projects/transitplanner/launch-tweet.png")}
@@ -338,7 +339,7 @@ export default function TransitPlannerProjectPage() {
                   style={{ aspectRatio: "4/3" }}
                 >
                   {/* 1600px JPEG (225 KB vs the 4.2 MB PNG); zoom still opens the original */}
-                  <img src="/images/projects/transitplanner/launch-tweet-web.jpg" alt="Transit Planner launch on X" decoding="async" className="w-full h-full object-cover" />
+                  <CaseStudyImage src="/images/projects/transitplanner/launch-tweet-web.jpg" alt="Transit Planner launch on X" decoding="async" className="w-full h-full object-cover" />
                 </button>
               </div>
 
@@ -402,7 +403,7 @@ export default function TransitPlannerProjectPage() {
               {/* loading="lazy": below-the-fold images wait until you scroll near them,
                   so they don't compete with the videos and top images on first load.
                   📖 Learn: native lazy loading (loading="lazy"), decoding="async" */}
-              <img
+              <CaseStudyImage
                 src="/images/projects/transitplanner/badge.png"
                 alt="Preview badge"
                 loading="lazy"
@@ -431,7 +432,7 @@ export default function TransitPlannerProjectPage() {
               <h2 id="launch" className="font-bold mt-8 mb-2 text-2xl">Launch</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
               <div className="w-full overflow-hidden squircle rounded-lg" style={{ aspectRatio: "4 / 3" }}>
-                <img
+                <CaseStudyImage
                   src="/images/projects/transitplanner/launch-tweet-web.jpg"
                   alt="Transit Planner Launch Tweet by Fiona Fang"
                   loading="lazy"
@@ -443,7 +444,7 @@ export default function TransitPlannerProjectPage() {
               <div className="w-full overflow-hidden squircle rounded-lg">
                 <br></br>
                 <p className="mb-2">We also had the opportunity to demo at AI Tinkerers Toronto in the Shopify office.</p>
-                <img
+                <CaseStudyImage
                   src="/images/projects/transitplanner/ai-tinkerers.JPG"
                   alt="Transit Planner Presentation at AI Tinkerers Toronto, Shopify. Shoutout to Amanda Xi for the photo."
                   loading="lazy"

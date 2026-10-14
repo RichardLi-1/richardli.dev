@@ -9,6 +9,7 @@ import { useIsPanel } from "@/hooks/use-is-panel"
 import { X, ArrowUpRight } from "lucide-react"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
+import { CaseStudyImage } from "@/components/case-study-image"
 
 export default function SightProjectPage() {
   usePageViewTracker()
@@ -41,7 +42,7 @@ export default function SightProjectPage() {
             {/* Changed from 200 */}
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold italic mb-2 flex items-center justify-center gap-2">
-                <img
+                <CaseStudyImage
                   src="/images/projects/4sight/logo.png"
                   alt="4Sight project logo"
                   className="w-8 h-8 object-contain rounded-md" // Adjusted size for title

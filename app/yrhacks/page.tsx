@@ -9,6 +9,7 @@ import { useIsPanel } from "@/hooks/use-is-panel"
 import { X, ArrowUpRight } from "lucide-react"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
+import { CaseStudyImage } from "@/components/case-study-image"
 
 export default function YRHacksProjectPage() {
   usePageViewTracker()
@@ -55,7 +56,7 @@ export default function YRHacksProjectPage() {
             {/* Changed from 200 */}
             <div className="text-left mb-8">
               <h1 className="text-3xl font-bold italic mb-2 flex items-left justify-left gap-2">
-                <img
+                <CaseStudyImage
                   src="/images/projects/yrhacks/logo.png"
                   alt="YRHacks Logo"
                   className="w-8 h-8 object-contain" // Adjusted size for title
@@ -71,7 +72,7 @@ export default function YRHacksProjectPage() {
             {/* Changed from 400 */}
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden rounded-lg">
-              <img src="/images/projects/yrhacks/crowd.jpeg" alt="YRHacks event photos" className="w-full h-full object-cover" />
+              <CaseStudyImage src="/images/projects/yrhacks/crowd.jpeg" alt="YRHacks event photos" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
 
@@ -152,7 +153,7 @@ export default function YRHacksProjectPage() {
             {/* Changed from 1300 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div className="space-y-6">
-                <img
+                <CaseStudyImage
                   src="/images/projects/yrhacks/photo-1.jpeg"
                   alt="Preparing bubble tea"
                 />
@@ -194,7 +195,7 @@ export default function YRHacksProjectPage() {
             {/* Changed from 1300 */}
             {/* Team Photo */}
             <div className="relative aspect-video w-full bg-[var(--surface)] overflow-hidden">
-              <img src="/images/projects/yrhacks/photo-2.jpeg" alt="YRHacks image 2" className="w-full h-full object-cover" />
+              <CaseStudyImage src="/images/projects/yrhacks/photo-2.jpeg" alt="YRHacks image 2" className="w-full h-full object-cover" />
             </div>
             <p className="text-[var(--text-2)]">
               Organizing YRHacks was truly a fun experience. Knowing how transformative YRHacks was for me as my first hackathon, I'm glad to have helped make the same experience happen for everyone who participated this year.
@@ -206,7 +207,7 @@ export default function YRHacksProjectPage() {
             {/* Changed from 1300 */}
             {/* Team Photo */}
             <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden">
-              <img
+              <CaseStudyImage
                 src="/images/projects/yrhacks/station-photo.jpg"
                 alt="YRHacks team photo"
                 className="w-full h-full object-cover"

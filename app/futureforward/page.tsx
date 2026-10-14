@@ -10,6 +10,7 @@ import { useIsPanel } from "@/hooks/use-is-panel"
 import { CaseStudyNav } from "@/components/case-study-nav"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
+import { CaseStudyImage } from "@/components/case-study-image"
 
 // Small inline code token, matching the safuture case-study styling.
 function Code({ children }: { children: React.ReactNode }) {
@@ -68,7 +69,7 @@ export default function FutureForwardProjectPage() {
           <StaggeredContent delay={0}>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
-                <img src="/images/projects/future-forward/logo.png" alt="Future Forward logo" className="w-8 h-8 object-contain" />
+                <CaseStudyImage src="/images/projects/future-forward/logo.png" alt="Future Forward logo" className="w-8 h-8 object-contain" />
                 Future Forward
               </h1>
               <p className="text-m" style={{ color: "var(--text-3)" }}>Non-profit, 2024–2025</p>
@@ -79,7 +80,7 @@ export default function FutureForwardProjectPage() {
           <StaggeredContent delay={100}>
             {/* data-launch-target: the homepage card morphs into this banner (components/app-launch.tsx) */}
             <div data-launch-target className="relative mb-8 aspect-video w-full overflow-hidden squircle rounded-lg">
-              <img
+              <CaseStudyImage
                 src="/images/projects/future-forward/workshop-hero.jpeg"
                 alt="Future Forward workshop"
                 className="w-full h-full object-cover"
@@ -200,7 +201,7 @@ const matches = await pinecone.query({
               <h2 id="ff-app" className="font-bold mb-4 text-2xl">Inside the App</h2>
               <p className="mb-4">You browse careers, log tasks, and rate each one with a score <em>and</em> a written response. That response feeds straight back into your signature, so the more you use it the sharper your matches get.</p>
               <div className="relative aspect-video w-full overflow-hidden squircle rounded-lg my-4">
-                <img
+                <CaseStudyImage
                   src="/images/projects/future-forward/ffcareerslanding.png"
                   alt="FF Careers app"
                   className="w-full h-full object-cover"

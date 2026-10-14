@@ -43,3 +43,6 @@ lib/chunks.json
 # Local scratch notes / generated reports
 features to add.md
 posthog-setup-report.md
+
+# Generated before every dev/build by scripts/generate-image-placeholders.mjs
+lib/image-placeholders.json

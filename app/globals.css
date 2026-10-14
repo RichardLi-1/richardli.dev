@@ -803,6 +803,15 @@ html.hc.light select {
   to { transform: translateX(100%); }
 }
 
+/* Case study images coming into focus once loaded (components/case-study-image.tsx) */
+@keyframes case-study-image-focus {
+  from { filter: blur(12px); }
+  to { filter: blur(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  img[data-case-study-image] { animation-name: none !important; }
+}
+
 /* ── iPadOS pointer (components/ipad-cursor.tsx) ────────────────── */
 /* Hide the system cursor everywhere, except while hovering an element that
    asked for a special cursor (the JS adds .ipad-cursor-native then).

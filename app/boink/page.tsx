@@ -12,6 +12,7 @@ import { CaseStudyNav } from "@/components/case-study-nav"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
 import { TrackedExternalLink } from "@/components/tracked-external-link"
+import { CaseStudyImage } from "@/components/case-study-image"
 
 const allTeam = [
   { name: "Dorian Chen", role: "Project Lead" },
@@ -61,7 +62,7 @@ export default function BoinkProjectPage() {
             <div className={`relative text-left mb-8 ${isPanel ? "pr-20" : ""}`}>
               <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
                 <h1 className="text-4xl font-bold flex min-w-0 items-center gap-2">
-                  <img src="/images/projects/boink/logo.webp" alt="Bo!nk Logo" className="w-8 h-8 shrink-0 object-contain rounded-md" />
+                  <CaseStudyImage src="/images/projects/boink/logo.webp" alt="Bo!nk Logo" className="w-8 h-8 shrink-0 object-contain rounded-md" />
                   Bo!nk
                 </h1>
                 <nav className="flex shrink-0 items-center gap-1" aria-label="Boink project links">
@@ -107,7 +108,7 @@ export default function BoinkProjectPage() {
             {/* Changed from 400 */}
             {/* data-launch-target: the homepage card morphs into this banner (components/app-launch.tsx) */}
             <div data-launch-target className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden rounded-lg">
-              <img
+              <CaseStudyImage
                 src="/images/projects/boink/hero_new.png"
                 alt="Bo!nk game screenshots"
                 className="w-full h-full object-cover"
@@ -189,7 +190,7 @@ export default function BoinkProjectPage() {
                 Revive the nostalgia of Windows Vista's{" "}
                 {/* Inline InkBall icon, sized to the text (1em) and nudged onto the baseline.
                     `title` shows the fair-use attribution as a native tooltip on hover. */}
-                <img
+                <CaseStudyImage
                   src="/images/projects/boink/inkball.png"
                   alt="InkBall icon"
                   title="By Windows Vista, Fair use, https://en.wikipedia.org/w/index.php?curid=36028519"
@@ -222,6 +223,8 @@ export default function BoinkProjectPage() {
                 <div>
                   <video
                     src="/videos/inkball-gameplay.mp4"
+                    // First frame, shown instantly while the video downloads (same as the homepage cards)
+                    poster="/images/thumbnails/inkball-gameplay.jpg"
                     aria-label="InkBall gameplay footage"
                     autoPlay
                     loop
@@ -236,6 +239,7 @@ export default function BoinkProjectPage() {
                 <h2 id="bk-design" className="text-2xl font-bold mb-4">Design and Gameplay</h2>
                 <video
                   src="/videos/boink-gameplay.MOV"
+                  poster="/images/thumbnails/boink-gameplay.jpg"
                   aria-label="Bo!nk gameplay footage"
                   autoPlay
                   loop

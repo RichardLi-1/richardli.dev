@@ -11,6 +11,7 @@ import { useIsPanel } from "@/hooks/use-is-panel"
 import { ExternalLink, X, ArrowUpRight } from "lucide-react"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
+import { CaseStudyImage } from "@/components/case-study-image"
 
 
 export default function SalesPatriotProjectPage() {
@@ -79,7 +80,7 @@ export default function SalesPatriotProjectPage() {
           <StaggeredContent delay={100}>
             {/* data-launch-target: the homepage card morphs into this banner (components/app-launch.tsx) */}
             <div data-launch-target className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden squircle" style={{ borderRadius: 16 }}>
-              <img src="/images/projects/fatherfigure/banner.png" alt="Father Figure app banner" className="w-full h-full object-cover" />
+              <CaseStudyImage src="/images/projects/fatherfigure/banner.png" alt="Father Figure app banner" className="w-full h-full object-cover" />
             </div>
           </StaggeredContent>
 
@@ -145,7 +146,7 @@ export default function SalesPatriotProjectPage() {
                 <p className="section-label">Screenshots</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="squircle bg-[var(--surface)] p-2" style={{ borderRadius: 16 }}>
-                    <img
+                    <CaseStudyImage
                       src="/images/projects/fatherfigure/popup-persona-picker.png"
                       alt="Father Figure browser extension popup with Bill, Dave, and Chang persona cards and quick action buttons"
                       className="w-full h-auto squircle"
@@ -154,7 +155,7 @@ export default function SalesPatriotProjectPage() {
                     />
                   </div>
                   <div className="squircle bg-[var(--surface)] p-2" style={{ borderRadius: 16 }}>
-                    <img
+                    <CaseStudyImage
                       src="/images/projects/fatherfigure/chat-chang.png"
                       alt="In-page chat with the Chang persona responding to a sad message with comforting advice"
                       className="w-full h-auto squircle"

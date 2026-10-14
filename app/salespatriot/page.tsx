@@ -9,6 +9,7 @@ import { useIsPanel } from "@/hooks/use-is-panel"
 import { X, ArrowUpRight } from "lucide-react"
 import { CollapsibleDetails, itemVariants } from "@/components/collapsible-details"
 import { motion } from "framer-motion"
+import { CaseStudyImage } from "@/components/case-study-image"
 
 export default function SalesPatriotProjectPage() {
   usePageViewTracker()
@@ -43,7 +44,7 @@ export default function SalesPatriotProjectPage() {
           <StaggeredContent delay={100}>
             {/* Hero Image */}
             <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden" style={{cornerShape:"squircle", borderRadius:16}}>
-              <img
+              <CaseStudyImage
                 src="/images/projects/salespatriot/hero.png"
                 alt="SalesPatriot screenshots"
                 className="w-full h-full object-cover"
@@ -111,7 +112,7 @@ export default function SalesPatriotProjectPage() {
             <section className="space-y-6 mb-12">
               <h2 className="text-2xl font-bold mb-4">Example Work</h2>
               <div className="relative mb-8 aspect-video w-full bg-[var(--surface)] overflow-hidden rounded-lg border border-[var(--border-2)]" style={{cornerShape:"squircle", borderRadius:16}}>
-                <img
+                <CaseStudyImage
                   src="/images/projects/salespatriot/ai-prototype.png"
                   alt="SalesPatriot AI Proposal Writing Figma Prototype"
                   className="w-full h-full object-cover"
