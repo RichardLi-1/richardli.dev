@@ -47,6 +47,7 @@ components/
   gif-loading-screen.tsx    # Initial load animation
   PhotoModal.tsx            # Photo zoom modal
   swiss-grid.tsx            # Debug grid (Cmd+G / Cmd+Shift+G)
+  ipad-cursor.tsx           # Sitewide iPadOS-style pointer (mounted in layout-content)
   changelog.tsx             # Modal changelog viewer
   mainProjects.ts           # Project data array (source of truth for all projects)
   theme-provider.tsx        # next-themes wrapper
@@ -140,6 +141,14 @@ Single source of truth for all projects. Shape:
   hidden?: boolean    // Excludes from grid if true
 }
 ```
+
+### iPad Cursor (`components/ipad-cursor.tsx`)
+Sitewide replacement for the mouse cursor, modelled on the iPadOS 13.4 pointer. Mounted once in `layout-content.tsx` (skipped in XP mode). Only runs on devices matching `(hover: hover) and (pointer: fine)`.
+- **Modes**: `default` (grey dot), `text` (I-beam sized to the font, over any readable text), `highlight` (rounded platter behind links/buttons + a few px of parallax), `lift` (big clickables ≥160×100px scale up with shadow + glare; the dot stays visible on top).
+- **Auto-detection**: links, buttons, `[role=button]`, `.cursor-pointer` and inline `cursor: pointer` styles all count as clickable. Elements with special cursors (`zoom-in`, `grab`, etc.) fall back to the native cursor.
+- **Overrides**: `data-cursor="highlight" | "lift" | "text" | "none" | "native"` on any element. Put `data-cursor-surface` on the child that should lift (e.g. the thumbnail, not the caption).
+- **Animation**: hand-rolled springs in a `requestAnimationFrame` loop that writes styles directly (no React state). Parallax/lift use the CSS `translate`/`scale` properties so existing `transform`s aren't clobbered. Tuning constants are at the top of the file.
+- **Styling**: colours come from `--cursor-*` vars in `globals.css`; the native cursor is hidden via `html.ipad-cursor-on`. Don't give clickable elements a transparent-to-grey hover background; the platter already draws that shape, and doubling it looks messy. Changing text colour on hover is fine.
 
 ### Projects Page (`app/projects/page.tsx`)
 Split-pane layout: left grid + right iframe detail panel (desktop). On mobile, clicking navigates. Uses `?panel=1` param on individual project pages to signal they're rendered inside the panel.
