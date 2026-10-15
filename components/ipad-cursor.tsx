@@ -349,6 +349,9 @@ const BRIGHT_ON = 0.68 // switch to dark grey above this...
 const BRIGHT_OFF = 0.58 // ...and back below this. The gap (hysteresis) stops flicker on mid-tones.
 const CONTRAST_CHECK_MS = 100 // re-check at most this often while the mouse moves
 const VIDEO_CHECK_MS = 200 // re-check this often while resting over a playing video (its frames change)
+// Wait this long after the last scroll before checking. Sampling a video means
+// copying a frame back from the GPU, which made scrolling choppy over video cards.
+const SCROLL_SETTLE_MS = 150
 const SAMPLE_SIZE = 4 // the patch under the dot is averaged down to 4×4 pixels
 
 /**
@@ -517,6 +520,7 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
   let bright = false
   let lastContrastCheck = 0
   let contrastTimer = 0
+  let lastScrollAt = 0 // see SCROLL_SETTLE_MS
 
   root.classList.add("ipad-cursor-on")
 
@@ -886,6 +890,12 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
 
   function checkContrast() {
     contrastTimer = 0
+    // Still scrolling? Check once it settles instead (the dot keeps moving meanwhile)
+    const sinceScroll = performance.now() - lastScrollAt
+    if (sinceScroll < SCROLL_SETTLE_MS) {
+      contrastTimer = window.setTimeout(checkContrast, SCROLL_SETTLE_MS - sinceScroll)
+      return
+    }
     lastContrastCheck = performance.now()
     const { value, video } = hasPointer ? sampler.sampleAt(mouseX, mouseY) : { value: null, video: null }
     let next = bright
@@ -947,7 +957,11 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
   // `scroll` doesn't bubble, but capture-phase listeners on document still see
   // it for every scroll container (this site scrolls .app-scroll-shell, not window).
   // 📖 Learn: event capturing vs bubbling
-  document.addEventListener("scroll", markDirty, { capture: true, passive: true })
+  const onScroll = () => {
+    lastScrollAt = performance.now()
+    markDirty()
+  }
+  document.addEventListener("scroll", onScroll, { capture: true, passive: true })
 
   ensureRunning()
 
@@ -962,7 +976,7 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
       window.removeEventListener("resize", markDirty)
       window.removeEventListener("blur", onBlur)
       document.removeEventListener("mouseout", onMouseOut)
-      document.removeEventListener("scroll", markDirty, { capture: true })
+      document.removeEventListener("scroll", onScroll, { capture: true })
       if (activeFx) restoreFx(activeFx)
       releasingFx.forEach(restoreFx)
       root.classList.remove("ipad-cursor-on", "ipad-cursor-native")
