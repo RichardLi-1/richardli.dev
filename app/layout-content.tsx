@@ -1,6 +1,7 @@
 "use client"
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
+import dynamic from "next/dynamic"
 // Lenis smooth/slow scroll disabled for now — re-enable the import + effect below to restore.
 // import Lenis from "lenis"
 import { WindowsXPProvider } from "@/contexts/windows-xp-context"
@@ -11,10 +12,19 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { usePreserveM } from "@/hooks/use-preserve-m"
 import { SwissGrid } from "@/components/swiss-grid"
 import { Footer } from "@/components/footer"
-import { IPadCursor } from "@/components/ipad-cursor"
 import { AppLaunchRouteWatcher } from "@/components/app-launch"
-import { AgentOrb } from "@/components/agent-orb"
-import { WebMcpTools } from "@/components/webmcp-tools"
+import { whenIdle } from "@/lib/when-idle"
+
+// ── Loaded later, so the first load stays light ─────────────────────────────
+// A Lighthouse run showed the first scroll was choppy because hydration (React
+// attaching its JavaScript to the server-rendered page) ran as one ~600ms block.
+// next/dynamic splits each of these into its own file that's only downloaded
+// when it first renders, and ssr: false skips them in the server HTML (they're
+// all browser-only extras).
+// 📖 Learn: next/dynamic, code splitting
+const IPadCursor = dynamic(() => import("@/components/ipad-cursor").then((m) => m.IPadCursor), { ssr: false })
+const AgentOrb = dynamic(() => import("@/components/agent-orb").then((m) => m.AgentOrb), { ssr: false })
+const WebMcpTools = dynamic(() => import("@/components/webmcp-tools").then((m) => m.WebMcpTools), { ssr: false })
 
 // LayoutContent is a *separate* inner component so it can call useWindowsXP().
 // That hook requires being inside <WindowsXPProvider>, so this can't be merged
@@ -22,6 +32,12 @@ import { WebMcpTools } from "@/components/webmcp-tools"
 function LayoutContent({ children }: { children: React.ReactNode }) {
   usePreserveM()
   const { isXPMode, isPersonalized } = useWindowsXP()
+
+  // The extras mount once the page has loaded and the browser is idle, so they
+  // don't compete with hydration and the first scroll. The native cursor shows
+  // until then (a fraction of a second on a normal load).
+  const [extrasReady, setExtrasReady] = useState(false)
+  useEffect(() => whenIdle(() => setExtrasReady(true)), [])
 
   // Sync the "personalized" CSS class onto <body> whenever the toggle changes.
   // This lets global CSS target `.personalized` for cosmetic extras.
@@ -78,14 +94,14 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       {/* SwissGrid is always mounted; it renders nothing until Cmd+G is pressed */}
       <SwissGrid />
       {/* iPadOS-style pointer; off in XP mode so the XP desktop keeps its own cursors */}
-      {!isXPMode && <IPadCursor />}
+      {extrasReady && !isXPMode && <IPadCursor />}
       {/* Tells the iOS-style project launch animation when the new page has mounted */}
       <AppLaunchRouteWatcher />
       {/* The chatbot's orb form when it acts on the site ("Let Richard drive").
           Here in the layout so it survives page changes, e.g. during a tour. */}
-      {!isXPMode && <AgentOrb />}
+      {extrasReady && !isXPMode && <AgentOrb />}
       {/* Tools AI agents in the browser can call (WebMCP); does nothing where unsupported */}
-      {!isXPMode && <WebMcpTools />}
+      {extrasReady && !isXPMode && <WebMcpTools />}
       {/* {showLoading && <GifLoadingScreen onComplete={handleLoadingComplete} />} */}
       {!showLoading && (
         <>
