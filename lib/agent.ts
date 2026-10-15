@@ -35,7 +35,6 @@ export const SITE_PAGES: { path: string; label: string }[] = [
   { path: "/", label: "Home: hero, what Richard's up to, featured projects" },
   { path: "/about", label: "About Richard" },
   { path: "/resume", label: "Resume" },
-  { path: "/contact", label: "Contact form" },
   { path: "/chat", label: "Full-page chat with Richard" },
   { path: "/side-quests", label: "Side quests: smaller projects and experiments" },
   { path: "/transit/fanning", label: "Transit photography gallery" },

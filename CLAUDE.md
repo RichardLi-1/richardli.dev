@@ -21,7 +21,7 @@ app/                        # Next.js App Router pages + API routes
   globals.css               # CSS variables, custom fonts (@font-face), animations
   api/
     chat/route.ts           # Claude Haiku streaming chatbot (POST)
-    contact/route.ts        # Nodemailer email delivery (POST)
+    _contact/route.ts       # RETIRED contact-form email (private folder, not routed)
   projects/
     page.tsx                # Split-pane grid (iframe detail panel on desktop)
     [id]/page.tsx           # Individual project pages (one folder each)
@@ -30,7 +30,7 @@ app/                        # Next.js App Router pages + API routes
     fanning/                # FanningGallery layout
     hypo-maps/              # Hypothetical transit maps
   chat/page.tsx             # Dedicated chatbot page
-  contact/page.tsx          # Contact form
+  _contact/page.tsx         # RETIRED contact form (private folder, not routed; /contact redirects home)
   resume/page.tsx           # Resume
   more/page.tsx             # More section
 components/
@@ -40,7 +40,7 @@ components/
   responsiveheader.tsx      # Thin wrapper around AnimatedHeader
   footer.tsx                # Footer with version + changelog modal
   chat-box.tsx              # Streaming chatbot UI (react-markdown)
-  contact-form.tsx          # Zod-validated contact form
+  contact-form.tsx          # Contact form (only used by the retired app/_contact page)
   project-image-cycler.tsx  # Auto-rotating image/video carousel (2s)
   draggable-sticker.tsx     # Draggable PNG (personalized mode)
   global-stickers.tsx       # Sticker collection manager
@@ -158,7 +158,8 @@ Split-pane layout: left grid + right iframe detail panel (desktop). On mobile, c
 - **Link cards**: `PageCard`, `ExternalCard`, `MusicCard`, `EmailCard` render instead of plain `<a>` tags. The system prompt instructs Claude to link eagerly — cards replace prose descriptions.
 - **Sound panel**: `SOUNDS` array + `SoundPanel` component + `soundEnabled`/`showSoundPanel` state are all present in `animated-header.tsx` but the trigger buttons are commented out. Un-comment the `{/* Sound panel button — hidden for now */}` blocks to re-enable.
 
-### POST `/api/contact`
+### POST `/api/contact` (retired)
+- Retired 2026-10-14: lives in `app/api/_contact` (not routed). To restore, rename `app/_contact` and `app/api/_contact` back and remove the `/contact` redirect in `next.config.mjs`
 - Nodemailer via Outlook SMTP
 - Env vars required: `EMAIL_USER`, `EMAIL_PASS`
 - Sends to `richardli0@outlook.com`
@@ -204,7 +205,7 @@ EMAIL_PASS=...          # Outlook SMTP password
 | `/projects` | `app/projects/page.tsx` |
 | `/projects/[id]` | `app/projects/[id]/page.tsx` |
 | `/chat` | `app/chat/page.tsx` |
-| `/contact` | `app/contact/page.tsx` |
+| `/contact` | retired: redirects to `/` (`app/_contact/page.tsx` kept, not routed) |
 | `/resume` | `app/resume/page.tsx` |
 | `/transit/photography` | `app/transit/photography/page.tsx` |
 | `/transit/fanning` | `app/transit/fanning/page.tsx` |

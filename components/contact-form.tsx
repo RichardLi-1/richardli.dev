@@ -1,4 +1,6 @@
 "use client"
+
+// Only used by the retired contact page (app/_contact). Kept for if it returns.
 import { useState } from "react"
 import type React from "react"
 

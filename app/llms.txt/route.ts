@@ -49,11 +49,9 @@ ${caseStudyLines.join("\n")}
 - **WebMCP tools** (in browsers that support WebMCP, e.g. Chrome's origin trial): \`list_pages\`, \`describe_page\`, \`open_page\`, \`scroll_to_section\`, \`highlight\`, \`click\`, \`ask_richard\`. Call \`describe_page\` first; it returns ids for \`highlight\` and \`click\`. Actions run visibly on the page.
 - **Page structure**: every page has a \`<nav aria-label="Site">\` and a \`<main>\`. Case study sections are \`<h2>\` headings with ids, listed in the side nav.
 - **The chatbot**: the chat button in the header opens a chat with Richard. Its "Drive" toggle lets it open pages, point things out and give guided tours.
-- Please don't submit the contact form on a visitor's behalf without asking them.
 
 ## Contact
 
-- [Contact form](${SITE}/contact)
 - Email: richardli0@outlook.com
 `
 

@@ -31,7 +31,6 @@ const PAGE_META: Record<string, { label: string; description: string; image?: st
   "/transit/fanning":     { label: "Fanning Gallery",  description: "Fanning-style photo layout",           image: "/images/projects/future-forward/workshop-1.jpeg" },
   "/transit/hypo-maps":   { label: "Hypo Maps",        description: "Hypothetical transit map designs",     image: "/images/projects/transit/banner.png" },
   "/chat":                { label: "Chat",              description: "This chatbot" },
-  "/contact":             { label: "Contact",           description: "Get in touch" },
   "/resume":              { label: "Resume",            description: "Full résumé" },
   "/more":                { label: "More",              description: "More about Richard" },
   // Spread project entries so adding a project to mainProjects.ts is all that's needed.

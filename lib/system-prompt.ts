@@ -34,7 +34,6 @@ When referencing a page on the site, write it as a markdown link — it renders 
 - [Transit Photography](/transit/fanning)
 - [Hypo Maps](/transit/hypo-maps)
 - [Chat](/chat)
-- [Contact](/contact)
 - [Resume](/resume)
 - [More](/more)
 

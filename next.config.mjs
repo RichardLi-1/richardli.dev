@@ -30,6 +30,10 @@ const nextConfig = {
     return [
       { source: "/work", destination: "/", permanent: true },
       { source: "/work/:slug", destination: "/:slug", permanent: true },
+      // The contact form is retired (app/_contact). Temporary (307), not
+      // permanent, so browsers don't cache it if the page ever comes back.
+      // TODO: point this at /book once booking is live.
+      { source: "/contact", destination: "/", permanent: false },
     ]
   },
 

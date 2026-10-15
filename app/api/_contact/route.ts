@@ -1,3 +1,10 @@
+// RETIRED (2026-10-14): the contact form is switched off. The folder name
+// starts with "_", which Next.js treats as a private folder: the code stays
+// here but isn't routed. To bring it back, rename the folder back (drop the
+// "_"), remove the /contact redirect in next.config.mjs, and re-add /contact
+// to app/sitemap.ts, lib/agent.ts, lib/system-prompt.ts, app/llms.txt and the
+// chat's PAGE_META.
+// 📖 Learn: Next.js private folders
 import { type NextRequest, NextResponse } from "next/server"
 // nodemailer is a Node.js library for sending email via SMTP.
 // It only runs server-side (in an API route), never in the browser.
@@ -17,7 +24,8 @@ export async function POST(request: NextRequest) {
 
     // The "transporter" is nodemailer's abstraction over an SMTP connection.
     // Credentials come from env vars (never hardcode them in source code).
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport( // was createTransporter, which doesn't exist (every send failed)
+      {
       service: "outlook",
       auth: {
         user: process.env.EMAIL_USER,
