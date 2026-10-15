@@ -1,6 +1,18 @@
 "use client"
 import React, { useState, useEffect, useRef } from "react"
 import Image from "next/image"
+import { whenIdle } from "@/lib/when-idle"
+
+/**
+ * True if the visitor's browser says to go easy on data: Save-Data is on, or
+ * the connection is 2G/3G. Chromium-only API; other browsers return false here,
+ * so they get the background preload.
+ * 📖 Learn: Network Information API (navigator.connection)
+ */
+function prefersLessData(): boolean {
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
+  return !!connection?.saveData || ["slow-2g", "2g", "3g"].includes(connection?.effectiveType ?? "")
+}
 
 interface ProjectImageCyclerProps {
   images: (string | undefined)[]
@@ -45,10 +57,11 @@ export function ProjectImageCycler({ images, alt, className = "", fit = "cover" 
     if (el instanceof HTMLVideoElement && el.readyState >= 2) setLoaded(true)
   }, [current])
 
-  // Videos only download and play while they're on screen. They used to
-  // autoplay on load, so a homepage visit fetched a 19 MB video straight away,
-  // competing with the page itself. With preload="none" (below) nothing is
-  // fetched until the first play(); the poster shows until then.
+  // Videos don't download during page load, and only play while on screen. They
+  // used to autoplay on load, so a homepage visit fetched a 19 MB video straight
+  // away, competing with the page itself. With preload="none" (below) nothing is
+  // fetched until the first play() or the idle preload (next effect); the poster
+  // shows until then.
   // Calling .play() from code is also more reliable than the autoPlay attribute:
   // Safari sometimes ignores autoPlay when a poster is present.
   // key={current} remounts the video on each source change, so this effect
@@ -66,6 +79,24 @@ export function ProjectImageCycler({ images, alt, className = "", fit = "cover" 
     )
     observer.observe(el)
     return () => observer.disconnect()
+  }, [current])
+
+  // ...but once the page has loaded and gone quiet, start buffering the video
+  // in the background anyway, so it's ready by the time someone scrolls to it.
+  // Skipped for visitors saving data (they still get it when it's on screen).
+  // load() restarts a video, so only for one that hasn't loaded anything yet
+  // (readyState 0); one that's already playing is left alone.
+  useEffect(() => {
+    const el = mediaRef.current
+    if (!el || !(el instanceof HTMLVideoElement)) return
+    return whenIdle(
+      () => {
+        if (prefersLessData() || el.readyState !== 0) return
+        el.preload = "auto"
+        el.load()
+      },
+      { delay: 2000 },
+    )
   }, [current])
 
   if (!current) {
