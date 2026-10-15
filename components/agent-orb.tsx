@@ -38,6 +38,9 @@ const HIGHLIGHT_MS = 1500 // matches the agent-highlight animation in globals.cs
 const RETURN_HOME_MS = 1600 // idle this long after acting → fly back to the dock
 const ARRIVE_DELAY_MS = 700 // let a new page render before presenting it
 const BETWEEN_STOPS_MS = 1200 // pause after presenting a stop, before the next one
+const READ_MS_PER_CHAR = 45 // after a tour's wrap-up, time to read it before the orb heads home
+const READ_MIN_MS = 2500
+const READ_MAX_MS = 7000
 const GAP = 14 // px between the orb and what it points at
 
 // ── Talking to the orb from outside React ───────────────────────────────────
@@ -161,11 +164,29 @@ export function AgentOrb() {
   // Dock: bottom centre, above the mobile nav pill
   useEffect(() => {
     reducedMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    const place = () =>
-      setDock({ x: window.innerWidth / 2, y: window.innerHeight - (window.innerWidth < 768 ? 132 : 64) })
+    // The dock follows the *visible* part of the page. On phones the keyboard
+    // covers the bottom of the screen without shrinking innerHeight, so an orb
+    // pinned to innerHeight would sit behind it while you type. visualViewport
+    // is the area actually on screen, so the orb rides up above the keyboard.
+    // 📖 Learn: VisualViewport API
+    const viewport = window.visualViewport
+    const place = () => {
+      const width = viewport?.width ?? window.innerWidth
+      const bottom = viewport ? viewport.offsetTop + viewport.height : window.innerHeight
+      const keyboardOpen = viewport ? window.innerHeight - viewport.height > 150 : false
+      // Above the mobile nav pill normally; just above the keyboard when it's open
+      const lift = keyboardOpen ? 44 : width < 768 ? 132 : 64
+      setDock({ x: (viewport?.offsetLeft ?? 0) + width / 2, y: bottom - lift })
+    }
     place()
     window.addEventListener("resize", place)
-    return () => window.removeEventListener("resize", place)
+    viewport?.addEventListener("resize", place)
+    viewport?.addEventListener("scroll", place)
+    return () => {
+      window.removeEventListener("resize", place)
+      viewport?.removeEventListener("resize", place)
+      viewport?.removeEventListener("scroll", place)
+    }
   }, [])
 
   /** Starts a new run (a visitor message or a hand-over from the chat window). */
@@ -289,6 +310,35 @@ export function AgentOrb() {
     if (alive(token) && !tour.current && !awaitingArrival.current) restSoon(token)
   }
 
+  /**
+   * End of a tour: the orb flies back into the chat icon in the header (where
+   * the chat came from), shrinks into it and disappears, and the icon pops as
+   * if it caught it. Falls back to resting at the dock if there's no icon.
+   */
+  const returnToIcon = async (token: number) => {
+    const icon = Array.from(document.querySelectorAll<HTMLElement>('button[aria-label="Open chat"]')).find((el) => {
+      const rect = el.getBoundingClientRect()
+      return rect.width > 0 && rect.height > 0 // the visible one (desktop header or mobile pill)
+    })
+    if (!icon) {
+      setSpot(null)
+      return
+    }
+    newStep() // the bubble goes first, so just the orb flies home
+    const rect = icon.getBoundingClientRect()
+    await flyTo({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 })
+    if (!alive(token)) return
+    if (!reducedMotion.current) {
+      await orbRef.current
+        ?.animate([{ scale: "1", opacity: 1 }, { scale: "0.2", opacity: 0 }], { duration: 260, easing: "ease-in", fill: "forwards" })
+        .finished.catch(() => {})
+      icon.animate([{ scale: "1" }, { scale: "1.25" }, { scale: "1" }], { duration: 320, easing: "ease-out" })
+    }
+    if (!alive(token)) return
+    setVisible(false)
+    setSpot(null)
+  }
+
   // ── Tours ──
   /** Opens the current tour stop; presentStop runs once it has loaded. */
   const goToStop = async (token: number) => {
@@ -320,7 +370,9 @@ export function AgentOrb() {
     if (!alive(token) || tour.current !== current) return
     if (isLast) {
       tour.current = null
-      restSoon(token)
+      // Give them time to read the wrap-up, then head home into the chat icon
+      await sleep(clamp((result?.content.length ?? 0) * READ_MS_PER_CHAR, READ_MIN_MS, READ_MAX_MS))
+      if (alive(token)) returnToIcon(token)
       return
     }
     await sleep(BETWEEN_STOPS_MS)
@@ -414,7 +466,9 @@ export function AgentOrb() {
   const bubbleText = thinking && !reply?.content ? "…" : toPlain(reply?.content ?? "")
   // Bubble above the orb, unless the orb is near the top; nudged sideways to stay on screen
   const bubbleBelow = at.y < 200
-  const bubbleShift = clamp(at.x - BUBBLE_WIDTH / 2, 16, window.innerWidth - 16 - BUBBLE_WIDTH) - (at.x - BUBBLE_WIDTH / 2)
+  // Never wider than the screen minus a 16px margin each side (small phones)
+  const bubbleWidth = Math.min(BUBBLE_WIDTH, window.innerWidth - 32)
+  const bubbleShift = clamp(at.x - bubbleWidth / 2, 16, window.innerWidth - 16 - bubbleWidth) - (at.x - bubbleWidth / 2)
 
   return (
     // data-agent-ignore: never list the orb itself as something to point at
@@ -427,7 +481,7 @@ export function AgentOrb() {
           <div
             className="agent-orb-bubble"
             data-below={bubbleBelow}
-            style={{ width: BUBBLE_WIDTH, marginLeft: -BUBBLE_WIDTH / 2 + bubbleShift }}
+            style={{ width: bubbleWidth, marginLeft: -bubbleWidth / 2 + bubbleShift }}
             aria-live="polite"
           >
             <div className="agent-orb-bubble-text">{bubbleText}</div>
