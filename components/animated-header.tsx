@@ -3,7 +3,11 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ArrowLeft, Home, X, Sun, Moon, Linkedin, Github, Mail, Contrast, MessageCircle, Volume2, VolumeX, Play } from "lucide-react"
-import { ChatBox } from "@/components/chat-box"
+import dynamic from "next/dynamic"
+// The chat (markdown rendering, link cards, the chat logic) only downloads the
+// first time someone opens it, instead of on every page load with the header.
+// 📖 Learn: next/dynamic
+const ChatBox = dynamic(() => import("@/components/chat-box").then((m) => m.ChatBox), { ssr: false })
 import { COLLAPSE_CHAT_EVENT, EXPAND_CHAT_EVENT } from "@/components/agent-orb"
 import { trackEvent } from "@/lib/track"
 

@@ -1,5 +1,5 @@
 "use client"
-import { useState, useRef, useEffect, memo } from "react"
+import { useState, useRef, useEffect, useLayoutEffect, memo } from "react"
 import type React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -341,9 +341,11 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   const [isGreeting, setIsGreeting] = useState(false)
   // Same Strict Mode double-fire guard as firedInitial, but for the greeting.
   const firedGreeting = useRef(false)
-  // bottomRef marks an invisible div at the end of the message list.
-  // Scrolling it into view keeps the latest message visible as the chat grows.
-  const bottomRef = useRef<HTMLDivElement>(null)
+  // The scrolling message list. Kept scrolled to the bottom so the latest
+  // message is visible as the chat grows.
+  const listRef = useRef<HTMLDivElement>(null)
+  // False until the list has been shown with something in it once
+  const scrolledOnce = useRef(false)
   // firedInitial prevents the initial suggestion from being sent twice in
   // React Strict Mode (which intentionally mounts effects twice in development).
   const firedInitial = useRef(false)
@@ -352,8 +354,24 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
   // inputRef lets the document-level Tab handler focus the input when filling a placeholder.
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+  // Opening the chat with a saved conversation used to animate a scroll from the
+  // very top to the bottom. Now the first time there's anything to show, it
+  // jumps straight to the bottom before the browser paints (useLayoutEffect
+  // runs after React updates the page but before it's drawn), so you never see
+  // it move. New messages after that still glide in smoothly.
+  // Scrolls the list itself rather than using scrollIntoView, which can also
+  // scroll the page behind the chat.
+  // 📖 Learn: useEffect vs useLayoutEffect
+  useLayoutEffect(() => {
+    const list = listRef.current
+    if (!list) return
+    if (!scrolledOnce.current) {
+      if (messages.length === 0 && !isLoading) return // nothing to show yet (e.g. still hydrating)
+      list.scrollTop = list.scrollHeight
+      scrolledOnce.current = true
+      return
+    }
+    list.scrollTo({ top: list.scrollHeight, behavior: "smooth" })
   }, [messages, isLoading])
 
   useEffect(() => {
@@ -611,6 +629,7 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
         )}
       </div>
       <div
+        ref={listRef}
         className="overflow-y-auto flex-1 pr-1"
         style={{ minHeight: 0, maxHeight: fullHeight ? undefined : "24rem" }}
       >
@@ -629,7 +648,6 @@ export function ChatBox({ fullHeight = false, initialMessage }: ChatBoxProps) {
         {(isLoading || (isGreeting && messages.length === 0)) && (
           <div className="text-sm" style={{ color: "var(--text-4)" }}>Richard is thinking...</div>
         )}
-        <div ref={bottomRef} />
       </div>
 
       {/* Follow-up suggestion chip — appears after each response, disappears when the user sends a new message */}
