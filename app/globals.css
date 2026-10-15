@@ -1056,3 +1056,77 @@ html.ipad-cursor-on:not(.ipad-cursor-native) * {
   .agent-orb-glow,
   .agent-orb[data-thinking="true"] .agent-orb-glow { animation: none; }
 }
+
+/* ── Chat nudge (components/chat-nudge.tsx) ───────────────────────── */
+/* A one-time orb that slips out of the chat button, says hi, and tucks back
+   in. Reuses the agent orb's glow and core (.agent-orb-glow/.agent-orb-core). */
+.chat-nudge {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 66; /* above the desktop header (z-50); below the mobile pill (z-70), so on mobile it rises out from behind the pill */
+  transition: transform 450ms cubic-bezier(0.2, 0.9, 0.3, 1.15), opacity 300ms ease, scale 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+/* Right-aligned on the anchor point and vertically centred, so it grows leftwards */
+.chat-nudge-capsule {
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateY(-50%);
+  height: 36px;
+  /* Closed it's a 36px circle; open, max-width lets it unfold to fit the text
+     (max-width animates, unlike width: auto) */
+  max-width: 36px;
+  border-radius: 999px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: max-width 380ms cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+.chat-nudge-capsule[data-open="true"] {
+  max-width: 240px;
+}
+.chat-nudge-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  padding: 0 14px 0 9px;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--orb-text);
+  font-family: 'Toronto Subway', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+.chat-nudge-text {
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+.chat-nudge-capsule[data-open="true"] .chat-nudge-text {
+  opacity: 1;
+  transition-delay: 150ms; /* text appears once the capsule has room for it */
+}
+/* The wave: rocks from the wrist (transform-origin at the bottom right) */
+@keyframes chat-nudge-wave {
+  0%, 60%, 100% { rotate: 0deg; }
+  10%, 30% { rotate: 16deg; }
+  20%, 40% { rotate: -8deg; }
+  50% { rotate: 10deg; }
+}
+.chat-nudge-wave {
+  display: inline-block;
+  font-size: 15px;
+  transform-origin: 70% 80%;
+}
+.chat-nudge-capsule[data-open="true"] .chat-nudge-wave {
+  animation: chat-nudge-wave 1.6s ease-in-out 200ms 2;
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-nudge { transition: opacity 300ms ease; }
+  .chat-nudge-capsule { transition: none; }
+  .chat-nudge-capsule[data-open="true"] .chat-nudge-wave { animation: none; }
+}

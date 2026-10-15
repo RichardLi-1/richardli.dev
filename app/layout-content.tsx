@@ -25,6 +25,7 @@ import { whenIdle } from "@/lib/when-idle"
 const IPadCursor = dynamic(() => import("@/components/ipad-cursor").then((m) => m.IPadCursor), { ssr: false })
 const AgentOrb = dynamic(() => import("@/components/agent-orb").then((m) => m.AgentOrb), { ssr: false })
 const WebMcpTools = dynamic(() => import("@/components/webmcp-tools").then((m) => m.WebMcpTools), { ssr: false })
+const ChatNudge = dynamic(() => import("@/components/chat-nudge").then((m) => m.ChatNudge), { ssr: false })
 
 // LayoutContent is a *separate* inner component so it can call useWindowsXP().
 // That hook requires being inside <WindowsXPProvider>, so this can't be merged
@@ -104,6 +105,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       {extrasReady && !isXPPage && <AgentOrb />}
       {/* Tools AI agents in the browser can call (WebMCP); does nothing where unsupported */}
       {extrasReady && !isXPPage && <WebMcpTools />}
+      {/* Once per visit: the chat button sends out a little orb to say hi */}
+      {extrasReady && !isXPPage && <ChatNudge />}
       {/* {showLoading && <GifLoadingScreen onComplete={handleLoadingComplete} />} */}
       {!showLoading && (
         <>
