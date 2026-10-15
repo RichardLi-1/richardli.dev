@@ -119,6 +119,7 @@ interface Target {
   lineCenterY: number | null // text mode: vertical centre of the line, so the beam snaps to it
   cornerShape: string // highlight mode: the element's CSS corner-shape (e.g. "squircle"); "" = round
   beamHeight: number
+  clipEls: HTMLElement[] // highlight mode: ancestors that clip the element (scroll areas etc.)
 }
 
 const baseTarget: Target = {
@@ -131,6 +132,7 @@ const baseTarget: Target = {
   padY: 0,
   lineCenterY: null,
   beamHeight: 0,
+  clipEls: [],
   cornerShape: "",
 }
 const DEFAULT_TARGET: Target = baseTarget
@@ -256,6 +258,21 @@ function findTextLineAtPoint(x: number, y: number): { lineCenterY: number; heigh
   return null
 }
 
+/**
+ * Ancestors that clip `el` (any overflow other than visible): scroll areas like
+ * the chat's message list, rounded cards, etc. The platter lives in its own
+ * layer above the page, so without this it would draw the parts of a
+ * half-scrolled-away element that the page itself has hidden.
+ */
+function findClipAncestors(el: HTMLElement): HTMLElement[] {
+  const clips: HTMLElement[] = []
+  for (let node = el.parentElement; node && node !== document.body; node = node.parentElement) {
+    const style = getComputedStyle(node)
+    if (style.overflowX !== "visible" || style.overflowY !== "visible") clips.push(node)
+  }
+  return clips
+}
+
 /** Decides what the pointer should do for whatever is under (x, y). */
 function resolveTarget(x: number, y: number): Target {
   const hit = document.elementFromPoint(x, y)
@@ -332,6 +349,7 @@ function resolveTarget(x: number, y: number): Target {
       cornerShape: readCornerShape(style),
       padX: needsPadding ? HIGHLIGHT_PAD_X : 0,
       padY: needsPadding ? HIGHLIGHT_PAD_Y : 0,
+      clipEls: findClipAncestors(interactive),
     }
   }
 
@@ -508,6 +526,9 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
 
   let shownMode = ""
   let shownCornerShape = ""
+  // Highlight mode: the visible area the platter is trimmed to (see findClipAncestors)
+  let clip: { top: number; right: number; bottom: number; left: number } | null = null
+  let shownClipPath = "none"
   let shownPressed = false
   let nativeClassOn = false
   let rafId = 0
@@ -671,6 +692,7 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
     }
 
     glareBase = null
+    clip = null
 
     switch (target.mode) {
       case "default":
@@ -724,6 +746,18 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
         h.target = (base.h + target.padY * 2) * platterScale
         r.target = Math.min(target.radius + Math.min(target.padX, target.padY), Math.min(w.target, h.target) / 2)
         opacity.target = 1
+        // The visible area: where all the clipping ancestors' boxes overlap
+        for (const clipEl of target.clipEls) {
+          const box = clipEl.getBoundingClientRect()
+          clip = clip
+            ? {
+                top: Math.max(clip.top, box.top),
+                right: Math.min(clip.right, box.right),
+                bottom: Math.min(clip.bottom, box.bottom),
+                left: Math.max(clip.left, box.left),
+              }
+            : { top: box.top, right: box.right, bottom: box.bottom, left: box.left }
+        }
         break
       }
 
@@ -782,6 +816,27 @@ function createCursorEngine(cursor: HTMLDivElement, glare: HTMLDivElement) {
       cursor.dataset.pressed = String(pressed)
       shownPressed = pressed
     }
+    // Trim the platter to the visible area, so it never draws over whatever is
+    // covering a half-scrolled-away element (e.g. the chat window's title bar).
+    // inset() is measured from the platter's own edges.
+    // 📖 Learn: CSS clip-path: inset()
+    let clipPath = "none"
+    if (clip) {
+      const left = x.value - width / 2
+      const top = y.value - height / 2
+      const inset = [
+        clip.top - top, // top
+        left + width - clip.right, // right
+        top + height - clip.bottom, // bottom
+        clip.left - left, // left
+      ].map((n) => Math.max(0, Math.round(n)))
+      if (inset.some((n) => n > 0)) clipPath = `inset(${inset.map((n) => `${n}px`).join(" ")})`
+    }
+    if (shownClipPath !== clipPath) {
+      cursor.style.clipPath = clipPath
+      shownClipPath = clipPath
+    }
+
     if (shownCornerShape !== target.cornerShape) {
       // setProperty with "" removes it, so the dot goes back to round
       cursor.style.setProperty("corner-shape", target.cornerShape)
