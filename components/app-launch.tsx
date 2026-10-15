@@ -160,6 +160,19 @@ function smoothstep(start: number, end: number, t: number) {
 
 const framesToMs = (frames: number) => (frames / SAMPLE_RATE) * 1000
 
+/**
+ * The element's CSS corner-shape ("squircle" on the cards and banners), or ""
+ * for plain round corners. The flying copy has to use the same shape: with
+ * only border-radius it got ordinary round corners, which look noticeably
+ * rounder than a squircle at the same radius. Browsers without corner-shape
+ * return "", and everything stays round.
+ * 📖 Learn: CSS corner-shape
+ */
+function readCornerShape(el: Element): string {
+  const value = getComputedStyle(el).getPropertyValue("corner-shape").trim()
+  return value === "round" ? "" : value
+}
+
 // ── Icon keyframes ───────────────────────────────────────────────────────────
 /**
  * Turns a path of visible boxes into keyframes for the icon's three layers:
@@ -423,12 +436,13 @@ export function launchApp({ href, source, backdrop = null, push, prefetch, banne
   const vh = window.innerHeight
   const card = { w: cardRect.width, h: cardRect.height }
   const cardRadius = parseFloat(getComputedStyle(source).borderTopLeftRadius) || 16
+  const cardCornerShape = readCornerShape(source)
   const start: Rect = { x: cardRect.left, y: cardRect.top, w: cardRect.width, h: cardRect.height }
   const predicted = predictTarget(href, vw, bannerHint)
 
   // Remember where the card was, so closing the project can fly back into it
   const shell = document.querySelector<HTMLElement>(".app-scroll-shell")
-  homeReturn = { href, scrollTop: shell?.scrollTop ?? 0, card: start, cardRadius, vw }
+  homeReturn = { href, scrollTop: shell?.scrollTop ?? 0, card: start, cardRadius, cardCornerShape, vw }
 
   // ── Build the overlay: dim → window (launch screen) → icon ──
   const overlay = document.createElement("div")
@@ -498,11 +512,13 @@ export function launchApp({ href, source, backdrop = null, push, prefetch, banne
   // its corners stay round; the final dissolve hides any difference from the
   // banner's own radius.
   iconBox.style.borderRadius = `${cardRadius}px`
+  iconBox.style.setProperty("corner-shape", cardCornerShape)
   // Window: a screen-sized box scaled down to the card, so give it an
   // elliptical radius in its own pixels that comes out exactly round at the
   // starting size. It stretches as the window grows, but the dim covers
   // everything around it within ~90ms.
   win.style.borderRadius = `${cardRadius / (start.w / vw)}px / ${cardRadius / (start.h / vh)}px`
+  win.style.setProperty("corner-shape", cardCornerShape)
 
   const launch: Launch = {
     href,
@@ -954,6 +970,7 @@ interface HomeReturn {
   scrollTop: number // homepage scroll position at the moment of the tap
   card: Rect // where the card was on screen (same again once scroll is restored)
   cardRadius: number
+  cardCornerShape: string // e.g. "squircle" (see readCornerShape)
   vw: number // window width at the time (if it changed, the layout did too)
 }
 let homeReturn: HomeReturn | null = null
@@ -1008,11 +1025,13 @@ function startClose(fromPath: string) {
   // Elliptical radius in the window's own pixels that comes out exactly
   // round at its *final* size (the card), where it's most visible
   win.style.borderRadius = `${record.cardRadius / (goal.w / vw)}px / ${record.cardRadius / (goal.h / vh)}px`
+  win.style.setProperty("corner-shape", record.cardCornerShape)
   const iconBox = document.createElement("div")
   iconBox.className = "app-launch-icon"
   iconBox.style.width = `${card.w}px`
   iconBox.style.height = `${card.h}px`
   iconBox.style.borderRadius = `${record.cardRadius}px`
+  iconBox.style.setProperty("corner-shape", record.cardCornerShape)
   const iconContent = document.createElement("div")
   iconContent.className = "app-launch-icon-content"
   iconContent.style.width = `${card.w}px`
