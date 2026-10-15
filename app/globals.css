@@ -1051,6 +1051,17 @@ html.ipad-cursor-on:not(.ipad-cursor-native) * {
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--text) 18%, transparent), 0 0 24px color-mix(in srgb, var(--text) 30%, transparent);
   animation: agent-highlight 1500ms ease-out forwards;
 }
+/* Touch screens (phones, tablets) */
+@media (pointer: coarse) {
+  /* iOS Safari zooms the whole page into any input with text under 16px */
+  .agent-orb-input { font-size: 16px; }
+  /* Bigger tap targets for the bubble's buttons (~40px instead of ~20px) */
+  .agent-orb-bubble { padding-right: 84px; }
+  .agent-orb-bubble-actions { top: 2px; right: 2px; }
+  .agent-orb-bubble-actions button { padding: 12px; }
+  /* No hover on touch: show the press instead */
+  .agent-orb-bubble-actions button:active { color: var(--text-2); }
+}
 @media (prefers-reduced-motion: reduce) {
   .agent-orb-anchor { transition: none; }
   .agent-orb-glow,
