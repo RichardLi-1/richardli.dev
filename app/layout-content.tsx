@@ -2,10 +2,10 @@
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
+import { usePathname } from "next/navigation"
 // Lenis smooth/slow scroll disabled for now — re-enable the import + effect below to restore.
 // import Lenis from "lenis"
 import { WindowsXPProvider } from "@/contexts/windows-xp-context"
-import { WindowsXPDesktop } from "@/components/windows-xp/desktop"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { GifLoadingScreen } from "@/components/gif-loading-screen"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -31,7 +31,9 @@ const WebMcpTools = dynamic(() => import("@/components/webmcp-tools").then((m) =
 // with LayoutClient (which renders the provider).
 function LayoutContent({ children }: { children: React.ReactNode }) {
   usePreserveM()
-  const { isXPMode, isPersonalized } = useWindowsXP()
+  const { isPersonalized } = useWindowsXP()
+  // Windows XP is its own page now (app/xp), with none of the site's chrome
+  const isXPPage = usePathname() === "/xp"
 
   // The extras mount once the page has loaded and the browser is idle, so they
   // don't compete with hydration and the first scroll. The native cursor shows
@@ -94,20 +96,22 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       {/* SwissGrid is always mounted; it renders nothing until Cmd+G is pressed */}
       <SwissGrid />
       {/* iPadOS-style pointer; off in XP mode so the XP desktop keeps its own cursors */}
-      {extrasReady && !isXPMode && <IPadCursor />}
+      {extrasReady && !isXPPage && <IPadCursor />}
       {/* Tells the iOS-style project launch animation when the new page has mounted */}
       <AppLaunchRouteWatcher />
       {/* The chatbot's orb form when it acts on the site ("Let Richard drive").
           Here in the layout so it survives page changes, e.g. during a tour. */}
-      {extrasReady && !isXPMode && <AgentOrb />}
+      {extrasReady && !isXPPage && <AgentOrb />}
       {/* Tools AI agents in the browser can call (WebMCP); does nothing where unsupported */}
-      {extrasReady && !isXPMode && <WebMcpTools />}
+      {extrasReady && !isXPPage && <WebMcpTools />}
       {/* {showLoading && <GifLoadingScreen onComplete={handleLoadingComplete} />} */}
       {!showLoading && (
         <>
-          {/* XP mode completely replaces the normal site with the desktop overlay */}
-          {isXPMode && <WindowsXPDesktop />}
-          {!isXPMode && (
+          {/* The XP page is full-screen on its own; every other page gets the
+              site's scroll shell and footer */}
+          {isXPPage ? (
+            children
+          ) : (
             <div className="app-scroll-shell">
               {children}
               <Footer />
