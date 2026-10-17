@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   const humanMeta: Record<string, string> = human
     ? {
         [human.label === "likely bot" ? "🤖 Human likelihood" : "🧍 Human likelihood"]:
-          `${human.score}/100 (${human.label})`,
+          `**${human.score}/100** (${human.label})`,
         "🧾 Why": human.reasons.join(", ") || "no signals either way",
       }
     : {}
