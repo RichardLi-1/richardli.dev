@@ -1,11 +1,11 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { trackEvent } from "@/lib/track"
 // The ?z / ?r / … → "Resume" table now lives in its own file, because
 // lib/outbound-links.ts uses it too. Edit referral sources there.
 import { REFERRAL_SOURCES } from "@/lib/referral-sources"
 import { aiAssistantFromHost } from "@/lib/ai-assistants"
+import { startHumanSignals } from "@/lib/human-score"
 
 // Fires a Discord webhook once per page load to log visitor info.
 // Using a ref (not state) for `hasTracked` avoids triggering a re-render —
@@ -77,6 +77,12 @@ export function usePageViewTracker() {
         : {}),
     }
 
+    // ─── Human-likelihood signals ─────────────────────────────────────────────
+    // Start counting mouse/scroll/touch/key input right away. The visit message
+    // waits a few seconds (see VISIT_DELAY_MS) so this has something to report;
+    // /api/track turns the raw counts into a 0–100 score.
+    const humanSignals = startHumanSignals()
+
     // ─── Bounce detection ─────────────────────────────────────────────────────
     // A "bounce" = the visitor saw only this one page and left quickly (<10s)
     // without clicking through anywhere. We check at the moment the page is
@@ -122,6 +128,7 @@ export function usePageViewTracker() {
           ...(rawLandingParams ? { "🔗 Params": `?${rawLandingParams}` } : {}),
           ...aiMeta,
         },
+        humanSignals: humanSignals.snapshot(),
       }
 
       // sendBeacon queues the request so it survives the page unload — a normal
@@ -135,6 +142,32 @@ export function usePageViewTracker() {
     }
 
     window.addEventListener("pagehide", reportBounceOnExit)
+
+    // ─── Visit message: wait, then send once ──────────────────────────────────
+    // The visit message waits VISIT_DELAY_MS so the human score has a few
+    // seconds of mouse/scroll/touch input to judge. Whichever happens FIRST
+    // sends it, and visitSent makes sure it only goes out once:
+    //   1. the delay passes (and the IP lookup is done)   → end of sendVisit()
+    //   2. the tab closes or navigates away               → "pagehide" below
+    //   3. a client-side navigation unmounts this page    → effect cleanup
+    //      ("pagehide" doesn't fire for in-app <Link> navigation)
+    // sendBeacon instead of trackEvent()'s fetch: a beacon still goes out while
+    // the page is being torn down, which case 2 needs.
+    const VISIT_DELAY_MS = 5_000
+    let visitPayload: { event: string; meta: Record<string, string> } | null = null
+    let visitSent = false
+
+    const flushVisit = () => {
+      if (visitSent || !visitPayload) return // already sent, or a skip rule stopped it
+      visitSent = true
+      const body = { ...visitPayload, humanSignals: humanSignals.snapshot() }
+      navigator.sendBeacon(
+        "/api/track",
+        new Blob([JSON.stringify(body)], { type: "application/json" }),
+      )
+    }
+
+    window.addEventListener("pagehide", flushVisit)
 
     const sendVisit = async () => {
       if (slashKeyHeld.current) {
@@ -176,16 +209,8 @@ export function usePageViewTracker() {
       sessionStorage.setItem("nav_path", JSON.stringify(pathHistory))
       const pathTrail = pathHistory.join(" → ")
 
-      // ipify is a free public API that returns the caller's public IP address.
-      // The try/catch ensures a failed IP lookup doesn't block the whole webhook.
-      let ip = "unknown"
-      try {
-        const res = await fetch("https://api.ipify.org?format=json")
-        const data = await res.json()
-        ip = data.ip || "unknown"
-      } catch (err) {
-        console.warn("Failed to get IP, sending notification without it.")
-      }
+      // (The IP lookup moved to the end: the message is now built first, so
+      // there's something to send even if the tab closes mid-lookup.)
 
       // Read ?param from the URL, look it up in REFERRAL_SOURCES, then strip it.
       // replaceState rewrites the URL bar without a page reload or a history entry —
@@ -228,9 +253,9 @@ export function usePageViewTracker() {
         window.history.replaceState({}, "", window.location.pathname)
       }
 
-      // Build the event label and pass structured metadata to trackEvent.
+      // Build the event label and structured metadata for flushVisit().
       // **bold** is Discord markdown — the source name will render bolded in the channel.
-      // trackEvent() calls /api/track on our own server — the Discord webhook
+      // It posts to /api/track on our own server — the Discord webhook
       // URL never leaves the server, so it can't be scraped from the browser.
       const eventLabel = isBot
         ? `🤖 Bot/crawler on ${window.location.pathname}`
@@ -242,16 +267,38 @@ export function usePageViewTracker() {
         ? `👀 New visitor — CUSTOM REFERRAL on ${window.location.pathname}`
         : `👀 New visitor on ${window.location.pathname}`
 
-      trackEvent(eventLabel, {
-        "🖥️ Device": `${deviceType} · ${platform}`,
-        "🛤️ Path": pathTrail,
-        "🕒 Time": new Date().toLocaleString(),
-        "🌐 IP": ip,
-        // Always kept, even when the label says "ChatGPT", so the real URL is visible
-        ...(rawParams ? { "🔗 Params": `?${rawParams}` } : {}),
-        ...aiMeta,
-        ...(isBot ? { "🔍 UA": navigator.userAgent } : {}),
-      })
+      // Build the message now; flushVisit() sends it (see the comment above it).
+      visitPayload = {
+        event: eventLabel,
+        meta: {
+          "🖥️ Device": `${deviceType} · ${platform}`,
+          "🛤️ Path": pathTrail,
+          "🕒 Time": new Date().toLocaleString(),
+          "🌐 IP": "unknown", // filled in below once ipify answers
+          // Always kept, even when the label says "ChatGPT", so the real URL is visible
+          ...(rawParams ? { "🔗 Params": `?${rawParams}` } : {}),
+          ...aiMeta,
+          ...(isBot ? { "🔍 UA": navigator.userAgent } : {}),
+        },
+      }
+
+      // ipify is a free public API that returns the caller's public IP address.
+      // The try/catch ensures a failed IP lookup doesn't block the whole webhook.
+      const lookUpIp = async () => {
+        try {
+          const res = await fetch("https://api.ipify.org?format=json")
+          const data = await res.json()
+          if (data.ip && visitPayload) visitPayload.meta["🌐 IP"] = data.ip
+        } catch (err) {
+          console.warn("Failed to get IP, sending notification without it.")
+        }
+      }
+      const waitForSignals = new Promise((resolve) => setTimeout(resolve, VISIT_DELAY_MS))
+
+      // Promise.all waits for BOTH: the IP (usually <1s) and the 5s window.
+      // 📖 Learn: Promise.all — https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+      await Promise.all([lookUpIp(), waitForSignals])
+      flushVisit() // no-op if pagehide or unmount already sent it
     }
 
     sendVisit()
@@ -260,6 +307,11 @@ export function usePageViewTracker() {
       window.removeEventListener("keydown", handleKeyDown)
       window.removeEventListener("keyup", handleKeyUp)
       window.removeEventListener("pagehide", reportBounceOnExit)
+      window.removeEventListener("pagehide", flushVisit)
+      // In-app navigation away from this page: send now with what we have
+      // (case 3 above), then stop listening for input.
+      flushVisit()
+      humanSignals.stop()
     }
   }, [])
 }

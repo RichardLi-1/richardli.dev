@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server"
+import { scoreVisit } from "@/lib/human-score"
 
 // POST /api/track
 // Body: { event: string, meta?: Record<string, string> }
@@ -18,8 +19,9 @@ export async function POST(req: NextRequest) {
     return new Response(null, { status: 204 })
   }
 
-  // Parse the event name and any extra metadata the client sent
-  const { event, meta = {} } = await req.json()
+  // Parse the event name and any extra metadata the client sent.
+  // humanSignals is optional: only page visits and bounces send it.
+  const { event, meta = {}, humanSignals } = await req.json()
 
   // Enrich events with geolocation from edge/proxy headers when available.
   // Why server-side? It avoids exposing API keys and removes client latency.
@@ -35,7 +37,21 @@ export async function POST(req: NextRequest) {
   const postalCode = headers.get("x-vercel-ip-postal-code")
   const timezone = headers.get("x-vercel-ip-timezone")
 
+  // Human-likelihood score: combines what the browser reported with this
+  // request's own headers (see lib/human-score.ts for every rule and weight).
+  // The typeof check guards against a hand-crafted POST sending junk here.
+  const human =
+    humanSignals && typeof humanSignals === "object" ? scoreVisit(humanSignals, headers) : null
+  const humanMeta: Record<string, string> = human
+    ? {
+        [human.label === "likely bot" ? "🤖 Human likelihood" : "🧍 Human likelihood"]:
+          `${human.score}/100 (${human.label})`,
+        "🧾 Why": human.reasons.join(", ") || "no signals either way",
+      }
+    : {}
+
   const enrichedMeta: Record<string, string> = {
+    ...humanMeta, // first, so it's the line right under the event title
     ...(meta as Record<string, string>),
     ...(edgeIp ? { "🌐 Edge IP": edgeIp } : {}),
     ...(country ? { "🌍 Country": country } : {}),
