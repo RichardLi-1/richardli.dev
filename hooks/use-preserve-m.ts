@@ -43,7 +43,12 @@ export function usePreserveM() {
     if (changed) {
       const newSearch = params.toString()
       const newUrl = window.location.pathname + (newSearch ? `?${newSearch}` : "") + window.location.hash
-      window.history.replaceState(null, "", newUrl)
+      // Pass the existing state through, never null: Next.js keeps its own data
+      // (__NA + the route tree) in history.state, and this effect runs before
+      // Next patches replaceState to preserve it. With null state, Next ignores
+      // Back to this entry (URL changes, page doesn't).
+      // 📖 Learn: history.state, React effect order (children before parents)
+      window.history.replaceState(window.history.state, "", newUrl)
     }
   }, [])
 

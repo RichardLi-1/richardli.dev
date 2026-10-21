@@ -250,7 +250,8 @@ export function usePageViewTracker() {
       }
       // Always strip query params so the URL stays clean for the visitor
       if (rawParams) {
-        window.history.replaceState({}, "", window.location.pathname)
+        // Keep Next.js's history state (see use-preserve-m.ts); {} would make Back reload the page
+        window.history.replaceState(window.history.state, "", window.location.pathname)
       }
 
       // Build the event label and structured metadata for flushVisit().
