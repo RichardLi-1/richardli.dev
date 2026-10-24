@@ -1,5 +1,5 @@
 "use client"
-import type { ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { ArrowUpRight, Play } from "lucide-react"
 import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
@@ -8,6 +8,11 @@ import { startAgentRun, EXPAND_CHAT_EVENT } from "@/components/agent-orb"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { runChatTurn } from "@/lib/chat-client"
 import { cn } from "@/lib/utils"
+// Each image's width/height, generated from public/images/projects by scripts/generate-image-placeholders.mjs
+// before every dev/build (same file CaseStudyImage uses)
+import placeholders from "@/lib/image-placeholders.json"
+
+const IMAGE_SIZES = placeholders as Record<string, { w: number; h: number }>
 
 // Starts the AI tour exactly like typing "give me a tour" into the chat (components/chat-box.tsx):
 // the bot plans the stops and replies with a start_tour action, then the agent orb
@@ -34,11 +39,63 @@ function OrbVisual() {
   )
 }
 
+// A card image with a skeleton: a shimmering box in the image's exact shape until it loads,
+// then the image fades in. Knowing the shape up front (IMAGE_SIZES) is what keeps the masonry
+// columns from jumping as images arrive. Images with no known size (outside public/images/projects,
+// or transparent ones the generator skips) get a 16:10 box that gives way to the real shape on load.
+function ExperimentImage({ src, alt, className }: { src: string; alt: string; className?: string }) {
+  const size = IMAGE_SIZES[src]
+  const ref = useRef<HTMLImageElement>(null)
+  const [loaded, setLoaded] = useState(false)
+
+  // The page is pre-rendered, so a cached image can finish before React attaches onLoad.
+  // If it's already there, skip the skeleton. 📖 Learn: HTMLImageElement.complete, hydration
+  useEffect(() => {
+    if (ref.current?.complete && ref.current.naturalWidth > 0) setLoaded(true)
+  }, [src])
+
+  return (
+    <div
+      className={cn("relative", className)}
+      style={{ aspectRatio: size ? `${size.w} / ${size.h}` : loaded ? undefined : "16 / 10" }}
+    >
+      {!loaded && (
+        // The sweep reuses the `shimmer` keyframes in globals.css; motion-reduce turns it off
+        // for visitors who ask their OS for less motion. 📖 Learn: prefers-reduced-motion
+        <div
+          aria-hidden
+          className="absolute inset-0 animate-[shimmer_1.4s_ease-in-out_infinite] motion-reduce:animate-none"
+          style={{
+            background: "linear-gradient(100deg, var(--surface) 30%, var(--surface-hover) 50%, var(--surface) 70%)",
+            backgroundSize: "300% 100%",
+          }}
+        />
+      )}
+      <img
+        ref={ref}
+        src={src}
+        alt={alt}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        style={{
+          display: "block",
+          width: "100%",
+          height: size ? "100%" : "auto", // known size: fill the reserved box; unknown: natural height
+          opacity: loaded ? 1 : 0,
+          transition: "opacity 300ms ease",
+        }}
+      />
+    </div>
+  )
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // EDITABLE DATA — add / remove / reorder experiments here.
 // Images can be any aspect ratio: tall and wide ones are what make the
-// Pinterest-style stagger. Put files in public/images/ and reference them as
-// "/images/...". The render code below never needs to change.
+// Pinterest-style stagger. Put files under public/images/projects/ (e.g.
+// public/images/projects/experiments/) and reference them as "/images/projects/...":
+// images there get their exact shape reserved while they load. The render code
+// below never needs to change.
 // ═══════════════════════════════════════════════════════════════════════════
 
 type Experiment = {
@@ -56,7 +113,7 @@ type Experiment = {
 const EXPERIMENTS: Experiment[] = [
   {
     title: "Data-Surveying Firefighting Helmet (1st at Hack the Valley!)",
-    image: "/images/pyrosense-thumbnail.jpg",
+    image: "/images/projects/experiments/pyrosense-thumbnail.jpg",
     //description: "Data-surveying firefighting helmet",
     link: "https://devpost.com/software/pyrosafe",
   },
@@ -74,7 +131,7 @@ const EXPERIMENTS: Experiment[] = [
   },
   {
     title: "Bike Parking Alliance of Toronto Website (recently redesigned!)",
-    image: "/images/bpat-site.jpg",
+    image: "/images/projects/experiments/bpat-site.jpg",
     //description: "A virtual father Chrome extension you never knew you needed",
     link: "https://bpat.ca/", // internal link: opens the existing case study page
   },
@@ -93,7 +150,7 @@ const EXPERIMENTS: Experiment[] = [
   },
   {
     title: "This website, recreated as a Windows XP desktop",
-    image: "/images/xp-desktop.jpg", // screenshot of /xp, cropped above the taskbar
+    image: "/images/projects/experiments/xp-desktop.jpg", // screenshot of /xp, cropped above the taskbar
     //description: "",
     link: "/xp", // internal link: the standalone XP desktop page
   },
@@ -128,28 +185,18 @@ function ExperimentCard({ experiment }: { experiment: Experiment }) {
             style={{ display: "block", width: "100%", height: "auto" }}
           />
         ) : (
-          // height: auto keeps each image's natural aspect ratio, which creates the uneven column heights.
-          // With an imageDark, both images render and CSS hides one per theme (next-themes puts
-          // a "dark" class on <html>). display lives in className, not style, because an inline
-          // display: block would override dark:hidden. 📖 Learn: Tailwind dark: variant (class strategy)
-          <>
-            <img
-              src={experiment.image}
-              alt={experiment.title}
-              loading="lazy"
-              className={cn("block", experiment.imageDark && "dark:hidden")}
-              style={{ width: "100%", height: "auto" }}
-            />
-            {experiment.imageDark && (
-              <img
-                src={experiment.imageDark}
-                alt={experiment.title}
-                loading="lazy"
-                className="hidden dark:block"
-                style={{ width: "100%", height: "auto" }}
-              />
-            )}
-          </>
+          // Each image keeps its natural aspect ratio, which creates the uneven column heights.
+          // With an imageDark, both render and CSS hides one per theme (next-themes puts a "dark"
+          // class on <html>); the hidden one never downloads, since lazy images that aren't shown
+          // aren't fetched. 📖 Learn: Tailwind dark: variant (class strategy)
+          experiment.image && (
+            <>
+              <ExperimentImage src={experiment.image} alt={experiment.title} className={cn(experiment.imageDark && "dark:hidden")} />
+              {experiment.imageDark && (
+                <ExperimentImage src={experiment.imageDark} alt={experiment.title} className="hidden dark:block" />
+              )}
+            </>
+          )
         )}
       </div>
 

@@ -403,6 +403,17 @@ h3 {
   filter: invert(1);
 }
 
+/* ── Windows XP desktop font ─────────────────────────────────────── */
+/* The XP desktop (components/windows-xp/desktop.tsx) uses XP's own UI font, not the
+   site's Toronto Subway. `*` is needed because headings don't inherit: the global h1
+   rule sets SFCamera on them directly, and `.xp-desktop *` is more specific than `h1`.
+   Inline styles (Notepad's Courier New) still win. Macs have no Segoe UI, so they
+   fall back to Tahoma, which is what XP itself used. */
+.xp-desktop,
+.xp-desktop * {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
 /* ── Squircles ──────────────────────────────────────────────────── */
 @supports not (corner-shape: squircle) {
   .squircle    { border-radius: 3px !important; }
