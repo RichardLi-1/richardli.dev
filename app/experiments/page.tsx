@@ -56,7 +56,7 @@ type Experiment = {
 const EXPERIMENTS: Experiment[] = [
   {
     title: "Data-Surveying Firefighting Helmet (1st at Hack the Valley!)",
-    image: "/images/PyroSense Thumbnail.png",
+    image: "/images/pyrosense-thumbnail.jpg",
     //description: "Data-surveying firefighting helmet",
     link: "https://devpost.com/software/pyrosafe",
   },
@@ -74,7 +74,7 @@ const EXPERIMENTS: Experiment[] = [
   },
   {
     title: "Bike Parking Alliance of Toronto Website (recently redesigned!)",
-    image: "/images/bpat-site.png",
+    image: "/images/bpat-site.jpg",
     //description: "A virtual father Chrome extension you never knew you needed",
     link: "https://bpat.ca/", // internal link: opens the existing case study page
   },
