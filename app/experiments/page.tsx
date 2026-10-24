@@ -93,7 +93,7 @@ const EXPERIMENTS: Experiment[] = [
   },
   {
     title: "This website, recreated as a Windows XP desktop",
-    image: "/images/windows-xp-wallpaper-wide.jpeg", // placeholder until there's a screenshot of /xp
+    image: "/images/xp-desktop.jpg", // screenshot of /xp, cropped above the taskbar
     //description: "",
     link: "/xp", // internal link: the standalone XP desktop page
   },
