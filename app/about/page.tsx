@@ -22,7 +22,7 @@ const SOCIALS = [
   //{ label: "Devpost", href: "#" },
 ]
 
-const EMAIL = "richardli0@outlook.com"
+const EMAIL = "r575li@uwaterloo.ca"
 
 // Sticker images for the "Things I love" masonry grid
 // Alt text helps AI crawlers (and screen readers) understand visual content.

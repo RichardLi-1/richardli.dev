@@ -17,7 +17,7 @@ import { CaseStudyImage } from "@/components/case-study-image"
 // Prefilled mailto for the confidential card. encodeURIComponent-style escaping is
 // written out literally here (%20, %0A) to match how the other case studies do it.
 const CONFIDENTIAL_MAILTO =
-  "mailto:richardli0@outlook.com?subject=AMD%20Case%20Study&body=Hi%20Richard%2C%0A%0AI%27d%20like%20to%20hear%20more%20about%20your%20work%20at%20AMD.%0A%0A"
+  "mailto:r575li@uwaterloo.ca?subject=AMD%20Case%20Study&body=Hi%20Richard%2C%0A%0AI%27d%20like%20to%20hear%20more%20about%20your%20work%20at%20AMD.%0A%0A"
 
 export default function AMDPage() {
   usePageViewTracker()
