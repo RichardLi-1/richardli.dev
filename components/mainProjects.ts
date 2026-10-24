@@ -85,7 +85,7 @@ export const mainProjects = [
     colors: "#222222",
     externalLink: "https://transitcontrol.richardli.dev/",
     externalOnly: true,
-    hidden: false,
+    hidden: true, // moved to the Experiments page (app/experiments/page.tsx)
   },
 
     {
@@ -115,6 +115,7 @@ export const mainProjects = [
     tags: ["Chrome Extension", "JS", "Utilities"],
     colors: "#673435",
     externalLink: "https://chromewebstore.google.com/detail/father-figure/dmkminnihibbmkjahphedaldbldpabnl",
+    hidden: true, // moved to the Experiments page; the /fatherfigure case study still works
   },
   {
     id: "salespatriot",
