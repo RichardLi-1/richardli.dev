@@ -305,6 +305,15 @@ export function AnimatedHeader({
 
   const navItems = getNavItems()
 
+  // Is this nav link the page we're on? (used to bold the current link)
+  // Home must match exactly, since "/" is the start of every path. Other links match
+  // their whole section, so /transit/hypo-maps still marks "Transit" (href /transit/fanning).
+  const isActiveLink = (href: string) => {
+    if (href === "/") return pathname === "/"
+    const section = "/" + href.split("/")[1] // "/transit/fanning" → "/transit"
+    return pathname.startsWith(section)
+  }
+
   // Return nothing if inside the project split-pane iframe
   if (isPanel) return null
 
@@ -335,7 +344,8 @@ export function AnimatedHeader({
               target={item.external ? "_blank" : undefined}
               rel={item.external ? "noopener noreferrer" : undefined}
               className="nav-item"
-              style={{ fontSize: "14px", padding: "4px 8px" }}
+              aria-current={isActiveLink(item.href) ? "page" : undefined}
+              style={{ fontSize: "14px", padding: "4px 8px", fontWeight: isActiveLink(item.href) ? "bold" : undefined }}
             >
               {/* Render a home icon instead of the word "Home" to save space */}
               {item.label === "Home" ? <Home className="w-3 h-3" /> : item.label}
@@ -672,7 +682,13 @@ export function AnimatedHeader({
                 // { href: "/about", label: "About" },
               ].map((item, i) => (
                 <li key={i}>
-                  <a href={item.href} className="nav-item">
+                  {/* aria-current tells screen readers this link is the page you're on */}
+                  <a
+                    href={item.href}
+                    className="nav-item"
+                    aria-current={isActiveLink(item.href) ? "page" : undefined}
+                    style={{ fontWeight: isActiveLink(item.href) ? "bold" : undefined }}
+                  >
                     {item.label}
                   </a>
                 </li>

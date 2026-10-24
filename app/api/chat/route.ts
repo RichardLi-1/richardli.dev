@@ -44,26 +44,85 @@ function checkRateLimit(ip: string): { allowed: boolean; message?: string } {
   return { allowed: true }
 }
 
-// Server-side alert webhook. Set DISCORD_ALERT_WEBHOOK_URL to send alerts to a separate
-// channel; otherwise it falls back to the existing chatbot-activity webhook.
-const DISCORD_ALERT_WEBHOOK_URL =
-  process.env.DISCORD_ALERT_WEBHOOK_URL ??
-  "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX"
+// Server-side alert webhook, from the environment only (.env.local + Vercel env vars) so the
+// URL never ships in the repo. Anyone holding a webhook URL can post to the channel.
+// If it isn't set, alerts are skipped with a console warning.
+const DISCORD_ALERT_WEBHOOK_URL = process.env.DISCORD_ALERT_WEBHOOK_URL
 
 // Cooldown so one outage (e.g. credits running out) sends one ping, not one per visitor.
 // Key = error message, value = last time we alerted for it.
 const lastAlertAt = new Map<string, number>()
 const ALERT_COOLDOWN_MS = 10 * 60_000
 
+// Your Discord user ID, for a real ping. Webhooks can't ping by username ("@richard.li" stays plain
+// text); they need <@ID>. Get it in Discord: Settings → Advanced → Developer Mode on, then
+// right-click your name → Copy User ID. Without it, the urgent alert falls back to @everyone.
+const DISCORD_RICHARD_USER_ID = process.env.DISCORD_RICHARD_USER_ID
+
+// Out of API credits: Anthropic answers 402 with error type "billing_error". Older API versions
+// sent a 400 whose message said "credit balance is too low", so that's checked too. Checked by
+// status, not `.type`, because the installed SDK (0.78) doesn't expose `.type` on errors yet.
+function isOutOfCredits(error: unknown) {
+  if (!(error instanceof Anthropic.APIError)) return false
+  if (error.status === 402) return true
+  return error.status === 400 && /credit balance/i.test(error.message)
+}
+
+// The out-of-credits alert: loud on purpose. tts makes Discord read it aloud to anyone with
+// the channel open. Re-sends every ALERT_COOLDOWN_MS while credits stay at zero.
+async function alertOutOfCredits(webhookUrl: string, error: unknown, where: string) {
+  const ping = DISCORD_RICHARD_USER_ID ? `<@${DISCORD_RICHARD_USER_ID}>` : "@everyone"
+  await fetch(webhookUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      content:
+        `${ping} 🚨🚨🚨 **URGENT!!!!** 🚨🚨🚨\n` +
+        `😱😱😱 **THE CHATBOT IS OUT OF API CREDITS!!!** 💸🔥💸🔥\n` +
+        `Every visitor who opens the chat is getting an error RIGHT NOW 😭😭\n` +
+        `👉 **TOP UP ASAP:** https://console.anthropic.com/settings/billing 🙏🙏🙏`,
+      tts: true,
+      // Only ping who we name: you if the ID is set, otherwise everyone
+      allowed_mentions: DISCORD_RICHARD_USER_ID ? { users: [DISCORD_RICHARD_USER_ID] } : { parse: ["everyone"] },
+      embeds: [
+        {
+          title: "🔥🔥 OUT OF API CREDITS 🔥🔥",
+          color: 0xed4245, // Discord red
+          fields: [
+            { name: "Where", value: where, inline: true },
+            { name: "Repeats", value: `every ${ALERT_COOLDOWN_MS / 60_000} min until fixed 😤`, inline: true },
+          ],
+          description: "```" + String(error).slice(0, 4000) + "```",
+          footer: { text: new Date().toLocaleString() },
+        },
+      ],
+    }),
+  })
+}
+
 async function alertDiscord(error: unknown, where: string) {
-  const message = String(error)
+  // Checked once here, so the code below knows the URL is a string, not undefined
+  const webhookUrl = DISCORD_ALERT_WEBHOOK_URL
+  if (!webhookUrl) {
+    console.warn("DISCORD_ALERT_WEBHOOK_URL is not set; skipping Discord alert for:", String(error))
+    return
+  }
+
+  const outOfCredits = isOutOfCredits(error)
+  // One cooldown key for every out-of-credits error, so slightly different messages
+  // (greeting vs chat) don't each send their own ping
+  const message = outOfCredits ? "out-of-credits" : String(error)
   const now = Date.now()
   const last = lastAlertAt.get(message)
   if (last && now - last < ALERT_COOLDOWN_MS) return
   lastAlertAt.set(message, now)
 
   try {
-    await fetch(DISCORD_ALERT_WEBHOOK_URL, {
+    if (outOfCredits) {
+      await alertOutOfCredits(webhookUrl, error, where)
+      return
+    }
+    await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
