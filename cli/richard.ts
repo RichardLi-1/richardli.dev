@@ -42,7 +42,7 @@ const Q_PATTERN = /\[Q:\s*(.+?)\][\s\n]*$/
 
 // The header's Email / LinkedIn / GitHub icons (components/animated-header.tsx).
 const CONTACT_LINKS = [
-  { label: "Email", hint: "richardli0@outlook.com", url: "mailto:richardli0@outlook.com" },
+  { label: "Email", hint: "r575li@uwaterloo.ca", url: "mailto:r575li@uwaterloo.ca" },
   { label: "LinkedIn", hint: "in/richardli0", url: "https://www.linkedin.com/in/richardli0/" },
   { label: "GitHub", hint: "RichardLi-1", url: "https://github.com/RichardLi-1" },
 ]

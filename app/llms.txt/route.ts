@@ -52,7 +52,7 @@ ${caseStudyLines.join("\n")}
 
 ## Contact
 
-- Email: richardli0@outlook.com
+- Email: r575li@uwaterloo.ca
 `
 
   return new Response(body, {

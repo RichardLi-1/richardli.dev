@@ -495,7 +495,7 @@ export default function TransitPlannerProjectPage() {
 
             <h2 id="conclusion" className="font-semibold mt-8 mb-2 text-2xl">Conclusion</h2>
             <p className="mb-2 mt-4">This project has introduced me to much of the small but active community of transit data and modelling professionals, from whom I have a lot to learn from.</p>
-             <p className="mb-2 mt-4">I hope to make this project either useful professionally or as an educational tool or game for transit enthusiasts. If you have any feedback or suggestions, or would like to collaborate, please <a href="mailto:richardli0@outlook.com?subject=Transit%20Planner%20Collaboration&body=Hi%20Richard%2C%0A%0AI%27d%20love%20to%20collaborate%20on%20Transit%20Planner.%0A%0A" style={{ color: "var(--text)", textDecoration: "underline" }}>reach out</a>!</p>
+             <p className="mb-2 mt-4">I hope to make this project either useful professionally or as an educational tool or game for transit enthusiasts. If you have any feedback or suggestions, or would like to collaborate, please <a href="mailto:r575li@uwaterloo.ca?subject=Transit%20Planner%20Collaboration&body=Hi%20Richard%2C%0A%0AI%27d%20love%20to%20collaborate%20on%20Transit%20Planner.%0A%0A" style={{ color: "var(--text)", textDecoration: "underline" }}>reach out</a>!</p>
               <p className="mb-2 mt-4">Also big shoutout to Fiona, Evan, and Chris for building this with me.</p>
 
             <p className="mt-4" style={{ color: "var(--text-3)" }}>

@@ -25,10 +25,11 @@ const activities = [
   "cooking new steak recipes",
   "drinking molly tea",
   "flibbertigibbeting with claude",
+  "reading the ISO 25012 standard",
 ]
 
 const currently = [
-  { image: "/logos/AMD_BIG.D.png", text: "Software Engineering @ AMD" },
+  { image: "/logos/AMD_BIG.D.png", text: "Applied AI/ML Engineering @ AMD" },
   { image: "/logos/hack-the-north.png", text: "Transportation @ Hack the North" },
   { image: "/logos/waterloo.png", text: "Systems Design Engineering @ UWaterloo" },
 ]
@@ -155,7 +156,7 @@ export default function PersonalWebsite() {
                 Richard Li is a software engineer and full-time public transit enthusiast.<mark className="hero-highlight"></mark>
               </h1>
               <p style={{ fontSize: 16, color: "var(--text-2)", letterSpacing: "0.02em" }}>
-                Most days, you'll find him —{" "}
+                Lately, you'll find him —{" "}
                 <span
                   key={activityIndex}
                   style={{

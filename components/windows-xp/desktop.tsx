@@ -171,10 +171,10 @@ function AboutMeContent() {
             <span className="text-lg">📧</span>
             Email:{" "}
             <a
-              href="mailto:richardli0@outlook.com?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D"
+              href="mailto:r575li@uwaterloo.ca?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D"
               className="text-blue-600 underline hover:text-blue-800 flex items-center gap-1"
             >
-              richardli0@outlook.com
+              r575li@uwaterloo.ca
             </a>
           </p>
           <p className="flex items-center gap-2">

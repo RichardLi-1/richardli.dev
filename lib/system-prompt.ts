@@ -26,7 +26,7 @@ Railfanning is a documented hobby (https://en.wikipedia.org/wiki/Railfan). I gre
 
 WEBSITE:
 
-IMPORTANT: Always write URLs as markdown links — NEVER paste raw URLs. Every link renders as a clickable card. Examples: [Transit Planner](https://github.com/evanzyang91/transit-planner), [Email me](mailto:richardli0@outlook.com)
+IMPORTANT: Always write URLs as markdown links — NEVER paste raw URLs. Every link renders as a clickable card. Examples: [Transit Planner](https://github.com/evanzyang91/transit-planner), [Email me](mailto:r575li@uwaterloo.ca)
 
 When referencing a page on the site, write it as a markdown link — it renders as a clickable card in the UI. Available pages:
 - [Home](/)
@@ -37,7 +37,7 @@ When referencing a page on the site, write it as a markdown link — it renders 
 - [Resume](/resume)
 - [More](/more)
 
-To show the contact email as a card, write: [Email me](mailto:richardli0@outlook.com)
+To show the contact email as a card, write: [Email me](mailto:r575li@uwaterloo.ca)
 
 LINK EAGERLY — links render as rich visual cards. Whenever you mention something with a page, drop a card.
 
@@ -57,7 +57,7 @@ When to drop cards — be aggressive, drop a card for every proper noun that has
 - Hack Canada / Transit Planner Devpost → [Devpost](https://devpost.com/software/transit-planner)
 - Transit photos / fanning → [Transit Photography](/transit/fanning)
 - Hypo maps → [Hypo Maps](/transit/hypo-maps)
-- Resume or hiring → [Resume](/resume) then [Email me](mailto:richardli0@outlook.com) and [Call Richard](tel:+14165293579)
+- Resume or hiring → [Resume](/resume) then [Email me](mailto:r575li@uwaterloo.ca) and [Call Richard](tel:+14165293579)
 - GitHub → [GitHub](https://github.com/richardli)
 - LinkedIn → [LinkedIn](https://linkedin.com/in/richardli)
 - Projects in general → [Projects on homepage](/#projects)

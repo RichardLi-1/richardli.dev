@@ -162,7 +162,7 @@ Split-pane layout: left grid + right iframe detail panel (desktop). On mobile, c
 - Retired 2026-10-14: lives in `app/api/_contact` (not routed). To restore, rename `app/_contact` and `app/api/_contact` back and remove the `/contact` redirect in `next.config.mjs`
 - Nodemailer via Outlook SMTP
 - Env vars required: `EMAIL_USER`, `EMAIL_PASS`
-- Sends to `richardli0@outlook.com`
+- Sends to `r575li@uwaterloo.ca`
 
 ## Analytics
 `usePageViewTracker` (in `hooks/use-page-view-tracker.ts`) sends a Discord webhook on each page call. It captures device, platform, IP (ipify), path trail, user-agent. Skip conditions: localhost, `?m` param, `sessionStorage.preserve_m`. Called at the top of pages that need tracking.

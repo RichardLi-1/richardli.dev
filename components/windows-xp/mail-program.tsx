@@ -119,7 +119,7 @@ export function MailProgram() {
             name="to"
             value={formData.to}
             onChange={handleChange}
-            placeholder="richardli0@outlook.com"
+            placeholder="r575li@uwaterloo.ca"
             className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>

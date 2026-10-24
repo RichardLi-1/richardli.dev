@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "richardli0@outlook.com",
+      to: "r575li@uwaterloo.ca",
       subject: `New Contact Form Message from ${fullName}`,
       // Replace newlines with <br> so multi-line messages render correctly in HTML email.
       html: `
