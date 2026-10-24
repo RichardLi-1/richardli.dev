@@ -1,11 +1,13 @@
 "use client"
 import type React from "react"
 import { useState, useEffect } from "react"
-import { Mail, Github, Linkedin } from "lucide-react"
+import { Github, Linkedin } from "lucide-react"
 import { Changelog, entries } from "@/components/changelog"
 import { trackEvent } from "@/lib/track"
 
 const base: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", color: "var(--text-3)" }
+
+const EMAIL = "r575li@uwaterloo.ca"
 
 // Shared icon-link styling — mirrors the header's social buttons so footer feels of-a-piece.
 // Hover lightens to --text (full opacity) for a subtle "press" effect on cold links.
@@ -36,6 +38,22 @@ function SocialIcon({
 export function Footer() {
   const [isPanel, setIsPanel] = useState(false)
   const [showChangelog, setShowChangelog] = useState(false)
+  // True for 2s after the email is copied, so the button reads "Copied!"
+  const [emailCopied, setEmailCopied] = useState(false)
+
+  const copyEmail = async () => {
+    trackEvent("✉️ Email clicked", { location: "footer" })
+    try {
+      // 📖 Learn: Clipboard API (navigator.clipboard), only works on https or localhost
+      await navigator.clipboard.writeText(EMAIL)
+      setEmailCopied(true)
+      setTimeout(() => setEmailCopied(false), 2000) // flip back to the address after 2s
+    } catch {
+      // Clipboard blocked (permissions, old browser): open the mail app instead so the click still does something
+      window.location.href = `mailto:${EMAIL}`
+    }
+  }
+
   // Hide the footer when rendered inside a split-pane project iframe (?panel=1) —
   // it looks wrong at the bottom of a narrow side panel.
   // Reads window.location in a useEffect to avoid SSR issues.
@@ -67,13 +85,24 @@ export function Footer() {
         <div className="mt-8 flex items-center justify-between gap-4">
           {/* Social icons — same handles/tracking as the desktop nav at animated-header.tsx:653-655 */}
           <div className="flex items-center gap-1 shrink-0">
-            <SocialIcon
-              href="mailto:richardli0@outlook.com?subject=Greetings!&body=Hi%20Richard%2C%0A%0A%0A%5BYour%20Name%5D"
-              label="Email"
-              onClick={() => trackEvent("✉️ Email clicked", { location: "footer" })}
+            {/* Email shows as text and copies on click (instead of a mailto icon) */}
+            <button
+              onClick={copyEmail}
+              aria-live="polite" // screen readers announce the switch to "Copied!"
+              style={{
+                ...base, fontSize: "14px",
+                background: "none", border: "none", cursor: "pointer", padding: "0 6px",
+                display: "inline-grid", transition: "color 0.15s",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
+              onMouseLeave={e => (e.currentTarget.style.color = "var(--text-3)")}
             >
-              <Mail className="w-4 h-4" />
-            </SocialIcon>
+              {/* Both labels share one grid cell. The hidden one still takes up space, so the
+                  button stays as wide as the email and the icons beside it don't jump.
+                  📖 Learn: CSS grid stacking with grid-area: 1 / 1 */}
+              <span style={{ gridArea: "1 / 1", visibility: emailCopied ? "hidden" : "visible" }}>{EMAIL}</span>
+              <span style={{ gridArea: "1 / 1", visibility: emailCopied ? "visible" : "hidden" }}>Copied!</span>
+            </button>
             <SocialIcon
               href="https://github.com/RichardLi-1"
               label="GitHub"
