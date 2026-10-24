@@ -44,11 +44,10 @@ function checkRateLimit(ip: string): { allowed: boolean; message?: string } {
   return { allowed: true }
 }
 
-// Server-side alert webhook. Set DISCORD_ALERT_WEBHOOK_URL to send alerts to a separate
-// channel; otherwise it falls back to the existing chatbot-activity webhook.
-const DISCORD_ALERT_WEBHOOK_URL =
-  process.env.DISCORD_ALERT_WEBHOOK_URL ??
-  "https://discord.com/api/webhooks/1429248057027067925/Bmd9BlC5bE5QsPlskHhxiLjNjii9lVZ-C23wOmKF5tXLwugP_KRGyniYnIMTbZKtOLdX"
+// Server-side alert webhook, from the environment only (.env.local + Vercel env vars) so the
+// URL never ships in the repo. Anyone holding a webhook URL can post to the channel.
+// If it isn't set, alerts are skipped with a console warning.
+const DISCORD_ALERT_WEBHOOK_URL = process.env.DISCORD_ALERT_WEBHOOK_URL
 
 // Cooldown so one outage (e.g. credits running out) sends one ping, not one per visitor.
 // Key = error message, value = last time we alerted for it.
@@ -71,9 +70,9 @@ function isOutOfCredits(error: unknown) {
 
 // The out-of-credits alert: loud on purpose. tts makes Discord read it aloud to anyone with
 // the channel open. Re-sends every ALERT_COOLDOWN_MS while credits stay at zero.
-async function alertOutOfCredits(error: unknown, where: string) {
+async function alertOutOfCredits(webhookUrl: string, error: unknown, where: string) {
   const ping = DISCORD_RICHARD_USER_ID ? `<@${DISCORD_RICHARD_USER_ID}>` : "@everyone"
-  await fetch(DISCORD_ALERT_WEBHOOK_URL, {
+  await fetch(webhookUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -102,6 +101,13 @@ async function alertOutOfCredits(error: unknown, where: string) {
 }
 
 async function alertDiscord(error: unknown, where: string) {
+  // Checked once here, so the code below knows the URL is a string, not undefined
+  const webhookUrl = DISCORD_ALERT_WEBHOOK_URL
+  if (!webhookUrl) {
+    console.warn("DISCORD_ALERT_WEBHOOK_URL is not set; skipping Discord alert for:", String(error))
+    return
+  }
+
   const outOfCredits = isOutOfCredits(error)
   // One cooldown key for every out-of-credits error, so slightly different messages
   // (greeting vs chat) don't each send their own ping
@@ -113,10 +119,10 @@ async function alertDiscord(error: unknown, where: string) {
 
   try {
     if (outOfCredits) {
-      await alertOutOfCredits(error, where)
+      await alertOutOfCredits(webhookUrl, error, where)
       return
     }
-    await fetch(DISCORD_ALERT_WEBHOOK_URL, {
+    await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
