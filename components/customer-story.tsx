@@ -10,6 +10,12 @@ import { mainProjects } from "@/components/mainProjects"
 // (app/transitplanner/case-study, app/amd/case-study). Each page composes
 // these with its own copy, since the stories don't share one shape.
 
+// Page width shared by the hero, body and "Read more" rows. 1800px spans most
+// of a MacBook Pro screen at the "More Space" setting (1800px wide on the 14").
+// Kept as one full class string so Tailwind can still find it when scanning.
+// 📖 Learn: Tailwind content scanning (why class names can't be built from pieces)
+const STORY_WIDTH = "max-w-[1800px]"
+
 export type Stat = { value: string; label: string }
 export type Quote = { text: string; name: string; role: string }
 
@@ -115,7 +121,7 @@ export function StoryHero({
   return (
     <section className="relative overflow-hidden">
       {backdrop}
-      <div className="relative mx-auto flex min-h-[80vh] max-w-7xl flex-col px-[var(--page-gutter)] pb-12 pt-24">
+      <div className={`relative mx-auto flex min-h-[80vh] ${STORY_WIDTH} flex-col px-[var(--story-gutter)] pb-12 pt-24`}>
         {/* flex-1 makes this block take all the height the stats don't use, and
             justify-center puts the text in the middle of it. Before, the whole
             column was pushed to the bottom (justify-end), leaving the title low
@@ -139,9 +145,11 @@ export function StoryHero({
             )}
           </StaggeredContent>
         </div>
-        {/* Stats stay pinned to the bottom edge of the hero */}
+        {/* Stats stay pinned to the bottom edge of the hero. Capped at 960px and
+            left-aligned (like textql.com) so the row doesn't stretch across the
+            wide page; on smaller screens it just fills the width. */}
         <StaggeredContent delay={200}>
-          <div className="mt-16 border-t pt-6" style={{ borderColor: "var(--border-2)" }}>
+          <div className="mt-16 max-w-[960px] border-t pt-6" style={{ borderColor: "var(--border-2)" }}>
             <StatRow stats={stats} />
           </div>
         </StaggeredContent>
@@ -222,13 +230,15 @@ export const BACKDROP_MASK: React.CSSProperties = {
 // Two-column body: sticky sidebar on the left, story on the right
 export function StoryBody({ sidebar, children }: { sidebar: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 md:gap-24 px-[var(--page-gutter)] py-16 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+    <div className={`mx-auto grid ${STORY_WIDTH} grid-cols-1 gap-12 md:gap-24 px-[var(--story-gutter)] py-16 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]`}>
       {/* 📖 Learn: position: sticky (md:sticky). self-start stops the grid from
           stretching the aside to full height, which would leave it no room to stick */}
       {/* Sidebar is deliberately quieter than the story: 13px text, labels at
           --text-4 and values at --text-3 (the story uses --text and --text-2) */}
       <aside className="space-y-6 self-start text-[13px] md:sticky md:top-24">{sidebar}</aside>
-      <article className="max-w-3xl [&_p]:leading-relaxed">{children}</article>
+      {/* No max-width here: headings and visuals use the whole column, and
+          story-article (globals.css) caps only the paragraphs */}
+      <article className="story-article [&_p]:leading-relaxed">{children}</article>
     </div>
   )
 }
@@ -288,7 +298,7 @@ export function ReadMoreProjects({ currentId }: { currentId: string }) {
 
   return (
     <section className="border-t" style={{ borderColor: "var(--border-2)" }}>
-      <div className="mx-auto max-w-7xl px-[var(--page-gutter)] py-16">
+      <div className={`mx-auto ${STORY_WIDTH} px-[var(--story-gutter)] py-16`}>
         <BracketLabel>Read more case studies</BracketLabel>
         <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
           {projects.map((project) => {
@@ -346,7 +356,7 @@ export function CollaborateCTA({
   }
 
   return (
-    <section className="px-[var(--page-gutter)] py-24 text-center">
+    <section className="px-[var(--story-gutter)] py-24 text-center">
       <BracketLabel>{label}</BracketLabel>
       <h2 className="text-3xl md:text-5xl" style={{ color: "var(--text)" }}>{heading}</h2>
       <form onSubmit={handleSubmit} className="mx-auto mt-10 flex max-w-xl flex-col items-center gap-6 sm:flex-row">

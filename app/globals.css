@@ -210,6 +210,10 @@ h3 {
    📖 Learn: CSS custom properties + media queries (a var can change per breakpoint) */
 :root {
   --page-gutter: 24px;
+  /* Case study pages (components/customer-story.tsx) are much wider, so they get
+     a roomier gutter that scales with the window: 6% of its width, never under
+     20px (phones) or over 112px (big screens). 📖 Learn: CSS clamp() */
+  --story-gutter: clamp(20px, 6vw, 112px);
 }
 
 @media (max-width: 767px) {
@@ -273,6 +277,25 @@ h3 {
    while the title is hovered instead. 📖 Learn: prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   .story-hero-title:hover .story-highlight { background-size: 100% 3px; }
+}
+
+/* Case study hero titles use Toronto Subway instead of the global h1 font
+   (SFCamera). A class beats the bare `h1` selector, so this wins.
+   📖 Learn: CSS specificity */
+.story-hero-title {
+  font-family: 'Toronto Subway', 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+/* Case study body: the column is wide, but body paragraphs stop at a readable
+   line length (~68 characters) instead of running to the right edge. The
+   opening paragraph (.story-lead) is bigger, so it may run wider. The second
+   rule wins because two classes outrank one class + one tag.
+   📖 Learn: the `ch` unit, line length ("measure") in typography */
+.story-article p {
+  max-width: 68ch;
+}
+.story-article .story-lead {
+  max-width: none;
 }
 
 .hero-sub {
@@ -425,7 +448,8 @@ h3 {
 }
 
 /* ── Windows XP desktop font ─────────────────────────────────────── */
-/* The XP desktop (components/windows-xp/desktop.tsx) uses XP's own UI font, not the
+/* The XP desktop (components/windows-xp/desktop.tsx) and its shutdown screens
+   (app/xp/page.tsx) use XP's own UI font, not the
    site's Toronto Subway. `*` is needed because headings don't inherit: the global h1
    rule sets SFCamera on them directly, and `.xp-desktop *` is more specific than `h1`.
    Inline styles (Notepad's Courier New) still win. Macs have no Segoe UI, so they

@@ -115,7 +115,7 @@ export default function AMDCaseStudyPage() {
           }
         >
           <StaggeredContent delay={300}>
-            <p className="text-2xl leading-snug" style={{ color: "var(--text)" }}>
+            <p className="story-lead text-2xl leading-snug" style={{ color: "var(--text)" }}>
               Standardize agent data retrieval with a single, fast, universal source of company data.
             </p>
             <p className="mt-6" style={{ color: "var(--text-2)" }}>

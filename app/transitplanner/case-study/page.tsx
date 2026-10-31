@@ -108,7 +108,7 @@ export default function TransitPlannerCaseStudyPage() {
           }
         >
           <StaggeredContent delay={300}>
-            <p className="text-2xl leading-snug" style={{ color: "var(--text)" }}>
+            <p className="story-lead text-2xl leading-snug" style={{ color: "var(--text)" }}>
               Transit planning runs on data most people never see: census blocks, travel times,
               ridership models, live vehicle feeds. Getting from &ldquo;this neighbourhood needs
               better transit&rdquo; to a route you can defend usually takes a professional planning team.
