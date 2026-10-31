@@ -281,9 +281,13 @@ h3 {
 
 /* Case study hero titles use Toronto Subway instead of the global h1 font
    (SFCamera). A class beats the bare `h1` selector, so this wins.
-   📖 Learn: CSS specificity */
+   Toronto Subway is a signage font with wide built-in letter gaps, which look
+   loose at 60px, so the title is tightened slightly (overrides h1's 0.01em).
+   `em` scales the tightening with the font size.
+   📖 Learn: CSS specificity, tracking for display type */
 .story-hero-title {
   font-family: 'Toronto Subway', 'Helvetica Neue', Helvetica, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 /* Case study body: the column is wide, but body paragraphs stop at a readable
