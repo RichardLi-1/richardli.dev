@@ -254,6 +254,27 @@ h3 {
   color: var(--text);
 }
 
+/* Highlighted phrase in case study hero titles (components/customer-story.tsx).
+   This is only the resting state: an underline with zero width, so hidden.
+   The sweep itself runs from JavaScript (useUnderlineSweep in the same file).
+   It's a background gradient, not a ::after line, because an inline background
+   continues across line wraps: a phrase split over two lines gets one sweep
+   that runs along line 1 and carries on into line 2.
+   📖 Learn: box-decoration-break (default "slice") */
+.story-highlight {
+  background-image: linear-gradient(var(--text-3), var(--text-3));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 0% 3px;
+  padding-bottom: 0.04em;
+}
+
+/* Reduced motion: the script skips the sweep, so show a plain underline
+   while the title is hovered instead. 📖 Learn: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .story-hero-title:hover .story-highlight { background-size: 100% 3px; }
+}
+
 .hero-sub {
   font-size: 12px;
   letter-spacing: 0.06em;

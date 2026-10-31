@@ -4,6 +4,7 @@ import { ArrowUpRight, Play } from "lucide-react"
 import { AnimatedPage } from "@/components/animated-page"
 import { AnimatedHeader } from "@/components/animated-header"
 import { StaggeredContent } from "@/components/staggered-content"
+import { TransitControlVisual } from "@/components/transit-control-visual/transit-control-visual"
 import { startAgentRun, EXPAND_CHAT_EVENT } from "@/components/agent-orb"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { runChatTurn } from "@/lib/chat-client"
@@ -119,7 +120,9 @@ const EXPERIMENTS: Experiment[] = [
   },
   {
     title: "Automatic Transit Control Simulator for the TTC",
-    image: "/images/projects/cbtc/thumbnail1.png",
+    // Drawn in code from recordings of the real simulator (components/transit-control-visual),
+    // so it stays accurate and keeps running instead of being a frozen screenshot
+    visual: <TransitControlVisual />,
     //description: "Simulating communications-based train control systems",
     link: "https://transitcontrol.richardli.dev/",
   },
