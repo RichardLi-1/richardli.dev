@@ -127,16 +127,6 @@ export const mainProjects = [
     colors: "#352F0C",
     hidden: true
   },
-  // {
-  //   id: "classprofile",
-  //   title: "SYDE Class of 2030 Profile",
-  //   year: "2025",
-  //   description: "WIP project...",
-  //   image: "",
-  //   logo: "",
-  //   tags: ["Community", "Web Development", "Data"],
-  //   colors: "",
-  // },
   /*{
     id: "4sight",
     banner: { aspect: 16 / 9, top: { mobile: 124, desktop: 228 } },
