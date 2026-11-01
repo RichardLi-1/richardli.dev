@@ -297,7 +297,7 @@ export function AnimatedHeader({
     return [
       //{ href: "/", label: "Home" },
       //{ href: "/#projects", label: "Projects" },
-      { href: "/experiments", label: "Experiments" },
+      //{ href: "/experiments", label: "Experiments" }, // hidden on mobile so the pill fits; still in desktop nav
       { href: "/transit/fanning", label: "Transit" },
       //{ href: "/about", label: "About" },
       ...rightLinks.map(l => ({ href: l.href, label: l.text, external: l.external })),
