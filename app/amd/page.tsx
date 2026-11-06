@@ -39,7 +39,7 @@ export default function AMDPage() {
           { id: "amd-infra", label: "Infrastructure" },
           { id: "amd-triage", label: "Build Triage" },
           { id: "amd-takeaways", label: "Takeaways" },
-          { id: "other", label: "Other Cool Things" },
+          { id: "other", label: "Outside the Lab" },
         ]} />
       )}
       <div className="mx-auto">
