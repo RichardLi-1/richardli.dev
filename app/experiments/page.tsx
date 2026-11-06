@@ -159,18 +159,20 @@ const EXPERIMENTS: Experiment[] = [
     //description: "",
     link: "/xp", // internal link: the standalone XP desktop page
   },
+  /* AI tour: hidden for now. Remove these comment markers to bring the card back.
   {
     title: "An AI guide that takes you on a tour of this site",
     visual: <OrbVisual />,
     description: "Click to start. The chatbot plans 3 to 5 stops, then a glowing orb flies you to each page, points at what matters, and explains it. Type anything or hit × to take back the wheel.",
     onClick: startAiTour,
   },
+  */
   {
     title: "Every Bike Share Toronto ride on one day, mapped",
     image: "/images/projects/experiments/bike-share-rides.jpg", // poster: a busy moment ~40% in, since the first frame is nearly empty
     video: "/videos/bike-share-rides.mp4",
     description: "45,305 rides on Thursday, August 13, 2026. Data: City of Toronto Open Data. Map © CARTO, © OpenStreetMap contributors.",
-    // No link yet: add `link` here with the X post URL once it's up
+    link: "https://x.com/transitfanner/status/2118788160641548581",
   },
 
 
