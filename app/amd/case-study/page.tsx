@@ -80,10 +80,6 @@ export default function AMDCaseStudyPage() {
           sidebar={
             <>
               <ShareButtons title="AMD Case Study" />
-              <SidebarField label="About this work">
-                Building a universal data context layer so internal agents can answer questions across
-                systems that don&apos;t talk to each other.
-              </SidebarField>
               <SidebarField label="Category">Work</SidebarField>
               <SidebarField label="Timeline">2026 - Present</SidebarField>
               <SidebarField label="Team">Internal platform / GPU driver and firmware engineering</SidebarField>

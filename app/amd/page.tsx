@@ -39,6 +39,7 @@ export default function AMDPage() {
           { id: "amd-infra", label: "Infrastructure" },
           { id: "amd-triage", label: "Build Triage" },
           { id: "amd-takeaways", label: "Takeaways" },
+          { id: "other", label: "Other Cool Things" },
         ]} />
       )}
       <div className="mx-auto">
@@ -101,19 +102,9 @@ export default function AMDPage() {
                   <Lock className="w-4 h-4" />
                 </span>
                 <div className="min-w-0">
-                  <p className="section-label mb-2">Confidential</p>
-                  <p className="mb-3">
+                  <p className="mt-1">
                     The details of this work are under NDA.
                   </p>
-                  <TrackedExternalLink
-                    projectId="amd"
-                    linkLabel="Email for details"
-                    location="confidential card"
-                    href={CONFIDENTIAL_MAILTO}
-                    className="inline-flex items-center justify-center squircle rounded-xl p-2 py-2.5 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90"
-                  >
-                    Email me for details
-                  </TrackedExternalLink>
                 </div>
               </div>
             </div>
@@ -162,7 +153,7 @@ export default function AMDPage() {
             <div className="py-8">
               <p className="section-label mb-2">The Mission</p>
               <p className="text-3xl leading-snug" style={{ color: "var(--text)" }}>
-                Give agents one fast, universal source of engineering data that's scattered across dozens of systems.
+                Standardize agent data retrieval with a fast, universal, self-evolving source of company data.
               </p>
             </div>
           </StaggeredContent>
@@ -228,6 +219,7 @@ export default function AMDPage() {
           </StaggeredContent>
           )}
 
+
           <StaggeredContent delay={400}>
             <div className="mb-8">
               <h2 id="amd-takeaways" className="font-bold mt-8 mb-4 text-2xl">Takeaways, so far</h2>
@@ -246,7 +238,56 @@ export default function AMDPage() {
             </div>
           </StaggeredContent>
 
+          <StaggeredContent delay={400}>
+            <div className="mb-8">
+              <h2 id="other" className="font-bold mt-8 mb-4 text-2xl">Outside the Lab</h2>
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Take Our Kids to Work Day</h3>
+              <p className="mb-4">
+                I was invited along my co-intern Shelly to introduce and speak to 100 grade 9 students at AMD's Take Our Kids to Work Day. We gave two quick talks on AMD and our experiences.
+              </p>
+              <CaseStudyImage
+                src="/images/projects/amd/take-our-kids-to-work-day.webp"
+                alt="Richard speaking into a microphone to a row of seated grade 9 students at AMD, with Shelly beside him and a Radeon wall behind them"
+                // Same setup as team-lunch below: reserve the image's box, load only near the viewport
+                width={1600}
+                height={1020}
+                loading="lazy"
+                className="w-full h-auto squircle rounded-lg mb-4"
+                style={{ borderRadius: 16 }}
+              />
+              <p className="mb-4">
+                Take Our Kids to Work Day is a national program in Ontario, which I never got to participate in due to COVID. So this opportunity was super fulfilling.
+              </p>
+
+              <h3 className="font-semibold mt-4 mb-2 text-lg">Apple picking</h3>
+              {/* Portrait photos: side by side on desktop, stacked on phones where two columns would be tiny.
+                  📖 Learn: Tailwind responsive prefixes (sm:) — https://tailwindcss.com/docs/responsive-design */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <CaseStudyImage
+                  src="/images/projects/amd/apple-picking-1.webp"
+                  alt="Group selfie at Applewood Farm, with two people balancing big pumpkins on their heads"
+                  width={1200}
+                  height={1600}
+                  loading="lazy"
+                  className="w-full h-auto squircle rounded-lg"
+                  style={{ borderRadius: 16 }}
+                />
+                <CaseStudyImage
+                  src="/images/projects/amd/apple-picking-2.webp"
+                  alt="The same group at Applewood Farm, laughing with the pumpkins still balanced on two heads"
+                  width={1200}
+                  height={1600}
+                  loading="lazy"
+                  className="w-full h-auto squircle rounded-lg"
+                  style={{ borderRadius: 16 }}
+                />
+              </div>
+            </div>
+          </StaggeredContent>
+
+
           <StaggeredContent delay={450}>
+            <h3 className="font-semibold mt-4 mb-2 text-lg">Team lunch</h3>
             <CaseStudyImage
               src="/images/projects/amd/team-lunch.webp"
               alt="Lunch with team"
@@ -260,6 +301,9 @@ export default function AMDPage() {
               className="w-full h-auto squircle rounded-lg"
               style={{ borderRadius: 16 }}
             />
+            <p className="mt-8 mb-4">
+              AMD was one of the best organization communities I've been a part of, and I'll never forget my experience.
+            </p>
           </StaggeredContent>
 
           {!isPanel && <RelatedProjects currentId="amd" />}
