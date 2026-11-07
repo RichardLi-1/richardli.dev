@@ -139,13 +139,13 @@ export default function PersonalWebsite() {
 
         <main ref={mainRef} style={{
           margin: "0 auto",
-          padding: isMobile ? "32px var(--page-gutter) 0" : "80px 40px 0",
+          padding: isMobile ? "24px var(--page-gutter) 0" : "80px 40px 0",
         }}>
 
           {/* ────────────────────── Hero ────────────────────── */}
           <StaggeredContent delay={0}>
             <section style={{
-              marginBottom: isMobile? 48 : 64,
+              marginBottom: isMobile? 36 : 64,
                maxWidth: 700,
               // Mobile feed: the hero is the first snap stop. The huge scroll margin
               // asks to snap *above* the page top, which the browser clamps to 0,
@@ -177,7 +177,7 @@ export default function PersonalWebsite() {
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
               gap: isMobile ? 32 : 48,
-              marginBottom: isMobile ? 48 : 64,
+              marginBottom: isMobile ? 36 : 64,
             }}>
               <div>
                 <p className="section-label" style={{ marginBottom: 14 }}>Currently</p>
