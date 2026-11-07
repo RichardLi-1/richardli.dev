@@ -139,7 +139,7 @@ export default function PersonalWebsite() {
 
         <main ref={mainRef} style={{
           margin: "0 auto",
-          padding: isMobile ? "24px var(--page-gutter) 0" : "80px 40px 0",
+          padding: isMobile ? "16px var(--page-gutter) 0" : "80px 40px 0",
         }}>
 
           {/* ────────────────────── Hero ────────────────────── */}
