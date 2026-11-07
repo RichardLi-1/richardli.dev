@@ -189,8 +189,11 @@ export default function PersonalWebsite() {
                     </li>
                   ))}
                 </ul>
-              </div>  
-              <div>
+              </div>
+              {/* Desktop only. Hidden with CSS, not `!isMobile &&`, because isMobile is false
+                  until after hydration, so a JS check would flash this section on phones.
+                  📖 Learn: hydration, Tailwind responsive prefixes */}
+              <div className="hidden md:block">
                 <p className="section-label" style={{ marginBottom: 14 }}>Previously</p>
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {previously.map(item => (
