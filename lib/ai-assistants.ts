@@ -68,3 +68,60 @@ export function matchAiFetcher(userAgent: string | null | undefined): AiFetcher 
   }
   return null
 }
+
+// ─── Any bot at all (used to keep bots off private pages) ─────────────────────
+// Broader than AI_FETCHERS: this answers "is this probably NOT a person in a
+// normal browser?" It's broad on purpose. A rare false positive (say, a phone
+// model with "bot" in its name) just sees a 404, which is acceptable for a
+// private section. The opposite gap can't be fixed here: a bot that spoofs a
+// normal browser UA gets through, and only a login could stop that.
+// All entries are lowercase because we compare against the lowercased UA.
+const BOT_UA_SUBSTRINGS: string[] = [
+  // Generic crawler words: catches Googlebot, Bingbot, GPTBot, ClaudeBot,
+  // CCBot, Applebot, YandexBot, Baiduspider, Yahoo! Slurp, and so on.
+  "bot",
+  "crawl",
+  "spider",
+  "slurp",
+
+  // AI fetchers that don't have "bot" in their name.
+  "mistralai-user",
+  "meta-externalagent",
+  "meta-externalfetcher",
+  "anthropic-ai",
+  "cohere-ai",
+  "img2dataset",
+
+  // Link-preview fetchers (the card you see when a link is pasted in a chat).
+  "facebookexternalhit",
+
+  // Headless browsers and HTTP libraries that scripts and AI agents fetch with.
+  // A real person browsing never sends these.
+  "headlesschrome",
+  "python-requests",
+  "python-httpx",
+  "aiohttp",
+  "curl/", // the slash avoids matching unrelated words that contain "curl"
+  "wget",
+  "go-http-client",
+  "node-fetch",
+  "axios",
+  "undici", // Node's built-in fetch() sends "undici" as its UA
+]
+
+// True when the request is probably from a bot rather than a person.
+// 📖 Learn: User-Agent header — https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent
+export function isBotUserAgent(userAgent: string | null | undefined): boolean {
+  // Real browsers always send a User-Agent, so a missing one means a script.
+  if (!userAgent) return true
+
+  // Reuse the AI fetcher list so a new entry there is blocked here too.
+  if (matchAiFetcher(userAgent)) return true
+
+  // Lowercase once so "Googlebot" and "googlebot" both match "bot".
+  const ua = userAgent.toLowerCase()
+  for (const substring of BOT_UA_SUBSTRINGS) {
+    if (ua.includes(substring)) return true
+  }
+  return false
+}

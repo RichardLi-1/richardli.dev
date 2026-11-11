@@ -212,6 +212,10 @@ EMAIL_PASS=...          # Outlook SMTP password
 | `/transit/hypo-maps` | `app/transit/hypo-maps/page.tsx` |
 | `/more` | `app/more/page.tsx` |
 | `/more/functions` | `app/more/functions/page.tsx` |
+| `/writing` | `app/writing/page.tsx` (list), `app/writing/[slug]/page.tsx` (post from `content/writing/<slug>.md`) |
+
+### /writing is people-only
+Reached only by a faint hidden link at the bottom of `/experiments`. Never add writing posts to the chatbot (`lib/chunks.json`, `SITE_PAGES`, system prompt), the sitemap or `llms.txt`. Bots are kept out by `app/robots.ts` (Disallow), `middleware.ts` (404 for bot user-agents), and `app/writing/layout.tsx` (noindex + `data-agent-ignore`).
 
 ## Coding Conventions
 - Prefer editing existing files over creating new ones
