@@ -413,6 +413,25 @@ export default function ExperimentsPage() {
                 <ExperimentCard key={experiment.title} experiment={experiment} />
               ))}
             </section>
+
+            {/* ── Hidden link to /writing ──
+                Hard to spot on purpose: tiny and in --text-5, the faintest text color, barely darker
+                (or lighter) than the background. Hover or keyboard focus slowly brings it up to
+                --text-2 so it reads as a link once found. It's still a real <a>, so Tab reaches it.
+                pb-24 on mobile lifts it above the fixed bottom nav pill: this page has no footer,
+                whose spacer normally does that job.
+                data-agent-ignore: the site's chatbot and in-browser AI agents never see or click it.
+                rel="nofollow": asks search crawlers not to follow it to /writing. */}
+            <div data-agent-ignore className="flex justify-end pb-24 md:pb-0">
+              <a
+                href="/writing"
+                rel="nofollow"
+                className="text-[var(--text-5)] transition-colors duration-500 hover:text-[var(--text-2)] focus-visible:text-[var(--text-2)] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-[var(--text-4)]"
+                style={{ fontFamily: "'Toronto Subway', sans-serif", fontSize: 11, letterSpacing: "0.08em", textDecoration: "none" }}
+              >
+                writing
+              </a>
+            </div>
           </StaggeredContent>
         </main>
       </div>
