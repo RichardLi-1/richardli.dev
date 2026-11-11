@@ -174,6 +174,12 @@ const EXPERIMENTS: Experiment[] = [
     description: "45,305 rides on Thursday, August 13, 2026. Data: City of Toronto Open Data. Map © CARTO, © OpenStreetMap contributors.",
     link: "https://x.com/transitfanner/status/2118788160641548581",
   },
+  {
+    title: "Search every photo you own by describing it, on-device",
+    image: "/images/projects/experiments/photo-search-icon.png", // the app icon, not a screenshot: real results would show private or unlicensed photos
+    description: "\"The menu with the coffee prices\" finds the menu. SigLIP2, OCR, date and place parsing and a self-trained \"same place\" model all run locally. Right photo first: 67% → 82% for text to photo, 59% → 74% in the search box. Web demo and Mac app; iOS and Android apps in progress.",
+    link: "https://photos-demo.fly.dev", // the hosted demo; the code is public at github.com/RichardLi-1/Photos
+  },
 
 
 ]
