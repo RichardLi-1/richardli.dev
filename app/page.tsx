@@ -139,13 +139,13 @@ export default function PersonalWebsite() {
 
         <main ref={mainRef} style={{
           margin: "0 auto",
-          padding: isMobile ? "32px var(--page-gutter) 0" : "80px 40px 0",
+          padding: isMobile ? "16px var(--page-gutter) 0" : "80px 40px 0",
         }}>
 
           {/* ────────────────────── Hero ────────────────────── */}
           <StaggeredContent delay={0}>
             <section style={{
-              marginBottom: isMobile? 48 : 64,
+              marginBottom: isMobile? 36 : 64,
                maxWidth: 700,
               // Mobile feed: the hero is the first snap stop. The huge scroll margin
               // asks to snap *above* the page top, which the browser clamps to 0,
@@ -177,7 +177,7 @@ export default function PersonalWebsite() {
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
               gap: isMobile ? 32 : 48,
-              marginBottom: isMobile ? 48 : 64,
+              marginBottom: isMobile ? 36 : 64,
             }}>
               <div>
                 <p className="section-label" style={{ marginBottom: 14 }}>Currently</p>
@@ -189,8 +189,11 @@ export default function PersonalWebsite() {
                     </li>
                   ))}
                 </ul>
-              </div>  
-              <div>
+              </div>
+              {/* Desktop only. Hidden with CSS, not `!isMobile &&`, because isMobile is false
+                  until after hydration, so a JS check would flash this section on phones.
+                  📖 Learn: hydration, Tailwind responsive prefixes */}
+              <div className="hidden md:block">
                 <p className="section-label" style={{ marginBottom: 14 }}>Previously</p>
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {previously.map(item => (

@@ -43,8 +43,9 @@ export function WindowsXPDesktop() {
   }, [])
 
   return (
+    // xp-desktop: sets XP's own font on everything inside (rule in app/globals.css)
     <div
-      className="fixed inset-0 z-50 bg-cover bg-center bg-no-repeat"
+      className="xp-desktop fixed inset-0 z-50 bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url(/images/windows-xp-wallpaper-wide.jpeg)" }}
     >
       {/* Desktop Icons */}
@@ -154,7 +155,6 @@ function AboutMeContent() {
           <li>rebuilding this site! stay tuned...</li>
           <li>studying systems design engineering at the University of Waterloo</li>
           <li>developing for formulatech hacks</li>
-          <li>creating a class profile for the syde class of 2030</li>
           <li>open to chatting about Summer 2027 internship opportunities</li>
         </ul>
 

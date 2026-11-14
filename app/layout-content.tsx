@@ -1,10 +1,10 @@
 "use client"
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
-import dynamic from "next/dynamic"
 import { usePathname } from "next/navigation"
 // Lenis smooth/slow scroll disabled for now — re-enable the import + effect below to restore.
 // import Lenis from "lenis"
+import dynamic from "next/dynamic"
 import { WindowsXPProvider } from "@/contexts/windows-xp-context"
 import { useWindowsXP } from "@/contexts/windows-xp-context"
 import { GifLoadingScreen } from "@/components/gif-loading-screen"
@@ -22,6 +22,7 @@ import { whenIdle } from "@/lib/when-idle"
 // when it first renders, and ssr: false skips them in the server HTML (they're
 // all browser-only extras).
 // 📖 Learn: next/dynamic, code splitting
+// Extras that can wait until the page is idle (see `extrasStage` below)
 const IPadCursor = dynamic(() => import("@/components/ipad-cursor").then((m) => m.IPadCursor), { ssr: false })
 const AgentOrb = dynamic(() => import("@/components/agent-orb").then((m) => m.AgentOrb), { ssr: false })
 const WebMcpTools = dynamic(() => import("@/components/webmcp-tools").then((m) => m.WebMcpTools), { ssr: false })
@@ -35,11 +36,22 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   // Windows XP is its own page now (app/xp), with none of the site's chrome
   const isXPPage = usePathname() === "/xp"
 
-  // The extras mount once the page has loaded and the browser is idle, so they
-  // don't compete with hydration and the first scroll. The native cursor shows
-  // until then (a fraction of a second on a normal load).
-  const [extrasReady, setExtrasReady] = useState(false)
-  useEffect(() => whenIdle(() => setExtrasReady(true)), [])
+  // The extras mount one at a time once the page has loaded and the browser is
+  // idle, so they don't compete with hydration and the first scroll. Mounting
+  // all three together was a single ~100ms+ block (on a slow device, much more)
+  // right as the cursor appeared, so the cursor goes first and alone, then the
+  // orb, then the WebMCP tools, each waiting for the visitor to pause.
+  // The native cursor shows until the custom one mounts.
+  // stage 0 = nothing yet, 1 = cursor, 2 = + orb, 3 = + WebMCP tools
+  const [extrasStage, setExtrasStage] = useState(0)
+  useEffect(() => {
+    if (extrasStage >= 3) return
+    return whenIdle(() => setExtrasStage(extrasStage + 1), {
+      delay: extrasStage === 0 ? 0 : 400,
+      quietMs: extrasStage === 0 ? 0 : 600,
+      maxWaitMs: 4000,
+    })
+  }, [extrasStage])
 
   // Sync the "personalized" CSS class onto <body> whenever the toggle changes.
   // This lets global CSS target `.personalized` for cosmetic extras.
@@ -96,14 +108,14 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       {/* SwissGrid is always mounted; it renders nothing until Cmd+G is pressed */}
       <SwissGrid />
       {/* iPadOS-style pointer; off in XP mode so the XP desktop keeps its own cursors */}
-      {extrasReady && !isXPPage && <IPadCursor />}
+      {extrasStage >= 1 && !isXPPage && <IPadCursor />}
       {/* Tells the iOS-style project launch animation when the new page has mounted */}
       <AppLaunchRouteWatcher />
       {/* The chatbot's orb form when it acts on the site ("Let Richard drive").
           Here in the layout so it survives page changes, e.g. during a tour. */}
-      {extrasReady && !isXPPage && <AgentOrb />}
+      {extrasStage >= 2 && !isXPPage && <AgentOrb />}
       {/* Tools AI agents in the browser can call (WebMCP); does nothing where unsupported */}
-      {extrasReady && !isXPPage && <WebMcpTools />}
+      {extrasStage >= 3 && !isXPPage && <WebMcpTools />}
       {/* {showLoading && <GifLoadingScreen onComplete={handleLoadingComplete} />} */}
       {!showLoading && (
         <>

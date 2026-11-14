@@ -3,6 +3,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { Github, Linkedin } from "lucide-react"
 import { Changelog, entries } from "@/components/changelog"
+import { XLogo } from "@/components/animated-header"
 import { trackEvent } from "@/lib/track"
 
 const base: React.CSSProperties = { fontFamily: "'Toronto Subway', sans-serif", color: "var(--text-3)" }
@@ -119,6 +120,19 @@ export function Footer() {
             >
               <Linkedin className="w-4 h-4" />
             </SocialIcon>
+            {/* Desktop only. The wrapper does the hiding because SocialIcon sets display as an
+                inline style, which would beat a `hidden` class put on the link itself.
+                📖 Learn: CSS specificity (inline styles vs classes) */}
+            <span className="hidden md:inline-flex">
+              <SocialIcon
+                href="https://x.com/transitfanner"
+                label="X"
+                external
+                onClick={() => trackEvent("𝕏 X clicked", { location: "footer" })}
+              >
+                <XLogo className="w-3.5 h-3.5" />
+              </SocialIcon>
+            </span>
           </div>
 
           <div className="flex items-center gap-2">

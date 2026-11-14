@@ -8,7 +8,6 @@ type WorkRouteCandidate = {
 
 const extraWorkRoutes: WorkRouteCandidate[] = [
   { slug: "markville-rfp", label: "Markville RFP", aliases: ["markville", "rfp", "markville secondary plan"] },
-  { slug: "classprofile", label: "Class Profile", aliases: ["class profile"] },
   { slug: "cec", label: "Career Education Council", aliases: ["career education council"] },
   { slug: "4sight", label: "4sight", aliases: ["four sight", "foursight"] },
 ]

@@ -210,6 +210,10 @@ h3 {
    📖 Learn: CSS custom properties + media queries (a var can change per breakpoint) */
 :root {
   --page-gutter: 24px;
+  /* Case study pages (components/customer-story.tsx) are much wider, so they get
+     a roomier gutter that scales with the window: 6% of its width, never under
+     20px (phones) or over 112px (big screens). 📖 Learn: CSS clamp() */
+  --story-gutter: clamp(20px, 6vw, 112px);
 }
 
 @media (max-width: 767px) {
@@ -254,6 +258,50 @@ h3 {
   color: var(--text);
 }
 
+/* Highlighted phrase in case study hero titles (components/customer-story.tsx).
+   This is only the resting state: an underline with zero width, so hidden.
+   The sweep itself runs from JavaScript (useUnderlineSweep in the same file).
+   It's a background gradient, not a ::after line, because an inline background
+   continues across line wraps: a phrase split over two lines gets one sweep
+   that runs along line 1 and carries on into line 2.
+   📖 Learn: box-decoration-break (default "slice") */
+.story-highlight {
+  background-image: linear-gradient(var(--text-3), var(--text-3));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 0% 3px;
+  padding-bottom: 0.04em;
+}
+
+/* Reduced motion: the script skips the sweep, so show a plain underline
+   while the title is hovered instead. 📖 Learn: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .story-hero-title:hover .story-highlight { background-size: 100% 3px; }
+}
+
+/* Case study hero titles use Toronto Subway instead of the global h1 font
+   (SFCamera). A class beats the bare `h1` selector, so this wins.
+   Toronto Subway is a signage font with wide built-in letter gaps, which look
+   loose at 60px, so the title is tightened slightly (overrides h1's 0.01em).
+   `em` scales the tightening with the font size.
+   📖 Learn: CSS specificity, tracking for display type */
+.story-hero-title {
+  font-family: 'Toronto Subway', 'Helvetica Neue', Helvetica, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Case study body: the column is wide, but body paragraphs stop at a readable
+   line length (~68 characters) instead of running to the right edge. The
+   opening paragraph (.story-lead) is bigger, so it may run wider. The second
+   rule wins because two classes outrank one class + one tag.
+   📖 Learn: the `ch` unit, line length ("measure") in typography */
+.story-article p {
+  max-width: 68ch;
+}
+.story-article .story-lead {
+  max-width: none;
+}
+
 .hero-sub {
   font-size: 12px;
   letter-spacing: 0.06em;
@@ -268,6 +316,40 @@ h3 {
   text-transform: uppercase;
   color: var(--text-3);
 }
+
+/* .writing-body: a /writing post's markdown (app/writing/[slug]/page.tsx).
+   react-markdown outputs bare tags (p, h2, ul…) with no classes, and Tailwind's reset strips
+   their default bullets and sizes, so they're styled by tag here. Every selector starts with
+   .writing-body so nothing else on the site changes. 📖 Learn: CSS descendant selectors */
+.writing-body {
+  font-family: 'SFCamera', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+.writing-body p,
+.writing-body ul,
+.writing-body ol,
+.writing-body blockquote,
+.writing-body pre,
+.writing-body table { margin: 0 0 1em; }
+.writing-body h2 { font-size: 18px; color: var(--text); margin: 2em 0 0.6em; }
+.writing-body h3 { font-size: 15px; color: var(--text); margin: 1.6em 0 0.4em; }
+.writing-body ul { list-style: disc; padding-left: 1.25em; }
+.writing-body ol { list-style: decimal; padding-left: 1.25em; }
+.writing-body li + li { margin-top: 0.25em; }
+.writing-body strong { color: var(--text); font-weight: 600; }
+.writing-body a { color: var(--text); text-decoration: underline; text-decoration-color: var(--text-4); text-underline-offset: 3px; }
+.writing-body blockquote { border-left: 2px solid var(--border-2); padding-left: 1em; color: var(--text-3); }
+.writing-body code { font-size: 0.9em; background: var(--surface); padding: 0.1em 0.3em; border-radius: 4px; }
+.writing-body pre { background: var(--surface); padding: 12px 14px; border-radius: 8px; overflow-x: auto; }
+.writing-body pre code { background: none; padding: 0; }
+/* display: block lets a wide table scroll sideways on phones instead of stretching the page */
+.writing-body table { display: block; overflow-x: auto; border-collapse: collapse; font-size: 14px; }
+.writing-body th,
+.writing-body td { text-align: left; vertical-align: top; padding: 6px 12px 6px 0; border-bottom: 1px solid var(--border-2); }
+.writing-body th { color: var(--text); font-weight: 400; }
+.writing-body hr { border: none; border-top: 1px solid var(--border-2); margin: 2em 0; }
 
 /* .hl — inline highlight: brighter text + slightly bolder, for emphasizing
    a phrase inside dimmed body copy (var(--text-2)). Adapts to light/dark. */
@@ -401,6 +483,18 @@ h3 {
    logo that would vanish on a light background). Dark mode leaves it as-is. */
 .light .invert-on-light {
   filter: invert(1);
+}
+
+/* ── Windows XP desktop font ─────────────────────────────────────── */
+/* The XP desktop (components/windows-xp/desktop.tsx) and its shutdown screens
+   (app/xp/page.tsx) use XP's own UI font, not the
+   site's Toronto Subway. `*` is needed because headings don't inherit: the global h1
+   rule sets SFCamera on them directly, and `.xp-desktop *` is more specific than `h1`.
+   Inline styles (Notepad's Courier New) still win. Macs have no Segoe UI, so they
+   fall back to Tahoma, which is what XP itself used. */
+.xp-desktop,
+.xp-desktop * {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* ── Squircles ──────────────────────────────────────────────────── */

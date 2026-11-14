@@ -383,15 +383,6 @@ export default function ResumePage() {
                     </li>
                   </ResumeProjectBlock>
 
-                  <ResumeProjectBlock title="Class Data Profile" tech="React, TypeScript, HTML, Tailwind CSS" date="Sept 2025 – Present">
-                    <li>
-                      Collecting and democratizing anonymous personal and academic data from students in the University
-                      of Waterloo Systems Design Engineering Class of 2030 to promote transparency for prospective
-                      students
-                    </li>
-                    <li>Developed webpage with React, Vite, TypeScript, and Tailwind CSS</li>
-                  </ResumeProjectBlock>
-
                   <ResumeProjectBlock title="Virtual Father Figure" tech="JavaScript, HTML, CSS" date="Sep 2025 – Present">
                     <li>
                       Developed emotionally intelligent father Chrome extension featuring 3 distinct personalities and 5

@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     description:
       "Full Stack Developer & Systems Design Engineering student at UWaterloo. Specializing in AI and ML.",
     images: ["/images/website-thumbnail.png"],
-    creator: "@richardli",
+    creator: "@transitfanner",
   },
   robots: {
     index: true,
