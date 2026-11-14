@@ -122,7 +122,8 @@ const EXPERIMENTS: Experiment[] = [
   },
   {
     title: "Better, on-device search for photos buried in your camera roll",
-    image: "/images/projects/experiments/photo-search.jpg", // real demo photos (YFCC100M, CC BY 2.0, credited in the image); the highlight is the demo's top result for "two pink flamingos"
+    image: "/images/projects/experiments/photo-search-light.jpg", // real demo photos (YFCC100M, CC BY 2.0, credited in the image); the highlight is the demo's top result for "two pink flamingos"
+    imageDark: "/images/projects/experiments/photo-search.jpg",
     description: "Describe a photo the way you remember it and it shows up, found entirely on your device. Right photo first 74% of the time, up from 59%. Web demo and Mac app; phone apps in progress.",
     link: "https://photos.richardli.dev", // the hosted demo; the code is public at github.com/RichardLi-1/Photos
   },
