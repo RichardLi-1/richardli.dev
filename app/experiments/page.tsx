@@ -121,6 +121,12 @@ const EXPERIMENTS: Experiment[] = [
     link: "https://devpost.com/software/pyrosafe",
   },
   {
+    title: "Search every photo you own by describing it, on-device",
+    image: "/images/projects/experiments/photo-search.jpg", // drawn, not a screenshot: real results would show other people's photos (CC BY, needing credits)
+    description: "\"The menu with the coffee prices\" finds the menu. SigLIP2, OCR, date and place parsing and a self-trained \"same place\" model all run locally. Right photo first: 67% → 82% for text to photo, 59% → 74% in the search box. Web demo and Mac app; iOS and Android apps in progress.",
+    link: "https://photos.richardli.dev", // the hosted demo; the code is public at github.com/RichardLi-1/Photos
+  },
+  {
     title: "Automatic Transit Control Simulator for the TTC",
     // Drawn in code from recordings of the real simulator (components/transit-control-visual),
     // so it stays accurate and keeps running instead of being a frozen screenshot
@@ -173,12 +179,6 @@ const EXPERIMENTS: Experiment[] = [
     video: "/videos/bike-share-rides.mp4",
     description: "45,305 rides on Thursday, August 13, 2026. Data: City of Toronto Open Data. Map © CARTO, © OpenStreetMap contributors.",
     link: "https://x.com/transitfanner/status/2118788160641548581",
-  },
-  {
-    title: "Search every photo you own by describing it, on-device",
-    image: "/images/projects/experiments/photo-search.jpg", // drawn, not a screenshot: real results would show other people's photos (CC BY, needing credits)
-    description: "\"The menu with the coffee prices\" finds the menu. SigLIP2, OCR, date and place parsing and a self-trained \"same place\" model all run locally. Right photo first: 67% → 82% for text to photo, 59% → 74% in the search box. Web demo and Mac app; iOS and Android apps in progress.",
-    link: "https://photos.richardli.dev", // the hosted demo; the code is public at github.com/RichardLi-1/Photos
   },
 
 
