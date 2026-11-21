@@ -238,7 +238,7 @@ export default function ResumePage() {
                         <strong>RAG</strong> and web search to achieve <strong>85%</strong> contact accuracy
                       </li>
                       <li>
-                        Shipped <strong>25+ new features</strong> for <strong>Angular</strong>-based GIS tools by
+                        Shipped <strong>50+ new features</strong> for <strong>Angular</strong>-based GIS tools by
                         coordinating with client and backend teams
                       </li>
                     </ul>
