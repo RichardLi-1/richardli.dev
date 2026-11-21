@@ -2,8 +2,8 @@
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
-import { X, ArrowUpRight, Lock } from "lucide-react"
-import { useState, useEffect } from "react"
+import { X, ArrowUpRight, Lock, Users } from "lucide-react"
+import { useState, useEffect, type CSSProperties } from "react"
 import { usePageViewTracker } from "@/hooks/use-page-view-tracker"
 import { RelatedProjects } from "@/components/related-projects"
 import { useIsPanel } from "@/hooks/use-is-panel"
@@ -18,6 +18,58 @@ import { CaseStudyImage } from "@/components/case-study-image"
 // written out literally here (%20, %0A) to match how the other case studies do it.
 const CONFIDENTIAL_MAILTO =
   "mailto:r575li@uwaterloo.ca?subject=AMD%20Case%20Study&body=Hi%20Richard%2C%0A%0AI%27d%20like%20to%20hear%20more%20about%20your%20work%20at%20AMD.%0A%0A"
+
+// ── Takeaway icons ──
+// lucide doesn't have either of these shapes, so they're drawn by hand with the
+// same settings lucide uses (24×24 grid, 2px round strokes, currentColor) so they
+// match the Users icon beside them. Size and colour come from className/style.
+// 📖 Learn: SVG viewBox and paths — https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths
+type IconProps = { className?: string; style?: CSSProperties }
+
+const ICON_SVG_PROPS = {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true, // decorative: the heading next to it already says what it means
+}
+
+/** A desktop tower with a monitor standing in front of it. */
+function PcWithMonitorIcon({ className, style }: IconProps) {
+  return (
+    <svg {...ICON_SVG_PROPS} className={className} style={style}>
+      {/* Tower, at the back. Its left edge stops at y=8 and resumes at y=17 so it
+          disappears behind the monitor instead of showing through it. */}
+      <path d="M13 8V4a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2v-2" />
+      <path d="M16 5h3" /> {/* drive bay */}
+      <path d="M19 18h.01" /> {/* power light: a zero-length line with round caps draws a dot */}
+      {/* Monitor, in front */}
+      <rect x="2" y="8" width="14" height="9" rx="2" />
+      <path d="M9 17v4" /> {/* stand */}
+      <path d="M6 21h6" /> {/* base */}
+    </svg>
+  )
+}
+
+/** A circle with six small dots around it: pieces of context gathered around a model. */
+function ContextDotsIcon({ className, style }: IconProps) {
+  return (
+    <svg {...ICON_SVG_PROPS} className={className} style={style}>
+      <circle cx="12" cy="12" r="3" />
+      {/* Six dots, 60° apart, 8.5 units from the centre (x = 12 ± 8.5·sin60°, y = 12 ± 8.5·cos60°).
+          r=1 with a 2px stroke fills in, so each one reads as a solid dot. */}
+      <circle cx="12" cy="3.5" r="1" />
+      <circle cx="19.36" cy="7.75" r="1" />
+      <circle cx="19.36" cy="16.25" r="1" />
+      <circle cx="12" cy="20.5" r="1" />
+      <circle cx="4.64" cy="16.25" r="1" />
+      <circle cx="4.64" cy="7.75" r="1" />
+    </svg>
+  )
+}
 
 export default function AMDPage() {
   usePageViewTracker()
@@ -94,7 +146,9 @@ export default function AMDPage() {
               className="squircle rounded-xl p-5"
               style={{ background: "var(--surface)", border: "1px solid var(--border-2)", borderRadius: 16 }}
             >
-              <div className="flex items-start gap-3">
+              {/* items-center, not a margin nudge: keeps the icon and text centred
+                  when the text wraps to two lines on narrow phones */}
+              <div className="flex items-center gap-3">
                 <span
                   className="flex shrink-0 items-center justify-center rounded-full"
                   style={{ width: 32, height: 32, background: "var(--surface-hover)", color: "var(--text-2)" }}
@@ -102,7 +156,7 @@ export default function AMDPage() {
                   <Lock className="w-4 h-4" />
                 </span>
                 <div className="min-w-0">
-                  <p className="mt-1">
+                  <p>
                     The details of this work are under NDA.
                   </p>
                 </div>
@@ -304,6 +358,41 @@ export default function AMDPage() {
             <p className="mt-8 mb-4">
               AMD was one of the best organization communities I've been a part of, and I'll never forget my experience.
             </p>
+          </StaggeredContent>
+
+          {/* Stacked rows (icon left, text right) instead of 3 columns: the page is only
+              max-w-3xl wide, so columns left ~230px each and the longer takeaways got squished.
+              📖 Learn: Flexbox — https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */}
+          <StaggeredContent delay={500}>
+            <div className="mb-8">
+              <h2 id="amd-key-takeaways" className="font-bold mt-8 mb-8 text-2xl">Takeaways</h2>
+              {/* space-y-8 puts the same gap between each row without a margin on every item.
+                  On each icon, shrink-0 stops flexbox from squeezing it when the text beside it
+                  is long, and mt-0.5 nudges it down to line up with the title's first line. */}
+              <div className="space-y-8">
+                <div className="flex items-start gap-4">
+                  <PcWithMonitorIcon className="w-6 h-6 shrink-0 mt-0.5" style={{ color: "var(--text)" }} />
+                  <div>
+                    <h3 className="font-bold mb-2">The best engineers are also tech nerds</h3>
+                    <p style={{ color: "var(--text-2)" }}>I used to believe that my childhood of binging Linus Tech Tips daily gave me no edge as I pursued software, or that I need to specialize my knowledge in strictly one area, but some of the best engineers I worked with were also gamers and PC building enthusiasts, who always had answers to my questions ranging from software design to Corsair power cables. I think this fundamentally changed the way I see software, away from a grind and more as an extension of my passion for tech, like it was as a kid!</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <ContextDotsIcon className="w-6 h-6 shrink-0 mt-0.5" style={{ color: "var(--text)" }} />
+                  <div>
+                    <h3 className="font-bold mb-2">Context engineering and inference engineering are crucial</h3>
+                    <p style={{ color: "var(--text-2)" }}>As foundation models advance, the next step in agentic workflows is properly organized context. Hardware is another bottleneck; I got the chance to learn about the emerging field of low-latency inference engineering. Really interested in this now.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Users className="w-6 h-6 shrink-0 mt-0.5" style={{ color: "var(--text)" }} />
+                  <div>
+                    <h3 className="font-bold mb-2">Gaining people's trust</h3>
+                    <p style={{ color: "var(--text-2)" }}>Once you are knowledgeable enough, everything is a matter of fact. I think this is crucial for allowing people to trust your vision.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </StaggeredContent>
 
           {!isPanel && <RelatedProjects currentId="amd" />}

@@ -47,6 +47,9 @@ const LIFT_GROWTH_PX = 16 // a lifted card grows by ~this many px on its long si
 const GLARE_ALPHA = 0.5 // brightness of the white spot on a lifted card
 const LIFT_MIN_WIDTH = 160 // clickable things at least this big get "lift" instead of "highlight"
 const LIFT_MIN_HEIGHT = 100
+// Temporarily off: big tiles keep the plain dot instead of lifting.
+// Flip back to true to bring the lift (scale + shadow + glare) back everywhere.
+const LIFT_ENABLED = false
 const PRESS_SCALE = 0.97 // buttons dip slightly while pressed
 
 // Spring presets. stiffness = how hard it pulls toward the target,
@@ -315,6 +318,10 @@ function resolveTarget(x: number, y: number): Target {
 
     const isBig = rect.width >= LIFT_MIN_WIDTH && rect.height >= LIFT_MIN_HEIGHT
     if (attr === "lift" || (attr !== "highlight" && isBig)) {
+      // Lift is paused (see LIFT_ENABLED), so show the plain dot. Falling through
+      // to "highlight" instead would draw a grey platter around the whole card.
+      if (!LIFT_ENABLED) return DEFAULT_TARGET
+
       // `transform`-type properties don't apply to inline elements (like a
       // <Link> wrapping a card), so lift its first block child instead.
       const explicitSurface = interactive.querySelector<HTMLElement>("[data-cursor-surface]")
