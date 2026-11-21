@@ -90,8 +90,10 @@ export default function AMDPage() {
           { id: "amd-context-layer", label: "Context Layer" },
           { id: "amd-infra", label: "Infrastructure" },
           { id: "amd-triage", label: "Build Triage" },
-          { id: "amd-takeaways", label: "Takeaways" },
           { id: "other", label: "Outside the Lab" },
+          // Last because the section is last on the page: the nav highlights the
+          // final section you've scrolled past, so this list has to follow page order
+          { id: "amd-key-takeaways", label: "Takeaways" },
         ]} />
       )}
       <div className="mx-auto">
@@ -276,7 +278,6 @@ export default function AMDPage() {
 
           <StaggeredContent delay={400}>
             <div className="mb-8">
-              <h2 id="amd-takeaways" className="font-bold mt-8 mb-4 text-2xl">Takeaways, so far</h2>
               <p className="mb-4">
                 Context engineering is so much more than prompt engineering.
                 The biggest engineering challenge in giving agents context in an internal AI platform is managing data created by an organization pre-AI, never designed to be joined, where every team has a slightly different idea of how data should be stored. Quality of data in → quality of data out. It's not from inference layer.
