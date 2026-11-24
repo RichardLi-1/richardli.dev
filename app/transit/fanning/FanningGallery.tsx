@@ -63,7 +63,7 @@ export function FanningGallery({ photos }: { photos: ContentfulPhoto[] }) {
       <StaggeredContent delay={0}>
         <div className="hero">
           <h1 className="hero-title">Transit Fanning</h1>
-          <p className="hero-sub">Photos from around the network</p>
+          <p className="hero-sub">Public transit deserves to be appreciated</p>
         </div>
       </StaggeredContent>
 

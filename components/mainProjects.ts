@@ -8,6 +8,7 @@
 //   colors      — hex accent used for hover glow effects
 //   externalLink — if present, a "Try it out" button appears on hover
 //   externalOnly — card click goes to externalLink (no on-site case study page)
+//   githubLink  — if present, a GitHub icon button appears on hover, left of "Try it out"
 //   hidden      — excludes the project from all grids
 //   banner      — where the banner sits on the project's own page, so the
 //                 iOS-style launch animation (components/app-launch.tsx) can fly
@@ -43,7 +44,8 @@ export const mainProjects = [
     logo: "",
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#ffffff",
-    externalLink: "https://www.transitplanner.app/",
+    externalLink: "https://www.transitplanner.app/map",
+    githubLink: "https://github.com/evanzyang91/transit-planner",
   },
   {
     id: "safuture",
@@ -72,7 +74,8 @@ export const mainProjects = [
     logo: "/images/projects/boink/logo.webp",
     tags: ["iOS", "Swift", "Game Development"],
     colors: "#417193",
-    externalLink: "https://apps.apple.com/ca/app/bo-nk/id1570376501"
+    externalLink: "https://apps.apple.com/ca/app/bo-nk/id1570376501",
+    githubLink: "https://github.com/MarkvilleDev/Boink",
   },
     {
     id: "cbtc",
@@ -127,16 +130,6 @@ export const mainProjects = [
     colors: "#352F0C",
     hidden: true
   },
-  // {
-  //   id: "classprofile",
-  //   title: "SYDE Class of 2030 Profile",
-  //   year: "2025",
-  //   description: "WIP project...",
-  //   image: "",
-  //   logo: "",
-  //   tags: ["Community", "Web Development", "Data"],
-  //   colors: "",
-  // },
   /*{
     id: "4sight",
     banner: { aspect: 16 / 9, top: { mobile: 124, desktop: 228 } },

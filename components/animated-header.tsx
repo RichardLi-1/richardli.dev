@@ -11,6 +11,17 @@ const ChatBox = dynamic(() => import("@/components/chat-box").then((m) => m.Chat
 import { COLLAPSE_CHAT_EVENT, EXPAND_CHAT_EVENT } from "@/components/agent-orb"
 import { trackEvent } from "@/lib/track"
 
+// The X (formerly Twitter) logo. It's inline because lucide's `X` is the close icon and its
+// `Twitter` is the old bird. fill="currentColor" makes it follow the link's text color.
+// 📖 Learn: SVG currentColor
+export function XLogo({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+    </svg>
+  )
+}
+
 // Tooltip that appears below any element on hover (desktop only — no touch support needed)
 function Tip({ label, children }: { label: string; children: React.ReactNode }) {
   const tipRef = useRef<HTMLSpanElement>(null)
@@ -297,6 +308,7 @@ export function AnimatedHeader({
     return [
       //{ href: "/", label: "Home" },
       //{ href: "/#projects", label: "Projects" },
+      //{ href: "/experiments", label: "Experiments" }, // hidden on mobile so the pill fits; still in desktop nav
       { href: "/transit/fanning", label: "Transit" },
       //{ href: "/about", label: "About" },
       ...rightLinks.map(l => ({ href: l.href, label: l.text, external: l.external })),
@@ -678,6 +690,7 @@ export function AnimatedHeader({
               {[
                 { href: "/", label: "Home" },
                 // { href: "/#projects", label: "Projects" },
+                { href: "/experiments", label: "Experiments" },
                 { href: "/transit/fanning", label: "Transit" },
                 // { href: "/about", label: "About" },
               ].map((item, i) => (
@@ -703,6 +716,8 @@ export function AnimatedHeader({
                 <>
                   <li>
                     <Tip label={theme === "dark" ? "Light mode" : "Dark mode"}>
+                {/* w-3.5, not w-4: this solid logo fills its whole box, while lucide's outlines have padding built in, so 14px looks the same size as its neighbours */}
+                <Tip label="X"><a onClick={() => { trackEvent("𝕏 X clicked", { location: "desktop nav" }); posthog.capture("social_link_clicked", { platform: "x", location: "desktop nav" }) }} href="https://x.com/transitfanner" target="_blank" rel="noopener noreferrer" className="nav-item" style={{ padding: "4px 8px" }} aria-label="X"><XLogo className="w-3.5 h-3.5" /></a></Tip>
                       <button onClick={() => { handleThemeToggle(); trackEvent("🌓 Theme toggled", { from: theme ?? "dark", location: "desktop nav" }) }} className="nav-item" style={{ padding: "4px 6px" }} aria-label="Toggle theme">
                         <span style={{ display: "inline-block", animation: themeBounce ? "iconBounce 0.4s cubic-bezier(0.34,1.56,0.64,1)" : "none" }}>
                           {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}

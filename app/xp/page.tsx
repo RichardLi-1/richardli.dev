@@ -55,7 +55,8 @@ export default function XPPage() {
 
   if (phase === "shutting-down") {
     return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-blue-700 via-blue-600 to-blue-900 text-white">
+      // xp-desktop: reuse the desktop's XP font (globals.css); this screen replaces the desktop, so it doesn't inherit it
+      <div className="xp-desktop fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-blue-700 via-blue-600 to-blue-900 text-white">
         <p className="text-4xl italic font-bold tracking-tight">
           Windows<span className="align-super text-lg not-italic font-normal">xp</span>
         </p>
@@ -66,8 +67,8 @@ export default function XPPage() {
 
   if (phase === "off") {
     return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-10 bg-black px-6 text-center">
-        <p className="font-mono text-2xl text-orange-400" role="status">
+      <div className="xp-desktop fixed inset-0 z-50 flex flex-col items-center justify-center gap-10 bg-black px-6 text-center">
+        <p className="text-2xl text-orange-400" role="status">
           It&apos;s now safe to turn off your computer.
         </p>
         <Link

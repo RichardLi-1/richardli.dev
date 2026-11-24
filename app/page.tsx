@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { launchApp, type BannerHint } from "@/components/app-launch"
 import { withOutboundParams } from "@/lib/outbound-links"
-import { ExternalLink } from "lucide-react"
+import { ExternalLink, Github } from "lucide-react"
 import { AnimatedPage } from "@/components/animated-page"
 import { StaggeredContent } from "@/components/staggered-content"
 import { ResponsiveHeader } from "@/components/responsiveheader"
@@ -139,13 +139,13 @@ export default function PersonalWebsite() {
 
         <main ref={mainRef} style={{
           margin: "0 auto",
-          padding: isMobile ? "32px var(--page-gutter) 0" : "80px 40px 0",
+          padding: isMobile ? "16px var(--page-gutter) 0" : "80px 40px 0",
         }}>
 
           {/* ────────────────────── Hero ────────────────────── */}
           <StaggeredContent delay={0}>
             <section style={{
-              marginBottom: isMobile? 48 : 64,
+              marginBottom: isMobile? 36 : 64,
                maxWidth: 700,
               // Mobile feed: the hero is the first snap stop. The huge scroll margin
               // asks to snap *above* the page top, which the browser clamps to 0,
@@ -177,7 +177,7 @@ export default function PersonalWebsite() {
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
               gap: isMobile ? 32 : 48,
-              marginBottom: isMobile ? 48 : 64,
+              marginBottom: isMobile ? 36 : 64,
             }}>
               <div>
                 <p className="section-label" style={{ marginBottom: 14 }}>Currently</p>
@@ -189,8 +189,11 @@ export default function PersonalWebsite() {
                     </li>
                   ))}
                 </ul>
-              </div>  
-              <div>
+              </div>
+              {/* Desktop only. Hidden with CSS, not `!isMobile &&`, because isMobile is false
+                  until after hydration, so a JS check would flash this section on phones.
+                  📖 Learn: hydration, Tailwind responsive prefixes */}
+              <div className="hidden md:block">
                 <p className="section-label" style={{ marginBottom: 14 }}>Previously</p>
                 <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {previously.map(item => (
@@ -226,6 +229,7 @@ export default function PersonalWebsite() {
                 {visibleProjects.map(project => {
                   const externalOnly = (project as { externalOnly?: boolean }).externalOnly
                   const externalLink = (project as { externalLink?: string }).externalLink
+                  const githubLink = (project as { githubLink?: string }).githubLink
                   const cardHref =
                     externalOnly && externalLink ? externalLink : `/${project.id}`
                   return (
@@ -323,38 +327,78 @@ export default function PersonalWebsite() {
                             )}
                           </div>
                         </div>
-                        {/* "Try it out" button only appears on hover and only if the project has an external link */}
-                        {hoveredId === project.id && externalLink && !externalOnly && (
-                          <button
-                            // stopPropagation prevents the card's Link from also navigating
-                            onClick={e => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              // Track outbound project intent before opening a new tab.
-                              // 📖 Learn: fire-and-forget telemetry pattern
-                              trackEvent("🚀 Project external link clicked", {
-                                projectId: project.id,
-                                projectTitle: project.title,
-                                location: "homepage project card",
-                              })
-                              // withOutboundParams: tags the link with where the visitor came from
-                              // (UTM params) and ?m if they opted out of tracking (lib/outbound-links.ts)
-                              window.open(withOutboundParams(externalLink), "_blank", "noopener,noreferrer")
-                            }}
-                            className="liquid-glass-pill squircle"
-                            style={{
-                              position: "absolute", top: 10, right: 10,
-                              display: "flex", alignItems: "center", gap: 6,
-                              padding: "6px 14px",
-                              borderRadius: 10,
-                              cursor: "pointer",
-                              whiteSpace: "nowrap",
-                            }}
-                            // Hover feedback comes from the iPad pointer's highlight effect (components/ipad-cursor.tsx)
-                          >
-                            <span style={{ fontSize: 16, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", color: "inherit" }}>Click here to use!</span>
-                            <ExternalLink style={{ width: 12, height: 12, opacity: 0.65 }} />
-                          </button>
+                        {/* Hover-only buttons in the top-right corner: GitHub (if the project has a
+                            repo) then "Try it out" (if it has an external link). They share one flex
+                            row instead of each being absolutely positioned, so the GitHub box always
+                            sits right next to the text button, however wide that text renders.
+                            The row's default align-items: stretch gives both boxes the same height.
+                            📖 Learn: flexbox align-items: stretch */}
+                        {hoveredId === project.id && (githubLink || (externalLink && !externalOnly)) && (
+                          <div style={{ position: "absolute", top: 10, right: 10, display: "flex", gap: 6 }}>
+                            {githubLink && (
+                              <button
+                                // stopPropagation prevents the card's Link from also navigating
+                                onClick={e => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  // Same event name as the header's GitHub icon, so all GitHub clicks group together
+                                  trackEvent("🐙 GitHub clicked", {
+                                    projectId: project.id,
+                                    projectTitle: project.title,
+                                    location: "homepage project card",
+                                  })
+                                  // No withOutboundParams here: its UTM tags are only for Richard's own sites
+                                  window.open(githubLink, "_blank", "noopener,noreferrer")
+                                }}
+                                // Icon-only button, so screen readers need a text label
+                                aria-label={`${project.title} on GitHub`}
+                                className="liquid-glass-pill squircle"
+                                style={{
+                                  display: "flex", alignItems: "center", justifyContent: "center",
+                                  // A 38px square, the same height as the "Click here to use!" box:
+                                  // 24px line (16px font × Tailwind's 1.5 line-height) + 6px padding
+                                  // top and bottom + 1px border top and bottom. Change both together.
+                                  width: 38, height: 38,
+                                  padding: 0,
+                                  borderRadius: 10,
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <Github style={{ width: 16, height: 16 }} />
+                              </button>
+                            )}
+                            {externalLink && !externalOnly && (
+                              <button
+                                // stopPropagation prevents the card's Link from also navigating
+                                onClick={e => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  // Track outbound project intent before opening a new tab.
+                                  // 📖 Learn: fire-and-forget telemetry pattern
+                                  trackEvent("🚀 Project external link clicked", {
+                                    projectId: project.id,
+                                    projectTitle: project.title,
+                                    location: "homepage project card",
+                                  })
+                                  // withOutboundParams: tags the link with where the visitor came from
+                                  // (UTM params) and ?m if they opted out of tracking (lib/outbound-links.ts)
+                                  window.open(withOutboundParams(externalLink), "_blank", "noopener,noreferrer")
+                                }}
+                                className="liquid-glass-pill squircle"
+                                style={{
+                                  display: "flex", alignItems: "center", gap: 6,
+                                  padding: "6px 14px",
+                                  borderRadius: 10,
+                                  cursor: "pointer",
+                                  whiteSpace: "nowrap",
+                                }}
+                                // Hover feedback comes from the iPad pointer's highlight effect (components/ipad-cursor.tsx)
+                              >
+                                <span style={{ fontSize: 16, fontFamily: "'Toronto Subway', sans-serif", letterSpacing: "0.02em", color: "inherit" }}>Click here to use!</span>
+                                <ExternalLink style={{ width: 12, height: 12, opacity: 0.65 }} />
+                              </button>
+                            )}
+                          </div>
                         )}
                       </div>
                       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>

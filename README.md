@@ -1,6 +1,6 @@
 # richardli.dev
 
-My personal portfolio website! [richardli.dev](https://www.richardli.dev/)
+HEY so you found the repo for my personal portfolio website! [richardli.dev](https://www.richardli.dev/)
 
 Design inspired by Toronto Subway signage, the Apple Camera app, and iOS tab bars.
 

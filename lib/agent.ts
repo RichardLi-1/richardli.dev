@@ -22,8 +22,8 @@ export interface PageMap {
   targets: { id: string; label: string; kind: "link" | "button"; clickable: boolean }[]
 }
 
-// Case studies that have their own page (app/<id>/page.tsx). Not /classprofile
-// or /transitto: those just redirect to other sites, so "opening" them would
+// Case studies that have their own page (app/<id>/page.tsx). Not /transitto:
+// it just redirects to another site, so "opening" it would
 // silently take the visitor off richardli.dev.
 const CASE_STUDY_IDS = [
   "4sight", "amd", "boink", "cec", "fatherfigure", "futureforward",

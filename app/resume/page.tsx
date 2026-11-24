@@ -238,7 +238,7 @@ export default function ResumePage() {
                         <strong>RAG</strong> and web search to achieve <strong>85%</strong> contact accuracy
                       </li>
                       <li>
-                        Shipped <strong>25+ new features</strong> for <strong>Angular</strong>-based GIS tools by
+                        Shipped <strong>50+ new features</strong> for <strong>Angular</strong>-based GIS tools by
                         coordinating with client and backend teams
                       </li>
                     </ul>
@@ -381,15 +381,6 @@ export default function ResumePage() {
                       Protected sensitive user data by migrating from Firestore to AWS-hosted PostgreSQL DB, encrypted
                       with pgcrypto.
                     </li>
-                  </ResumeProjectBlock>
-
-                  <ResumeProjectBlock title="Class Data Profile" tech="React, TypeScript, HTML, Tailwind CSS" date="Sept 2025 – Present">
-                    <li>
-                      Collecting and democratizing anonymous personal and academic data from students in the University
-                      of Waterloo Systems Design Engineering Class of 2030 to promote transparency for prospective
-                      students
-                    </li>
-                    <li>Developed webpage with React, Vite, TypeScript, and Tailwind CSS</li>
                   </ResumeProjectBlock>
 
                   <ResumeProjectBlock title="Virtual Father Figure" tech="JavaScript, HTML, CSS" date="Sep 2025 – Present">

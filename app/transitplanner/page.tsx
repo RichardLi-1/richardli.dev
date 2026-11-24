@@ -157,7 +157,7 @@ export default function TransitPlannerProjectPage() {
                     projectId="transitplanner"
                     linkLabel="Website icon"
                     location="header links"
-                    href="https://www.transitplanner.app/"
+                    href="https://www.transitplanner.app/map"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Transit Planner website (opens in a new tab)"
@@ -222,7 +222,7 @@ export default function TransitPlannerProjectPage() {
                 projectId="transitplanner"
                 linkLabel="Try it out"
                 location="hero CTA"
-                href="https://www.transitplanner.app/"
+                href="https://www.transitplanner.app/map"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="truncate squircle rounded-xl flex items-center justify-center p-2 py-3 px-3.5 bg-zinc-800 text-zinc-200 dark:text-zinc-800 dark:bg-zinc-200 transition-transform duration-150 hover:scale-95 active:scale-90"
@@ -257,7 +257,7 @@ export default function TransitPlannerProjectPage() {
                     projectId="transitplanner"
                     linkLabel="Transit Planner App"
                     location="links section"
-                    href="https://www.transitplanner.app/"
+                    href="https://www.transitplanner.app/map"
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center gap-2 hover:underline"
@@ -344,7 +344,7 @@ export default function TransitPlannerProjectPage() {
                 </button>
               </div>
 
-              <p className="mb-4">It's now live at <a href="https://www.transitplanner.app/" target="_blank" rel="noopener noreferrer" className="underline">transitplanner.app</a> and still in active development, where we keep adding map overlays, agent-based commuter simulation, and planning tools.</p>
+              <p className="mb-4">It's now live at <a href="https://www.transitplanner.app/map" target="_blank" rel="noopener noreferrer" className="underline">transitplanner.app</a> and still in active development, where we keep adding map overlays, agent-based commuter simulation, and planning tools.</p>
 
               <h2 id="features" className="font-bold mt-8 mb-4 text-2xl">Features</h2>
 

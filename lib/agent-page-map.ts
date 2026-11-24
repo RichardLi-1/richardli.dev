@@ -53,6 +53,9 @@ export function buildPageMap(): PageMap {
   // Headings with ids are the case study sections (the same ones CaseStudyNav jumps to)
   for (const el of Array.from(document.querySelectorAll<HTMLElement>("main h1[id], main h2[id], main h3[id], main section[id]"))) {
     if (sections.length >= MAX_SECTIONS) break
+    // Same opt-out as the targets loop below (e.g. app/writing/layout.tsx), so ignored
+    // pages can't leak their headings even if those headings get ids later
+    if (el.closest("[data-agent-ignore]")) continue
     const label = clean(el.innerText)
     if (label && isShown(el)) sections.push({ id: el.id, label })
   }
