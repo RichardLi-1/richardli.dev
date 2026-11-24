@@ -25,7 +25,7 @@ import {
   type Stat,
 } from "@/components/customer-story"
 
-const SITE_URL = "https://www.transitplanner.app/"
+const SITE_URL = "https://www.transitplanner.app/map"
 
 // Shown in the hero and repeated in the Key Results box
 const STATS: Stat[] = [
