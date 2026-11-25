@@ -1,5 +1,6 @@
 "use client"
 import { AnimatedPage } from "@/components/animated-page"
+import { TransitPlannerModels } from "@/components/transit-planner-models"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { TrackedExternalLink } from "@/components/tracked-external-link"
@@ -41,7 +42,6 @@ const QUOTES: { problem: Quote | null; results: Quote | null } = {
   problem: null,
   results: null,
 }
-
 export default function TransitPlannerCaseStudyPage() {
   usePageViewTracker()
   useEndSlowdownScroll() // experimental: scrolling eases off near the bottom
@@ -76,9 +76,6 @@ export default function TransitPlannerCaseStudyPage() {
           sidebar={
             <>
               <ShareButtons title="Transit Planner" />
-              <SidebarField label="About Transit Planner">
-                An AI-powered transit planning sandbox, live at transitplanner.app.
-              </SidebarField>
               <SidebarField label="Category">Web App</SidebarField>
               <SidebarField label="Timeline">2026 - Present</SidebarField>
               <SidebarField label="Team">Fiona Fang, Evan Yang, Christopher Stevers, and me</SidebarField>
@@ -161,6 +158,35 @@ export default function TransitPlannerCaseStudyPage() {
               The agentic map assistant goes a step further. It can fly to and circle areas on the map,
               read census data, and drop pins, which makes it useful for spotting service gaps.
             </p>
+            <p>
+              Ask a question in plain language and it acts on the map: here, flying to Mississauga and
+              pinning Square One. It&apos;s still in beta, so turn on Ask AI in Settings to try it.
+            </p>
+            <CaseStudyImage
+              src="/images/projects/transitplanner/ask-ai-panel.webp"
+              alt="The Ask AI panel open over a map of Toronto's transit network, with suggested questions about coverage gaps"
+              width={1600}
+              height={1000}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-auto"
+            />
+            <CaseStudyImage
+              src="/images/projects/transitplanner/ask-ai-map.webp"
+              alt="After a request in Ask AI, the map has zoomed in to Mississauga with a labelled pin on Square One Shopping Centre"
+              width={1600}
+              height={1000}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-auto"
+            />
+          </section>
+
+          {/* ── Models ── */}
+          <section className="mt-16 space-y-5" style={{ color: "var(--text-2)" }}>
+            <BracketLabel>The models</BracketLabel>
+            <h2 className="text-2xl" style={{ color: "var(--text)" }}>The math under the map</h2>
+            <TransitPlannerModels />
           </section>
 
           {/* ── Results ── */}

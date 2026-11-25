@@ -14,6 +14,7 @@ import { motion } from "framer-motion"
 import { SyntaxCodeBlock } from "@/components/syntax-code-block"
 import { TrackedExternalLink } from "@/components/tracked-external-link"
 import { CaseStudyImage } from "@/components/case-study-image"
+import { TransitPlannerModels } from "@/components/transit-planner-models"
 
 const PROPOSE_ROUTE_TOOL_SNIPPET = `const PROPOSE_ROUTE_TOOL: ToolDefinition = {
   name: "propose_route",
@@ -50,6 +51,7 @@ export default function TransitPlannerProjectPage() {
   const [zoom, setZoom] = useState({ scale: 1, tx: 0, ty: 0 })
   const [dragging, setDragging] = useState<{ startX: number; startY: number; startTx: number; startTy: number } | null>(null)
   const [showDiagram, setShowDiagram] = useState(false)
+  const [showToolSchema, setShowToolSchema] = useState(false)
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
     check()
@@ -139,6 +141,7 @@ export default function TransitPlannerProjectPage() {
           { id: "origins", label: "Origins" },
           { id: "features", label: "Features" },
           { id: "architecture", label: "Architecture" },
+          { id: "models", label: "Models" },
           { id: "launch", label: "Launch" },
           { id: "more-features", label: "More Features" },
           { id: "conclusion", label: "Conclusion" },
@@ -428,7 +431,43 @@ export default function TransitPlannerProjectPage() {
               <p className="mb-3 text-sm" style={{ color: "var(--text-3)" }}>
                 Constraints like <code className="text-xs">minItems</code>/<code className="text-xs">maxItems</code> on stops and required fields keep generations in a band the renderer expects (e.g. 6–20 stops, hex colour, <code className="text-xs">[lng, lat]</code> pairs per stop).
               </p>
-              <SyntaxCodeBlock language="typescript" code={PROPOSE_ROUTE_TOOL_SNIPPET} />
+              {showToolSchema ? (
+                <>
+                  {/* Same full-width bar as the folded state, so open and close are equally easy to hit */}
+                  <button
+                    onClick={() => setShowToolSchema(false)}
+                    aria-expanded={true}
+                    className="mb-2 flex w-full items-center gap-2 rounded-lg border px-4 py-3 text-left font-mono text-[13px] leading-relaxed transition-[filter] hover:brightness-125"
+                    style={{ background: "#1e1e1e", color: "#858585", borderColor: "var(--border-2)", cursor: "pointer" }}
+                  >
+                    <ChevronDown className="h-4 w-4 shrink-0" />
+                    Hide code
+                  </button>
+                  <SyntaxCodeBlock language="typescript" code={PROPOSE_ROUTE_TOOL_SNIPPET} />
+                </>
+              ) : (
+                // Folded like an editor: the code block's own dark rectangle, first line only,
+                // with VS Code Dark+ token colours so it reads as code before it's opened.
+                <button
+                  onClick={() => setShowToolSchema(true)}
+                  aria-expanded={false}
+                  aria-label="Expand the propose_route tool schema"
+                  className="mb-6 flex w-full items-center gap-2 rounded-lg border px-4 py-3 text-left font-mono text-[13px] leading-relaxed transition-[filter] hover:brightness-125"
+                  style={{ background: "#1e1e1e", color: "#d4d4d4", borderColor: "var(--border-2)", cursor: "pointer" }}
+                >
+                  <ChevronDown className="h-4 w-4 shrink-0" style={{ transform: "rotate(-90deg)", color: "#858585" }} />
+                  <span className="truncate">
+                    <span style={{ color: "#569cd6" }}>const</span>{" "}
+                    <span style={{ color: "#4fc1ff" }}>PROPOSE_ROUTE_TOOL</span>:{" "}
+                    <span style={{ color: "#4ec9b0" }}>ToolDefinition</span> = {"{"}
+                    <span className="mx-0.5 rounded px-1" style={{ background: "#3a3d41", color: "#c5c5c5" }}>…</span>
+                    {"}"}
+                  </span>
+                </button>
+              )}
+
+              <h2 id="models" className="font-bold mt-8 mb-4 text-2xl">Models</h2>
+              <TransitPlannerModels />
 
               <h2 id="launch" className="font-bold mt-8 mb-2 text-2xl">Launch</h2>
               <p className="mb-2">The initial launch received 1.4K likes and positive feedback on X.</p>
