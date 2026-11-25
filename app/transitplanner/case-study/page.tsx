@@ -1,6 +1,9 @@
 "use client"
 import { AnimatedPage } from "@/components/animated-page"
 import { TransitPlannerModels } from "@/components/transit-planner-models"
+import { TransitPlannerCouncilGraph } from "@/components/transit-planner-diagrams/council-graph"
+import { TransitPlannerArchitecture } from "@/components/transit-planner-diagrams/architecture"
+import { ThemedImage } from "@/components/themed-image"
 import { StaggeredContent } from "@/components/staggered-content"
 import { AnimatedHeader } from "@/components/animated-header"
 import { TrackedExternalLink } from "@/components/tracked-external-link"
@@ -146,6 +149,11 @@ export default function TransitPlannerCaseStudyPage() {
               isochrones, gravity-model ridership, and equity and travel-time scoring, all built on
               Statistics Canada dissemination-block population data in PostGIS.
             </p>
+            <ThemedImage
+              light="/images/projects/transitplanner/layers-transit-deserts-light.webp"
+              dark="/images/projects/transitplanner/layers-transit-deserts-dark.webp"
+              alt="The Layers menu open with the Transit deserts overlay on, shading underserved, populated areas of Toronto"
+            />
             <p>
               On top of that sits a six-agent AI council, an 11-node StateGraph with two planners and
               one NIMBY. The naive approach would be letting each member describe its route in prose.
@@ -154,6 +162,7 @@ export default function TransitPlannerCaseStudyPage() {
               against a schema that keeps routes between 6 and 20 stops with real{" "}
               <code className="text-sm">[lng, lat]</code> pairs.
             </p>
+            <TransitPlannerCouncilGraph />
             <p>
               The agentic map assistant goes a step further. It can fly to and circle areas on the map,
               read census data, and drop pins, which makes it useful for spotting service gaps.
@@ -180,6 +189,18 @@ export default function TransitPlannerCaseStudyPage() {
               decoding="async"
               className="w-full h-auto"
             />
+          </section>
+
+          {/* ── Architecture ── */}
+          <section className="mt-16 space-y-5" style={{ color: "var(--text-2)" }}>
+            <BracketLabel>The architecture</BracketLabel>
+            <h2 className="text-2xl" style={{ color: "var(--text)" }}>One app, one set of numbers</h2>
+            <p>
+              Everything runs in a single Next.js app on Vercel. Ask AI and the council call models
+              through the same provider layer and read the same grounded tool registry, so the map, the
+              assistant, and the council can&apos;t disagree about who lives where.
+            </p>
+            <TransitPlannerArchitecture />
           </section>
 
           {/* ── Models ── */}
@@ -217,6 +238,13 @@ export default function TransitPlannerCaseStudyPage() {
                 This mode dispatches hundreds of AI agents to act as commuters. Eventually it will be a
                 tool the council members can use.
               </p>
+              <div className="mt-4">
+                <ThemedImage
+                  light="/images/projects/transitplanner/simulation-agents-light.webp"
+                  dark="/images/projects/transitplanner/simulation-agents-dark.webp"
+                  alt="The agent simulation animating 470 commuters across the TTC network at 5:17pm, coloured by income, with accessibility results in the side panel"
+                />
+              </div>
             </div>
             <div>
               <h3 className="text-lg" style={{ color: "var(--text)" }}>More map overlays</h3>

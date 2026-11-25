@@ -15,6 +15,9 @@ import { SyntaxCodeBlock } from "@/components/syntax-code-block"
 import { TrackedExternalLink } from "@/components/tracked-external-link"
 import { CaseStudyImage } from "@/components/case-study-image"
 import { TransitPlannerModels } from "@/components/transit-planner-models"
+import { TransitPlannerCouncilGraph } from "@/components/transit-planner-diagrams/council-graph"
+import { TransitPlannerArchitecture } from "@/components/transit-planner-diagrams/architecture"
+import { ThemedImage } from "@/components/themed-image"
 
 const PROPOSE_ROUTE_TOOL_SNIPPET = `const PROPOSE_ROUTE_TOOL: ToolDefinition = {
   name: "propose_route",
@@ -356,17 +359,31 @@ export default function TransitPlannerProjectPage() {
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">Six-agent AI council</h3>
               <p className="mb-2">An 11-node StateGraph. Two planners, one NIMBY.</p>
+              <TransitPlannerCouncilGraph />
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">Agentic map assistant</h3>
               <p className="mb-2">Wanted to create more than a chatbot. Capable of flying to and circling areas on the map, reading census data, and dropping pins. Useful for identifying service gaps and other queries.</p>
+              <ThemedImage
+                light="/images/projects/transitplanner/ask-ai-scarborough-gaps-light.webp"
+                dark="/images/projects/transitplanner/ask-ai-scarborough-gaps-dark.webp"
+                alt="Ask AI answering 'Where are the biggest transit gaps in Scarborough?': it framed Scarborough and shaded the largest gap areas, with population figures in the panel"
+                className="squircle rounded-lg my-3"
+              />
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">Census-grounded analysis and simulation</h3>
               <p className="mb-2">Layers accessible to both users and the agent include transit desert, isochrone, gravity-model ridership simulation, and equity/travel-time scoring. This was built on Statistics Canada dissemination-block population data in Supabase/PostGIS.</p>
+              <ThemedImage
+                light="/images/projects/transitplanner/layers-transit-deserts-light.webp"
+                dark="/images/projects/transitplanner/layers-transit-deserts-dark.webp"
+                alt="The Layers menu open with the Transit deserts overlay on, shading underserved, populated areas of Toronto"
+                className="squircle rounded-lg my-3"
+              />
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">Live network data</h3>
               <p className="mb-2">GTFS-RT for vehicle positions.</p>
 
               <h2 id="architecture" className="font-bold mt-8 mb-4 text-2xl">Architecture</h2>
+              <TransitPlannerArchitecture />
               <button
                 onClick={() => setShowDiagram(v => !v)}
                 className="flex items-center gap-2 mb-3"
@@ -403,17 +420,37 @@ export default function TransitPlannerProjectPage() {
               <p className="mb-2">Transit Planner uses Next.js, TypeScript, and is styled with Tailwind.</p>
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">CI/CD</h3>
-              <p className="mb-2">CI runs the test suite and a route-data validator on every PR; deploys go through Vercel on push. Test builds are released at <a className="hover:underline" href="https://test.transitplanner.app/">https://test.transitplanner.app/</a> for testing. Personally love this preview badge.</p>
-              {/* loading="lazy": below-the-fold images wait until you scroll near them,
-                  so they don't compete with the videos and top images on first load.
-                  📖 Learn: native lazy loading (loading="lazy"), decoding="async" */}
-              <CaseStudyImage
-                src="/images/projects/transitplanner/badge.png"
-                alt="Preview badge"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover"
-              />
+              <p className="mb-2">CI runs the test suite and a route-data validator on every PR; deploys go through Vercel on push. Test builds are released at <a className="hover:underline" href="https://test.transitplanner.app/">https://test.transitplanner.app/</a> for testing. Personally love this{" "}
+                {/* The badge image only shows while these words are hovered. tabIndex={0} makes
+                    the words focusable, so group-focus also reveals it for keyboard users and on
+                    phones, where a tap focuses the element (touch screens have no hover).
+                    📖 Learn: Tailwind group-hover / group-focus */}
+                <span
+                  tabIndex={0}
+                  className="group relative cursor-help underline decoration-dotted underline-offset-4 outline-none"
+                  style={{ color: "var(--text)" }}
+                >
+                  preview badge
+                  {/* Solid card behind the image: badge.png has transparent, faded edges,
+                      which let the paragraph underneath show through. */}
+                  <span
+                    className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-3 block w-[min(420px,80vw)] -translate-x-1/2 translate-y-1 rounded-xl border p-1.5 opacity-0 shadow-2xl transition duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus:translate-y-0 group-focus:opacity-100"
+                    style={{ background: "var(--card-bg)", borderColor: "var(--border-2)" }}
+                  >
+                    {/* loading="lazy" still works here: the hidden image sits in the page layout,
+                        so it loads as you scroll near it, ready before you hover.
+                        📖 Learn: native lazy loading (loading="lazy"), decoding="async" */}
+                    <CaseStudyImage
+                      src="/images/projects/transitplanner/badge.png"
+                      alt="The yellow PREVIEW BUILD badge on test builds of Transit Planner"
+                      loading="lazy"
+                      decoding="async"
+                      className="block w-full rounded-lg"
+                    />
+                  </span>
+                </span>
+                .
+              </p>
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">Backend server: LLM Setup</h3>
               <p className="mb-2">
@@ -515,6 +552,12 @@ export default function TransitPlannerProjectPage() {
             
               <h3 className="font-semibold mt-4 mb-2 text-lg">Agentic Commuter Simulation</h3>
               <p className="mb-2">This mode dispatches hundreds of AI agents to act as commuters. Eventually, this will be a tool available to the transit council members.</p>
+              <ThemedImage
+                light="/images/projects/transitplanner/simulation-agents-light.webp"
+                dark="/images/projects/transitplanner/simulation-agents-dark.webp"
+                alt="The agent simulation animating 470 commuters across the TTC network at 5:17pm, coloured by income, with accessibility results in the side panel"
+                className="squircle rounded-lg my-3"
+              />
 
               <h3 className="font-semibold mt-4 mb-2 text-lg">More map overlays</h3>
               <p className="mb-2">Isochrone, Canada-wide population density, transit deserts, custom SHP/KML/KMZ uploads, GTFS live vehicle data, etc.</p>
@@ -528,7 +571,6 @@ export default function TransitPlannerProjectPage() {
               <li>GTFS Realtime and visualization of moving vehicles</li>
               <li>Transit modelling features</li>
               <li>Support for more cities</li>
-              <li>Graph-based, non-deterministic council debating</li>
               <li>Different interaction methods to initiate the AI council, such as chatting or using points of strain from agentic simulation as a jumping off point</li>
             </ul>
 
