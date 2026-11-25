@@ -19,6 +19,7 @@ import posthog from "posthog-js"
 import { AmdAtmosphere } from "@/components/amd-atmosphere"
 
 const activities = [
+  "reading about inference engineering",
   "somewhere on the ttc",
   "reading context engineering research",
   "listening to bollywood music",
