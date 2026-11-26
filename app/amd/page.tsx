@@ -376,6 +376,19 @@ export default function AMDPage() {
                   <div>
                     <h3 className="font-bold mb-2">The best engineers are also tech nerds</h3>
                     <p style={{ color: "var(--text-2)" }}>I used to believe that my childhood of binging Linus Tech Tips daily gave me no edge as I pursued software, or that I need to specialize my knowledge in strictly one area, but some of the best engineers I worked with were also gamers and PC building enthusiasts, who always had answers to my questions ranging from software design to Corsair power cables. I think this fundamentally changed the way I see software, away from a grind and more as an extension of my passion for tech, like it was as a kid!</p>
+                    {/* Portrait photo, so it's capped at max-w-sm (384px): at the column's full
+                        width a 3:4 image would be about 1000px tall and bury the other takeaways.
+                        📖 Learn: Tailwind max-width (max-w-sm) */}
+                    <CaseStudyImage
+                      src="/images/projects/amd/pc-build.webp"
+                      alt="A PC on an open test bench in the AMD lab: tower CPU cooler and RGB RAM on the motherboard, a Corsair RM850x power supply and its cables below, and a monitor showing the Windows desktop behind it"
+                      // Same setup as the other AMD photos: reserve the 3:4 box, load only near the viewport
+                      width={1200}
+                      height={1600}
+                      loading="lazy"
+                      className="mt-4 w-full max-w-sm h-auto squircle rounded-lg"
+                      style={{ borderRadius: 16 }}
+                    />
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
